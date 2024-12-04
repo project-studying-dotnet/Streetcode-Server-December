@@ -52,7 +52,8 @@ public static class ServiceCollectionExtensions
 
     public static void AddApplicationServices(this IServiceCollection services, ConfigurationManager configuration)
     {
-        var connectionString = configuration.GetConnectionString("DefaultConnection");
+        var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Local";
+        var connectionString = configuration.GetValue<string>($"{environment}:ConnectionStrings:DefaultConnection");
         var emailConfig = configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
         services.AddSingleton(emailConfig);
 

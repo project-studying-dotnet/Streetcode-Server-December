@@ -1,10 +1,10 @@
-﻿using Serilog.Events;
+﻿using System;
+using Serilog.Events;
 using Serilog;
 using Streetcode.BLL.Services.BlobStorageService;
 using Streetcode.BLL.Services.Instagram;
 using Streetcode.BLL.Services.Payment;
 using Serilog.Sinks.SystemConsole.Themes;
-using System;
 using Microsoft.Extensions.Hosting;
 
 namespace Streetcode.WebApi.Extensions;

@@ -24,6 +24,7 @@ using Streetcode.BLL.Services.Instagram;
 using Streetcode.BLL.Interfaces.Text;
 using Streetcode.BLL.Services.Text;
 using Serilog.Events;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Streetcode.WebApi.Extensions;
 
@@ -40,8 +41,7 @@ public static class ServiceCollectionExtensions
         services.AddFeatureManagement();
         var currentAssemblies = AppDomain.CurrentDomain.GetAssemblies();
         services.AddAutoMapper(currentAssemblies);
-        services.AddMediatR(currentAssemblies);
-
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(currentAssemblies));
         services.AddScoped<IBlobService, BlobService>();
         services.AddScoped<ILoggerService, LoggerService>();
         services.AddScoped<IEmailService, EmailService>();

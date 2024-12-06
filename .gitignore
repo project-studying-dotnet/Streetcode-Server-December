@@ -345,3 +345,5 @@ healthchecksdb
 # BlobStorage
 BlobStorageFolder/
 BlobStorageTestFolder/
+/Streetcode/sqlserver.env
+/Streetcode/sqlserver.env

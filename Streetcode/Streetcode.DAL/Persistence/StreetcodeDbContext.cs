@@ -26,11 +26,13 @@ public class StreetcodeDbContext : DbContext
 {
     public StreetcodeDbContext()
     {
+        Database.EnsureCreated();
     }
 
     public StreetcodeDbContext(DbContextOptions<StreetcodeDbContext> options)
         : base(options)
     {
+        Database.EnsureCreated();
     }
 
     public DbSet<Art> Arts { get; set; }

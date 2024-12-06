@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+  mssql:
+    container_name: sql-server
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    restart: always
+    env_file:
+      - sqlserver.env
+    ports:
+      - 1433:1433
+    networks:
+      - streetcode
+
+  streetcode.webapi:
+    image: ${DOCKER_REGISTRY-}streetcodewebapi
+    build:
+      context: .
+      dockerfile: Streetcode.WebApi/Dockerfile
+    ports:
+      - 8001:80
+    hostname: street-code-api
+    env_file:
+      - ./streetcodeapi.env
+    environment:
+      - SQL_CONN_STRING
+      - BLOB_BLOBSTOREPATH
+      - BLOB_BLOBSTOREKEY
+    networks:
+      - streetcode
+
+networks:
+  streetcode:
+    driver: bridge

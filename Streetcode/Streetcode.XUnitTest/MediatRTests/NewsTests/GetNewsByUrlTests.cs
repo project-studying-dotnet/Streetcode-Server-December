@@ -4,39 +4,40 @@ using Streetcode.BLL.DTO.Media.Images;
 using Streetcode.BLL.DTO.News;
 using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.MediatR.Newss.GetById;
 using Streetcode.DAL.Entities.News;
 using Streetcode.DAL.Repositories.Interfaces.Base;
+using Microsoft.EntityFrameworkCore.Query;
+using Streetcode.BLL.MediatR.Newss.GetByUrl;
 using Streetcode.DAL.Entities.Media.Images;
 using Streetcode.BLL.DTO.Media.Images;
-using Streetcode.DAL.Entities.News;
-using Streetcode.BLL.MediatR.Newss.GetById;
+using System.Linq.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore.Query;
+using System.Security.Policy;
 
 namespace Streetcode.XUnitTest.MediatRTests.NewsTests
 {
-    public class GetByIdNewsTests
+    public class GetNewsByUrlTests
     {
         private readonly Mock<IMapper> _mapperMock;
         private readonly Mock<IRepositoryWrapper> _repositoryWrapperMock;
         private readonly Mock<ILoggerService> _loggerMock;
         private readonly Mock<IBlobService> _blobServiceMock;
-        private readonly GetNewsByIdHandler _handler;
+        private readonly GetNewsByUrlHandler _handler;
 
-        public GetByIdNewsTests()
+        public GetNewsByUrlTests()
         {
             _mapperMock = new Mock<IMapper>();
             _repositoryWrapperMock = new Mock<IRepositoryWrapper>();
             _blobServiceMock = new Mock<IBlobService>();
             _loggerMock = new Mock<ILoggerService>();
 
-            _handler = new(
+            _handler = new (
                 _mapperMock.Object,
                 _repositoryWrapperMock.Object,
                 _blobServiceMock.Object,
@@ -47,7 +48,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
         public async Task ShouldReturnFail_WhenNewsNotFound()
         {
             // Arrange
-            var query = new GetNewsByIdQuery(1);
+            var query = new GetNewsByUrlQuery("test-url.com");
 
             _repositoryWrapperMock
                  .Setup(r => r.NewsRepository.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<News, bool>>>(), null))
@@ -58,16 +59,28 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
 
             // Assert
             Assert.True(result.IsFailed);
-            _loggerMock.Verify(log => log.LogError(query, "No news by entered Id - 1"), Times.Once());
+            _loggerMock.Verify(log => log.LogError(query, "No news by entered Url - test-url.com"), Times.Once());
         }
 
         [Fact]
         public async Task ShouldReturnsSuccess_WhenNewsFoundWithImage()
         {
             // Arrange
-            var news = new News { Id = 1, Title = "News 1", Image = new Image { BlobName = "test_image.jpg" } };
+            var news = new News
+            {
+                Id = 1,
+                Title = "News 1",
+                Image = new Image { BlobName = "test_image.jpg" },
+                URL = "test - url.com"
+            };
 
-            var newsDTO = new NewsDTO { Id = 1, Title = "News 1", Image = new ImageDTO { BlobName = "test_image.jpg" } };
+            var newsDTO = new NewsDTO
+            {
+                Id = 1,
+                Title = "News 1",
+                Image = new ImageDTO { BlobName = "test_image.jpg" },
+                URL = "test - url.com"
+            };
 
             _repositoryWrapperMock
                 .Setup(r => r.NewsRepository.GetFirstOrDefaultAsync(
@@ -75,22 +88,21 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
                     It.IsAny<Func<IQueryable<News>, IIncludableQueryable<News, object>>>()))
                 .ReturnsAsync(news);
 
-            _mapperMock
-                .Setup(m => m.Map<NewsDTO>(news))
-                .Returns(newsDTO);
+            _mapperMock.Setup(m => m.Map<NewsDTO>(news)).Returns(newsDTO);
 
             _blobServiceMock
                 .Setup(b => b.FindFileInStorageAsBase64("test_image.jpg"))
                 .Returns("base64string");
 
-            var query = new GetNewsByIdQuery(1);
+            var query = new GetNewsByUrlQuery("test-url.com");
 
             // Act
             var result = await _handler.Handle(query, default);
 
             // Assert
             Assert.True(result.IsSuccess);
-            Assert.Equal(newsDTO, result.Value);
+            Assert.Equal(newsDTO.URL, result.Value.URL);
+            Assert.NotNull(result.Value.Image);
 
             _blobServiceMock.Verify(b => b.FindFileInStorageAsBase64("test_image.jpg"), Times.Once);
         }
@@ -99,9 +111,21 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
         public async Task ShouldReturnsSuccess_WhenNewsFoundWithoutImage_DoesNotInvokeBlobService()
         {
             // Arrange
-            var news = new News { Id = 1, Title = "News 1", Image = null }; 
+            var news = new News
+            {
+                Id = 1,
+                Title = "News 1",
+                Image = null,
+                URL = "test - url.com"
+            };
 
-            var newsDTO = new NewsDTO { Id = 1, Title = "News 1", Image = null };
+            var newsDTO = new NewsDTO
+            {
+                Id = 1,
+                Title = "News 1",
+                Image = null,
+                URL = "test - url.com"
+            };
 
             _repositoryWrapperMock
                 .Setup(r => r.NewsRepository.GetFirstOrDefaultAsync(
@@ -113,13 +137,14 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
                 .Setup(m => m.Map<NewsDTO>(news))
                 .Returns(newsDTO);
 
-            var query = new GetNewsByIdQuery(1);
+            var query = new GetNewsByUrlQuery("test-url.com");
 
             // Act
             var result = await _handler.Handle(query, default);
 
             // Assert
             Assert.True(result.IsSuccess);
+            Assert.Equal(newsDTO.URL, result.Value.URL);
             Assert.Null(result.Value.Image);
 
             _blobServiceMock.VerifyNoOtherCalls();

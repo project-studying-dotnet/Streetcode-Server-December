@@ -29,7 +29,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
             // Arrange
             var command = new DeleteNewsCommand(1);
             _repositoryWrapperMock
-                .Setup(r => r.NewsRepository.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<News, bool>>>(),null))
+                .Setup(r => r.NewsRepository.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<News, bool>>>(), null))
                 .ReturnsAsync((News)null);
 
             // Act

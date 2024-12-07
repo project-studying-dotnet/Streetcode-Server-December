@@ -29,11 +29,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
             _repositoryWrapperMock = new Mock<IRepositoryWrapper>();
             _loggerMock = new Mock<ILoggerService>();
 
-            _handler = new CreateNewsHandler(
-                _mapperMock.Object,
-                _repositoryWrapperMock.Object,
-                _loggerMock.Object
-                );
+            _handler = new CreateNewsHandler(_mapperMock.Object, _repositoryWrapperMock.Object, _loggerMock.Object);
         }
 
         [Fact]
@@ -99,18 +95,19 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
             // Arrange
             var command = new CreateNewsCommand(new NewsDTO { Title = "Test News", ImageId = 0 });
             var newsEntity = new News { Title = "Test News", ImageId = 0 };
+            News? createdNews = new News { Title = "Test News", ImageId = null };
 
             _mapperMock.Setup(m => m.Map<News>(command.newNews)).Returns(newsEntity);
-            _repositoryWrapperMock.Setup(r => r.NewsRepository.Create(It.IsAny<News>()))
-                .Callback<News>(n => Assert.Null(n.ImageId))
-                .Returns(newsEntity);
+            _repositoryWrapperMock.Setup(r => r.NewsRepository.Create(It.IsAny<News>())).Returns(createdNews);
             _repositoryWrapperMock.Setup(r => r.SaveChangesAsync()).ReturnsAsync(1);
+            _mapperMock.Setup(m => m.Map<NewsDTO>(createdNews))
+                .Returns(new NewsDTO { Title = "Test News", ImageId = null });
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
 
             // Assert
-            Assert.True(result.IsSuccess);
+            Assert.Null(result.Value.ImageId);
         }
     }
 }

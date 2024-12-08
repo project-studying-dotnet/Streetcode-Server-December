@@ -24,7 +24,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
         }
 
         [Fact]
-        public async Task ShouldReturnFailResult_WhenNewsNotFound_()
+        public async Task ShouldReturnFailResult_WhenNewsNotFound()
         {
             // Arrange
             var command = new DeleteNewsCommand(1);
@@ -34,7 +34,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
 
             // Act
             var result = await _handler.Handle(command, default);
-            
+
             // Assert
             Assert.False(result.IsSuccess);
             _loggerMock.Verify(log => log.LogError(command, "No news found by entered Id - 1"), Times.Once);

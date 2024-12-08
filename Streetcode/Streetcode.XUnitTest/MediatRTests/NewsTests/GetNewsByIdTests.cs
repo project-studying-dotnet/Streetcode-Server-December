@@ -36,7 +36,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
             _blobServiceMock = new Mock<IBlobService>();
             _loggerMock = new Mock<ILoggerService>();
 
-            _handler = new(
+            _handler = new (
                 _mapperMock.Object,
                 _repositoryWrapperMock.Object,
                 _blobServiceMock.Object,
@@ -62,7 +62,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
         }
 
         [Fact]
-        public async Task ShouldReturnsSuccess_WhenNewsFoundWithImage()
+        public async Task ShouldReturnSuccess_WhenNewsFoundWithImage()
         {
             // Arrange
             var news = new News { Id = 1, Title = "News 1", Image = new Image { BlobName = "test_image.jpg" } };
@@ -96,10 +96,10 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
         }
 
         [Fact]
-        public async Task ShouldReturnsSuccess_WhenNewsFoundWithoutImage_DoesNotInvokeBlobService()
+        public async Task ShouldReturnSuccess_WhenNewsFoundWithoutImage_DoesNotInvokeBlobService()
         {
             // Arrange
-            var news = new News { Id = 1, Title = "News 1", Image = null }; 
+            var news = new News { Id = 1, Title = "News 1", Image = null };
 
             var newsDTO = new NewsDTO { Id = 1, Title = "News 1", Image = null };
 

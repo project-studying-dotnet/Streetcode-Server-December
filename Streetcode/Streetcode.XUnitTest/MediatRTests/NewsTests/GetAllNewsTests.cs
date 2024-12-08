@@ -35,9 +35,9 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
             _blobServiceMock = new Mock<IBlobService>();
 
             _handler = new (
-                _repositoryWrapperMock.Object, 
-                _mapperMock.Object, 
-                _blobServiceMock.Object, 
+                _repositoryWrapperMock.Object,
+                _mapperMock.Object,
+                _blobServiceMock.Object,
                 _loggerMock.Object);
         }
 
@@ -62,19 +62,19 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
         }
 
         [Fact]
-        public async Task ShouldReturnsSuccess_WhenNewsFoundWithImages()
+        public async Task ShouldReturnSuccess_WhenNewsFoundWithImages()
         {
             // Arrange
             var news = new List<News>
             {
                 new News { Id = 1, Title = "News 1", Image = new Image { BlobName = "test_image.jpg" } },
-                new News { Id = 2, Title = "News 2", Image = new Image { BlobName = "test_image.jpg" } }
+                new News { Id = 2, Title = "News 2", Image = new Image { BlobName = "test_image.jpg" } },
             };
 
             var newsDTOs = new List<NewsDTO>
             {
                 new NewsDTO { Id = 1, Title = "News 1", Image = new ImageDTO { BlobName = "test_image.jpg" } },
-                new NewsDTO { Id = 2, Title = "News 2", Image = new ImageDTO { BlobName = "test_image.jpg" }}
+                new NewsDTO { Id = 2, Title = "News 2", Image = new ImageDTO { BlobName = "test_image.jpg" } },
             };
 
             _repositoryWrapperMock
@@ -104,19 +104,19 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
         }
 
         [Fact]
-        public async Task ShouldReturnsSuccess_WhenNewsFoundWithoutImages_DoesNotInvokeBlobService()
+        public async Task ShouldReturnSuccess_WhenNewsFoundWithoutImages_DoesNotInvokeBlobService()
         {
             // Arrange
             var news = new List<News>
             {
                 new News { Id = 1, Title = "News 1", Image = null },
-                new News { Id = 2, Title = "News 2", Image = null }
+                new News { Id = 2, Title = "News 2", Image = null },
             };
 
             var newsDTOs = new List<NewsDTO>
             {
                 new NewsDTO { Id = 1, Title = "News 1", Image = null },
-                new NewsDTO { Id = 2, Title = "News 2", Image = null }
+                new NewsDTO { Id = 2, Title = "News 2", Image = null },
             };
 
             _repositoryWrapperMock

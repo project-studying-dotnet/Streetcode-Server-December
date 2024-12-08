@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Query;
 using Streetcode.BLL.DTO.Media.Images;
 using Streetcode.BLL.DTO.News;
-using Streetcode.BLL.MediatR.Newss.GetAll;
 using Streetcode.DAL.Entities.Media.Images;
 using Streetcode.DAL.Entities.News;
 using System.Linq.Expressions;
@@ -28,6 +27,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
         private readonly Mock<ILoggerService> _loggerMock;
         private readonly Mock<IBlobService> _blobServiceMock;
         private readonly SortedByDateTimeHandler _handler;
+
         public SortedByDateTimeHandlerTests()
         {
             _repositoryWrapperMock = new Mock<IRepositoryWrapper>();

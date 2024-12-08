@@ -88,12 +88,11 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
             // Arrange
             var command = new CreateNewsCommand(new NewsDTO { Title = "Test News", ImageId = 0 });
             var newsEntity = new News { Title = "Test News", ImageId = 0 };
-            News? createdNews = new News { Title = "Test News", ImageId = null };
 
             _mapperMock.Setup(m => m.Map<News>(command.newNews)).Returns(newsEntity);
-            _repositoryWrapperMock.Setup(r => r.NewsRepository.Create(It.IsAny<News>())).Returns(createdNews);
+            _repositoryWrapperMock.Setup(r => r.NewsRepository.Create(It.IsAny<News>())).Returns(newsEntity);
             _repositoryWrapperMock.Setup(r => r.SaveChangesAsync()).ReturnsAsync(1);
-            _mapperMock.Setup(m => m.Map<NewsDTO>(createdNews))
+            _mapperMock.Setup(m => m.Map<NewsDTO>(newsEntity))
                 .Returns(new NewsDTO { Title = "Test News", ImageId = null });
 
             // Act

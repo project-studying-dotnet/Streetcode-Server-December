@@ -44,7 +44,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
             _blobServiceMock = new Mock<IBlobService>();
             _loggerMock = new Mock<ILoggerService>();
 
-            _handler = new(
+            _handler = new (
                 _mapperMock.Object,
                 _repositoryWrapperMock.Object,
                 _blobServiceMock.Object,
@@ -70,14 +70,14 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
         }
 
         [Fact]
-        public async Task ShouldReturnsCorrectLinks_WhenFoundMultipleNews()
+        public async Task ShouldReturnCorrectLinks_WhenFoundMultipleNews()
         {
             // Arrange
             var newsList = new List<News>
             {
                 new News { Id = 1, URL = "news-1", Title = "News 1", Image = null },
                 new News { Id = 2, URL = "news-2", Title = "News 2", Image = null },
-                new News { Id = 3, URL = "news-3", Title = "News 3", Image = null }
+                new News { Id = 3, URL = "news-3", Title = "News 3", Image = null },
             };
             var currentNews = newsList[1];
             var newsDTO = new NewsDTO { Id = 2, Title = "News 2", Image = null };
@@ -108,7 +108,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
         }
 
         [Fact]
-        public async Task ShouldReturnsSuccess_WhenNewsFoundWithoutImage_DoesNotInvokeBlobService()
+        public async Task ShouldReturnSuccess_WhenNewsFoundWithoutImage_DoesNotInvokeBlobService()
         {
             // Arrange
             var news = new News
@@ -116,7 +116,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
                 Id = 1,
                 Title = "News 1",
                 Image = null,
-                URL = "test - url.com"
+                URL = "test - url.com",
             };
 
             var newsDTO = new NewsDTO
@@ -124,7 +124,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
                 Id = 1,
                 Title = "News 1",
                 Image = null,
-                URL = "test - url.com"
+                URL = "test - url.com",
             };
 
             _repositoryWrapperMock
@@ -160,7 +160,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
         }
 
         [Fact]
-        public async Task ShouldReturnsSuccess_WhenNewsFoundWithImage_InvokeSBlobService()
+        public async Task ShouldReturnSuccess_WhenNewsFoundWithImage_InvokeSBlobService()
         {
             // Arrange
             var news = new News

@@ -62,7 +62,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
         }
 
         [Fact]
-        public async Task ShouldReturnsSuccess_WhenNewsFoundWithImage()
+        public async Task ShouldReturnSuccess_WhenNewsFoundWithImage()
         {
             // Arrange
             var news = new News
@@ -70,7 +70,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
                 Id = 1,
                 Title = "News 1",
                 Image = new Image { BlobName = "test_image.jpg" },
-                URL = "test - url.com"
+                URL = "test - url.com",
             };
 
             var newsDTO = new NewsDTO
@@ -78,7 +78,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
                 Id = 1,
                 Title = "News 1",
                 Image = new ImageDTO { BlobName = "test_image.jpg" },
-                URL = "test - url.com"
+                URL = "test - url.com",
             };
 
             _repositoryWrapperMock
@@ -107,7 +107,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
         }
 
         [Fact]
-        public async Task ShouldReturnsSuccess_WhenNewsFoundWithoutImage_DoesNotInvokeBlobService()
+        public async Task ShouldReturnSuccess_WhenNewsFoundWithoutImage_DoesNotInvokeBlobService()
         {
             // Arrange
             var news = new News
@@ -115,7 +115,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
                 Id = 1,
                 Title = "News 1",
                 Image = null,
-                URL = "test - url.com"
+                URL = "test - url.com",
             };
 
             var newsDTO = new NewsDTO
@@ -123,7 +123,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
                 Id = 1,
                 Title = "News 1",
                 Image = null,
-                URL = "test - url.com"
+                URL = "test - url.com",
             };
 
             _repositoryWrapperMock

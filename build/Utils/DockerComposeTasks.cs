@@ -5,7 +5,7 @@ using Nuke.Common.Tooling;
 
 namespace Utils;
 
-public static class DockerComposeTasks
+public static class DockerComposeTasks 
 {
     internal static string DockerPath => ToolPathResolver.GetPathExecutable("docker-compose");
 
@@ -35,12 +35,13 @@ public static class DockerComposeTasks
     public static IReadOnlyCollection<Output> DockerComposeUp(DockerComposeUpSettings settings = null) =>
         StartProcess(settings ?? new DockerComposeUpSettings());
 
+   
     public static IReadOnlyCollection<Output> DockerComposeDown(Configure<DockerComposeDownSettings> configure) =>
         DockerComposeDown(configure(new DockerComposeDownSettings()));
 
     public static IReadOnlyCollection<Output> DockerComposeDown(DockerComposeDownSettings settings = null) =>
         StartProcess(settings ?? new DockerComposeDownSettings());
-    
+
     public static IReadOnlyCollection<Output> DockerComposeBuild(Configure<DockerComposeBuildSettings> configure) =>
         DockerComposeBuild(configure(new DockerComposeBuildSettings()));
 

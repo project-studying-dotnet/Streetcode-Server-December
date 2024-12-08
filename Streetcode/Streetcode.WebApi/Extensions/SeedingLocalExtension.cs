@@ -27,36 +27,62 @@ namespace Streetcode.WebApi.Extensions
         {
             using (var scope = app.Services.CreateScope())
             {
-                Directory.CreateDirectory(app.Configuration.GetValue<string>("Blob:BlobStorePath"));
+                string blobStorePath = app.Configuration.GetValue<string>("Blob:BlobStorePath") ?? "default/path";
+
+                Directory.CreateDirectory(blobStorePath);
+                Directory.CreateDirectory(app.Configuration.GetValue<string>("Blob:BlobStorePath") ?? "default/path");
+
                 var dbContext = scope.ServiceProvider.GetRequiredService<StreetcodeDbContext>();
                 var blobOptions = app.Services.GetRequiredService<IOptions<BlobEnvironmentVariables>>();
-                string blobPath = app.Configuration.GetValue<string>("Blob:BlobStorePath");
+                string? blobPath = app.Configuration.GetValue<string>("Blob:BlobStorePath");
+                if (string.IsNullOrEmpty(blobPath))
+                {
+                    throw new ArgumentNullException(nameof(blobPath), "BlobStorePath cannot be null or empty.");
+                }
+
+                Directory.CreateDirectory(blobPath);
                 var repo = new RepositoryWrapper(dbContext);
                 var blobService = new BlobService(blobOptions, repo);
                 string initialDataImagePath = "../Streetcode.DAL/InitialData/images.json";
                 string initialDataAudioPath = "../Streetcode.DAL/InitialData/audios.json";
                 if (!dbContext.Images.Any())
                 {
-                    string imageJson = File.ReadAllText(initialDataImagePath, Encoding.UTF8);
-                    string audiosJson = File.ReadAllText(initialDataAudioPath, Encoding.UTF8);
+                    string? imageJson = File.ReadAllText(initialDataImagePath, Encoding.UTF8);
+                    if (imageJson == null)
+                    {
+                        throw new InvalidOperationException("Image JSON data cannot be null.");
+                    }
+
                     var imgfromJson = JsonConvert.DeserializeObject<List<Image>>(imageJson);
+                    if (imgfromJson == null || !imgfromJson.Any())
+                    {
+                        throw new InvalidOperationException("Deserialized image list is null or empty.");
+                    }
+
+                    string audiosJson = File.ReadAllText(initialDataAudioPath, Encoding.UTF8);
                     var audiosfromJson = JsonConvert.DeserializeObject<List<Audio>>(audiosJson);
 
                     foreach (var img in imgfromJson)
                     {
+                        if (string.IsNullOrEmpty(img.Base64))
+                        {
+                            throw new ArgumentException($"Base64 data for image {img.BlobName} cannot be null or empty.");
+                        }
+
+                        if (blobPath == null)
+                        {
+                            throw new ArgumentNullException(nameof(blobPath), "Path cannot be null");
+                        }
+
+                        if (img.BlobName == null)
+                        {
+                            throw new ArgumentNullException(nameof(img.BlobName), "Path cannot be null");
+                        }
+
                         string filePath = Path.Combine(blobPath, img.BlobName);
                         if (!File.Exists(filePath))
                         {
-                            blobService.SaveFileInStorageBase64(img.Base64, img.BlobName.Split('.')[0], img.BlobName.Split('.')[1]);
-                        }
-                    }
-
-                    foreach (var audio in audiosfromJson)
-                    {
-                        string filePath = Path.Combine(blobPath, audio.BlobName);
-                        if (!File.Exists(filePath))
-                        {
-                            blobService.SaveFileInStorageBase64(audio.Base64, audio.BlobName.Split('.')[0], audio.BlobName.Split('.')[1]);
+                            blobService.SaveFileInStorageBase64(img.Base64, Path.GetFileNameWithoutExtension(img.BlobName), Path.GetExtension(img.BlobName).TrimStart('.'));
                         }
                     }
 
@@ -316,9 +342,16 @@ namespace Streetcode.WebApi.Extensions
 
                     if (!dbContext.Audios.Any())
                     {
-                        dbContext.Audios.AddRange(audiosfromJson);
+                        if (audiosfromJson != null && audiosfromJson.Any())
+                        {
+                            dbContext.Audios.AddRange(audiosfromJson);
 
-                        await dbContext.SaveChangesAsync();
+                            await dbContext.SaveChangesAsync();
+                        }
+                        else
+                        {
+                            Console.WriteLine("No audios found in the JSON data to add.");
+                        }
 
                         if (!dbContext.Streetcodes.Any())
                         {

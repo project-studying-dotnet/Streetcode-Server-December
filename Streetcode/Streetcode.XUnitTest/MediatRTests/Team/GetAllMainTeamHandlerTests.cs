@@ -1,30 +1,29 @@
-﻿using Microsoft.EntityFrameworkCore.Query;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore.Query;
 using Moq;
+using Streetcode.BLL.DTO.Team;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.MediatR.Team.GetAll;
 using Streetcode.DAL.Entities.Team;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using System.Linq.Expressions;
 using Xunit;
-using Streetcode.BLL.DTO.Team;
-using Streetcode.BLL.MediatR.Team.GetAll;
-using AutoMapper;
-using Streetcode.DAL.Entities.Streetcode.TextContent;
 
 namespace Streetcode.XUnitTest.MediatRTests.Team
 {
-    public class GetAllTeamHandlerTests
+    public class GetAllMainTeamHandlerTests
     {
         private readonly Mock<IRepositoryWrapper> _mockRepositoryWrapper;
         private readonly Mock<ILoggerService> _mockLogger;
         private readonly Mock<IMapper> _mockMapper;
-        private readonly GetAllTeamHandler _getAllTeamHandler;
+        private readonly GetAllMainTeamHandler _getAllMainTeamHandler;
 
-        public GetAllTeamHandlerTests()
+        public GetAllMainTeamHandlerTests()
         {
             _mockRepositoryWrapper = new Mock<IRepositoryWrapper>();
             _mockMapper = new Mock<IMapper>();
             _mockLogger = new Mock<ILoggerService>();
-            _getAllTeamHandler = new GetAllTeamHandler(_mockRepositoryWrapper.Object, _mockMapper.Object, _mockLogger.Object);
+            _getAllMainTeamHandler = new GetAllMainTeamHandler(_mockRepositoryWrapper.Object, _mockMapper.Object, _mockLogger.Object);
         }
 
         [Fact]
@@ -32,10 +31,10 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
         {
             // Arrange
             ArrangeTeamIsNotNull();
-            var request = new GetAllTeamQuery();
+            var request = new GetAllMainTeamQuery();
 
             // Act
-            var result = await _getAllTeamHandler.Handle(request, CancellationToken.None);
+            var result = await _getAllMainTeamHandler.Handle(request, CancellationToken.None);
 
             // Assert
             Assert.True(result.IsSuccess);
@@ -47,11 +46,11 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
         {
             // Arrange
             ArrangeTeamIsNull();
-            var request = new GetAllTeamQuery();
+            var request = new GetAllMainTeamQuery();
             const string errorMsg = $"Cannot find any team";
 
             // Act
-            var result = await _getAllTeamHandler.Handle(request, CancellationToken.None);
+            var result = await _getAllMainTeamHandler.Handle(request, CancellationToken.None);
 
             // Assert
             Assert.True(result.IsFailed);

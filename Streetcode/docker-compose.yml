@@ -20,12 +20,6 @@ services:
     ports:
       - 8001:80
     hostname: street-code-api
-    env_file:
-      - ./streetcodeapi.env
-    environment:
-      - SQL_CONN_STRING
-      - BLOB_BLOBSTOREPATH
-      - BLOB_BLOBSTOREKEY
     networks:
       - streetcode
 

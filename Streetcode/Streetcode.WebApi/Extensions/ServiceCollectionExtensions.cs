@@ -55,6 +55,13 @@ public static class ServiceCollectionExtensions
         var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Local";
         var connectionString = configuration.GetValue<string>($"{environment}:ConnectionStrings:DefaultConnection");
         var emailConfig = configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
+        if (emailConfig == null)
+        {
+            throw new InvalidOperationException("Email configuration is missing.");
+        }
+
+        services.AddSingleton(emailConfig);
+
         services.AddSingleton(emailConfig);
 
         services.AddDbContext<StreetcodeDbContext>(options =>
@@ -106,9 +113,9 @@ public static class ServiceCollectionExtensions
 
     public class CorsConfiguration
     {
-        public List<string> AllowedOrigins { get; set; }
-        public List<string> AllowedHeaders { get; set; }
-        public List<string> AllowedMethods { get; set; }
+        public List<string> AllowedOrigins { get; set; } = new();
+        public List<string> AllowedMethods { get; set; } = new();
+        public List<string> AllowedHeaders { get; set; } = new();
         public int PreflightMaxAge { get; set; }
     }
 }

@@ -1,20 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore.Query;
 using Moq;
-using Streetcode.BLL.DTO.Team;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Mapping.Team;
-using Streetcode.BLL.MediatR.Team.Create;
-using Streetcode.BLL.MediatR.Team.GetAll;
 using Streetcode.BLL.MediatR.Team.Position.GetAll;
 using Streetcode.DAL.Entities.Team;
 using Streetcode.DAL.Repositories.Interfaces.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Streetcode.XUnitTest.MediatRTests.Team
@@ -39,7 +31,21 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
         public async Task Handle_PositionIsNotNull_ReturnsResultOK()
         {
             // Arrange
-            ArrangePositionsIsNotNull();
+            var positions = new List<Positions>
+            {
+                new Positions
+                {
+                    Id = 1,
+                    Position = "Posit1",
+                },
+                new Positions
+                {
+                    Id = 2,
+                    Position = "Posit2",
+                },
+            };
+
+            ArrangePositions(positions);
             var request = new GetAllPositionsQuery();
 
             // Act
@@ -54,7 +60,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
         public async Task Handle_PositionIsNull_ReturnsResultFail()
         {
             // Arrange
-            ArrangePositionsIsNull();
+            ArrangePositions(null);
             var request = new GetAllPositionsQuery();
             const string errorMsg = $"Cannot find any positions";
 
@@ -66,32 +72,11 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
             Assert.Single(result.Reasons, s => s.Message == errorMsg);
         }
 
-        private void ArrangePositionsIsNotNull()
+        private void ArrangePositions(List<Positions> positions)
         {
-            List<Positions> positions = new List<Positions>
-            {
-                new Positions
-                {
-                    Id = 1,
-                    Position = "Posit1",
-                },
-                new Positions
-                {
-                    Id = 2,
-                    Position = "Posit2",
-                },
-            };
-
             _mockRepositoryWrapper.Setup(p => p.PositionRepository.GetAllAsync(
                 It.IsAny<Expression<Func<Positions, bool>>>(), It.IsAny<Func<IQueryable<Positions>,
                 IIncludableQueryable<Positions, object>>>()).Result).Returns(positions);
-        }
-
-        private void ArrangePositionsIsNull()
-        {
-            _mockRepositoryWrapper.Setup(p => p.PositionRepository.GetAllAsync(
-                It.IsAny<Expression<Func<Positions, bool>>>(), It.IsAny<Func<IQueryable<Positions>,
-                IIncludableQueryable<Positions, object>>>()).Result).Returns((IEnumerable<Positions>)null);
         }
     }
 }

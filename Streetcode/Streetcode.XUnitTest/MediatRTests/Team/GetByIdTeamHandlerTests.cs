@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Query;
 using Moq;
 using Streetcode.BLL.DTO.Team;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Mapping.Team;
 using Streetcode.BLL.MediatR.Team.GetById;
 using Streetcode.DAL.Entities.Team;
 using Streetcode.DAL.Repositories.Interfaces.Base;
@@ -15,23 +16,32 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
     {
         private readonly Mock<IRepositoryWrapper> _mockRepositoryWrapper;
         private readonly Mock<ILoggerService> _mockLogger;
-        private readonly Mock<IMapper> _mockMapper;
+        private readonly IMapper _mapper;
         private readonly GetByIdTeamHandler _getByIdTeamHandler;
 
         public GetByIdTeamHandlerTests()
         {
             _mockRepositoryWrapper = new Mock<IRepositoryWrapper>();
-            _mockMapper = new Mock<IMapper>();
+            _mapper = new MapperConfiguration(cfg => cfg.AddProfile(new TeamProfile())).CreateMapper();
             _mockLogger = new Mock<ILoggerService>();
-            _getByIdTeamHandler = new GetByIdTeamHandler(_mockRepositoryWrapper.Object, _mockMapper.Object, _mockLogger.Object);
+            _getByIdTeamHandler = new GetByIdTeamHandler(_mockRepositoryWrapper.Object, _mapper, _mockLogger.Object);
         }
 
         [Fact]
         public async Task Handle_TeamIsNotNull_ReturnsResultOK()
         {
             // Arrange
-            ArrangeTeamIsNotNull();
+            var teamMember = new TeamMember
+            {
+                Id = 1,
+                FirstName = "Memb1",
+                Description = "Desc1",
+                IsMain = true,
+                ImageId = 1,
+            };
             var id = 1;
+
+            ArrangeTeams(teamMember);
             var request = new GetByIdTeamQuery(id);
 
             // Act
@@ -45,9 +55,11 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
         public async Task Handle_TeamIsNull_ReturnsResultFail()
         {
             // Arrange
-            ArrangeTeamIsNull();
+            ArrangeTeams(null);
+
             var id = 1;
             var request = new GetByIdTeamQuery(id);
+
             string errorMsg = $"Cannot find any team with corresponding id: {request.Id}";
 
             // Act
@@ -58,38 +70,11 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
             Assert.Single(result.Reasons, s => s.Message == errorMsg);
         }
 
-        private void ArrangeTeamIsNotNull()
+        private void ArrangeTeams(TeamMember teamMember)
         {
-            TeamMember teamMember = new TeamMember
-            {
-                Id = 1,
-                FirstName = "Memb1",
-                Description = "Desc1",
-                IsMain = true,
-                ImageId = 1,
-            };
-
-            TeamMemberDTO teamMemberDTO = new TeamMemberDTO
-            {
-                Id = 1,
-                FirstName = "Memb1",
-                Description = "Desc1",
-                IsMain = true,
-                ImageId = 1,
-            };
-
             _mockRepositoryWrapper.Setup(p => p.TeamRepository.GetSingleOrDefaultAsync(
                 It.IsAny<Expression<Func<TeamMember, bool>>>(), It.IsAny<Func<IQueryable<TeamMember>,
                 IIncludableQueryable<TeamMember, object>>>()).Result).Returns(teamMember);
-
-            _mockMapper.Setup(m => m.Map<TeamMemberDTO>(It.IsAny<TeamMember>())).Returns(teamMemberDTO);
-        }
-
-        private void ArrangeTeamIsNull()
-        {
-            _mockRepositoryWrapper.Setup(p => p.TeamRepository.GetSingleOrDefaultAsync(
-                It.IsAny<Expression<Func<TeamMember, bool>>>(), It.IsAny<Func<IQueryable<TeamMember>,
-                IIncludableQueryable<TeamMember, object>>>()).Result).Returns((TeamMember)null);
         }
     }
 }

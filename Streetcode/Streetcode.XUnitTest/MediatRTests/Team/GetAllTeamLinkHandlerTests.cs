@@ -37,7 +37,21 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
         public async Task Handle_TeamLinksIsNotNull_ReturnsResultOK()
         {
             // Arrange
-            ArrangeTeamLinksIsNotNull();
+            var teamLinks = new List<TeamMemberLink>
+            {
+                new TeamMemberLink
+                {
+                    Id = 1,
+                    LogoType = LogoType.YouTube,
+                },
+                new TeamMemberLink
+                {
+                    Id = 2,
+                    LogoType = LogoType.Instagram,
+                },
+            };
+
+            ArrangeTeamLinks(teamLinks);
             var request = new GetAllTeamLinkQuery();
 
             // Act
@@ -52,7 +66,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
         public async Task Handle_TeamLinksIsNull_ReturnsResultFail()
         {
             // Arrange
-            ArrangeTeamLinksIsNull();
+            ArrangeTeamLinks(null);
             var request = new GetAllTeamLinkQuery();
             const string errorMsg = $"Cannot find any team links";
 
@@ -64,32 +78,11 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
             Assert.Single(result.Reasons, s => s.Message == errorMsg);
         }
 
-        private void ArrangeTeamLinksIsNotNull()
+        private void ArrangeTeamLinks(List<TeamMemberLink> teamLinks)
         {
-            List<TeamMemberLink> teamLinks = new List<TeamMemberLink>
-            {
-                new TeamMemberLink
-                {
-                    Id = 1,
-                    LogoType = LogoType.YouTube,
-                },
-                new TeamMemberLink
-                {
-                    Id = 2,
-                    LogoType = LogoType.Instagram,
-                },
-            };
-
             _mockRepositoryWrapper.Setup(p => p.TeamLinkRepository.GetAllAsync(
                 It.IsAny<Expression<Func<TeamMemberLink, bool>>>(), It.IsAny<Func<IQueryable<TeamMemberLink>,
                 IIncludableQueryable<TeamMemberLink, object>>>()).Result).Returns(teamLinks);
-        }
-
-        private void ArrangeTeamLinksIsNull()
-        {
-            _mockRepositoryWrapper.Setup(p => p.TeamLinkRepository.GetAllAsync(
-                It.IsAny<Expression<Func<TeamMemberLink, bool>>>(), It.IsAny<Func<IQueryable<TeamMemberLink>,
-                IIncludableQueryable<TeamMemberLink, object>>>()).Result).Returns((IEnumerable<TeamMemberLink>)null);
         }
     }
 }

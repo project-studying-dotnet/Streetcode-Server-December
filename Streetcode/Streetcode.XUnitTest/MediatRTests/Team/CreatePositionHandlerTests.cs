@@ -44,7 +44,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
         public async Task Handle_PositionCreatedSuccessfully_ReturnsResultOK()
         {
             // Arrange
-            ArrangeCreatePositionSuccess();
+            _mockRepositoryWrapper.Setup(p => p.SaveChanges()).Returns(1);
             var request = new CreatePositionQuery(new PositionDTO { Id = 1, Position = "Posit1" });
 
             // Act
@@ -59,7 +59,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
         {
             // Arrange
             const string errorMsg = $"SaveChanges Error";
-            ArrangeCreatePositionFail(errorMsg);
+            _mockRepositoryWrapper.Setup(p => p.SaveChanges()).Throws(new Exception(errorMsg));
             var request = new CreatePositionQuery(new PositionDTO { Id = 1, Position = "Posit1" });
 
             // Act
@@ -68,16 +68,6 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
             // Assert
             Assert.True(result.IsFailed);
             Assert.Single(result.Reasons, s => s.Message == errorMsg);
-        }
-
-        private void ArrangeCreatePositionFail(string errorMsg)
-        {
-            _mockRepositoryWrapper.Setup(p => p.SaveChanges()).Throws(new Exception(errorMsg));
-        }
-
-        private void ArrangeCreatePositionSuccess()
-        {
-            _mockRepositoryWrapper.Setup(p => p.SaveChanges()).Returns(1);
         }
     }
 }

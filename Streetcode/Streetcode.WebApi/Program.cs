@@ -15,10 +15,7 @@ builder.Services.ConfigureInstagram(builder);
 builder.Services.ConfigureSerilog(builder);
 var app = builder.Build();
 
-app.UseSwagger();
-app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPIv5 v1"));
-
-/*if (app.Environment.EnvironmentName == "Local")
+if (app.Environment.EnvironmentName == "Local" || app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPIv5 v1"));
@@ -26,7 +23,7 @@ app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPIv5 v1
 else
 {
     app.UseHsts();
-}*/
+}
 
 await app.ApplyMigrations();
 

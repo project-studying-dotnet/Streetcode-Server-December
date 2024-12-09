@@ -9,14 +9,11 @@ namespace Streetcode.WebApi.Extensions;
 
 public static class ConfigureHostBuilderExtensions
 {
-    public static void ConfigureApplication(this ConfigureHostBuilder host)
+    public static void ConfigureApplication(this WebApplicationBuilder builder)
     {
-        var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Local";
+        var environment = builder.Environment.EnvironmentName ?? "Local";
 
-        host.ConfigureAppConfiguration((_, config) =>
-        {
-            config.ConfigureCustom(environment);
-        });
+        builder.Configuration.ConfigureCustom(environment);
     }
 
     public static void ConfigureBlob(this IServiceCollection services, WebApplicationBuilder builder)

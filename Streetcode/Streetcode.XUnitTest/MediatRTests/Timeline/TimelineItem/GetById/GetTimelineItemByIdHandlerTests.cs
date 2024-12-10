@@ -2,8 +2,6 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace Streetcode.XUnitTest.MediatRTests.Timeline.TimelineItems.GetById;
-
 using System.Linq.Expressions;
 using AutoMapper;
 using FluentAssertions;
@@ -15,6 +13,8 @@ using Streetcode.BLL.MediatR.Timeline.TimelineItem.GetById;
 using Streetcode.DAL.Entities.Timeline;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using Xunit;
+
+namespace Streetcode.XUnitTest.MediatRTests.Timeline.TimelineItems.GetById;
 
 public class GetTimelineItemByIdHandlerTests
 {

@@ -57,7 +57,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.ArtTests
 
 
         [Fact]
-        public async Task Handle_ShouldReturnFail_WhenArtDoesntArts()
+        public async Task Handle_ShouldReturnFail_WhenArtDoesntExists()
         {
             //A(Arrange):
 

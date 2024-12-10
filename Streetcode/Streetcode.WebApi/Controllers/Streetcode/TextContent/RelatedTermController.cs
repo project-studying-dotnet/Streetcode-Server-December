@@ -21,10 +21,10 @@ namespace Streetcode.WebApi.Controllers.Streetcode.TextContent
             return HandleResult(await Mediator.Send(new CreateRelatedTermCommand(relatedTerm)));
         }
 
-        [HttpPut("{id:int}")]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] RelatedTermDTO relatedTerm)
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] RelatedTermDTO relatedTerm)
         {
-            return HandleResult(await Mediator.Send(new UpdateRelatedTermCommand(id, relatedTerm)));
+            return HandleResult(await Mediator.Send(new UpdateRelatedTermCommand(relatedTerm)));
         }
 
         [HttpDelete("{word}")]

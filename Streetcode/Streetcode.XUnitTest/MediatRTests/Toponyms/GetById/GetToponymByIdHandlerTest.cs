@@ -1,26 +1,16 @@
-﻿namespace Streetcode.XUnitTest.MediatRTests.Toponyms.GetById
+﻿using System.Linq.Expressions;
+using AutoMapper;
+using FluentAssertions;
+using Microsoft.EntityFrameworkCore.Query;
+using Moq;
+using Xunit;
+using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Mapping.Toponyms;
+using Streetcode.BLL.MediatR.Toponyms.GetById;
+using Streetcode.DAL.Entities.Toponyms;
+using Streetcode.DAL.Repositories.Interfaces.Base;
+namespace Streetcode.XUnitTest.MediatRTests.Toponyms.GetById
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Linq.Expressions;
-    using System.Text;
-    using System.Threading.Tasks;
-    using AutoMapper;
-    using FluentAssertions;
-    using Microsoft.AspNetCore.Authentication;
-    using Microsoft.EntityFrameworkCore.Query;
-    using Microsoft.Identity.Client;
-    using Moq;
-    using Streetcode.BLL.DTO.Toponyms;
-    using Streetcode.BLL.Interfaces.Logging;
-    using Streetcode.BLL.Mapping.Toponyms;
-    using Streetcode.BLL.MediatR.Toponyms.GetById;
-    using Streetcode.DAL.Entities.Toponyms;
-    using Streetcode.DAL.Repositories.Interfaces.Base;
-    using Streetcode.DAL.Repositories.Realizations.Base;
-    using Xunit;
-
     /// <summary>
     /// Unit tests for the GetToponymByIdHandler class.
     /// </summary>

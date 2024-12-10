@@ -2,8 +2,6 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace Streetcode.XUnitTest.MediatRTests.Timeline.TimelineItems.GetAll;
-
 using System.Linq.Expressions;
 using AutoMapper;
 using FluentAssertions;
@@ -16,6 +14,8 @@ using Streetcode.DAL.Entities.Timeline;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using Xunit;
 using Xunit.Abstractions;
+
+namespace Streetcode.XUnitTest.MediatRTests.Timeline.TimelineItems.GetAll;
 
 public class GetAllTimelineItemsHandlerTests
 {

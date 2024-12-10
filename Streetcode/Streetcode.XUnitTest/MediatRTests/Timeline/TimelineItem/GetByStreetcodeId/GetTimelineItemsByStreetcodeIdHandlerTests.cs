@@ -1,9 +1,6 @@
 ﻿// <copyright file="GetTimelineItemsByStreetcodeIdHandlerTests.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
-
-namespace Streetcode.XUnitTest.MediatRTests.Timeline.TimelineItems.GetByStreetcodeId;
-
 using System.Linq.Expressions;
 using AutoMapper;
 using FluentAssertions;
@@ -15,6 +12,8 @@ using Streetcode.BLL.MediatR.Timeline.TimelineItem.GetByStreetcodeId;
 using Streetcode.DAL.Entities.Timeline;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using Xunit;
+
+namespace Streetcode.XUnitTest.MediatRTests.Timeline.TimelineItems.GetByStreetcodeId;
 
 public class GetTimelineItemsByStreetcodeIdHandlerTests
 {

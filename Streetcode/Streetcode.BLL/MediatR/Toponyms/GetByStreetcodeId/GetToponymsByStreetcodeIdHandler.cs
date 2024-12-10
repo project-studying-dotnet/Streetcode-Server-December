@@ -38,8 +38,8 @@ public class GetToponymsByStreetcodeIdHandler : IRequestHandler<GetToponymsByStr
             return Result.Fail(new Error(errorMsg));
         }
 
-        toponyms.DistinctBy(x => x.StreetName);
-        var toponymDto = toponyms.GroupBy(x => x.StreetName).Select(group => group.First()).Select(x => _mapper.Map<ToponymDTO>(x));
+        var filteredToponyms = toponyms.DistinctBy(x => x.StreetName);
+        var toponymDto = filteredToponyms.GroupBy(x => x.StreetName).Select(group => group.First()).Select(x => _mapper.Map<ToponymDTO>(x));
         return Result.Ok(toponymDto);
     }
 }

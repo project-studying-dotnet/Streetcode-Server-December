@@ -1,27 +1,18 @@
-﻿namespace Streetcode.XUnitTest.MediatRTests.Toponyms.GetByStreetcodeId
+﻿using System.Linq.Expressions;
+using AutoMapper;
+using FluentAssertions;
+using Microsoft.EntityFrameworkCore.Query;
+using Moq;
+using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Mapping.Toponyms;
+using Streetcode.BLL.MediatR.Toponyms.GetByStreetcodeId;
+using Streetcode.DAL.Entities.Streetcode;
+using Streetcode.DAL.Entities.Toponyms;
+using Streetcode.DAL.Enums;
+using Streetcode.DAL.Repositories.Interfaces.Base;
+using Xunit;
+namespace Streetcode.XUnitTest.MediatRTests.Toponyms.GetByStreetcodeId
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Linq.Expressions;
-    using System.Reflection.Metadata;
-    using System.Text;
-    using System.Threading.Tasks;
-    using AutoMapper;
-    using FluentAssertions;
-    using Microsoft.EntityFrameworkCore.Query;
-    using Moq;
-    using Streetcode.BLL.Interfaces.Logging;
-    using Streetcode.BLL.Mapping.Toponyms;
-    using Streetcode.BLL.MediatR.Toponyms.GetAll;
-    using Streetcode.BLL.MediatR.Toponyms.GetByStreetcodeId;
-    using Streetcode.DAL.Entities.Streetcode;
-    using Streetcode.DAL.Entities.Toponyms;
-    using Streetcode.DAL.Enums;
-    using Streetcode.DAL.Repositories.Interfaces.Base;
-    using Streetcode.DAL.Repositories.Realizations.Base;
-    using Xunit;
-
     /// <summary>
     /// Test Class for the GetToponymsByStreetcodeIdHandler.
     /// </summary>

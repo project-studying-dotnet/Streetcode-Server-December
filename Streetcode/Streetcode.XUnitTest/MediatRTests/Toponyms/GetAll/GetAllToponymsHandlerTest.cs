@@ -1,24 +1,17 @@
-﻿namespace Streetcode.XUnitTest.MediatRTests.Toponyms.GetAll 
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Linq.Expressions;
-    using System.Text;
-    using System.Threading.Tasks;
-    using AutoMapper;
-    using Castle.Core.Logging;
-    using FluentAssertions;
-    using Moq;
-    using Streetcode.BLL.DTO.Toponyms;
-    using Streetcode.BLL.Interfaces.Logging;
-    using Streetcode.BLL.Mapping.Toponyms;
-    using Streetcode.BLL.MediatR.Toponyms.GetAll;
-    using Streetcode.DAL.Entities.Toponyms;
-    using Streetcode.DAL.Repositories.Interfaces.Base;
-    using Streetcode.DAL.Repositories.Realizations.Base;
-    using Xunit;
+﻿using System.Linq.Expressions;
+using AutoMapper;
+using FluentAssertions;
+using Moq;
+using Streetcode.BLL.DTO.Toponyms;
+using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Mapping.Toponyms;
+using Streetcode.BLL.MediatR.Toponyms.GetAll;
+using Streetcode.DAL.Entities.Toponyms;
+using Streetcode.DAL.Repositories.Interfaces.Base;
+using Xunit;
 
+namespace Streetcode.XUnitTest.MediatRTests.Toponyms.GetAll
+{
     /// <summary>
     /// Unit test class for <see cref="GetAllToponymsHandler"/>.
     /// Validates the behavior of the handler when retrieving Toponym entities.

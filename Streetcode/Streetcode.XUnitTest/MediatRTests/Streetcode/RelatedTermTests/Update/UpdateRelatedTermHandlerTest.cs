@@ -1,24 +1,25 @@
-﻿namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.Update
+﻿using AutoMapper;
+using FluentAssertions;
+using Streetcode.BLL.DTO.Streetcode.TextContent;
+using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Mapping.Streetcode.TextContent;
+using Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Create;
+using Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetById;
+using Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Update;
+using Streetcode.DAL.Entities.Streetcode.TextContent;
+using Streetcode.DAL.Repositories.Interfaces.Base;
+using Microsoft.EntityFrameworkCore.Query;
+using Moq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Threading.Tasks;
+using Xunit;
+
+namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.Update
 {
-    using AutoMapper;
-    using FluentAssertions;
-    using global::Streetcode.BLL.DTO.Streetcode.TextContent;
-    using global::Streetcode.BLL.Interfaces.Logging;
-    using global::Streetcode.BLL.Mapping.Streetcode.TextContent;
-    using global::Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Create;
-    using global::Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetById;
-    using global::Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Update;
-    using global::Streetcode.DAL.Entities.Streetcode.TextContent;
-    using global::Streetcode.DAL.Repositories.Interfaces.Base;
-    using Microsoft.EntityFrameworkCore.Query;
-    using Moq;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Linq.Expressions;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Xunit;
     public class UpdateRelatedTermHandlerTest
     {
         private readonly IMapper _mapper;

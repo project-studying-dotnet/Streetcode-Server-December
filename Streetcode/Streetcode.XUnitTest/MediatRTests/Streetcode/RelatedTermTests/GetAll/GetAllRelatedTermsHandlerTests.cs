@@ -1,20 +1,20 @@
-namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.GetAll;
-
 using AutoMapper;
 using FluentAssertions;
-using global::Streetcode.BLL.DTO.Streetcode.TextContent;
-using global::Streetcode.BLL.Interfaces.Logging;
-using global::Streetcode.BLL.Mapping.Streetcode.TextContent;
-using global::Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetAll;
-using global::Streetcode.BLL.MediatR.Toponyms.GetById;
-using global::Streetcode.DAL.Entities.Streetcode.TextContent;
-using global::Streetcode.DAL.Entities.Toponyms;
-using global::Streetcode.DAL.Repositories.Interfaces.Base;
-using global::Streetcode.DAL.Repositories.Realizations.Streetcode.TextContent;
+using Streetcode.BLL.DTO.Streetcode.TextContent;
+using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Mapping.Streetcode.TextContent;
+using Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetAll;
+using Streetcode.BLL.MediatR.Toponyms.GetById;
+using Streetcode.DAL.Entities.Streetcode.TextContent;
+using Streetcode.DAL.Entities.Toponyms;
+using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.DAL.Repositories.Realizations.Streetcode.TextContent;
 using Microsoft.EntityFrameworkCore.Query;
 using Moq;
 using System.Linq.Expressions;
 using Xunit;
+
+namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.GetAll;
 
 public class GetAllRelatedTermsHandlerTests
 {

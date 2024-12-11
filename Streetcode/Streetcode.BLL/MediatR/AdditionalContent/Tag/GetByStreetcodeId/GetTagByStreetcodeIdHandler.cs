@@ -44,6 +44,7 @@ public class GetTagByStreetcodeIdHandler : IRequestHandler<GetTagByStreetcodeIdQ
             return Result.Fail(new Error(errorMsg));
         }
 
-        return Result.Ok(_mapper.Map<IEnumerable<StreetcodeTagDTO>>(tagIndexed.OrderBy(ti => ti.Index)));
+        var res = Result.Ok(_mapper.Map<IEnumerable<StreetcodeTagDTO>>(tagIndexed.OrderBy(ti => ti.Index)));
+        return res;
     }
 }

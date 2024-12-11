@@ -318,137 +318,137 @@ public class WebParsingUtils
     // Following method returns name of the street optimized in such kind of way that will allow OSM Nominatim find its coordinates
     private static (string, string) OptimizeStreetname(string streetname)
     {
-        if (streetname.IndexOf("пров. ", StringComparison.Ordinal) != -1)
+        if (streetname.Contains("пров. ", StringComparison.Ordinal))
         {
             return (streetname.Substring(streetname.IndexOf(" ") + 1), "провулок");
         }
 
-        if (streetname.IndexOf("проїзд ", StringComparison.Ordinal) != -1)
+        if (streetname.Contains("проїзд ", StringComparison.Ordinal))
         {
             return (streetname.Substring(streetname.IndexOf(" ") + 1), "проїзд");
         }
 
-        if (streetname.IndexOf("вул. ", StringComparison.Ordinal) != -1)
+        if (streetname.Contains("вул. ", StringComparison.Ordinal))
         {
             return (streetname.Substring(streetname.IndexOf(" ") + 1), "вулиця");
         }
 
-        if (streetname.IndexOf("просп. ", StringComparison.Ordinal) != -1)
+        if (streetname.Contains("просп. ", StringComparison.Ordinal))
         {
             return (streetname.Substring(streetname.IndexOf(" ") + 1), "проспект");
         }
 
-        if (streetname.IndexOf("тупик ", StringComparison.Ordinal) != -1)
+        if (streetname.Contains("тупик ", StringComparison.Ordinal))
         {
             return (streetname.Substring(streetname.IndexOf(" ") + 1), "тупик");
         }
 
-        if (streetname.IndexOf("пл. ", StringComparison.Ordinal) != -1)
+        if (streetname.Contains("пл. ", StringComparison.Ordinal))
         {
             return (streetname.Substring(streetname.IndexOf(" ") + 1), "площа");
         }
 
-        if (streetname.IndexOf("майдан ", StringComparison.Ordinal) != -1)
+        if (streetname.Contains("майдан ", StringComparison.Ordinal))
         {
             return (streetname.Substring(streetname.IndexOf(" ") + 1), "майдан");
         }
 
-        if (streetname.IndexOf("узвіз ", StringComparison.Ordinal) != -1)
+        if (streetname.Contains("узвіз ", StringComparison.Ordinal))
         {
             return (streetname.Substring(streetname.IndexOf(" ") + 1), "узвіз");
         }
 
-        if (streetname.IndexOf("дорога ", StringComparison.Ordinal) != -1)
+        if (streetname.Contains("дорога ", StringComparison.Ordinal))
         {
             return (streetname.Substring(streetname.IndexOf(" ") + 1), "дорога");
         }
 
-        if (streetname.IndexOf("парк ", StringComparison.Ordinal) != -1)
+        if (streetname.Contains("парк ", StringComparison.Ordinal))
         {
             return (streetname.Substring(streetname.IndexOf(" ") + 1), "парк");
         }
 
-        if (streetname.IndexOf("жилий масив ", StringComparison.Ordinal) != -1)
+        if (streetname.Contains("жилий масив ", StringComparison.Ordinal))
         {
-            return (streetname.Substring(streetname.IndexOf(" ", streetname.IndexOf(" ") + 1) + 1), "парк");
+            return (streetname.Substring(streetname.IndexOf(" ") + 1), "жилий масив");
         }
 
-        if (streetname.IndexOf("м-р ", StringComparison.Ordinal) != -1)
+        if (streetname.Contains("м-р ", StringComparison.Ordinal))
         {
             return (streetname.Substring(streetname.IndexOf(" ") + 1), "мікрорайон");
         }
 
-        if (streetname.IndexOf("алея ", StringComparison.Ordinal) != -1)
+        if (streetname.Contains("алея ", StringComparison.Ordinal))
         {
             return (streetname.Substring(streetname.IndexOf(" ") + 1), "алея");
         }
 
-        if (streetname.IndexOf("хутір ", StringComparison.Ordinal) != -1)
+        if (streetname.Contains("хутір ", StringComparison.Ordinal))
         {
             return (streetname.Substring(streetname.IndexOf(" ") + 1), "хутір");
         }
 
-        if (streetname.IndexOf("кв-л ", StringComparison.Ordinal) != -1)
+        if (streetname.Contains("кв-л ", StringComparison.Ordinal))
         {
             return (streetname.Substring(streetname.IndexOf(" ") + 1), "квартал");
         }
 
-        if (streetname.IndexOf("урочище ", StringComparison.Ordinal) != -1)
+        if (streetname.Contains("урочище ", StringComparison.Ordinal))
         {
             return (streetname.Substring(streetname.IndexOf(" ") + 1), "урочище");
         }
 
-        if (streetname.IndexOf("набережна ", StringComparison.Ordinal) != -1)
+        if (streetname.Contains("набережна ", StringComparison.Ordinal))
         {
             return (streetname.Substring(streetname.IndexOf(" ") + 1), "набережна");
         }
 
-        if (streetname.IndexOf("селище ", StringComparison.Ordinal) != -1)
+        if (streetname.Contains("селище ", StringComparison.Ordinal))
         {
             return (streetname.Substring(streetname.IndexOf(" ") + 1), "селище");
         }
 
-        if (streetname.IndexOf("лінія ", StringComparison.Ordinal) != -1)
+        if (streetname.Contains("лінія ", StringComparison.Ordinal))
         {
             return (streetname.Substring(streetname.IndexOf(" ") + 1), "лінія");
         }
 
-        if (streetname.IndexOf("шлях ", StringComparison.Ordinal) != -1)
+        if (streetname.Contains("шлях ", StringComparison.Ordinal))
         {
             return (streetname.Substring(streetname.IndexOf(" ") + 1), "шлях");
         }
 
-        if (streetname.IndexOf("спуск ", StringComparison.Ordinal) != -1)
+        if (streetname.Contains("спуск ", StringComparison.Ordinal))
         {
             return (streetname.Substring(streetname.IndexOf(" ") + 1), "спуск");
         }
 
-        if (streetname.IndexOf("завулок ", StringComparison.Ordinal) != -1)
+        if (streetname.Contains("завулок ", StringComparison.Ordinal))
         {
             return (streetname.Substring(streetname.IndexOf(" ") + 1), "завулок");
         }
 
-        if (streetname.IndexOf("острів ", StringComparison.Ordinal) != -1)
+        if (streetname.Contains("острів ", StringComparison.Ordinal))
         {
             return (streetname.Substring(streetname.IndexOf(" ") + 1), "острів");
         }
 
-        if (streetname.IndexOf("бульв. ", StringComparison.Ordinal) != -1)
+        if (streetname.Contains("бульв. ", StringComparison.Ordinal))
         {
             return (streetname.Substring(streetname.IndexOf(" ") + 1), "бульвар");
         }
 
-        if (streetname.IndexOf("шосе ", StringComparison.Ordinal) != -1)
+        if (streetname.Contains("шосе ", StringComparison.Ordinal))
         {
             return (streetname.Substring(streetname.IndexOf(" ") + 1), "шосе");
         }
 
-        if (streetname.IndexOf("містечко ", StringComparison.Ordinal) != -1)
+        if (streetname.Contains("містечко ", StringComparison.Ordinal))
         {
             return (streetname.Substring(streetname.IndexOf(" ") + 1), "містечко");
         }
 
-        if (streetname.IndexOf("в’їзд ", StringComparison.Ordinal) != -1)
+        if (streetname.Contains("в’їзд ", StringComparison.Ordinal))
         {
             return (streetname.Substring(streetname.IndexOf(" ") + 1), "в’їзд");
         }

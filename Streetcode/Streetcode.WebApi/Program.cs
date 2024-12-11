@@ -42,10 +42,18 @@ if (app.Environment.EnvironmentName != "Local")
 {
     BackgroundJob.Schedule<WebParsingUtils>(
     wp => wp.ParseZipFileFromWebAsync(), TimeSpan.FromMinutes(1));
+
     RecurringJob.AddOrUpdate<WebParsingUtils>(
-        wp => wp.ParseZipFileFromWebAsync(), Cron.Monthly);
+        "ParseZipFileFromWeb_Monthly",
+        wp => wp.ParseZipFileFromWebAsync(),
+        Cron.Monthly,
+        new RecurringJobOptions { TimeZone = TimeZoneInfo.FindSystemTimeZoneById("FLE Standard Time") });
+
     RecurringJob.AddOrUpdate<BlobService>(
-        b => b.CleanBlobStorage(), Cron.Monthly);
+        "CleanBlobStorage_Monthly",
+        b => b.CleanBlobStorage(),
+        Cron.Monthly,
+        new RecurringJobOptions { TimeZone = TimeZoneInfo.FindSystemTimeZoneById("FLE Standard Time") });
 }
 
 app.MapControllers();

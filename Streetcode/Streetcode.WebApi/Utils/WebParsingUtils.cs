@@ -189,7 +189,7 @@ public class WebParsingUtils
         foreach (var row in remainsToParse)
         {
             var communityCol = row[CommunityColumn];
-            string cityStringSearchOptimized = communityCol.Substring(communityCol.IndexOf(" ") + 1);
+            string cityStringSearchOptimized = communityCol.Substring(communityCol.IndexOf(' ') + 1);
 
             var (streetName, streetType) = OptimizeStreetname(row[AddressColumn]);
             string addressRow = $"{cityStringSearchOptimized} {streetName} {streetType}";

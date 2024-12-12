@@ -1,15 +1,14 @@
 using Hangfire;
-using Microsoft.Extensions.Hosting;
 using Streetcode.BLL.Services.BlobStorageService;
 using Streetcode.WebApi.Extensions;
 using Streetcode.WebApi.Utils;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.ConfigureApplication();
 
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddSwaggerServices();
-
 builder.Services.AddCustomServices();
 builder.Services.ConfigureBlob(builder);
 builder.Services.ConfigurePayment(builder);
@@ -44,7 +43,13 @@ if (app.Environment.EnvironmentName != "Local")
 {
     BackgroundJob.Schedule<WebParsingUtils>(
     wp => wp.ParseZipFileFromWebAsync(), TimeSpan.FromMinutes(1));
+
     RecurringJob.AddOrUpdate<WebParsingUtils>(
+        "ParseZipFileFromWeb_Monthly",
+        wp => wp.ParseZipFileFromWebAsync(),
+        Cron.Monthly,
+        new RecurringJobOptions { TimeZone = TimeZoneInfo.FindSystemTimeZoneById("FLE Standard Time") });
+
        "ParseZipFileJob",
        wp => wp.ParseZipFileFromWebAsync(),
        Cron.Monthly,
@@ -54,6 +59,10 @@ if (app.Environment.EnvironmentName != "Local")
        });
 
     RecurringJob.AddOrUpdate<BlobService>(
+        "CleanBlobStorage_Monthly",
+        b => b.CleanBlobStorage(),
+        Cron.Monthly,
+        new RecurringJobOptions { TimeZone = TimeZoneInfo.FindSystemTimeZoneById("FLE Standard Time") });
         "CleanBlobStorageJob",
         b => b.CleanBlobStorage(),
         Cron.Monthly,

@@ -6,7 +6,25 @@
 
 using DbUp;
 using Microsoft.Extensions.Configuration;
+using System.IO;
+using System;
 
+/// <summary>
+/// The main program class responsible for running database migrations and seeding the database.
+/// </summary>
+namespace DbUpdate
+{
+    public class Program
+    {
+        /// <summary>
+        /// The main entry point for applying database migrations and seeding the database.
+        /// </summary>
+        /// <param name="args">Command-line arguments.</param>
+        /// <returns>An integer representing the success or failure of the operation.</returns>
+        static int Main(string[] args)
+        {
+            string migrationPath = Path.Combine(Directory.GetCurrentDirectory(),
+                "Streetcode.DAL", "Persistence", "ScriptsMigration");
 /// <summary>
 /// The main program class responsible for running database migrations and seeding the database.
 /// </summary>
@@ -36,11 +54,20 @@ public class Program
 
         var connectionString = configuration.GetConnectionString("DefaultConnection");
 
+            string pathToScript = "";
         string? pathToScript = null;
 
         Console.WriteLine("Enter '-m' to MIGRATE or '-s' to SEED db:");
         pathToScript = Console.ReadLine();
 
+            pathToScript = migrationPath;
+
+            var upgrader =
+                DeployChanges.To
+                    .SqlDatabase(connectionString)
+                    .WithScriptsFromFileSystem(pathToScript)
+                    .LogToConsole()
+                    .Build();
         pathToScript = migrationPath;
         var upgrader =
             DeployChanges.To

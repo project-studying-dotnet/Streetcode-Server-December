@@ -59,7 +59,7 @@ public class GetAllToponymsHandler : IRequestHandler<GetAllToponymsQuery,
             .Select(g => g.First());
     }
 
-    private int ApplyPagination(
+    private static int ApplyPagination(
         ref IQueryable<Toponym> toponyms,
         int amount,
         int page)

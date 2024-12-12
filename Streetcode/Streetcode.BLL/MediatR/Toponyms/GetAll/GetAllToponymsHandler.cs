@@ -34,6 +34,8 @@ public class GetAllToponymsHandler : IRequestHandler<GetAllToponymsQuery,
             FindStreetcodesWithMatchTitle(ref toponyms, filterRequest.Title);
         }
 
+        ApplyPagination(ref toponyms, filterRequest.Amount, filterRequest.Page);
+
         var toponymDtos = _mapper.Map<IEnumerable<ToponymDTO>>(toponyms.AsEnumerable());
 
         var response = new GetAllToponymsResponseDTO

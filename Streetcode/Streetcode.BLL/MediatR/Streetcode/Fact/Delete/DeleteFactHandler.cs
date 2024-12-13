@@ -12,7 +12,7 @@ using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Streetcode.Fact.Delete
 {
-	public class DeleteFactHandler : IRequestHandler<DeleteFactQuery, Result<FactDto>>
+	public class DeleteFactHandler : IRequestHandler<DeleteFactCommand, Result<FactDto>>
 	{
 		private readonly IRepositoryWrapper _repositoryWrapper;
 		private readonly IMapper _mapper;
@@ -24,7 +24,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.Fact.Delete
 			_logger = logger;
 		}
 
-		public async Task<Result<FactDto>> Handle(DeleteFactQuery request, CancellationToken cancellationToken)
+		public async Task<Result<FactDto>> Handle(DeleteFactCommand request, CancellationToken cancellationToken)
 		{
 			var fact = await _repositoryWrapper.FactRepository.GetFirstOrDefaultAsync(f => f.Id == request.id);
 			if (fact == null)

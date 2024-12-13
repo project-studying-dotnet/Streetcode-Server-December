@@ -30,6 +30,6 @@ public class FactController : BaseApiController
 	[HttpDelete("{id:int}")]
 	public async Task<IActionResult> DeleteFact([FromRoute] int id)
 	{
-		return HandleResult(await Mediator.Send(new DeleteFactQuery(id)));
+		return HandleResult(await Mediator.Send(new DeleteFactCommand(id)));
 	}
 }

@@ -40,7 +40,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Fact.Delete
 				.ReturnsAsync((FactEntity)null);
 
 			// Act
-			var result = await _handler.Handle(new DeleteFactQuery(1), CancellationToken.None);
+			var result = await _handler.Handle(new DeleteFactCommand(1), CancellationToken.None);
 
 			// Assert
 			result.IsFailed.Should().BeTrue();
@@ -58,7 +58,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Fact.Delete
 				.ReturnsAsync(fact);
 
 			// Act
-			var result = await _handler.Handle(new DeleteFactQuery(1), CancellationToken.None);
+			var result = await _handler.Handle(new DeleteFactCommand(1), CancellationToken.None);
 
 			// Assert
 			result.IsSuccess.Should().BeTrue();
@@ -81,7 +81,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Fact.Delete
 			_mockRepositoryWrapper.Setup(repo => repo.SaveChanges()).Throws(new Exception(errMsg));
 
 			// Act
-			var result = await _handler.Handle(new DeleteFactQuery(1), CancellationToken.None);
+			var result = await _handler.Handle(new DeleteFactCommand(1), CancellationToken.None);
 
 			// Assert
 			result.IsFailed.Should().BeTrue();

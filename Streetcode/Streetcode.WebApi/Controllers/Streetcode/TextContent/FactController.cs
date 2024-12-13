@@ -4,6 +4,7 @@ using Streetcode.BLL.MediatR.Streetcode.Fact.Delete;
 using Streetcode.BLL.MediatR.Streetcode.Fact.GetAll;
 using Streetcode.BLL.MediatR.Streetcode.Fact.GetById;
 using Streetcode.BLL.MediatR.Streetcode.Fact.GetByStreetcodeId;
+using Streetcode.BLL.MediatR.Streetcode.Fact.Update;
 
 namespace Streetcode.WebApi.Controllers.Streetcode.TextContent;
 
@@ -21,12 +22,23 @@ public class FactController : BaseApiController
 		return HandleResult(await Mediator.Send(new GetFactByIdQuery(id)));
 	}
 
-	[HttpGet("{streetcodeId:int}")]
-	public async Task<IActionResult> GetByStreetcodeId([FromRoute] int streetcodeId)
-	{
-		return HandleResult(await Mediator.Send(new GetFactByStreetcodeIdQuery(streetcodeId)));
-	}
+  [HttpGet("{streetcodeId:int}")]
+  public async Task<IActionResult> GetByStreetcodeId([FromRoute] int streetcodeId)
+  {
+    return HandleResult(await Mediator.Send(new GetFactByStreetcodeIdQuery(streetcodeId)));
+  }
 
+  [HttpDelete("{id:int}")]
+  public async Task<IActionResult> DeleteFact([FromRoute] int id)
+  {
+    return HandleResult(await Mediator.Send(new DeleteFactQuery(id)));
+  }
+
+  [HttpPut]
+  public async Task<IActionResult> Update([FromBody] FactDto fact)
+  {
+    return HandleResult(await Mediator.Send(new UpdateFactCommand(fact)));
+  }
 	[HttpDelete("{id:int}")]
 	public async Task<IActionResult> DeleteFact([FromRoute] int id)
 	{

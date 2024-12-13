@@ -11,15 +11,8 @@
     <!-- Enable XML output -->
     <Rule Id="SA1309" Action="None" />
     <!-- Field must not begin with an underscore -->
-    <Rule Id="SA1101" Action="None" />
-    <!-- Prefix local call with this -->
     <Rule Id="SA1633" Action="None" />
     <!-- Code header -->
-    <Rule Id="SA1200" Action="None" />
-    <!-- Using directive must appear within a namespace declaration -->
-    <Rule Id="SA1210" Action="None" />
-    <!-- Using directive must be ordered alphabetically by namespaces -->
-    <Rule Id="SA1305" Action="None" />
     <!-- The name of a field or variable in C# uses Hungarian notation. -->
     <Rule Id="SA1026" Action="Error" />
     <!-- An implicitly typed array allocation within a C# code file is not spaced correctly. -->
@@ -57,8 +50,6 @@
     <!-- An opening brace within a C# element, statement, or expression is followed by a blank line. -->
     <Rule Id="SA1203" Action="Error" />
     <!-- A constant field is placed beneath a non-constant field. -->
-    <Rule Id="SA1208" Action="Error" />
-    <!-- Using directive for 'System' must appear before -->
     <Rule Id="SA1000" Action="None" />
     <!-- The spacing around a C# keyword is incorrect. -->
     <Rule Id="SA1201" Action="Error" />
@@ -281,7 +272,5 @@
     <!-- A section within the Xml documentation header for a C# element contains blank lines. -->
     <Rule Id="SX1101" Action="Error" />
     <!-- A call to an instance member of the local class or a base class is prefixed with this.. -->
-    <Rule Id="SX1309" Action="Error" />
-    <!-- A field name does not begin with an underscore. -->
   </Rules>
 </RuleSet>

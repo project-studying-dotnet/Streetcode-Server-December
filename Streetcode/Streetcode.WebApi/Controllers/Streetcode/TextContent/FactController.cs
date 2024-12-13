@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
+using Streetcode.BLL.DTO.Streetcode.TextContent;
 using Streetcode.BLL.DTO.Streetcode.TextContent.Fact;
+using Streetcode.BLL.MediatR.Streetcode.Fact.FactReorder;
 using Streetcode.BLL.MediatR.Streetcode.Fact.GetAll;
 using Streetcode.BLL.MediatR.Streetcode.Fact.GetById;
 using Streetcode.BLL.MediatR.Streetcode.Fact.GetByStreetcodeId;
+using Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Update;
 
 namespace Streetcode.WebApi.Controllers.Streetcode.TextContent;
 
@@ -24,5 +27,11 @@ public class FactController : BaseApiController
     public async Task<IActionResult> GetByStreetcodeId([FromRoute] int streetcodeId)
     {
         return HandleResult(await Mediator.Send(new GetFactByStreetcodeIdQuery(streetcodeId)));
+    }
+
+    [HttpPut("reorder-facts")]
+    public async Task<IActionResult> Update([FromBody] FactReorderDto factReorderDto)
+    {
+        return HandleResult(await Mediator.Send(new FactReorderCommand(factReorderDto)));
     }
 }

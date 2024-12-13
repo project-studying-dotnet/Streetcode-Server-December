@@ -18,6 +18,7 @@
     <PackageReference Include="Ical.Net" Version="4.3.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="9.0.0" />
     <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="9.0.0" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.0" />
@@ -40,5 +41,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Streetcode.BLL\Streetcode.BLL.csproj" />
+    <ProjectReference Include="..\Streetcode.WebApi\Streetcode.WebApi.csproj" />
   </ItemGroup>
 </Project>

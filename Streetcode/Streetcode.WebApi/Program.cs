@@ -31,6 +31,9 @@ await app.ApplyMigrations();
 await app.SeedDataAsync();
 app.UseCors();
 app.UseHttpsRedirection();
+
+app.UseGlobalExceptionHandler();
+
 app.UseRouting();
 
 app.UseAuthentication();

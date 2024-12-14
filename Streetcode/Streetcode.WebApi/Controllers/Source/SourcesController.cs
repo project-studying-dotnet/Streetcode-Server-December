@@ -41,7 +41,7 @@ public class SourcesController : BaseApiController
 	}
 
 	[HttpPost]
-	public async Task<IActionResult> CreateCategoryContent([FromBody] StreetcodeCategoryContentDTO newCategoryContent)
+	public async Task<IActionResult> CreateCategoryContent([FromBody] CategoryContentCreateDTO newCategoryContent)
 	{
 		return HandleResult(await Mediator.Send(new CreateCategoryContentCommand(newCategoryContent)));
 	}

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.CreateCategoryContent
 {
-	public record CreateCategoryContentCommand(StreetcodeCategoryContentDTO newContent) : IRequest<Result<StreetcodeCategoryContentDTO>>
+	public record CreateCategoryContentCommand(CategoryContentCreateDTO newContent) : IRequest<Result<CategoryContentCreateDTO>>
 	{
 	}
 }

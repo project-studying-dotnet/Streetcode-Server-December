@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.CreateCategoryContent
 {
-	public class CreateCategoryContentHandler : IRequestHandler<CreateCategoryContentCommand, Result<StreetcodeCategoryContentDTO>>
+	public class CreateCategoryContentHandler : IRequestHandler<CreateCategoryContentCommand, Result<CategoryContentCreateDTO>>
 	{
 		private readonly IMapper _mapper;
 		private readonly IRepositoryWrapper _repositoryWrapper;
@@ -26,7 +26,7 @@ namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.CreateCategoryConten
 			_logger = logger;
 		}
 
-		public async Task<Result<StreetcodeCategoryContentDTO>> Handle(CreateCategoryContentCommand request, CancellationToken cancellationToken)
+		public async Task<Result<CategoryContentCreateDTO>> Handle(CreateCategoryContentCommand request, CancellationToken cancellationToken)
 		{
 			var newContent = _mapper.Map<StreetcodeCategoryContent>(request.newContent);
 
@@ -34,12 +34,14 @@ namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.CreateCategoryConten
 			{
 				newContent = await _repositoryWrapper.StreetcodeCategoryContentRepository.CreateAsync(newContent);
 
-				newContent.SourceLinkCategory = await _repositoryWrapper.SourceCategoryRepository.GetSingleOrDefaultAsync(s => s.Id == newContent.SourceLinkCategoryId);
-				newContent.Streetcode = await _repositoryWrapper.StreetcodeRepository.GetSingleOrDefaultAsync(s => s.Id == newContent.StreetcodeId);
+				newContent.SourceLinkCategory = await _repositoryWrapper.SourceCategoryRepository
+					.GetSingleOrDefaultAsync(s => s.Id == newContent.SourceLinkCategoryId);
+				newContent.Streetcode = await _repositoryWrapper.StreetcodeRepository
+					.GetSingleOrDefaultAsync(s => s.Id == newContent.StreetcodeId);
 
 				_repositoryWrapper.SaveChanges();
 
-				var resultDto = _mapper.Map<StreetcodeCategoryContentDTO>(newContent);
+				var resultDto = _mapper.Map<CategoryContentCreateDTO>(newContent);
 				return Result.Ok(resultDto);
 			}
 			catch (Exception ex)

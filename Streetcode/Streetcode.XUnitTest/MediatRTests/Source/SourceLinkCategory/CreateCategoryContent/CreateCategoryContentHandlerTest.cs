@@ -52,11 +52,12 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.SourceLinkCategory.CreateCate
 		public async Task Handle_WhenExceptionOccurs_ShouldReturnFail()
 		{
 			// Arrange
-			var command = new CreateCategoryContentCommand(new StreetcodeCategoryContentDTO { Text = "Test Content", SourceLinkCategoryId = 1, StreetcodeId = 1 });
+			var command = new CreateCategoryContentCommand(new CategoryContentCreateDTO { Text = "Test Content", SourceLinkCategoryId = 1, StreetcodeId = 1 });
 			var contentEntity = new StreetcodeCategoryContent { Text = "Test Content", SourceLinkCategoryId = 1, StreetcodeId = 1 };
 
 			_mockMapper.Setup(m => m.Map<StreetcodeCategoryContent>(command.newContent)).Returns(contentEntity);
-			_mockRepositoryWrapper.Setup(r => r.StreetcodeCategoryContentRepository.CreateAsync(contentEntity)).ThrowsAsync(new Exception("Database error"));
+			_mockRepositoryWrapper.Setup(r => r.StreetcodeCategoryContentRepository.CreateAsync(contentEntity))
+				.ThrowsAsync(new Exception("Database error"));
 
 			// Act
 			var result = await _handler.Handle(command, CancellationToken.None);
@@ -71,17 +72,17 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.SourceLinkCategory.CreateCate
 		public async Task Handle_WhenContentCreatedSuccessfully_ShouldReturnSuccess()
 		{
 			// Arrange
-			var newContentDTO = new StreetcodeCategoryContentDTO { Text = "Test Content", SourceLinkCategoryId = 1, StreetcodeId = 1 };
+			var newContentDTO = new CategoryContentCreateDTO { Text = "Test Content", SourceLinkCategoryId = 1, StreetcodeId = 1 };
 			var contentEntity = new StreetcodeCategoryContent { Text = "Test Content", SourceLinkCategoryId = 1, StreetcodeId = 1 };
 			var command = new CreateCategoryContentCommand(newContentDTO);
-			var contentDto = new StreetcodeCategoryContentDTO { Text = "Test Content", SourceLinkCategoryId = 1, StreetcodeId = 1 };
+			var contentDto = new CategoryContentCreateDTO { Text = "Test Content", SourceLinkCategoryId = 1, StreetcodeId = 1 };
 
 			_mockMapper.Setup(m => m.Map<StreetcodeCategoryContent>(command.newContent)).Returns(contentEntity);
 			_mockRepositoryWrapper.Setup(r => r.StreetcodeCategoryContentRepository.CreateAsync(contentEntity)).ReturnsAsync(contentEntity);
 			_mockRepositoryWrapper.Setup(r => r.SourceCategoryRepository.GetSingleOrDefaultAsync(It.IsAny<Expression<Func<SourceEntity, bool>>>(), null)).ReturnsAsync(new SourceEntity());
 			_mockRepositoryWrapper.Setup(r => r.StreetcodeRepository.GetSingleOrDefaultAsync(It.IsAny<Expression<Func<StreetcodeContent, bool>>>(), null)).ReturnsAsync(new StreetcodeContent());
 			_mockRepositoryWrapper.Setup(r => r.SaveChanges()).Returns(1);
-			_mockMapper.Setup(m => m.Map<StreetcodeCategoryContentDTO>(contentEntity)).Returns(contentDto);
+			_mockMapper.Setup(m => m.Map<CategoryContentCreateDTO>(contentEntity)).Returns(contentDto);
 
 			// Act
 			var result = await _handler.Handle(command, CancellationToken.None);

@@ -31,7 +31,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.Fact.Create
                 return Result.Fail(new Error(errorMsg));
             }
 
-            var createdFact = _repository.FactRepository.CreateAsync(fact);
+            var createdFact = await _repository.FactRepository.CreateAsync(fact);
 
             if (createdFact is null)
             {

@@ -28,14 +28,20 @@ namespace Streetcode.WebApi.Extensions
         {
             using (var scope = app.Services.CreateScope())
             {
+                string blobPath2 = app.Configuration.GetValue<string>("Blob:BlobStorePath");
+                if (!Directory.Exists(blobPath2))
+                {
+                    Directory.CreateDirectory(blobPath2);
+                }
+
                 Directory.CreateDirectory(app.Configuration.GetValue<string>("Blob:BlobStorePath"));
                 var dbContext = scope.ServiceProvider.GetRequiredService<StreetcodeDbContext>();
                 var blobOptions = app.Services.GetRequiredService<IOptions<BlobEnvironmentVariables>>();
                 string blobPath = app.Configuration.GetValue<string>("Blob:BlobStorePath");
                 var repo = new RepositoryWrapper(dbContext);
                 var blobService = new BlobService(blobOptions, repo);
-                string initialDataImagePath = "/src/Streetcode.DAL/InitialData/images.json";
-                string initialDataAudioPath = "/src/Streetcode.DAL/InitialData/audios.json";
+                string initialDataImagePath = "../Streetcode.DAL/InitialData/images.json";
+                string initialDataAudioPath = "../Streetcode.DAL/InitialData/audios.json";
                 if (!dbContext.Images.Any())
                 {
                     string imageJson = File.ReadAllText(initialDataImagePath, Encoding.UTF8);

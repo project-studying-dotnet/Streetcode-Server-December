@@ -29,7 +29,7 @@ public class TimelineItemController : BaseApiController
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] TImelineItemCreateDto timeline)
+    public async Task<IActionResult> Create([FromBody] TimelineItemCreateDto timeline)
     {
         return HandleResult(await Mediator.Send(new CreateTimelineItemCommand(timeline)));
     }

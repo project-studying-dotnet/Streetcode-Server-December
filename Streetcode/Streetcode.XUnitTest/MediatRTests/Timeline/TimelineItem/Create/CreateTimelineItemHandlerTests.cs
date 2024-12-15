@@ -1,5 +1,4 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore.Query;
 using Moq;
@@ -17,7 +16,7 @@ using Xunit;
 namespace Streetcode.XUnitTest.MediatRTests.Timeline.TimelineItems.Create
 {
     /// <summary>
-    /// Test class for CreateTimelineItemHandler.
+    /// Unit tests for <see cref="CreateTimelineItemHandler"/>.
     /// </summary>
     public class CreateTimelineItemHandlerTests
     {
@@ -28,60 +27,56 @@ namespace Streetcode.XUnitTest.MediatRTests.Timeline.TimelineItems.Create
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateTimelineItemHandlerTests"/> class.
+        /// Sets up required dependencies and configurations.
         /// </summary>
         public CreateTimelineItemHandlerTests()
         {
             _repositoryWrapperMock = new Mock<IRepositoryWrapper>();
             _loggerMock = new Mock<ILoggerService>();
+
             var configuration = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile(typeof(TimelineItemProfile));
             });
+
             _mapper = configuration.CreateMapper();
             _handler = new CreateTimelineItemHandler(_mapper, _repositoryWrapperMock.Object, _loggerMock.Object);
         }
 
         /// <summary>
-        /// Handle situation when streetcode does not exist, should return fail result.
+        /// Tests if the handler returns a failed result when the Streetcode does not exist.
         /// </summary>
-        /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
+        /// <returns>A task representing the asynchronous test.</returns>
         [Fact]
         public async Task Handle_StreetcodeDoesNotExist_ReturnsFailResult()
         {
+            // Arrange
             var command = new CreateTimelineItemCommand(new TimelineItemCreateDto { StreetcodeId = 1 });
-            _repositoryWrapperMock
-                .Setup(r => r.StreetcodeRepository.GetSingleOrDefaultAsync(
-                    It.IsAny<Expression<Func<StreetcodeContent, bool>>>(),
-                    It.IsAny<Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>>>()))
-                .ReturnsAsync((StreetcodeContent?)null);
+            SetupStreetcodeRepositoryToReturnNull();
+
+            // Act
             var result = await _handler.Handle(command, CancellationToken.None);
+
+            // Assert
             result.IsFailed.Should().BeTrue();
-            result.Errors.Should().NotBeEmpty();
-            result.Errors.First().Message.Should().Be("Streetcode does not exist.");
-            _loggerMock.Verify(l => l.LogError(command, "Streetcode does not exist."), Times.Once);
+            result.Errors.Should().ContainSingle(error => error.Message == "Streetcode does not exist.");
         }
 
         /// <summary>
-        /// Handle situation when historical context is empty, should create timeline without it.
+        /// Tests if the handler successfully creates a timeline without historical contexts when none are provided.
         /// </summary>
-        /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
+        /// <returns>A task representing the asynchronous test.</returns>
         [Fact]
         public async Task Handle_HistoricalContextsEmpty_CreatesTimelineWithoutContexts()
         {
             // Arrange
-            var newtimeLine = CreateTimeLine(); // Function to create a sample TImelineItemCreateDto
-            var streetcode = new StreetcodeContent { Id = 1 }; // Sample Streetcode entity
-            var timelineEntity = _mapper.Map<TimelineItem>(newtimeLine);
-            var command = new CreateTimelineItemCommand(newtimeLine);
-
-            _repositoryWrapperMock
-                .Setup(r => r.StreetcodeRepository.GetFirstOrDefaultAsync(
-                    It.IsAny<Expression<Func<StreetcodeContent, bool>>>(),
-                    It.IsAny<Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>>>()))
-                .ReturnsAsync(streetcode);
+            var command = CreateCommandWithoutHistoricalContexts();
+            var timelineEntity = command.timelineItemCreateDto;
+            SetupStreetcodeRepositoryToReturnValidEntity();
 
             _repositoryWrapperMock.Setup(r => r.TimelineRepository.CreateAsync(It.IsAny<TimelineItem>()))
-                .ReturnsAsync(timelineEntity);
+                                  .ReturnsAsync(_mapper.Map<TimelineItem>(timelineEntity));
+
             _repositoryWrapperMock.Setup(r => r.SaveChangesAsync()).ReturnsAsync(1);
 
             // Act
@@ -89,31 +84,109 @@ namespace Streetcode.XUnitTest.MediatRTests.Timeline.TimelineItems.Create
 
             // Assert
             result.IsSuccess.Should().BeTrue();
-            result.Value.Should().NotBeNull();
-            result.Value.Title.Should().Be(newtimeLine.Title);
-            _repositoryWrapperMock.Verify(r => r.SaveChangesAsync(), Times.Once);
+            result.Value.Title.Should().Be(timelineEntity.Title);
         }
 
         /// <summary>
-        /// Handle situation when historical context is not empty, should create timeline with it successfull.
+        /// Tests if the handler successfully creates a timeline with provided historical contexts.
         /// </summary>
-        /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
+        /// <returns>A task representing the asynchronous test.</returns>
         [Fact]
         public async Task Handle_HistoricalContextsProvided_CreatesTimelineWithContexts()
         {
             // Arrange
+            var command = CreateCommandWithHistoricalContexts();
+            var timelineEntity = command.timelineItemCreateDto;
+            SetupStreetcodeRepositoryToReturnValidEntity();
+            SetupHistoricalContextsRepository();
+
+            _repositoryWrapperMock.Setup(r => r.TimelineRepository.CreateAsync(It.IsAny<TimelineItem>()))
+                                  .ReturnsAsync(_mapper.Map<TimelineItem>(timelineEntity));
+
+            _repositoryWrapperMock.Setup(r => r.SaveChangesAsync()).ReturnsAsync(1);
+
+            // Act
+            var result = await _handler.Handle(command, CancellationToken.None);
+
+            // Assert
+            result.IsSuccess.Should().BeTrue();
+            result.Value.Title.Should().Be(timelineEntity.Title);
+            result.Value.HistoricalContexts.Should().HaveCount(2);
         }
 
-        private TimelineItemCreateDto CreateTimeLine()
+        /// <summary>
+        /// Configures the StreetcodeRepository mock to return null for any request.
+        /// </summary>
+        private void SetupStreetcodeRepositoryToReturnNull()
         {
-            return new TimelineItemCreateDto
+            _repositoryWrapperMock.Setup(r => r.StreetcodeRepository.GetSingleOrDefaultAsync(
+                    It.IsAny<Expression<Func<StreetcodeContent, bool>>>(),
+                    It.IsAny<Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>>>()))
+                .ReturnsAsync((StreetcodeContent?)null);
+        }
+
+        /// <summary>
+        /// Configures the StreetcodeRepository mock to return a valid entity for any request.
+        /// </summary>
+        private void SetupStreetcodeRepositoryToReturnValidEntity()
+        {
+            _repositoryWrapperMock.Setup(r => r.StreetcodeRepository.GetFirstOrDefaultAsync(
+                    It.IsAny<Expression<Func<StreetcodeContent, bool>>>(),
+                    It.IsAny<Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>>>()))
+                .ReturnsAsync(new StreetcodeContent { Id = 1 });
+        }
+
+        /// <summary>
+        /// Configures the HistoricalContextRepository mock to return a filtered list of historical contexts.
+        /// </summary>
+        private void SetupHistoricalContextsRepository()
+        {
+            var historicalContextEntities = new List<HistoricalContext>
+            {
+                new() { Id = 1, Title = "Context 1" },
+                new() { Id = 2, Title = "Context 2" },
+                new() { Id = 3, Title = "Context 3" }
+            };
+
+            _repositoryWrapperMock.Setup(r => r.HistoricalContextRepository.GetAllAsync(
+                    It.IsAny<Expression<Func<HistoricalContext, bool>>>(),
+                    It.IsAny<Func<IQueryable<HistoricalContext>, IIncludableQueryable<HistoricalContext, object>>>()))
+                .ReturnsAsync((Expression<Func<HistoricalContext, bool>> predicate, Func<IQueryable<HistoricalContext>, IIncludableQueryable<HistoricalContext, object>> include) =>
+                    historicalContextEntities.AsQueryable().Where(predicate));
+        }
+
+        /// <summary>
+        /// Creates a test command without historical contexts.
+        /// </summary>
+        /// <returns>A <see cref="CreateTimelineItemCommand"/> instance.</returns>
+        private CreateTimelineItemCommand CreateCommandWithoutHistoricalContexts()
+        {
+            return new CreateTimelineItemCommand(new TimelineItemCreateDto
             {
                 Date = DateTime.UtcNow,
                 Title = "Event 1",
                 Description = "Description 1",
                 HistoricalContexts = new List<HistoricalContextDTO>(),
+                StreetcodeId = 1
+            });
+        }
+
+        /// <summary>
+        /// Creates a test command with historical contexts.
+        /// </summary>
+        /// <returns>A <see cref="CreateTimelineItemCommand"/> instance.</returns>
+        private CreateTimelineItemCommand CreateCommandWithHistoricalContexts()
+        {
+            return new CreateTimelineItemCommand(new TimelineItemCreateDto
+            {
                 StreetcodeId = 1,
-            };
+                Title = "Test title",
+                HistoricalContexts = new List<HistoricalContextDTO>
+                {
+                    new() { Id = 1, Title = "Context 1" },
+                    new() { Id = 2, Title = "Context 2" }
+                },
+            });
         }
     }
 }

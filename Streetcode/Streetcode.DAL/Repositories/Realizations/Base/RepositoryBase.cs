@@ -5,17 +5,21 @@ using Microsoft.EntityFrameworkCore.Query;
 using MimeKit;
 using Streetcode.DAL.Persistence;
 using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.DAL.Specification;
+using Streetcode.DAL.Specification.Evaluator;
 
 namespace Streetcode.DAL.Repositories.Realizations.Base;
 
 public abstract class RepositoryBase<T> : IRepositoryBase<T>
     where T : class
 {
+    protected readonly DbSet<T> _dbSet;
     private readonly StreetcodeDbContext _dbContext;
 
     protected RepositoryBase(StreetcodeDbContext context)
     {
         _dbContext = context;
+        _dbSet = _dbContext.Set<T>();
     }
 
     public IQueryable<T> FindAll(Expression<Func<T, bool>>? predicate = default)
@@ -156,5 +160,21 @@ public abstract class RepositoryBase<T> : IRepositoryBase<T>
         }
 
         return query.AsNoTracking();
+    }
+
+    // Specification Patern Methods
+    public async Task<IEnumerable<T>> GetAllBySpecAsync(IBaseSpecification<T>? specification = null)
+    {
+        return ApplySpecificationForList(specification);
+    }
+
+    public async Task<T?> GetFirstOrDefaultBySpecAsync(IBaseSpecification<T>? specification = null)
+    {
+        return await ApplySpecificationForList(specification).FirstOrDefaultAsync();
+    }
+
+    private IQueryable<T> ApplySpecificationForList(IBaseSpecification<T> specification)
+    {
+        return SpecificationEvaluator<T>.GetQuery(_dbSet.AsQueryable(), specification);
     }
 }

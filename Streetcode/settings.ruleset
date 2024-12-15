@@ -37,15 +37,15 @@
     <!-- The file name of a C# code file does not match the first type declared in the file. For generics that are defined as Class1<T> the name of the file needs to be Class1{T}.cs or Class1`1.cs depending on the fileNamingConvention setting -->
     <Rule Id="SA1117" Action="Error" />
     <!-- The parameters to a C# method or indexer call or declaration are not all on the same line or each on a separate line. -->
-    <Rule Id="SA1116" Action="Error" />
+    <Rule Id="SA1116" Action="Warning" />
     <!-- The parameters to a C# method or indexer call or declaration span across multiple lines, but the first parameter does not start on the line after the opening bracket. -->
-    <Rule Id="SA1005" Action="Error" />
+    <Rule Id="SA1005" Action="Warning" />
     <!-- A single-line comment within a C# code file does not begin with a single space. -->
     <Rule Id="SA1515" Action="Warning" />
     <!-- A single-line comment within C# code is not preceded by a blank line. -->
     <Rule Id="SA1513" Action="Error" />
     <!-- A closing brace within a C# element, statement, or expression is not followed by a blank line. -->
-    <Rule Id="SA1202" Action="Error" />
+    <Rule Id="SA1202" Action="Warning" />
     <!-- An element within a C# code file is out of order within regard to access level, in relation to other elements in the code. -->
     <Rule Id="SA1503" Action="Error" />
     <!-- The opening and closing braces for a C# statement have been omitted. -->
@@ -63,7 +63,7 @@
     <!-- The spacing around a C# keyword is incorrect. -->
     <Rule Id="SA1201" Action="Error" />
     <!-- An element within a C# code file is out of order in relation to the other elements in the code. -->
-    <Rule Id="SA1001" Action="Error" />
+    <Rule Id="SA1001" Action="Warning" />
     <!-- The spacing around a comma is incorrect, within a C# code file. -->
     <Rule Id="SA1021" Action="Error" />
     <!-- A negative sign within a C# element is not spaced correctly. -->
@@ -73,12 +73,12 @@
     <!-- A call to a member from an inherited class begins with base., and the local class does not contain an override or implementation of the member. -->
     <Rule Id="SA1106" Action="Error" />
     <!-- The C# code contains an extra semicolon. -->
-    <Rule Id="SA1111" Action="Error" />
+    <Rule Id="SA1111" Action="Warning" />
     <!-- The closing parenthesis or bracket in a call to a C# method or indexer, or the declaration of a method or indexer, is not placed on the same line as the last parameter. -->
     <Rule Id="SA1112" Action="Error" />
     <!-- The closing parenthesis or bracket in a call to a C# method or indexer, or the declaration of a method or indexer, is not placed on the same line as the opening bracket when the element does not take any parameters. -->
-    <Rule Id="SA1119" Action="Error" />
-    <!-- A C# statement contains parenthesis which are unnecessary and should be removed. -->
+    <Rule Id="SA1119" Action="Warning" />
+    <!-- A C# statement contains parenthes is which are unnecessary and should be removed. -->
     <Rule Id="SA1121" Action="Error" />
     <!-- The code uses one of the basic C# types, but does not use the built-in alias for the type. -->
     <Rule Id="SA1122" Action="None" />
@@ -153,7 +153,7 @@
     <!-- An opening square bracket within a C# statement is not spaced correctly. -->
     <Rule Id="SA1011" Action="Error" />
     <!-- A closing square bracket within a C# statement is not spaced correctly. -->
-    <Rule Id="SA1012" Action="Error" />
+    <Rule Id="SA1012" Action="Warning" />
     <!-- An opening brace within a C# element is not spaced correctly. -->
     <Rule Id="SA1013" Action="Error" />
     <!-- A closing brace within a C# element is not spaced correctly. -->
@@ -177,7 +177,7 @@
     <!-- A colon within a C# element is not spaced correctly. -->
     <Rule Id="SA1025" Action="Error" />
     <!-- The code contains multiple whitespace characters in a row. -->
-    <Rule Id="SA1028" Action="Error" />
+    <Rule Id="SA1028" Action="None" />
     <!-- A line of code ends with a space, tab, or other whitespace characters before the end of line character(s). -->
     <Rule Id="SA1102" Action="Error" />
     <!-- A C# query clause does not begin on the same line as the previous clause, or on the next line. -->

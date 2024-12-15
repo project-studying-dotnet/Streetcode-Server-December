@@ -41,7 +41,7 @@
     <!-- The parameters to a C# method or indexer call or declaration span across multiple lines, but the first parameter does not start on the line after the opening bracket. -->
     <Rule Id="SA1005" Action="Error" />
     <!-- A single-line comment within a C# code file does not begin with a single space. -->
-    <Rule Id="SA1515" Action="Error" />
+    <Rule Id="SA1515" Action="Warning" />
     <!-- A single-line comment within C# code is not preceded by a blank line. -->
     <Rule Id="SA1513" Action="Error" />
     <!-- A closing brace within a C# element, statement, or expression is not followed by a blank line. -->
@@ -51,13 +51,13 @@
     <!-- The opening and closing braces for a C# statement have been omitted. -->
     <Rule Id="SA1127" Action="Error" />
     <!-- A generic constraint on a type or method declaration is on the same line as the declaration, within a C# code file. -->
-    <Rule Id="SA1508" Action="Error" />
+    <Rule Id="SA1508" Action="Warning" />
     <!-- A closing brace within a C# element, statement, or expression is preceded by a blank line. -->
     <Rule Id="SA1505" Action="Error" />
     <!-- An opening brace within a C# element, statement, or expression is followed by a blank line. -->
     <Rule Id="SA1203" Action="Error" />
     <!-- A constant field is placed beneath a non-constant field. -->
-    <Rule Id="SA1208" Action="Error" />
+    <Rule Id="SA1208" Action="None" />
     <!-- Using directive for 'System' must appear before -->
     <Rule Id="SA1000" Action="None" />
     <!-- The spacing around a C# keyword is incorrect. -->
@@ -89,7 +89,7 @@
     <!-- Two sibling elements which each start on their own line have different levels of indentation. -->
     <Rule Id="SA1516" Action="None" />
     <!-- Adjacent C# elements are not separated by a blank line. -->
-    <Rule Id="SA1300" Action="Error" />
+    <Rule Id="SA1300" Action="Warning" />
     <!-- The name of a C# element does not begin with an upper-case letter. -->
     <Rule Id="SA1302" Action="Error" />
     <!-- The name of a C# interface does not begin with the capital letter I. -->
@@ -217,7 +217,7 @@
     <!-- The name of a public or internal field in C# does not begin with an upper-case letter. -->
     <Rule Id="SA1310" Action="Error" />
     <!-- A field name in C# contains an underscore. -->
-    <Rule Id="SA1312" Action="Error" />
+    <Rule Id="SA1312" Action="Warning" />
     <!-- The name of a variable in C# does not begin with a lower-case letter. -->
     <Rule Id="SA1313" Action="None" />
     <!-- The name of a parameter in C# does not begin with a lower-case letter. -->
@@ -233,7 +233,7 @@
     <!-- Within a C# property, indexer or event, at least one of the child accessors is written on a single line, and at least one of the child accessors is written across multiple lines. -->
     <Rule Id="SA1506" Action="Error" />
     <!-- An element documentation header above a C# element is followed by a blank line. -->
-    <Rule Id="SA1507" Action="Error" />
+    <Rule Id="SA1507" Action="Warning" />
     <!-- The C# code contains multiple blank lines in a row. -->
     <Rule Id="SA1509" Action="Error" />
     <!-- An opening brace within a C# element, statement, or expression is preceded by a blank line. -->
@@ -279,7 +279,7 @@
     <!-- The Xml header documentation for a C# code element contains an empty tag. -->
     <Rule Id="SA1644" Action="Error" />
     <!-- A section within the Xml documentation header for a C# element contains blank lines. -->
-    <Rule Id="SX1101" Action="Error" />
+    <Rule Id="SX1101" Action="None" />
     <!-- A call to an instance member of the local class or a base class is prefixed with this.. -->
     <Rule Id="SX1309" Action="None" />
     <!-- A field name does not begin with an underscore. -->

@@ -9,6 +9,8 @@ namespace Streetcode.BLL.DTO.Sources
 {
     public class StreetcodeCategoryContentDTO
     {
+        public int Id { get; set; }
+
         [Required]
         [MaxLength(1000)]
         public string Text { get; set; }
@@ -18,5 +20,5 @@ namespace Streetcode.BLL.DTO.Sources
 
         [Required]
         public int StreetcodeId { get; set; }
-    }
+	}
 }

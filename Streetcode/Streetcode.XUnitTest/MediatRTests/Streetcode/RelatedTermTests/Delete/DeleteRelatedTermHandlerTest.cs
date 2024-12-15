@@ -41,7 +41,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.Delete
         }
 
         [Fact]
-        public async Task whenRelatedTermNotFound_thenReturnError()
+        public async Task WhenRelatedTermNotFound_thenReturnError()
         {
             // Arrange
             var command = new DeleteRelatedTermCommand("nonexistentWord");
@@ -55,11 +55,11 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.Delete
 
             // Assert
             result.IsSuccess.Should().BeFalse();
-            result.Errors.First().Message.Should().Be("Cannot find a related term: nonexistentWord");
+            result.Errors[0].Message.Should().Be("Cannot find a related term: nonexistentWord");
         }
 
         [Fact]
-        public async Task whenDeleteFails_thenReturnError()
+        public async Task WhenDeleteFails_thenReturnError()
         {
             // Arrange
             var command = new DeleteRelatedTermCommand("existingWord");
@@ -75,11 +75,11 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.Delete
 
             // Assert
             result.IsSuccess.Should().BeFalse();
-            result.Errors.First().Message.Should().Be("Failed to delete a related term");
+            result.Errors[0].Message.Should().Be("Failed to delete a related term");
         }
 
         [Fact]
-        public async Task whenDeleteSucceeds_thenReturnDeletedRelatedTerm()
+        public async Task WhenDeleteSucceeds_thenReturnDeletedRelatedTerm()
         {
             // Arrange
             var command = new DeleteRelatedTermCommand("existingWord");

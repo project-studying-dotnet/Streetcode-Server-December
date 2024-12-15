@@ -45,15 +45,12 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.Update
             // Arrange
             var command = new UpdateRelatedTermCommand(new RelatedTermDTO { Id = 1, Word = "UpdatedWord", TermId = 2 });
             var existingEntity = new RelatedTerm { Id = 1, Word = "OldWord", TermId = 1 };
-            var updatedEntity = new RelatedTerm { Id = 1, Word = "UpdatedWord", TermId = 2 };
-            var updatedDto = new RelatedTermDTO { Id = 1, Word = "UpdatedWord", TermId = 2 };
 
             this._mockRepositoryWrapper.Setup(r => r.RelatedTermRepository.GetFirstOrDefaultAsync(
                 It.IsAny<Expression<Func<RelatedTerm, bool>>>(),
                 It.IsAny<Func<IQueryable<RelatedTerm>, IIncludableQueryable<RelatedTerm, object>>>())).ReturnsAsync(existingEntity);
 
             this._mockRepositoryWrapper.Setup(r => r.SaveChangesAsync()).ReturnsAsync(1);
-
 
             // Act
             var result = await this._handler.Handle(command, CancellationToken.None);

@@ -23,7 +23,6 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
             LogoType = LogoTypeDTO.YouTube,
         };
 
-
         public CreateTeamLinkHandlerTests()
         {
             _mapper = new MapperConfiguration(cfg => cfg.AddProfile(new TeamLinkProfile())).CreateMapper();

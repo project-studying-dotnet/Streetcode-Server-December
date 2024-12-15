@@ -38,6 +38,45 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.GetAllBy
             this._handler = new GetAllRelatedTermsByTermIdHandler(this._mapper, this._mockRepositoryWrapper.Object, this._mockLogger.Object);
         }
 
+        [Fact]
+        public async Task WhenGetRelatedTermWithTermId1_thenReturnOKWithRelatedTerm()
+        {
+            this.CreateRepository();
+            var result = await this._handler.Handle(new GetAllRelatedTermsByTermIdQuery(1), CancellationToken.None);
+            result.IsSuccess.Should().BeTrue();
+            result.Value.Should().NotBeNull();
+            result.Value.Should().BeOfType<List<RelatedTermDTO>>();
+            foreach (var term in result.Value!)
+            {
+                term.TermId.Should().Be(1);
+            }
+        }
+
+        [Fact]
+        public async Task WhenGetRelatedTermWithTermId2_thenReturnOKWithRelatedTerm()
+        {
+            this.CreateRepository();
+            var result = await this._handler.Handle(new GetAllRelatedTermsByTermIdQuery(2), CancellationToken.None);
+            result.IsSuccess.Should().BeTrue();
+            result.Value.Should().NotBeNull();
+            result.Value.Should().BeOfType<List<RelatedTermDTO>>();
+            foreach (var term in result.Value!)
+            {
+                term.TermId.Should().Be(2);
+            }
+        }
+
+        [Fact]
+        public async Task WhenGetRelatedTermDoNotExist_thenReturnEmtyCollection()
+        {
+            this.CreateRepository();
+            var result = await this._handler.Handle(new GetAllRelatedTermsByTermIdQuery(10), CancellationToken.None);
+            result.IsSuccess.Should().BeTrue();
+            result.Value.Should().NotBeNull();
+            result.Value.Should().BeOfType<List<RelatedTermDTO>>();
+            result.Value.Count().Should().Be(0);
+        }
+
         private void CreateRepository()
         {
             var terms = new List<Term>
@@ -52,7 +91,6 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.GetAllBy
             new RelatedTerm { Id = 2, Word = "HelloelloH", TermId = 1, Term = terms[0] },
             new RelatedTerm { Id = 3, Word = "He", TermId = 2, Term = terms[1] },
         };
-
 
             this._mockRepositoryWrapper
                 .Setup(repo => repo.RelatedTermRepository.GetAllAsync(
@@ -75,45 +113,6 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.GetAllBy
 
                     return query.ToList();
                 });
-        }
-
-        [Fact]
-        public async Task whenGetRelatedTermWithTermId1_thenReturnOKWithRelatedTerm()
-        {
-            this.CreateRepository();
-            var result = await this._handler.Handle(new GetAllRelatedTermsByTermIdQuery(1), CancellationToken.None);
-            result.IsSuccess.Should().BeTrue();
-            result.Value.Should().NotBeNull();
-            result.Value.Should().BeOfType<List<RelatedTermDTO>>();
-            foreach (var term in result.Value!)
-            {
-                term.TermId.Should().Be(1);
-            }
-        }
-
-        [Fact]
-        public async Task whenGetRelatedTermWithTermId2_thenReturnOKWithRelatedTerm()
-        {
-            this.CreateRepository();
-            var result = await this._handler.Handle(new GetAllRelatedTermsByTermIdQuery(2), CancellationToken.None);
-            result.IsSuccess.Should().BeTrue();
-            result.Value.Should().NotBeNull();
-            result.Value.Should().BeOfType<List<RelatedTermDTO>>();
-            foreach (var term in result.Value!)
-            {
-                term.TermId.Should().Be(2);
-            }
-        }
-
-        [Fact]
-        public async Task whenGetRelatedTermDoNotExist_thenReturnEmtyCollection()
-        {
-            this.CreateRepository();
-            var result = await this._handler.Handle(new GetAllRelatedTermsByTermIdQuery(10), CancellationToken.None);
-            result.IsSuccess.Should().BeTrue();
-            result.Value.Should().NotBeNull();
-            result.Value.Should().BeOfType<List<RelatedTermDTO>>();
-            result.Value.Count().Should().Be(0);
         }
     }
 }

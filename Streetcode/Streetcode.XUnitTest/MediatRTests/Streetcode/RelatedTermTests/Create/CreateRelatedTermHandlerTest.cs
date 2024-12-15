@@ -41,10 +41,9 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.Create
         [Fact]
         public async Task WhenCreateRelatedTermCommandIsValid_ThenReturnsOkWithDTO()
         {
-            //Arrange
+            // Arrange
             var command = new CreateRelatedTermCommand(new RelatedTermDTO { Word = "Test", TermId = 1 });
             var entity = new RelatedTerm { Id = 1, Word = "Test", TermId = 1 };
-            var createdDto = new RelatedTermDTO { Id = 1, Word = "Test", TermId = 1 };
 
             this._mockRepositoryWrapper.Setup(r => r.RelatedTermRepository.GetAllAsync(It.IsAny<Expression<Func<RelatedTerm, bool>>>(), null)).ReturnsAsync(new List<RelatedTerm>());
             this._mockRepositoryWrapper.Setup(r => r.RelatedTermRepository.Create(It.IsAny<RelatedTerm>())).Returns(entity);
@@ -83,7 +82,6 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.Create
             // Arrange
             var command = new CreateRelatedTermCommand(new RelatedTermDTO { Word = "Test", TermId = 1 });
             var entity = new RelatedTerm { Word = "Test", TermId = 1 };
-            var createdDto = new RelatedTermDTO { Id = 1, Word = "Test", TermId = 1 };
 
             this._mockRepositoryWrapper.Setup(r => r.RelatedTermRepository.GetAllAsync(It.IsAny<Expression<Func<RelatedTerm, bool>>>(), null)).ReturnsAsync(new List<RelatedTerm>());
             this._mockRepositoryWrapper.Setup(r => r.RelatedTermRepository.Create(It.IsAny<RelatedTerm>())).Returns(entity);

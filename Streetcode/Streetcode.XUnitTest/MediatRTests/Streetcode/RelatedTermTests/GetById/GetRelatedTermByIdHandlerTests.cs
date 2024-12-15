@@ -37,6 +37,38 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.GetById
             this._handler = new GetRelatedTermByIdHandler(this._mapper, this._mockRepositoryWrapper.Object, this._mockLogger.Object);
         }
 
+        [Fact]
+        public async Task WhenGetRelatedTermWithId1_thenReturnOKWithRelatedTerm()
+        {
+            this.CreateRepository();
+            var result = await this._handler.Handle(new GetRelatedTermByIdQuery(1), CancellationToken.None);
+            result.IsSuccess.Should().BeTrue();
+            result.Value.Should().NotBeNull();
+            result.Value.Should().BeOfType<RelatedTermDTO>();
+            result.Value.Id.Should().Be(1);
+        }
+
+        [Fact]
+        public async Task WhenGetRelatedTermWithId2_thenReturnOKWithRelatedTerm()
+        {
+            this.CreateRepository();
+            var result = await this._handler.Handle(new GetRelatedTermByIdQuery(2), CancellationToken.None);
+            result.IsSuccess.Should().BeTrue();
+            result.Value.Should().NotBeNull();
+            result.Value.Should().BeOfType<RelatedTermDTO>();
+            result.Value.Id.Should().Be(2);
+        }
+
+        [Fact]
+        public async Task WhenGetRelatedTermDoNotExist_thenReturnException()
+        {
+            this.CreateRepository();
+            var result = await this._handler.Handle(new GetRelatedTermByIdQuery(10), CancellationToken.None);
+            result.IsSuccess.Should().BeFalse();
+            result.Errors.Should().ContainSingle();
+            result.Errors[0].Message.Should().Be("Cannot get word by id");
+        }
+
         private void CreateRepository()
         {
             var terms = new List<Term>
@@ -51,7 +83,6 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.GetById
             new RelatedTerm { Id = 2, Word = "HelloelloH", TermId = 1, Term = terms[0] },
             new RelatedTerm { Id = 3, Word = "He", TermId = 2, Term = terms[1] },
         };
-
 
             this._mockRepositoryWrapper
                 .Setup(repo => repo.RelatedTermRepository.GetFirstOrDefaultAsync(
@@ -74,38 +105,6 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.GetById
 
                     return query.FirstOrDefault();
                 });
-        }
-
-        [Fact]
-        public async Task whenGetRelatedTermWithId1_thenReturnOKWithRelatedTerm()
-        {
-            this.CreateRepository();
-            var result = await this._handler.Handle(new GetRelatedTermByIdQuery(1), CancellationToken.None);
-            result.IsSuccess.Should().BeTrue();
-            result.Value.Should().NotBeNull();
-            result.Value.Should().BeOfType<RelatedTermDTO>();
-            result.Value.Id.Should().Be(1);
-        }
-
-        [Fact]
-        public async Task whenGetRelatedTermWithId2_thenReturnOKWithRelatedTerm()
-        {
-            this.CreateRepository();
-            var result = await this._handler.Handle(new GetRelatedTermByIdQuery(2), CancellationToken.None);
-            result.IsSuccess.Should().BeTrue();
-            result.Value.Should().NotBeNull();
-            result.Value.Should().BeOfType<RelatedTermDTO>();
-            result.Value.Id.Should().Be(2);
-        }
-
-        [Fact]
-        public async Task whenGetRelatedTermDoNotExist_thenReturnException()
-        {
-            this.CreateRepository();
-            var result = await this._handler.Handle(new GetRelatedTermByIdQuery(10), CancellationToken.None);
-            result.IsSuccess.Should().BeFalse();
-            result.Errors.Should().ContainSingle();
-            result.Errors.First().Message.Should().Be("Cannot get word by id");
         }
     }
 }

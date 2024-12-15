@@ -35,44 +35,25 @@ public class GetAllRelatedTermsHandlerTests
         this._handler = new GetAllRelatedTermsHandler(this._mapper, this._mockRepositoryWrapper.Object, this._mockLogger.Object);
     }
 
-    private void CreateRepository()
+    [Fact]
+    public async Task WhenGetAllRequestAndThereAreRelatedTerms_thenReturnOKWithRelatedTerms()
     {
-        var terms = new List<Term>
-        {
-            new Term { Id = 1, Title = "Term1", Description = "Description1" },
-            new Term { Id = 2, Title = "Term2", Description = "Description2" },
-        };
+        this.CreateRepository();
+        var result = await this._handler.Handle(new GetAllRelatedTermsQuery(), CancellationToken.None);
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Should().NotBeEmpty();
+        result.Value.Should().BeOfType<List<RelatedTermDTO>>();
+        result.Value.Count().Should().Be(3);
+    }
 
-        var relatedTerms = new List<RelatedTerm>
-        {
-            new RelatedTerm { Id = 1, Word = "Hello", TermId = 1, Term = terms[0] },
-            new RelatedTerm { Id = 2, Word = "HelloelloH", TermId = 1, Term = terms[0] },
-            new RelatedTerm { Id = 3, Word = "He", TermId = 2, Term = terms[1] },
-        };
-
-
-        this._mockRepositoryWrapper
-       .Setup(repo => repo.RelatedTermRepository.GetAllAsync(
-           It.IsAny<Expression<Func<RelatedTerm, bool>>>(),
-           It.IsAny<Func<IQueryable<RelatedTerm>, IIncludableQueryable<RelatedTerm, object>>?>()))
-       .ReturnsAsync((
-           Expression<Func<RelatedTerm, bool>> predicate,
-           Func<IQueryable<RelatedTerm>, IIncludableQueryable<RelatedTerm, object>>? include) =>
-       {
-           var query = relatedTerms.AsQueryable();
-
-           if (predicate != null)
-           {
-               query = query.Where(predicate);
-           }
-
-           if (include != null)
-           {
-               query = include(query);
-           }
-
-           return query.ToList();
-       });
+    [Fact]
+    public async Task WhenGetAllRequestAndThereAreNoRelatedTerms_thenReturnEmptyList()
+    {
+        this.CreateEmptyRepository();
+        var result = await this._handler.Handle(new GetAllRelatedTermsQuery(), CancellationToken.None);
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Should().BeEmpty();
+        result.Value.Should().BeOfType<List<RelatedTermDTO>>();
     }
 
     private void CreateEmptyRepository()
@@ -102,24 +83,42 @@ public class GetAllRelatedTermsHandlerTests
                });
     }
 
-    [Fact]
-    public async Task whenGetAllRequestAndThereAreRelatedTerms_thenReturnOKWithRelatedTerms()
+    private void CreateRepository()
     {
-        this.CreateRepository();
-        var result = await this._handler.Handle(new GetAllRelatedTermsQuery(), CancellationToken.None);
-        result.IsSuccess.Should().BeTrue();
-        result.Value.Should().NotBeEmpty();
-        result.Value.Should().BeOfType<List<RelatedTermDTO>>();
-        result.Value.Count().Should().Be(3);
-    }
+        var terms = new List<Term>
+        {
+            new Term { Id = 1, Title = "Term1", Description = "Description1" },
+            new Term { Id = 2, Title = "Term2", Description = "Description2" },
+        };
 
-    [Fact]
-    public async Task whenGetAllRequestAndThereAreNoRelatedTerms_thenReturnEmptyList()
-    {
-        this.CreateEmptyRepository();
-        var result = await this._handler.Handle(new GetAllRelatedTermsQuery(), CancellationToken.None);
-        result.IsSuccess.Should().BeTrue();
-        result.Value.Should().BeEmpty();
-        result.Value.Should().BeOfType<List<RelatedTermDTO>>();
+        var relatedTerms = new List<RelatedTerm>
+        {
+            new RelatedTerm { Id = 1, Word = "Hello", TermId = 1, Term = terms[0] },
+            new RelatedTerm { Id = 2, Word = "HelloelloH", TermId = 1, Term = terms[0] },
+            new RelatedTerm { Id = 3, Word = "He", TermId = 2, Term = terms[1] },
+        };
+
+        this._mockRepositoryWrapper
+       .Setup(repo => repo.RelatedTermRepository.GetAllAsync(
+           It.IsAny<Expression<Func<RelatedTerm, bool>>>(),
+           It.IsAny<Func<IQueryable<RelatedTerm>, IIncludableQueryable<RelatedTerm, object>>?>()))
+       .ReturnsAsync((
+           Expression<Func<RelatedTerm, bool>> predicate,
+           Func<IQueryable<RelatedTerm>, IIncludableQueryable<RelatedTerm, object>>? include) =>
+       {
+           var query = relatedTerms.AsQueryable();
+
+           if (predicate != null)
+           {
+               query = query.Where(predicate);
+           }
+
+           if (include != null)
+           {
+               query = include(query);
+           }
+
+           return query.ToList();
+       });
     }
 }

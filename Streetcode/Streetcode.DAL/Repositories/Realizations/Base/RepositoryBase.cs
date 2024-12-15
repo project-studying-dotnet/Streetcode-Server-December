@@ -137,6 +137,24 @@ public abstract class RepositoryBase<T> : IRepositoryBase<T>
         return await GetQueryable(predicate, include, selector).FirstOrDefaultAsync();
     }
 
+    // Specification Pattern Methods
+    public async Task<IEnumerable<T>> GetAllBySpecAsync(IBaseSpecification<T>? specification = null)
+    {
+        return ApplySpecificationForList(specification);
+    }
+
+    public async Task<T?> GetFirstOrDefaultBySpecAsync(IBaseSpecification<T>? specification = null)
+    {
+        return await ApplySpecificationForList(specification).FirstOrDefaultAsync();
+    }
+
+    private IQueryable<T> ApplySpecificationForList(IBaseSpecification<T> specification)
+    {
+        return SpecificationEvaluator<T>.GetQuery(_dbSet.AsQueryable(), specification);
+    }
+
+    // End of Specification Pattern Methods
+
     private IQueryable<T> GetQueryable(
         Expression<Func<T, bool>>? predicate = default,
         Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = default,
@@ -160,21 +178,5 @@ public abstract class RepositoryBase<T> : IRepositoryBase<T>
         }
 
         return query.AsNoTracking();
-    }
-
-    // Specification Patern Methods
-    public async Task<IEnumerable<T>> GetAllBySpecAsync(IBaseSpecification<T>? specification = null)
-    {
-        return ApplySpecificationForList(specification);
-    }
-
-    public async Task<T?> GetFirstOrDefaultBySpecAsync(IBaseSpecification<T>? specification = null)
-    {
-        return await ApplySpecificationForList(specification).FirstOrDefaultAsync();
-    }
-
-    private IQueryable<T> ApplySpecificationForList(IBaseSpecification<T> specification)
-    {
-        return SpecificationEvaluator<T>.GetQuery(_dbSet.AsQueryable(), specification);
     }
 }

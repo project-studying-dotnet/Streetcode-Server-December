@@ -1,30 +1,31 @@
+using System.Reflection;
 using System.Text;
+using FluentValidation;
 using Hangfire;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.FeatureManagement;
 using Microsoft.OpenApi.Models;
+using Streetcode.BLL.Interfaces.BlobStorage;
+using Streetcode.BLL.Interfaces.Email;
+using Streetcode.BLL.Interfaces.Instagram;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Interfaces.Payment;
+using Streetcode.BLL.Interfaces.Text;
+using Streetcode.BLL.Services.BlobStorageService;
+using Streetcode.BLL.Services.Email;
+using Streetcode.BLL.Services.Instagram;
 using Streetcode.BLL.Services.Logging;
+using Streetcode.BLL.Services.Payment;
+using Streetcode.BLL.Services.Text;
+using Streetcode.BLL.Validators;
+using Streetcode.DAL.Entities.AdditionalContent.Email;
 using Streetcode.DAL.Persistence;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using Streetcode.DAL.Repositories.Realizations.Base;
-using Streetcode.BLL.Interfaces.Email;
-using Streetcode.BLL.Services.Email;
-using Streetcode.DAL.Entities.AdditionalContent.Email;
-using Streetcode.BLL.Interfaces.BlobStorage;
-using Streetcode.BLL.Services.BlobStorageService;
-using Streetcode.BLL.Interfaces.Users;
-using Microsoft.FeatureManagement;
-using Streetcode.BLL.Interfaces.Payment;
-using Streetcode.BLL.Services.Payment;
-using Streetcode.BLL.Interfaces.Instagram;
-using Streetcode.BLL.Services.Instagram;
-using Streetcode.BLL.Interfaces.Text;
-using Streetcode.BLL.Services.Text;
-using Serilog.Events;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Streetcode.WebApi.Extensions;
 
@@ -48,6 +49,9 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IPaymentService, PaymentService>();
         services.AddScoped<IInstagramService, InstagramService>();
         services.AddScoped<ITextService, AddTermsToTextService>();
+
+        services.AddValidatorsFromAssembly(typeof(ValidationError).Assembly);
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
     }
 
     public static void AddApplicationServices(this IServiceCollection services, ConfigurationManager configuration)

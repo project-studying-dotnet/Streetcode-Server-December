@@ -2,7 +2,7 @@
 
 namespace Streetcode.BLL.DTO.Timeline.Create
 {
-    public class TImelineItemCreateDto
+    public class TimelineItemCreateDto
     {
         public string Title { get; set; } = null!;
         public string? Description { get; set; }

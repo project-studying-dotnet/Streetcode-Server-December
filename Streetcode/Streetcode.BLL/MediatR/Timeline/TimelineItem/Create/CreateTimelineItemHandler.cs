@@ -5,6 +5,7 @@ using Streetcode.BLL.DTO.Timeline;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Interfaces.Logging;
 using TimelineEntity = Streetcode.DAL.Entities.Timeline.TimelineItem;
+using Streetcode.DAL.Entities.Timeline;
 
 namespace Streetcode.BLL.MediatR.Timeline.TimelineItem.Create
 {
@@ -42,12 +43,33 @@ namespace Streetcode.BLL.MediatR.Timeline.TimelineItem.Create
             // if historical context doesnt exist create timeline without it
             if (!request.timelineItemCreateDto.HistoricalContexts!.Any())
             {
-                await _repository.TimelineRepository.CreateAsync(newTimelineItem);
-                await _repository.SaveChangesAsync();
+                var createResult = await _repository.TimelineRepository.CreateAsync(newTimelineItem);
+                var saveResult = await _repository.SaveChangesAsync();
                 return Result.Ok(_mapper.Map<TimelineItemDTO>(newTimelineItem));
             }
 
-            return Result.Ok();
-            }
+            newTimelineItem.HistoricalContextTimelines.Clear();
+            await _repository.TimelineRepository.CreateAsync(newTimelineItem);
+            await _repository.SaveChangesAsync();
+
+            var historicalContextIds = request.timelineItemCreateDto.HistoricalContexts.Select(hc => hc.Id).ToList();
+
+            var historicalContexts = await _repository.HistoricalContextRepository
+                .GetAllAsync(hc => historicalContextIds.Contains(hc.Id));
+
+            var historicalContextTimelines = historicalContexts.
+                Select(hct => new HistoricalContextTimeline
+                {
+                    HistoricalContextId = hct.Id,
+                    HistoricalContext = hct,
+                    TimelineId = newTimelineItem.Id,
+                    Timeline = newTimelineItem
+                }).ToList();
+
+            newTimelineItem.HistoricalContextTimelines.AddRange(historicalContextTimelines);
+            await _repository.SaveChangesAsync();
+
+            return Result.Ok(_mapper.Map<TimelineItemDTO>(newTimelineItem));
+        }
         }
     }

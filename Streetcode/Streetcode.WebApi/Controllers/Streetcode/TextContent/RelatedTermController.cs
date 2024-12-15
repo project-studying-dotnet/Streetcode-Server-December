@@ -11,7 +11,6 @@ namespace Streetcode.WebApi.Controllers.Streetcode.TextContent
 {
     public class RelatedTermController : BaseApiController
     {
-
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {

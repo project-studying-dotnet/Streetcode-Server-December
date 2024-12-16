@@ -1,7 +1,6 @@
 using Hangfire;
 using Streetcode.BLL.Services.BlobStorageService;
 using Streetcode.BLL.Validators;
-using Streetcode.WebApi.CustomMiddlewares;
 using Streetcode.WebApi.Extensions;
 using Streetcode.WebApi.Utils;
 

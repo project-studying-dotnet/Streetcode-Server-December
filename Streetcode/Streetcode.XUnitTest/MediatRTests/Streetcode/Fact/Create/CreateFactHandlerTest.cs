@@ -7,10 +7,8 @@ using Streetcode.BLL.Mapping.Streetcode.TextContent;
 using Streetcode.BLL.MediatR.Streetcode.Fact.Create;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using System.Linq.Expressions;
-using System;
 using Xunit;
 using Entity = Streetcode.DAL.Entities.Streetcode.TextContent.Fact;
-using Streetcode.DAL.Entities.Team;
 
 namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Fact.Create
 {

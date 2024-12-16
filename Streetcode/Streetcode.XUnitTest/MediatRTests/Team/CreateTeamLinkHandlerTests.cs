@@ -36,7 +36,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
         public async Task Handle_TeamMemberLinkIsNull_ReturnsResultFail()
         {
             // Arrange
-            var request = new CreateTeamLinkQuery(null);
+            var request = new CreateTeamLinkCommand(null);
             const string errorMsg = "Cannot convert null to team link";
 
             // Act
@@ -53,7 +53,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
             // Arrange
             SetupCreateTeamLink(null);
 
-            var request = new CreateTeamLinkQuery(_teamLinkDTO);
+            var request = new CreateTeamLinkCommand(_teamLinkDTO);
             const string errorMsg = "Cannot create team link";
 
             // Act
@@ -71,7 +71,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
             SetupCreateTeamLink(_teamLinkDTO);
             SetupSaveChangesAsync(0);
 
-            var request = new CreateTeamLinkQuery(_teamLinkDTO);
+            var request = new CreateTeamLinkCommand(_teamLinkDTO);
             const string errorMsg = "Failed to create a team";
 
             // Act
@@ -89,7 +89,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
             SetupCreateTeamLink(_teamLinkDTO);
             SetupSaveChangesAsync(1);
 
-            var request = new CreateTeamLinkQuery(_teamLinkDTO);
+            var request = new CreateTeamLinkCommand(_teamLinkDTO);
 
             // Act
             var result = await _createTeamLinkHandler.Handle(request, default);
@@ -113,7 +113,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
             _mockMapper.Setup(m => m.Map<TeamMemberLink>(It.IsAny<TeamMemberLinkDTO>())).Returns(teamMemberLink);
             _mockMapper.Setup(m => m.Map<TeamMemberLinkDTO>(It.IsAny<TeamMemberLink>())).Returns((TeamMemberLinkDTO)null);
 
-            var request = new CreateTeamLinkQuery(_teamLinkDTO);
+            var request = new CreateTeamLinkCommand(_teamLinkDTO);
             const string errorMsg = "Failed to map created team link";
 
             // Act

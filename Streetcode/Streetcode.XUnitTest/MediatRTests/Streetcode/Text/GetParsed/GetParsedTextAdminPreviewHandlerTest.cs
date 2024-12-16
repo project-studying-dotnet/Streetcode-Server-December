@@ -33,7 +33,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Text.GetParsed
             // Arrange
             string textToParse = "Some text to parse";
             string parsedText = "Parsed text";
-            var command = new GetParsedTextForAdminPreviewCommand(textToParse);
+            var command = new GetParsedTextForAdminPreviewQuery(textToParse);
 
             _textServiceMock
                 .Setup(service => service.AddTermsTag(textToParse))
@@ -57,7 +57,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Text.GetParsed
         {
             // Arrange
             string textToParse = "Some text to parse";
-            var command = new GetParsedTextForAdminPreviewCommand(textToParse);
+            var command = new GetParsedTextForAdminPreviewQuery(textToParse);
 
             _textServiceMock.Setup(service => service.AddTermsTag(textToParse))
                 .ReturnsAsync((string?)null);

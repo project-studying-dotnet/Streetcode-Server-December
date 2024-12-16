@@ -11,14 +11,14 @@ using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Media.Audio.GetByStreetcodeId;
 
-public class GetAudioByStreetcodeIdQueryHandler : IRequestHandler<GetAudioByStreetcodeIdQuery, Result<AudioDTO>>
+public class GetAudioByStreetcodeIdHandler : IRequestHandler<GetAudioByStreetcodeIdQuery, Result<AudioDTO>>
 {
     private readonly IMapper _mapper;
     private readonly IRepositoryWrapper _repositoryWrapper;
     private readonly IBlobService _blobService;
     private readonly ILoggerService _logger;
 
-    public GetAudioByStreetcodeIdQueryHandler(IRepositoryWrapper repositoryWrapper, IMapper mapper, IBlobService blobService, ILoggerService logger)
+    public GetAudioByStreetcodeIdHandler(IRepositoryWrapper repositoryWrapper, IMapper mapper, IBlobService blobService, ILoggerService logger)
     {
         _repositoryWrapper = repositoryWrapper;
         _mapper = mapper;

@@ -4,14 +4,11 @@ using Streetcode.BLL.DTO.Streetcode.TextContent.Fact;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Mapping.Streetcode.TextContent;
 using Streetcode.BLL.MediatR.Streetcode.Fact.Create;
-using Streetcode.BLL.MediatR.Team.TeamMembersLinks.Create;
-using Streetcode.DAL.Entities.Streetcode.TextContent;
-using Streetcode.DAL.Entities.Team;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using Xunit;
 using Entity = Streetcode.DAL.Entities.Streetcode.TextContent.Fact;
 
-namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Fact
+namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Fact.Create
 {
     public class CreateFactHandlerTest
     {
@@ -20,7 +17,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Fact
         private readonly Mock<ILoggerService> _mockLogger;
         private readonly CreateFactHandler _createFactHandler;
 
-        private readonly FactDto _factDto = new FactDto() { Id = 1, Title = "New Title", FactContent = "New Content", ImageId = 1 };
+        private readonly CreateFactDTO _createFactDto = new CreateFactDTO() { Title = "New Title", FactContent = "New Content", ImageId = 1 };
 
         public CreateFactHandlerTest()
         {
@@ -51,7 +48,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Fact
             // Arrange
             SetupCreate(null);
 
-            var command = new CreateFactCommand(_factDto);
+            var command = new CreateFactCommand(_createFactDto);
             const string errorMsg = "Cannot create fact!";
 
             // Act
@@ -66,12 +63,12 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Fact
         public async Task Handle_SaveChangesResultIsNotSuccess_ReturnsResultFail()
         {
             // Arrange
-            var fact = _mapper.Map<Entity>(_factDto);
+            var fact = _mapper.Map<Entity>(_createFactDto);
 
             SetupCreate(fact);
             SetupSaveChanges(0);
 
-            var command = new CreateFactCommand(_factDto);
+            var command = new CreateFactCommand(_createFactDto);
             const string errorMsg = "Cannot save changes in the database!";
 
             // Act
@@ -86,11 +83,11 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Fact
         public async Task Handle_FactCreatedSuccessfully_ReturnsResultOK()
         {
             // Arrange
-            var fact = _mapper.Map<Entity>(_factDto);
+            var fact = _mapper.Map<Entity>(_createFactDto);
             SetupCreate(fact);
             SetupSaveChanges(1);
 
-            var command = new CreateFactCommand(_factDto);
+            var command = new CreateFactCommand(_createFactDto);
 
             // Act
             var result = await _createFactHandler.Handle(command, default);

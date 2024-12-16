@@ -30,7 +30,7 @@ public class FactController : BaseApiController
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] FactDto fact)
+    public async Task<IActionResult> Create([FromBody] CreateFactDTO fact)
     {
         return HandleResult(await Mediator.Send(new CreateFactCommand(fact)));
     }

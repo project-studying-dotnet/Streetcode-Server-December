@@ -25,30 +25,29 @@ namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.DeleteCategoryConten
 			_logger = logger;
 		}
 
-		public async Task<Result<StreetcodeCategoryContentDTO>> Handle(DeleteCategoryContentCommand request, CancellationToken cancellationToken)
+		public async Task<Result<StreetcodeCategoryContentDTO>> Handle(DeleteCategoryContentCommand command, CancellationToken cancellationToken)
 		{
 			var source = await _repositoryWrapper.StreetcodeCategoryContentRepository
-				.GetFirstOrDefaultAsync(s => s.Id == request.id);
+				.GetFirstOrDefaultAsync(s => s.Id == command.id);
 			if (source == null)
 			{
 				string errMsg = "No source with such id";
-				_logger.LogError(request, errMsg);
+				_logger.LogError(command, errMsg);
 				return Result.Fail(errMsg);
 			}
-			else
+
+			_repositoryWrapper.StreetcodeCategoryContentRepository.Delete(source);
+			var resultIsSuccess = await _repositoryWrapper.SaveChangesAsync() > 0;
+
+			if (!resultIsSuccess)
 			{
-				_repositoryWrapper.StreetcodeCategoryContentRepository.Delete(source);
-				try
-				{
-					_repositoryWrapper.SaveChanges();
-					return Result.Ok(_mapper.Map<StreetcodeCategoryContentDTO>(source));
-				}
-				catch (Exception ex)
-				{
-					_logger.LogError(request, ex.Message);
-					return Result.Fail(ex.Message);
-				}
+				const string errorMsg = "Failed to delete source records";
+				_logger.LogError(command, errorMsg);
+				return Result.Fail(new Error(errorMsg));
 			}
+
+			_logger.LogInformation($"SourceCategoryContent handled successfully");
+			return Result.Ok(_mapper.Map<StreetcodeCategoryContentDTO>(source));
 		}
 	}
 }

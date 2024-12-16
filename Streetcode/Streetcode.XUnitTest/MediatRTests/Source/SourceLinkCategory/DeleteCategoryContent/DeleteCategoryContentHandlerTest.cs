@@ -56,13 +56,16 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.SourceLinkCategory.DeleteCate
 				.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<StreetcodeCategoryContent, bool>>>(), null))
 				.ReturnsAsync(source);
 
+			_mockRepositoryWrapper.Setup(repo => repo.SaveChangesAsync())
+				.ReturnsAsync(1);
+
 			// Act
 			var result = await _handler.Handle(new DeleteCategoryContentCommand(1), CancellationToken.None);
 
 			// Assert
 			result.IsSuccess.Should().BeTrue();
-			_mockRepositoryWrapper.Verify(x => x.StreetcodeCategoryContentRepository.Delete(source));
-			_mockRepositoryWrapper.Verify(x => x.SaveChanges(), Times.Once);
+			_mockRepositoryWrapper.Verify(x => x.StreetcodeCategoryContentRepository.Delete(source), Times.Once);
+			_mockRepositoryWrapper.Verify(x => x.SaveChangesAsync(), Times.Once);
 		}
 
 		[Fact]
@@ -77,15 +80,16 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.SourceLinkCategory.DeleteCate
 				.ReturnsAsync(source);
 
 			_mockRepositoryWrapper.Setup(repo => repo.StreetcodeCategoryContentRepository.Delete(source));
-			_mockRepositoryWrapper.Setup(repo => repo.SaveChanges()).Throws(new Exception(errMsg));
+			_mockRepositoryWrapper.Setup(repo => repo.SaveChangesAsync())
+				.ReturnsAsync(0);
 
 			// Act
 			var result = await _handler.Handle(new DeleteCategoryContentCommand(1), CancellationToken.None);
 
 			// Assert
 			result.IsFailed.Should().BeTrue();
-			result.Errors.First().Message.Should().Be(errMsg);
-			_mockLogger.Verify(x => x.LogError(It.IsAny<object>(), errMsg), Times.Once);
+			result.Errors.First().Message.Should().Be("Failed to delete source records");
+			_mockLogger.Verify(x => x.LogError(It.IsAny<object>(), "Failed to delete source records"), Times.Once);
 		}
 	}
 }

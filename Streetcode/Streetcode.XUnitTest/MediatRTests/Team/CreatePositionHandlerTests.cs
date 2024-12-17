@@ -45,7 +45,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
         {
             // Arrange
             _mockRepositoryWrapper.Setup(p => p.SaveChanges()).Returns(1);
-            var request = new CreatePositionQuery(new PositionDTO { Id = 1, Position = "Posit1" });
+            var request = new CreatePositionCommand(new PositionDTO { Id = 1, Position = "Posit1" });
 
             // Act
             var result = await _createPositionHandler.Handle(request, default);
@@ -60,7 +60,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
             // Arrange
             const string errorMsg = $"SaveChanges Error";
             _mockRepositoryWrapper.Setup(p => p.SaveChanges()).Throws(new Exception(errorMsg));
-            var request = new CreatePositionQuery(new PositionDTO { Id = 1, Position = "Posit1" });
+            var request = new CreatePositionCommand(new PositionDTO { Id = 1, Position = "Posit1" });
 
             // Act
             var result = await _createPositionHandler.Handle(request, default);

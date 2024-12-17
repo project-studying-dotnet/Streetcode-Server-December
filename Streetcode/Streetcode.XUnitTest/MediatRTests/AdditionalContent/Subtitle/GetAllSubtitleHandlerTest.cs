@@ -9,14 +9,13 @@ using Streetcode.BLL.MediatR.AdditionalContent.Subtitle.GetAll;
 using Streetcode.DAL.Entities.Streetcode;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using Xunit;
-using SubtitleEntity =  Streetcode.DAL.Entities.AdditionalContent.Subtitle;
+using SubtitleEntity = Streetcode.DAL.Entities.AdditionalContent.Subtitle;
 
 namespace Streetcode.XUnitTest.MediatRTests.AdditionalContent.Subtitle;
 
 public class GetAllSubtitleHandlerTest : AdditionalContentTestWrapper
 {
     private readonly GetAllSubtitlesHandler _handler;
-
 
     public GetAllSubtitleHandlerTest()
     {
@@ -46,7 +45,6 @@ public class GetAllSubtitleHandlerTest : AdditionalContentTestWrapper
             new SubtitleDTO
             {
                 Id = 1, SubtitleText = "Test Subtitle 1", StreetcodeId = 2,
-
             },
             new SubtitleDTO
             {
@@ -82,7 +80,7 @@ public class GetAllSubtitleHandlerTest : AdditionalContentTestWrapper
                 .GetAllAsync(
                     It.IsAny<Expression<Func<SubtitleEntity, bool>>>(),
                     It.IsAny<Func<IQueryable<SubtitleEntity>,
-                        IIncludableQueryable<SubtitleEntity, object>>>()))!
+                        IIncludableQueryable<SubtitleEntity, object>>>())) !
             .ReturnsAsync((IEnumerable<SubtitleEntity>)null);
 
         // Act

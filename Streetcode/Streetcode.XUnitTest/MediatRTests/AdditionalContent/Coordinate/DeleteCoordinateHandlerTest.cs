@@ -5,7 +5,6 @@ using Streetcode.BLL.MediatR.AdditionalContent.Coordinate.Delete;
 using Xunit;
 using StreetcodeCoordinateEntity = Streetcode.DAL.Entities.AdditionalContent.Coordinates.Types.StreetcodeCoordinate;
 
-
 namespace Streetcode.XUnitTest.MediatRTests.AdditionalContent.Coordinate;
 
 public class DeleteCoordinateHandlerTest : AdditionalContentTestWrapper
@@ -66,5 +65,4 @@ public class DeleteCoordinateHandlerTest : AdditionalContentTestWrapper
         // Assert
         Assert.True(res.IsFailed);
     }
-
 }

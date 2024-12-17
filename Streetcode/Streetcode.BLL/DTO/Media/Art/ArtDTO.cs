@@ -9,4 +9,5 @@ public class ArtDTO
     public string? Title { get; set; }
     public int ImageId { get; set; }
     public ImageDTO? Image { get; set; }
+    public List<StreetcodeArtDTO> StreetcodeArts { get; set; }
 }

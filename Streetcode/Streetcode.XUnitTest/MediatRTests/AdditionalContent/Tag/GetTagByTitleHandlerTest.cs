@@ -44,7 +44,7 @@ public class GetTagByTitleHandlerTest : AdditionalContentTestWrapper
         _repositoryWrapperMock.Verify(
             rep => rep.TagRepository.GetFirstOrDefaultAsync(
                 It.Is<Expression<Func<TagEntity, bool>>>(
-                    exp => exp.Compile().Invoke(new TagEntity { Title = request.Title})),
+                    exp => exp.Compile().Invoke(new TagEntity { Title = request.Title })),
                 It.IsAny<Func<IQueryable<TagEntity>, IIncludableQueryable<TagEntity, object>>>()), Times.Once);
 
         _mapperMock.Verify(m => m.Map<TagDTO>(tag), Times.Once);
@@ -68,5 +68,4 @@ public class GetTagByTitleHandlerTest : AdditionalContentTestWrapper
         // Assert
         Assert.Equal(errorMsg, result.Errors[0].Message);
     }
-
 }

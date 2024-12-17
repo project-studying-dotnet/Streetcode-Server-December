@@ -247,7 +247,7 @@
     <!-- Within a C# property, indexer or event, at least one of the child accessors is written on a single line, and at least one of the child accessors is written across multiple lines. -->
     <Rule Id="SA1506" Action="Error" />
     <!-- An element documentation header above a C# element is followed by a blank line. -->
-    <Rule Id="SA1507" Action="Error" />
+    <Rule Id="SA1507" Action="Warning" />
     <!-- The C# code contains multiple blank lines in a row. -->
     <Rule Id="SA1509" Action="Error" />
     <!-- An opening brace within a C# element, statement, or expression is preceded by a blank line. -->

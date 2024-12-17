@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RuleSet Name="My Rules" Description="Description here." ToolsVersion="14.0">
   <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
+    <Rule Id="SA1128" Action="None" />
+    <!-- A constructor initializer is on the same line as the constructor declaration, within a C# code file. -->
     <Rule Id="SA1027" Action="None" />
     <!-- The code contains a tab or space character which is not consistent with the current project settings. -->
     <Rule Id="SA1124" Action="Error" />
@@ -35,9 +37,9 @@
     <!-- A static element is positioned beneath an instance element of the same type. -->
     <Rule Id="SA1649" Action="Error" />
     <!-- The file name of a C# code file does not match the first type declared in the file. For generics that are defined as Class1<T> the name of the file needs to be Class1{T}.cs or Class1`1.cs depending on the fileNamingConvention setting -->
-    <Rule Id="SA1117" Action="Error" />
+    <Rule Id="SA1117" Action="None" />
     <!-- The parameters to a C# method or indexer call or declaration are not all on the same line or each on a separate line. -->
-    <Rule Id="SA1116" Action="Error" />
+    <Rule Id="SA1116" Action="None" />
     <!-- The parameters to a C# method or indexer call or declaration span across multiple lines, but the first parameter does not start on the line after the opening bracket. -->
     <Rule Id="SA1005" Action="Warning" />
     <!-- Non-nullable variable must contain a non-null value when exiting constructor. -->
@@ -85,7 +87,7 @@
     <!-- A call to a member from an inherited class begins with base., and the local class does not contain an override or implementation of the member. -->
     <Rule Id="SA1106" Action="Error" />
     <!-- The C# code contains an extra semicolon. -->
-    <Rule Id="SA1111" Action="Warning" />
+    <Rule Id="SA1111" Action="None" />
     <!-- The closing parenthesis or bracket in a call to a C# method or indexer, or the declaration of a method or indexer, is not placed on the same line as the last parameter. -->
     <Rule Id="SA1112" Action="Error" />
     <!-- The closing parenthesis or bracket in a call to a C# method or indexer, or the declaration of a method or indexer, is not placed on the same line as the opening bracket when the element does not take any parameters. -->
@@ -113,7 +115,7 @@
     <!-- The name of a static readonly field does not begin with an upper-case letter. -->
     <Rule Id="SA1400" Action="Error" />
     <!-- The access modifier for a C# element has not been explicitly defined. -->
-    <Rule Id="SA1401" Action="Warning" />
+    <Rule Id="SA1401" Action="None" />
     <!-- A field within a C# class has an access modifier other than private. -->
     <Rule Id="SA1402" Action="Error" />
     <!-- A C# code file contains more than one unique type. -->
@@ -229,7 +231,7 @@
     <!-- The name of a public or internal field in C# does not begin with an upper-case letter. -->
     <Rule Id="SA1310" Action="Error" />
     <!-- A field name in C# contains an underscore. -->
-    <Rule Id="SA1312" Action="Warning" />
+    <Rule Id="SA1312" Action="None" />
     <!-- The name of a variable in C# does not begin with a lower-case letter. -->
     <Rule Id="SA1313" Action="None" />
     <!-- The name of a parameter in C# does not begin with a lower-case letter. -->

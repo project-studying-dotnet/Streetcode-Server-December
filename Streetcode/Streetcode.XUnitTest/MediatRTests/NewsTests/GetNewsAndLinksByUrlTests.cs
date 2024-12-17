@@ -18,8 +18,8 @@ using System.Threading.Tasks;
 using Xunit;
 using System.Security.Policy;
 using Streetcode.BLL.MediatR.Newss.GetNewsAndLinksByUrl;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using System.Threading;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Streetcode.XUnitTest.MediatRTests.NewsTests
 {

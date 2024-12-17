@@ -58,7 +58,7 @@ namespace Streetcode.XUnitTest.CustomMiddlewareTests
         }
 
         [Fact]
-        public async Task Middleware_ShouldReturn500_WhenExceptionIsThrown()
+        public async Task Middleware_ShouldReturn500_WhenGenericExceptionIsThrown()
         {
             var response = await _client.GetAsync("/api/test");
 
@@ -73,7 +73,7 @@ namespace Streetcode.XUnitTest.CustomMiddlewareTests
             Assert.NotNull(problemDetails);
             Assert.Equal(500, problemDetails?.Status);
             Assert.Equal("An error occurred while processing your request.", problemDetails?.Title);
-            Assert.Equal("Internal server error has occurred", problemDetails?.Detail);
+            Assert.Equal("Unexpected error", problemDetails?.Detail);
         }
 
         [Fact]
@@ -81,7 +81,7 @@ namespace Streetcode.XUnitTest.CustomMiddlewareTests
         {
             var response = await _client.GetAsync("/api/test/badrequest");
 
-            Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
 
             var responseContent = await response.Content.ReadAsStringAsync();
             var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(responseContent, new JsonSerializerOptions

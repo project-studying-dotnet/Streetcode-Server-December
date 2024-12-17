@@ -4,7 +4,7 @@ using Streetcode.BLL.Validation.Validators.DTOValidators.Team;
 
 namespace Streetcode.BLL.Validation.Validators.CommandsAndQuerysValidators
 {
-    public class CreatePositionQueryValidator : AbstractValidator<CreatePositionQuery>
+    public class CreatePositionQueryValidator : AbstractValidator<CreatePositionCommand>
     {
         public CreatePositionQueryValidator()
         {

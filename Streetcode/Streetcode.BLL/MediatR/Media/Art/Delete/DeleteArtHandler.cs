@@ -38,16 +38,14 @@ namespace Streetcode.BLL.MediatR.Media.Art.Delete
 
             var resultIsSuccess = await _repositoryWrapper.SaveChangesAsync() > 0;
 
-            if (resultIsSuccess)
-            {
-                return Result.Ok(Unit.Value);
-            }
-            else
+            if (!resultIsSuccess)
             {
                 const string errorMsg = $"Failed to delete an art";
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }
+
+            return Result.Ok(Unit.Value);
         }
     }
 }

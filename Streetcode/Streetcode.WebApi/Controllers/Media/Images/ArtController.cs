@@ -36,7 +36,7 @@ public class ArtController : BaseApiController
     }
 
     [HttpDelete("{id:int}")]
-    public async Task<IActionResult> DeleteArt([FromRoute] int id)
+    public async Task<IActionResult> Delete([FromRoute] int id)
     {
         return HandleResult(await Mediator.Send(new DeleteArtCommand(id)));
     }

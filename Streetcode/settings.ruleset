@@ -37,9 +37,9 @@
     <!-- The file name of a C# code file does not match the first type declared in the file. For generics that are defined as Class1<T> the name of the file needs to be Class1{T}.cs or Class1`1.cs depending on the fileNamingConvention setting -->
     <Rule Id="SA1117" Action="Error" />
     <!-- The parameters to a C# method or indexer call or declaration are not all on the same line or each on a separate line. -->
-    <Rule Id="SA1116" Action="None" />
+    <Rule Id="SA1116" Action="Error" />
     <!-- The parameters to a C# method or indexer call or declaration span across multiple lines, but the first parameter does not start on the line after the opening bracket. -->
-    <Rule Id="SA1005" Action="Info" />
+    <Rule Id="SA1005" Action="Warning" />
      <!-- Converting null literal or possible null value to non-nullable type. -->
     <Rule Id="CS8600" Action="Info" />
     <!-- Non-nullable variable must contain a non-null value when exiting constructor. -->
@@ -51,7 +51,7 @@
      <!-- Possible null reference argument for parameter. -->
     <Rule Id="CS8604" Action="Info" />
     <!-- A single-line comment within a C# code file does not begin with a single space. -->
-    <Rule Id="SA1515" Action="Warning" />
+    <Rule Id="SA1515" Action="Error" />
     <!-- A single-line comment within C# code is not preceded by a blank line. -->
     <Rule Id="SA1513" Action="Error" />
     <!-- A closing brace within a C# element, statement, or expression is not followed by a blank line. -->
@@ -77,7 +77,7 @@
     <!-- An element within a C# code file is out of order in relation to the other elements in the code. -->
     <Rule Id="SA1001" Action="Warning" />
     <!-- Converting null literal or possible null value to non-nullable type. -->
-    <Rule Id="CS8600" Action="Info" />
+    <Rule Id="CS8600" Action="Warning" />
     <!-- The spacing around a comma is incorrect, within a C# code file. -->
     <Rule Id="SA1021" Action="Error" />
     <!-- A negative sign within a C# element is not spaced correctly. -->
@@ -87,7 +87,7 @@
     <!-- A call to a member from an inherited class begins with base., and the local class does not contain an override or implementation of the member. -->
     <Rule Id="SA1106" Action="Error" />
     <!-- The C# code contains an extra semicolon. -->
-    <Rule Id="SA1111" Action="None" />
+    <Rule Id="SA1111" Action="Warning" />
     <!-- The closing parenthesis or bracket in a call to a C# method or indexer, or the declaration of a method or indexer, is not placed on the same line as the last parameter. -->
     <Rule Id="SA1112" Action="Error" />
     <!-- The closing parenthesis or bracket in a call to a C# method or indexer, or the declaration of a method or indexer, is not placed on the same line as the opening bracket when the element does not take any parameters. -->
@@ -247,7 +247,7 @@
     <!-- Within a C# property, indexer or event, at least one of the child accessors is written on a single line, and at least one of the child accessors is written across multiple lines. -->
     <Rule Id="SA1506" Action="Error" />
     <!-- An element documentation header above a C# element is followed by a blank line. -->
-    <Rule Id="SA1507" Action="Warning" />
+    <Rule Id="SA1507" Action="Error" />
     <!-- The C# code contains multiple blank lines in a row. -->
     <Rule Id="SA1509" Action="Error" />
     <!-- An opening brace within a C# element, statement, or expression is preceded by a blank line. -->

@@ -25,16 +25,16 @@ namespace Streetcode.XUnitTest.MediatRTests.EmailTests
         [Fact]
         public async Task Handle_ShouldReturnSuccsesfullResult_WhenEmailSentSuccsesfully()
         {
-            //A(Arrange):
+            // A(Arrange):
 
             var emailCommand = new SendEmailCommand(new EmailDTO { From = "Me", Content = "email sending succsesfully test!" });
             _emailServiceMock.Setup(s => s.SendEmailAsync(It.IsAny<Message>())).ReturnsAsync(true);
 
-            //A(Act):
+            // A(Act):
 
             var res = await _sendEmailHandler.Handle(emailCommand , CancellationToken.None);
 
-            //A(Assert):
+            // A(Assert):
 
             Assert.True(res.IsSuccess);
             Assert.Equal(Unit.Value, res.Value);
@@ -46,17 +46,17 @@ namespace Streetcode.XUnitTest.MediatRTests.EmailTests
         [Fact]
         public async Task Handle_ShouldReturnFailureResult_WhenEmailNotSent()
         {
-            //A(Arrange):
+            // A(Arrange):
 
             var emailCommand = new SendEmailCommand(new EmailDTO { From = "Me", Content = "email sending fail test!" });
             _emailServiceMock.Setup(s => s.SendEmailAsync(It.IsAny<Message>())).ReturnsAsync(false);
             _loggerServiceMock.Setup(l => l.LogError(It.IsAny<object>(), It.IsAny<string>()));
 
-            //A(Act):
+            // A(Act):
 
             var res = await _sendEmailHandler.Handle(emailCommand, CancellationToken.None);
 
-            //A(Assert):
+            // A(Assert):
 
             Assert.False(res.IsSuccess);
             Assert.Equal("Failed to send email message", res.Errors[0].Message);

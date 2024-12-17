@@ -3,18 +3,12 @@ using Moq;
 using Streetcode.BLL.DTO.Media.Images;
 using Streetcode.BLL.DTO.News;
 using Streetcode.BLL.Interfaces.BlobStorage;
-using AutoMapper;
-using Moq;
-using Streetcode.BLL.DTO.Media.Images;
-using Streetcode.BLL.DTO.News;
-using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.DAL.Entities.News;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using Microsoft.EntityFrameworkCore.Query;
 using Streetcode.BLL.MediatR.Newss.GetByUrl;
 using Streetcode.DAL.Entities.Media.Images;
-using Streetcode.BLL.DTO.Media.Images;
 using System.Linq.Expressions;
 using System;
 using System.Collections.Generic;
@@ -24,8 +18,8 @@ using System.Threading.Tasks;
 using Xunit;
 using System.Security.Policy;
 using Streetcode.BLL.MediatR.Newss.GetNewsAndLinksByUrl;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using System.Threading;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Streetcode.XUnitTest.MediatRTests.NewsTests
 {

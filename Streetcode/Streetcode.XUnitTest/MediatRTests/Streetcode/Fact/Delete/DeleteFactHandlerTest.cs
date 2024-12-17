@@ -3,7 +3,6 @@ using Moq;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Streetcode.Fact.Delete;
 using Streetcode.DAL.Entities.Partners;
-using FactEntity = Streetcode.DAL.Entities.Streetcode.TextContent.Fact;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using System;
 using System.Collections.Generic;
@@ -13,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using FluentAssertions;
+using FactEntity = Streetcode.DAL.Entities.Streetcode.TextContent.Fact;
 
 namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Fact.Delete
 {
@@ -85,7 +85,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Fact.Delete
 
 			// Assert
 			result.IsFailed.Should().BeTrue();
-			result.Errors.First().Message.Should().Be(errMsg);
+			result.Errors[0].Message.Should().Be(errMsg);
 			_mockLogger.Verify(f => f.LogError(It.IsAny<object>(), errMsg), Times.Once);
 		}
 	}

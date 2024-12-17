@@ -5,7 +5,6 @@ using Streetcode.BLL.MediatR.AdditionalContent.Tag.Create;
 using Xunit;
 using TagEntity = Streetcode.DAL.Entities.AdditionalContent.Tag;
 
-
 namespace Streetcode.XUnitTest.MediatRTests.AdditionalContent.Tag;
 
 public class CreateTagHandlerTest : AdditionalContentTestWrapper
@@ -62,7 +61,5 @@ public class CreateTagHandlerTest : AdditionalContentTestWrapper
         Assert.Null(result.Value);
 
         _repositoryWrapperMock.Verify(rep => rep.TagRepository.CreateAsync(It.IsAny<TagEntity>()), Times.Once);
-
     }
-
 }

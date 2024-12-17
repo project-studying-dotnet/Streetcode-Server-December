@@ -13,7 +13,6 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
 {
     public class GetAllPositionsHandlerTests
     {
-
         private readonly IMapper _mapper;
         private readonly Mock<IRepositoryWrapper> _mockRepositoryWrapper;
         private readonly Mock<ILoggerService> _mockLogger;

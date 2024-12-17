@@ -37,6 +37,11 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Persistence\Configurations\Feedback\" />
+    <Folder Include="Persistence\Configurations\Instagram\" />
+    <Folder Include="Persistence\Configurations\Payment\" />
+    <Folder Include="Persistence\Configurations\Transactions\" />
+    <Folder Include="Persistence\Configurations\Users\" />
     <Folder Include="Persistence\Migrations\" />
     <Folder Include="Persistence\ScriptsMigration\" />
   </ItemGroup>

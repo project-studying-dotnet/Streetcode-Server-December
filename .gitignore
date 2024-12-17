@@ -346,4 +346,4 @@ healthchecksdb
 BlobStorageFolder/
 BlobStorageTestFolder/
 /Streetcode/sqlserver.env
-/houses.zip
+/Streetcode/Streetcode.WebApi/houses.zip

@@ -40,8 +40,6 @@
     <Rule Id="SA1116" Action="Error" />
     <!-- The parameters to a C# method or indexer call or declaration span across multiple lines, but the first parameter does not start on the line after the opening bracket. -->
     <Rule Id="SA1005" Action="Warning" />
-     <!-- Converting null literal or possible null value to non-nullable type. -->
-    <Rule Id="CS8600" Action="Info" />
     <!-- Non-nullable variable must contain a non-null value when exiting constructor. -->
     <Rule Id="CS8618" Action="Info" />
      <!-- Nullability of reference types in value doesn't match target type. -->

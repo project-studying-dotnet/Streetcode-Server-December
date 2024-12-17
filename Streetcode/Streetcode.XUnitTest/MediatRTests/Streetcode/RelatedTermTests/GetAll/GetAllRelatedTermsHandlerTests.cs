@@ -36,6 +36,27 @@ public class GetAllRelatedTermsHandlerTests
         this._handler = new GetAllRelatedTermsHandler(this._mapper, this._mockRepositoryWrapper.Object, this._mockLogger.Object);
     }
 
+    [Fact]
+    public async Task WhenGetAllRequestAndThereAreRelatedTerms_thenReturnOKWithRelatedTerms()
+    {
+        this.CreateRepository();
+        var result = await this._handler.Handle(new GetAllRelatedTermsQuery(), CancellationToken.None);
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Should().NotBeEmpty();
+        result.Value.Should().BeOfType<List<RelatedTermDTO>>();
+        result.Value.Count().Should().Be(3);
+    }
+
+    [Fact]
+    public async Task WhenGetAllRequestAndThereAreNoRelatedTerms_thenReturnEmptyList()
+    {
+        this.CreateEmptyRepository();
+        var result = await this._handler.Handle(new GetAllRelatedTermsQuery(), CancellationToken.None);
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Should().BeEmpty();
+        result.Value.Should().BeOfType<List<RelatedTermDTO>>();
+    }
+
     private void CreateRepository()
     {
         var terms = new List<Term>

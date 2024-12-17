@@ -6,7 +6,6 @@ using Streetcode.BLL.MediatR.AdditionalContent.Tag.GetById;
 using Xunit;
 using TagEntity = Streetcode.DAL.Entities.AdditionalContent.Tag;
 
-
 namespace Streetcode.XUnitTest.MediatRTests.AdditionalContent.Tag;
 
 public class GetTagsByIdHandlerTest : AdditionalContentTestWrapper
@@ -68,7 +67,5 @@ public class GetTagsByIdHandlerTest : AdditionalContentTestWrapper
 
         // Assert
         Assert.Equal(errorMsg, result.Errors[0].Message);
-
     }
-
 }

@@ -7,8 +7,6 @@ using Streetcode.DAL.Entities.Streetcode;
 using Xunit;
 using StreetcodeCoordinateEntity = Streetcode.DAL.Entities.AdditionalContent.Coordinates.Types.StreetcodeCoordinate;
 
-
-
 namespace Streetcode.XUnitTest.MediatRTests.AdditionalContent.Coordinate;
 
 public class GetCoordinateByStreetcodeIdHandlerTest : AdditionalContentTestWrapper
@@ -83,9 +81,6 @@ public class GetCoordinateByStreetcodeIdHandlerTest : AdditionalContentTestWrapp
         string errorMsg = $"Cannot find a coordinates by a streetcode id: {request.StreetcodeId}";
         var streetcodeContent = new StreetcodeContent { Id = 1, };
 
-
-
-
         _repositoryWrapperMock.Setup(rep => rep.StreetcodeRepository.GetFirstOrDefaultAsync(
                 It.Is<Expression<Func<StreetcodeContent, bool>>>(exp => exp.Compile().Invoke(streetcodeContent)),
                 It.IsAny<Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>>>()))
@@ -113,7 +108,5 @@ public class GetCoordinateByStreetcodeIdHandlerTest : AdditionalContentTestWrapp
             rep => rep.StreetcodeCoordinateRepository.GetAllAsync(
                 It.IsAny<Expression<Func<StreetcodeCoordinateEntity, bool>>>(),
                 It.IsAny<Func<IQueryable<StreetcodeCoordinateEntity>, IIncludableQueryable<StreetcodeCoordinateEntity, object>>>()), Times.Once);
-
     }
-
 }

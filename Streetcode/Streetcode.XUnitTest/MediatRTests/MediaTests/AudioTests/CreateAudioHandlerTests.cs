@@ -31,7 +31,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
         [Fact]
         public async Task Handle_ShouldReturnSuccess_WhenAudioIsCreatedSuccessfully()
         {
-            //A(Arrange):
+            // A(Arrange):
 
             var audioCreateDTO = new AudioFileBaseCreateDTO
             {
@@ -54,7 +54,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
             var audioDTO = new AudioDTO
             {
                 Id = audio.Id,
-                Description = audio.
+                Description = audio.Title,
                 BlobName = audio.BlobName,
                 Base64 = audio.Base64,
                 MimeType = audio.MimeType
@@ -66,11 +66,11 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
             _mockRepositoryWrapper.Setup(r => r.AudioRepository.CreateAsync(audio));
             _mockRepositoryWrapper.Setup(r => r.SaveChangesAsync()).ReturnsAsync(1); 
 
-            //A(Act):
+            // A(Act):
 
             var result = await _createAudioHandler.Handle(new CreateAudioCommand(audioCreateDTO), CancellationToken.None);
 
-            //A(Assert):
+            // A(Assert):
 
             Assert.True(result.IsSuccess);
             Assert.Equal(audioDTO, result.Value);
@@ -83,7 +83,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
         [Fact]
         public async Task Handle_ShouldReturnFail_WhenAudioCreationFails()
         {
-            //A(Arrange):
+            // A(Arrange):
 
             var audioCreateDTO = new AudioFileBaseCreateDTO
             {
@@ -103,24 +103,15 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
                 Base64 = "base64"
             };
 
-            var audioDTO = new AudioDTO
-            {
-                Id = audio.Id,
-                Description = audio.
-                BlobName = audio.BlobName,
-                Base64 = audio.Base64,
-                MimeType = audio.MimeType
-            };
-
             _mockMapper.Setup(m => m.Map<Audio>(audioCreateDTO)).Returns(audio);
             _mockRepositoryWrapper.Setup(r => r.AudioRepository.CreateAsync(It.IsAny<Audio>()));
             _mockRepositoryWrapper.Setup(r => r.SaveChangesAsync()).ReturnsAsync(0);
 
-            //A(Act):
+            // A(Act):
 
             var result = await _createAudioHandler.Handle(new CreateAudioCommand(audioCreateDTO), CancellationToken.None);
 
-            //A(Assert):
+            // A(Assert):
 
             Assert.True(result.IsFailed);
             Assert.Single(result.Errors);            

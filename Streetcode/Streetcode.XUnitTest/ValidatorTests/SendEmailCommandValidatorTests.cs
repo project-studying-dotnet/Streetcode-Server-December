@@ -55,7 +55,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
             var invalidEmail = new EmailDTO
             {
                 From = "test@example.com",
-                Content = String.Empty
+                Content = string.Empty
             };
 
             var invalidCommand = new SendEmailCommand(invalidEmail);

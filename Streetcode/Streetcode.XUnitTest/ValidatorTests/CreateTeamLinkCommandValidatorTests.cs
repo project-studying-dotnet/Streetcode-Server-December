@@ -17,7 +17,6 @@ namespace Streetcode.XUnitTest.ValidatorTests
             _validator = new CreateTeamLinkQueryValidator();
         }
 
-
         [Fact]
         public void Should_HaveErrorWhenTeamLinkNull()
         {

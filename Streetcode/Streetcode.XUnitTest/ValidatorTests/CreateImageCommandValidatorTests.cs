@@ -74,4 +74,3 @@ namespace Streetcode.XUnitTest.ValidatorTests
         }
     }
 }
-

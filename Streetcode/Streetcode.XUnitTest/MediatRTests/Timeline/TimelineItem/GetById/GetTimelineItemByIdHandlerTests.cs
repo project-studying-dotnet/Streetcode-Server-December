@@ -44,19 +44,6 @@ public class GetTimelineItemByIdHandlerTests
         );
     }
 
-    private void ConfigureRepository(TimelineItem? timelineItem)
-    {
-        this.repositoryWrapperMock.Setup(repo =>
-                repo.TimelineRepository.GetFirstOrDefaultAsync(
-                    It.IsAny<Expression<Func<TimelineItem, bool>>>(),
-                    It.IsAny<
-                        Func<IQueryable<TimelineItem>, IIncludableQueryable<TimelineItem, object>>
-                    >()
-                )
-            )
-            .ReturnsAsync(timelineItem);
-    }
-
     /// <summary>
     ///
     /// </summary>
@@ -99,7 +86,7 @@ public class GetTimelineItemByIdHandlerTests
             .Errors.Should()
             .ContainSingle("Handler should return a single error when item is not found.");
         result
-            .Errors.First()
+            .Errors[0]
             .Message.Should()
             .Contain("Cannot find a timeline item with corresponding id: 99");
         this.loggerMock.Verify(
@@ -110,5 +97,18 @@ public class GetTimelineItemByIdHandlerTests
                 ),
             Times.Once
         );
+    }
+
+    private void ConfigureRepository(TimelineItem? timelineItem)
+    {
+        this.repositoryWrapperMock.Setup(repo =>
+                repo.TimelineRepository.GetFirstOrDefaultAsync(
+                    It.IsAny<Expression<Func<TimelineItem, bool>>>(),
+                    It.IsAny<
+                        Func<IQueryable<TimelineItem>, IIncludableQueryable<TimelineItem, object>>
+                    >()
+                )
+            )
+            .ReturnsAsync(timelineItem);
     }
 }

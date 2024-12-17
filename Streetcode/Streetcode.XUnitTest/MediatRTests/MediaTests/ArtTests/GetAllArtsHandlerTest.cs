@@ -41,68 +41,64 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.ArtTests
         [Fact]
         public async Task Handle_ShouldReturnAllArts_WhenArtsMoreThan0()
         {
-            //A(Arrange):
+            // A(Arrange):
 
             var allArts = new List<Art>()
             {
-                new Art {Id = 1 , Description = "None1" , Title = "Art_0" , ImageId = 11 },
-                new Art {Id = 2 , Description = "None2" , Title = "Art_1" , ImageId = 12 },
-                new Art {Id = 3 , Description = "None3" , Title = "Art_2" , ImageId = 13 },
-                new Art {Id = 4 , Description = "None4" , Title = "Art_3" , ImageId = 14 }
+                new Art { Id = 1, Description = "None1", Title = "Art_0", ImageId = 11 },
+                new Art { Id = 2, Description = "None2", Title = "Art_1", ImageId = 12 },
+                new Art { Id = 3, Description = "None3", Title = "Art_2", ImageId = 13 },
+                new Art { Id = 4, Description = "None4", Title = "Art_3", ImageId = 14 }
             };
 
             var allDtos = new List<ArtDTO>()
             {
-                new ArtDTO {Id = 1 , Description = "None1" , Title = "Art_0" , ImageId = 11 },
-                new ArtDTO {Id = 2 , Description = "None2" , Title = "Art_1" , ImageId = 12 },
-                new ArtDTO {Id = 3 , Description = "None3" , Title = "Art_2" , ImageId = 13 },
-                new ArtDTO {Id = 4 , Description = "None4" , Title = "Art_3" , ImageId = 14 }
+                new ArtDTO { Id = 1, Description = "None1", Title = "Art_0", ImageId = 11 },
+                new ArtDTO { Id = 2, Description = "None2", Title = "Art_1", ImageId = 12 },
+                new ArtDTO { Id = 3, Description = "None3", Title = "Art_2", ImageId = 13 },
+                new ArtDTO { Id = 4, Description = "None4", Title = "Art_3", ImageId = 14 }
             };
 
             _repositoryMock.Setup(r => r.ArtRepository.GetAllAsync(It.IsAny<Expression<Func<Art, bool>>>(), It.IsAny<Func<IQueryable<Art>, IIncludableQueryable<Art, object>>>())).ReturnsAsync(allArts);
             _mapperMock.Setup(m => m.Map<IEnumerable<ArtDTO>>(allArts)).Returns(allDtos);
 
-            //A(Act):
+            // A(Act):
 
             var res = await _getAllArtsHandler.Handle(new GetAllArtsQuery(), CancellationToken.None);
 
-            //A(Assert):
+            // A(Assert):
             
             Assert.True(res.IsSuccess);
-            Assert.Equal(allDtos.Count(), res.Value.Count());
+            Assert.Equal(allDtos.Count, res.Value.Count());
             Assert.Collection(allArts,
                 allDtos.Select(exp => (Action<Art>)(actual =>
                 {
                     Assert.Equal(exp.Description, actual.Description);
                     Assert.Equal(exp.Title, actual.Title);
                     Assert.Equal(exp.ImageId, actual.ImageId);
-                })).ToArray()
-                );
+                })).ToArray());
 
             _repositoryMock.Verify(r => r.ArtRepository.GetAllAsync(It.IsAny<Expression<Func<Art, bool>>?>(), It.IsAny<Func<IQueryable<Art>, IIncludableQueryable<Art, object>>?>()), Times.Once);
             _mapperMock.Verify(m => m.Map<IEnumerable<ArtDTO>>(allArts), Times.Once);
             _loggerMock.VerifyNoOtherCalls();
         }
 
-
         [Fact]
         public async Task Handle_ShouldReturnFail_WhenNoArts()
         {
-            //A(Arrange):
-
-            IEnumerable<ArtDTO> arts = null;
+            // A(Arrange):
 
             _repositoryMock.Setup(r => r.ArtRepository.GetAllAsync(It.IsAny<Expression<Func<Art, bool>>>(), It.IsAny<Func<IQueryable<Art>, IIncludableQueryable<Art, object>>>())).ReturnsAsync(null as IEnumerable<Art>);
 
-            //A(Act):
+            // A(Act):
 
             var res = await _getAllArtsHandler.Handle(new GetAllArtsQuery(), CancellationToken.None);
 
-            //A(Assert):
+            // A(Assert):
 
             Assert.Single(res.Errors);
             Assert.True(res.IsFailed);
-            Assert.Equal("Cannot find any arts" , res.Errors[0].Message);
+            Assert.Equal("Cannot find any arts", res.Errors[0].Message);
 
             _loggerMock.Verify(l => l.LogError(new GetAllArtsQuery(), "Cannot find any arts"), Times.Once);
         }

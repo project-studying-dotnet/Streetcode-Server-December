@@ -46,8 +46,6 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.Update
             // Arrange
             var command = new UpdateRelatedTermCommand(new RelatedTermDTO { Id = 1, Word = "UpdatedWord", TermId = 2 });
             var existingEntity = new RelatedTerm { Id = 1, Word = "OldWord", TermId = 1 };
-            var updatedEntity = new RelatedTerm { Id = 1, Word = "UpdatedWord", TermId = 2 };
-            var updatedDto = new RelatedTermDTO { Id = 1, Word = "UpdatedWord", TermId = 2 };
 
             this._mockRepositoryWrapper
                 .Setup(r => r.RelatedTermRepository.GetFirstOrDefaultBySpecAsync(It.IsAny<IBaseSpecification<RelatedTerm>>()))

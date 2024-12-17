@@ -27,7 +27,6 @@ namespace Streetcode.XUnitTest.MediatRTests.Partners.GetById
 		private readonly Mock<ILoggerService> _mockLogger;
 		private readonly GetPartnerByIdHandler _handler;
 
-
 		public GetPartnerByIdHandlerTest()
 		{
 			_mockRepositoryWapper = new Mock<IRepositoryWrapper>();
@@ -61,8 +60,8 @@ namespace Streetcode.XUnitTest.MediatRTests.Partners.GetById
 			var partnerDto = new PartnerDTO { Id = 1 };
 
 			_mockRepositoryWapper.Setup(x => x.PartnersRepository
-				.GetSingleOrDefaultAsync(It.IsAny<Expression<Func<Partner, bool>>>(),
-										 It.IsAny<Func<IQueryable<Partner>, IIncludableQueryable<Partner, object>>>()))
+				.GetSingleOrDefaultAsync(It.IsAny<Expression<Func<Partner, bool>>>(), 
+					It.IsAny<Func<IQueryable<Partner>, IIncludableQueryable<Partner, object>>>()))
 				.ReturnsAsync(partner);
 
 			_mockMapper.Setup(x => x.Map<PartnerDTO>(partner)).Returns(partnerDto);

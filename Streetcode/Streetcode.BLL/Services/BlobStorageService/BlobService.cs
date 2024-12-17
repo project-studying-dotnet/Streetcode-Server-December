@@ -43,7 +43,7 @@ public class BlobService : IBlobService
         return base64;
     }
 
-    public string SaveFileInStorage(string base64, string name, string extension)
+    public string SaveFileInStorage(string base64, string name, string mimeType)
     {
         byte[] imageBytes = Convert.FromBase64String(base64);
         string createdFileName = $"{DateTime.Now}{name}"
@@ -54,7 +54,7 @@ public class BlobService : IBlobService
         string hashBlobStorageName = HashFunction(createdFileName);
 
         Directory.CreateDirectory(_blobPath);
-        EncryptFile(imageBytes, extension, hashBlobStorageName);
+        EncryptFile(imageBytes, mimeType, hashBlobStorageName);
 
         return hashBlobStorageName;
     }

@@ -26,7 +26,6 @@ public class GetAllPartnersHandlerTest
 		_handler = new GetAllPartnersHandler(_mockRepositoryWrapper.Object, _mockMapper.Object, _mockLogger.Object);
 	}
 
-
 	[Fact]
 	public async Task Handle_WhenNoPartnersFound_ShouldReturnFail()
 	{

@@ -51,9 +51,6 @@
     <None Remove="..\.dockerignore" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\.editorconfig" Link=".editorconfig" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Streetcode.BLL\Streetcode.BLL.csproj" />
   </ItemGroup>
   <ItemGroup>

@@ -46,7 +46,11 @@ namespace Streetcode.XUnitTest.CustomMiddlewareTests
                         });
                         endpoints.MapGet("/api/test/badrequest", async context =>
                         {
-                            throw new BadRequestException("Bad request");
+                            throw new BadRequestException();
+                        });
+                        endpoints.MapGet("/api/test/forbidden", async context =>
+                        {
+                            throw new ForbiddenAccessException();
                         });
                     });
                 }));
@@ -69,6 +73,7 @@ namespace Streetcode.XUnitTest.CustomMiddlewareTests
             Assert.NotNull(problemDetails);
             Assert.Equal(500, problemDetails?.Status);
             Assert.Equal("An error occurred while processing your request.", problemDetails?.Title);
+            Assert.Equal("Internal server error has occurred", problemDetails?.Detail);
         }
 
         [Fact]
@@ -76,7 +81,7 @@ namespace Streetcode.XUnitTest.CustomMiddlewareTests
         {
             var response = await _client.GetAsync("/api/test/badrequest");
 
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
 
             var responseContent = await response.Content.ReadAsStringAsync();
             var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(responseContent, new JsonSerializerOptions
@@ -86,7 +91,25 @@ namespace Streetcode.XUnitTest.CustomMiddlewareTests
 
             Assert.NotNull(problemDetails);
             Assert.Equal(400, problemDetails?.Status);
-            Assert.Contains("Bad request", problemDetails?.Detail);
+            Assert.Contains("The request is invalid.", problemDetails?.Detail);
+        }
+
+        [Fact]
+        public async Task Middleware_ShouldReturn403_WhenForbiddenAccessExceptionIsThrown()
+        {
+            var response = await _client.GetAsync("/api/test/forbidden");
+
+            Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(responseContent, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
+            Assert.NotNull(problemDetails);
+            Assert.Equal(403, problemDetails?.Status);
+            Assert.Contains("Forbidden access", problemDetails?.Detail);
         }
     }
 }

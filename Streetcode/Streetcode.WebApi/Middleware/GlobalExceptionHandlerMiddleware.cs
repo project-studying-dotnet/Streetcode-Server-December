@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Streetcode.BLL.Exceptions;
-using Streetcode.BLL.Util;
+using Microsoft.AspNetCore.Http;
 
 namespace Streetcode.WebApi.Middleware
 {
@@ -22,47 +22,26 @@ namespace Streetcode.WebApi.Middleware
             {
                 await _next(context);
             }
-            catch (Exception ex)
+            catch (HttpException ex)
             {
-                LogException(ex);
+                _logger.LogError(ex, ex.Message);
                 await HandleExceptionAsync(context, ex);
             }
-        }
-
-        private void LogException(Exception exception)
-        {
-            switch (exception)
+            catch (Exception ex)
             {
-                case BadRequestException badRequestException:
-                    _logger.LogWarning($"Bad Request: {badRequestException.Message}");
-                    break;
-
-                case BLL.Exceptions.UnauthorizedAccessException unauthorizedAccessException:
-                    _logger.LogWarning($"Unauthorized Access: {unauthorizedAccessException.Message}");
-                    break;
-
-                case ForbiddenAccessException forbiddenAccessException:
-                    _logger.LogWarning($"Forbidden Access: {forbiddenAccessException.Message}");
-                    break;
-
-                case NotFoundException notFoundException:
-                    _logger.LogInformation($"Not Found: {notFoundException.Message}");
-                    break;
-
-                case ValidationException validationException:
-                    _logger.LogInformation($"Validation Error: {validationException.Message}");
-                    break;
-
-                default:
-                    _logger.LogError($"An unexpected error occurred: {exception.Message}");
-                    break;
+                _logger.LogError(ex, "An exception occurred while processing the request to {Path}", context.Request.Path);
+                await HandleExceptionAsync(context, ex);
             }
         }
 
         private async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             context.Response.ContentType = "application/json";
-            var statusCode = ExceptionStatusCodeMapper.MapToStatusCode(exception);
+
+            var statusCode = exception is HttpException httpException
+                ? httpException.StatusCode
+                : StatusCodes.Status500InternalServerError;
+
             context.Response.StatusCode = statusCode;
 
             var problemDetails = new ProblemDetails

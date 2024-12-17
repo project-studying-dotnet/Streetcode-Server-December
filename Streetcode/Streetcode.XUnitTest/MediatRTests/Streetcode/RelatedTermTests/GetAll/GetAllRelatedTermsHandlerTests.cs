@@ -57,33 +57,6 @@ public class GetAllRelatedTermsHandlerTests
         result.Value.Should().BeOfType<List<RelatedTermDTO>>();
     }
 
-    private void CreateEmptyRepository()
-    {
-        var relatedTerms = new List<RelatedTerm>();
-        this._mockRepositoryWrapper
-               .Setup(repo => repo.RelatedTermRepository.GetAllAsync(
-                   It.IsAny<Expression<Func<RelatedTerm, bool>>>(),
-                   It.IsAny<Func<IQueryable<RelatedTerm>, IIncludableQueryable<RelatedTerm, object>>?>()))
-               .ReturnsAsync((
-                   Expression<Func<RelatedTerm, bool>> predicate,
-                   Func<IQueryable<RelatedTerm>, IIncludableQueryable<RelatedTerm, object>>? include) =>
-               {
-                   var query = relatedTerms.AsQueryable();
-
-                   if (predicate != null)
-                   {
-                       query = query.Where(predicate);
-                   }
-
-                   if (include != null)
-                   {
-                       query = include(query);
-                   }
-
-                   return query.ToList();
-               });
-    }
-
     private void CreateRepository()
     {
         var terms = new List<Term>

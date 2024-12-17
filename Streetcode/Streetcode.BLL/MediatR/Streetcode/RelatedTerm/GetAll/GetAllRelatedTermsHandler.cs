@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.DTO.Streetcode.TextContent;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetAllByTermId;
+using Streetcode.BLL.Specifications.Streetcode.RelatedTerm;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetAll
@@ -25,8 +26,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetAll
         public async Task<Result<IEnumerable<RelatedTermDTO>>> Handle(GetAllRelatedTermsQuery request, CancellationToken cancellationToken)
         {
             var relatedTerms = await _repository.RelatedTermRepository
-                .GetAllAsync(
-                include: rt => rt.Include(rt => rt.Term));
+                .GetAllBySpecAsync(new RelatedTermWithTermSpecification());
 
             if (relatedTerms is null)
             {

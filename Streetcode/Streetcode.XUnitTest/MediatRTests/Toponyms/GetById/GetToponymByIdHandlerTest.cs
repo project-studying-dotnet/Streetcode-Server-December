@@ -38,48 +38,6 @@ namespace Streetcode.XUnitTest.MediatRTests.Toponyms.GetById
         }
 
         /// <summary>
-        /// Configures the repository mock with sample data for testing.
-        /// </summary>
-        private void ConfigureRepository()
-        {
-            var toponyms = new List<Toponym>()
-            {
-                new Toponym()
-                {
-                    Id = 1,
-                    Community = "Riverdale Community",
-                    AdminRegionNew = "Central District",
-                    AdminRegionOld = "Old Central District",
-                    Oblast = "Springfield Region",
-                    StreetName = "Heroes Avenue",
-                },
-                new Toponym()
-                {
-                    Id = 2,
-                    Community = "Greenwood Community",
-                    AdminRegionNew = "Westside District",
-                    AdminRegionOld = "Old Westside District",
-                    Oblast = "Shelby Region",
-                    StreetName = "Oakwood Street",
-                },
-                new Toponym()
-                {
-                    Id = 3,
-                    Community = "Lakeside Community",
-                    AdminRegionNew = "Northern District",
-                    AdminRegionOld = "Old Northern District",
-                    Oblast = "Evergreen Region",
-                    StreetName = "Lakeview Drive",
-                },
-            };
-            this._mockRepositoryWrapper.Setup(x => x.ToponymRepository.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<Toponym, bool>>>(), It.IsAny<Func<IQueryable<Toponym>, IIncludableQueryable<Toponym, object>>>()))
-                .ReturnsAsync((Expression<Func<Toponym, bool>> predicate, Func<IQueryable<Toponym>, IIncludableQueryable<Toponym, object>> include) =>
-                {
-                    return toponyms.FirstOrDefault(predicate.Compile());
-                });
-        }
-
-        /// <summary>
         /// Tests that the handler returns a successful result when a toponym exists.
         /// </summary>
         [Fact]
@@ -124,6 +82,48 @@ namespace Streetcode.XUnitTest.MediatRTests.Toponyms.GetById
             result.IsSuccess.Should().BeFalse();
             result.Errors.Should().NotBeEmpty();
             this._mockLogger.Verify(logger => logger.LogError(It.IsAny<object>(), $"Cannot find any toponym with corresponding id: {toponimId}"), Times.Once);
+        }
+
+        /// <summary>
+        /// Configures the repository mock with sample data for testing.
+        /// </summary>
+        private void ConfigureRepository()
+        {
+            var toponyms = new List<Toponym>()
+            {
+                new Toponym()
+                {
+                    Id = 1,
+                    Community = "Riverdale Community",
+                    AdminRegionNew = "Central District",
+                    AdminRegionOld = "Old Central District",
+                    Oblast = "Springfield Region",
+                    StreetName = "Heroes Avenue",
+                },
+                new Toponym()
+                {
+                    Id = 2,
+                    Community = "Greenwood Community",
+                    AdminRegionNew = "Westside District",
+                    AdminRegionOld = "Old Westside District",
+                    Oblast = "Shelby Region",
+                    StreetName = "Oakwood Street",
+                },
+                new Toponym()
+                {
+                    Id = 3,
+                    Community = "Lakeside Community",
+                    AdminRegionNew = "Northern District",
+                    AdminRegionOld = "Old Northern District",
+                    Oblast = "Evergreen Region",
+                    StreetName = "Lakeview Drive",
+                },
+            };
+            this._mockRepositoryWrapper.Setup(x => x.ToponymRepository.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<Toponym, bool>>>(), It.IsAny<Func<IQueryable<Toponym>, IIncludableQueryable<Toponym, object>>>()))
+                .ReturnsAsync((Expression<Func<Toponym, bool>> predicate, Func<IQueryable<Toponym>, IIncludableQueryable<Toponym, object>> include) =>
+                {
+                    return toponyms.FirstOrDefault(predicate.Compile());
+                });
         }
     }
 }

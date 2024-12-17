@@ -30,7 +30,6 @@ namespace Streetcode.XUnitTest.MediatRTests.Partners.Delete
 			_handler = new DeletePartnerHandler(_mockRepositoryWrapper.Object, _mockMapper.Object, _mockLogger.Object);
 		}
 
-
 		[Fact]
 		public async Task Handler_WhenNoPartnerFound_ShouldReturnsFail()
 		{
@@ -70,6 +69,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Partners.Delete
 		public async Task Handler_WhenExceptionThrownDuringSave_ShouldReturnFail()
 		{
 			var errMsg = "Partner removal failed";
+
 			// Arrange
 			var partner = new Partner { Id = 1 };
 
@@ -85,7 +85,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Partners.Delete
 
 			// Assert
 			result.IsFailed.Should().BeTrue();
-			result.Errors.First().Message.Should().Be(errMsg);
+			result.Errors[0].Message.Should().Be(errMsg);
 			_mockLogger.Verify(x => x.LogError(It.IsAny<object>(), errMsg), Times.Once);
 		}
 	}

@@ -11,7 +11,7 @@ namespace Streetcode.BLL.Validation.Validators.CommandsAndQuerysValidators
         public CreateImageCommandValidator()
         {
             RuleFor(x => x.Image)
-                .NotNull().WithMessage("Inage object is required")
+                .NotNull().WithMessage("Image object is required")
                 .SetValidator(new ImageFileBaseCreateDTOValidator());
         }
     }

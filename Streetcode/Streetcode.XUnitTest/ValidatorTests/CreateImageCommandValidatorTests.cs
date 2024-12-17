@@ -28,7 +28,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
 
             // Assert
             result.ShouldHaveValidationErrorFor(x => x.Image)
-                  .WithErrorMessage("Image object is required");
+                  .WithErrorMessage("Inage object is required");
         }
 
         [Fact]

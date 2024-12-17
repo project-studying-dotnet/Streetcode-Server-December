@@ -18,8 +18,7 @@ namespace Streetcode.BLL.MediatR.Analytics
         public CreateStatisticRecordHandler(
             IMapper mapper,
             IRepositoryWrapper repositoryWrapper,
-            ILoggerService logger
-        )
+            ILoggerService logger)
         {
             _mapper = mapper;
             _repositoryWrapper = repositoryWrapper;
@@ -28,16 +27,14 @@ namespace Streetcode.BLL.MediatR.Analytics
 
         public async Task<Result<StatisticRecordDTO>> Handle(
             CreateStatisticRecordCommand request,
-            CancellationToken cancellationToken
-        )
+            CancellationToken cancellationToken)
         {
             try
             {
                 var newStatisticRecord = CreateStatisticRecord(request.createStatisticRecord);
 
                 var entity = _repositoryWrapper.StatisticRecordRepository.Create(
-                    newStatisticRecord
-                );
+                    newStatisticRecord);
 
                 if (entity is null)
                 {
@@ -57,8 +54,7 @@ namespace Streetcode.BLL.MediatR.Analytics
             {
                 _logger.LogError(ex, "Unexpected error occurred while creating StatisticRecord");
                 return Result.Fail(
-                    new Error("An unexpected error occurred during record creation")
-                );
+                    new Error("An unexpected error occurred during record creation"));
             }
         }
 

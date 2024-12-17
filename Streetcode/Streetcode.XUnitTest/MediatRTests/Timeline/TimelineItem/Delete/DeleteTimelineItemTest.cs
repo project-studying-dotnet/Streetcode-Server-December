@@ -3,12 +3,12 @@ using Microsoft.EntityFrameworkCore.Query;
 using Moq;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Timeline.TimelineItem.Delete;
+using Streetcode.DAL.Entities.Timeline;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using System.Linq.Expressions;
 using Xunit;
-using TimelineEntity = Streetcode.DAL.Entities.Timeline.TimelineItem;
 
-namespace Streetcode.XUnitTest.MediatRTests.Timeline.TimelineItem.Delete
+namespace Streetcode.XUnitTest.MediatRTests.Timeline.TimelineItems.Delete
 {
     public class DeleteTimelineItemTest
     {
@@ -43,11 +43,12 @@ namespace Streetcode.XUnitTest.MediatRTests.Timeline.TimelineItem.Delete
         public async Task Handle_SaveChangesFailed_ReturnsResultFail()
         {
             // Arrange
-            var command = new DeleteTimelineItemCommand(1);
+            var timelineItem = new TimelineItem { Id = 1, Date = DateTime.Now, Title = "New Title" };
             string errorMsg = $"Failed to delete timeline item";
 
-            SetupGetFirstOrDefault(null!);
+            var command = new DeleteTimelineItemCommand(1);
 
+            SetupGetFirstOrDefault(timelineItem);
             SetupSaveChanges(0);
 
             // Act
@@ -62,7 +63,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Timeline.TimelineItem.Delete
         public async Task Handle_SaveChangesSucceded_ReturnsResultOk()
         {
             // Arrange
-            var timelineItem = new TimelineEntity { Id = 1, Date = DateTime.Now, Title = "New Title" };
+            var timelineItem = new TimelineItem { Id = 1, Date = DateTime.Now, Title = "New Title" };
             var command = new DeleteTimelineItemCommand(1);
 
             SetupGetFirstOrDefault(timelineItem);
@@ -77,11 +78,11 @@ namespace Streetcode.XUnitTest.MediatRTests.Timeline.TimelineItem.Delete
             Assert.Equal(Unit.Value, result.Value);
         }
 
-        private void SetupGetFirstOrDefault(TimelineEntity timelineEntity)
+        private void SetupGetFirstOrDefault(TimelineItem TimelineItem)
         {
             _mockRepositoryWrapper.Setup(s => s.TimelineRepository.GetFirstOrDefaultAsync(
-                            It.IsAny<Expression<Func<TimelineEntity, bool>>>(),
-                            It.IsAny<Func<IQueryable<TimelineEntity>, IIncludableQueryable<TimelineEntity, object>>>()).Result).Returns(timelineEntity);
+                            It.IsAny<Expression<Func<TimelineItem, bool>>>(),
+                            It.IsAny<Func<IQueryable<TimelineItem>, IIncludableQueryable<TimelineItem, object>>>()).Result).Returns(TimelineItem);
         }
 
         private void SetupSaveChanges(int returnVal)

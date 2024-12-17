@@ -18,6 +18,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using Streetcode.DAL.Specification;
 
 namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.Delete
 {
@@ -46,9 +47,8 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.Delete
             // Arrange
             var command = new DeleteRelatedTermCommand("nonexistentWord");
 
-            this._mockRepositoryWrapper.Setup(r => r.RelatedTermRepository.GetFirstOrDefaultAsync(
-                It.IsAny<Expression<Func<RelatedTerm, bool>>>(),
-                It.IsAny<Func<IQueryable<RelatedTerm>, IIncludableQueryable<RelatedTerm, object>>>())).ReturnsAsync((RelatedTerm)null);
+            this._mockRepositoryWrapper.Setup(r => r.RelatedTermRepository.GetFirstOrDefaultBySpecAsync(
+                It.IsAny<IBaseSpecification<RelatedTerm>>())).ReturnsAsync((RelatedTerm)null);
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
@@ -65,9 +65,8 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.Delete
             var command = new DeleteRelatedTermCommand("existingWord");
             var relatedTerm = new RelatedTerm { Id = 1, Word = "existingWord", TermId = 1 };
 
-            this._mockRepositoryWrapper.Setup(r => r.RelatedTermRepository.GetFirstOrDefaultAsync(
-                It.IsAny<Expression<Func<RelatedTerm, bool>>>(),
-                It.IsAny<Func<IQueryable<RelatedTerm>, IIncludableQueryable<RelatedTerm, object>>>())).ReturnsAsync(relatedTerm);
+            this._mockRepositoryWrapper.Setup(r => r.RelatedTermRepository.GetFirstOrDefaultBySpecAsync(
+                It.IsAny<IBaseSpecification<RelatedTerm>>())).ReturnsAsync(relatedTerm);
             this._mockRepositoryWrapper.Setup(r => r.SaveChangesAsync()).ReturnsAsync(0);
 
             // Act
@@ -86,9 +85,8 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.Delete
             var relatedTerm = new RelatedTerm { Id = 1, Word = "existingWord", TermId = 1 };
             var relatedTermDto = new RelatedTermDTO { Id = 1, Word = "existingWord", TermId = 1 };
 
-            this._mockRepositoryWrapper.Setup(r => r.RelatedTermRepository.GetFirstOrDefaultAsync(
-                It.IsAny<Expression<Func<RelatedTerm, bool>>>(),
-                It.IsAny<Func<IQueryable<RelatedTerm>, IIncludableQueryable<RelatedTerm, object>>>())).ReturnsAsync(relatedTerm);
+            this._mockRepositoryWrapper.Setup(r => r.RelatedTermRepository.GetFirstOrDefaultBySpecAsync(
+                It.IsAny<IBaseSpecification<RelatedTerm>>())).ReturnsAsync(relatedTerm);
             this._mockRepositoryWrapper.Setup(r => r.SaveChangesAsync()).ReturnsAsync(1);
 
             // Act

@@ -16,6 +16,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using Streetcode.DAL.Specification;
 
 namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.Create
 {
@@ -46,7 +47,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.Create
             var entity = new RelatedTerm { Id = 1, Word = "Test", TermId = 1 };
             var createdDto = new RelatedTermDTO { Id = 1, Word = "Test", TermId = 1 };
 
-            this._mockRepositoryWrapper.Setup(r => r.RelatedTermRepository.GetAllAsync(It.IsAny<Expression<Func<RelatedTerm, bool>>>(), null)).ReturnsAsync(new List<RelatedTerm>());
+            this._mockRepositoryWrapper.Setup(r => r.RelatedTermRepository.GetAllBySpecAsync(It.IsAny<IBaseSpecification<RelatedTerm>>())).ReturnsAsync(new List<RelatedTerm>());
             this._mockRepositoryWrapper.Setup(r => r.RelatedTermRepository.Create(It.IsAny<RelatedTerm>())).Returns(entity);
             this._mockRepositoryWrapper.Setup(r => r.SaveChangesAsync()).ReturnsAsync(1);
 
@@ -67,7 +68,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.Create
             var command = new CreateRelatedTermCommand(new RelatedTermDTO { Word = "Test", TermId = 1 });
             var existingEntity = new RelatedTerm { Id = 1, Word = "Test", TermId = 1 };
 
-            this._mockRepositoryWrapper.Setup(r => r.RelatedTermRepository.GetAllAsync(It.IsAny<Expression<Func<RelatedTerm, bool>>>(), null)).ReturnsAsync(new List<RelatedTerm> { existingEntity });
+            this._mockRepositoryWrapper.Setup(r => r.RelatedTermRepository.GetAllBySpecAsync(It.IsAny<IBaseSpecification<RelatedTerm>>())).ReturnsAsync(new List<RelatedTerm> { existingEntity });
 
             // Act
             var result = await this._handler.Handle(command, CancellationToken.None);
@@ -85,7 +86,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.Create
             var entity = new RelatedTerm { Word = "Test", TermId = 1 };
             var createdDto = new RelatedTermDTO { Id = 1, Word = "Test", TermId = 1 };
 
-            this._mockRepositoryWrapper.Setup(r => r.RelatedTermRepository.GetAllAsync(It.IsAny<Expression<Func<RelatedTerm, bool>>>(), null)).ReturnsAsync(new List<RelatedTerm>());
+            this._mockRepositoryWrapper.Setup(r => r.RelatedTermRepository.GetAllBySpecAsync(It.IsAny<IBaseSpecification<RelatedTerm>>())).ReturnsAsync(new List<RelatedTerm>());
             this._mockRepositoryWrapper.Setup(r => r.RelatedTermRepository.Create(It.IsAny<RelatedTerm>())).Returns(entity);
             this._mockRepositoryWrapper.Setup(r => r.SaveChangesAsync()).ReturnsAsync(0);
 

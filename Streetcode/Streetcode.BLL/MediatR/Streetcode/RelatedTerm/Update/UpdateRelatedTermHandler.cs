@@ -4,6 +4,7 @@ using MediatR;
 using Streetcode.BLL.DTO.Streetcode.RelatedFigure;
 using Streetcode.BLL.DTO.Streetcode.TextContent;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Specifications.Streetcode.RelatedTerm;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Update
@@ -24,7 +25,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Update
         public async Task<Result<RelatedTermDTO>> Handle(UpdateRelatedTermCommand request, CancellationToken cancellationToken)
         {
             var existingRelatedTerm = await _repository.RelatedTermRepository
-                .GetFirstOrDefaultAsync(rt => rt.Id == request.RelatedTerm.Id);
+                .GetFirstOrDefaultBySpecAsync(new RelatedTermWithTermSpecification(request.RelatedTerm.Id));
 
             if (existingRelatedTerm == null)
             {

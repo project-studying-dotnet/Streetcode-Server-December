@@ -16,6 +16,8 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using Streetcode.DAL.Specification;
+using Microsoft.EntityFrameworkCore;
 
 namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.GetAllByTermId
 {
@@ -39,80 +41,91 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.GetAllBy
         }
 
         [Fact]
-        public async Task WhenGetRelatedTermWithTermId1_thenReturnOKWithRelatedTerm()
+        public async Task whenGetRelatedTermWithTermId1_thenReturnOKWithRelatedTerms()
         {
-            this.CreateRepository();
-            var result = await this._handler.Handle(new GetAllRelatedTermsByTermIdQuery(1), CancellationToken.None);
-            result.IsSuccess.Should().BeTrue();
-            result.Value.Should().NotBeNull();
-            result.Value.Should().BeOfType<List<RelatedTermDTO>>();
-            foreach (var term in result.Value!)
-            {
-                term.TermId.Should().Be(1);
-            }
-        }
-
-        [Fact]
-        public async Task WhenGetRelatedTermWithTermId2_thenReturnOKWithRelatedTerm()
-        {
-            this.CreateRepository();
-            var result = await this._handler.Handle(new GetAllRelatedTermsByTermIdQuery(2), CancellationToken.None);
-            result.IsSuccess.Should().BeTrue();
-            result.Value.Should().NotBeNull();
-            result.Value.Should().BeOfType<List<RelatedTermDTO>>();
-            foreach (var term in result.Value!)
-            {
-                term.TermId.Should().Be(2);
-            }
-        }
-
-        [Fact]
-        public async Task WhenGetRelatedTermDoNotExist_thenReturnEmtyCollection()
-        {
-            this.CreateRepository();
-            var result = await this._handler.Handle(new GetAllRelatedTermsByTermIdQuery(10), CancellationToken.None);
-            result.IsSuccess.Should().BeTrue();
-            result.Value.Should().NotBeNull();
-            result.Value.Should().BeOfType<List<RelatedTermDTO>>();
-            result.Value.Count().Should().Be(0);
-        }
-
-        private void CreateRepository()
-        {
-            var terms = new List<Term>
-        {
-            new Term { Id = 1, Title = "Term1", Description = "Description1" },
-            new Term { Id = 2, Title = "Term2", Description = "Description2" },
-        };
-
+            // Arrange
             var relatedTerms = new List<RelatedTerm>
         {
-            new RelatedTerm { Id = 1, Word = "Hello", TermId = 1, Term = terms[0] },
-            new RelatedTerm { Id = 2, Word = "HelloelloH", TermId = 1, Term = terms[0] },
-            new RelatedTerm { Id = 3, Word = "He", TermId = 2, Term = terms[1] },
+            new RelatedTerm { Id = 1, Word = "TestWord1", TermId = 1 },
+            new RelatedTerm { Id = 2, Word = "TestWord2", TermId = 1 },
+            new RelatedTerm { Id = 3, Word = "TestWord3", TermId = 2 },
+        };
+
+            var relatedTermDTOs = new List<RelatedTermDTO>
+        {
+            new RelatedTermDTO { Id = 1, Word = "TestWord1", TermId = 1 },
+            new RelatedTermDTO { Id = 2, Word = "TestWord2", TermId = 1 },
         };
 
             this._mockRepositoryWrapper
-                .Setup(repo => repo.RelatedTermRepository.GetAllAsync(
-                    It.IsAny<Expression<Func<RelatedTerm, bool>>>(),
-                    It.IsAny<Func<IQueryable<RelatedTerm>, IIncludableQueryable<RelatedTerm, object>>?>()))
-                .ReturnsAsync((
-                    Expression<Func<RelatedTerm, bool>> predicate,
-                    Func<IQueryable<RelatedTerm>, IIncludableQueryable<RelatedTerm, object>>? include) =>
-                {
-                    var query = relatedTerms.AsQueryable();
-                    if (predicate != null)
-                    {
-                        query = query.Where(predicate);
-                    }
+                .Setup(r => r.RelatedTermRepository.GetAllBySpecAsync(It.IsAny<IBaseSpecification<RelatedTerm>>()))
+                .ReturnsAsync(relatedTerms.Where(rt => rt.TermId == 1));
 
-                    if (include != null)
-                    {
-                        query = include(query);
-                    }
+            var query = new GetAllRelatedTermsByTermIdQuery(1);
 
-                    return query.ToList();
-                });
+            // Act
+            var result = await this._handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            result.IsSuccess.Should().BeTrue();
+            result.Value.Count().Should().Be(2);
+            result.Value.Should().BeEquivalentTo(relatedTermDTOs);
+        }
+
+        [Fact]
+        public async Task whenGetRelatedTermWithTermId2_thenReturnOKWithRelatedTerms()
+        {
+            // Arrange
+            var relatedTerms = new List<RelatedTerm>
+        {
+            new RelatedTerm { Id = 1, Word = "TestWord1", TermId = 1 },
+            new RelatedTerm { Id = 2, Word = "TestWord2", TermId = 1 },
+            new RelatedTerm { Id = 3, Word = "TestWord3", TermId = 2 },
+        };
+
+            var relatedTermDTOs = new List<RelatedTermDTO>
+        {
+            new RelatedTermDTO { Id = 3, Word = "TestWord3", TermId = 2 },
+        };
+
+            this._mockRepositoryWrapper
+                .Setup(r => r.RelatedTermRepository.GetAllBySpecAsync(It.IsAny<IBaseSpecification<RelatedTerm>>()))
+                .ReturnsAsync(relatedTerms.Where(rt => rt.TermId == 2));
+
+            var query = new GetAllRelatedTermsByTermIdQuery(2);
+
+            // Act
+            var result = await this._handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            result.IsSuccess.Should().BeTrue();
+            result.Value.Count().Should().Be(1);
+            result.Value.Should().BeEquivalentTo(relatedTermDTOs);
+        }
+
+        [Fact]
+        public async Task whenGetRelatedTermDoNotExist_thenReturnEmptyCollection()
+        {
+            // Arrange
+            var relatedTerms = new List<RelatedTerm>
+        {
+            new RelatedTerm { Id = 1, Word = "TestWord1", TermId = 1 },
+            new RelatedTerm { Id = 2, Word = "TestWord2", TermId = 1 },
+            new RelatedTerm { Id = 3, Word = "TestWord3", TermId = 2 },
+        };
+
+            this._mockRepositoryWrapper
+                .Setup(r => r.RelatedTermRepository.GetAllBySpecAsync(It.IsAny<IBaseSpecification<RelatedTerm>>()))
+                .ReturnsAsync(relatedTerms.Where(rt => rt.TermId == 3));
+
+            var query = new GetAllRelatedTermsByTermIdQuery(3);
+
+            // Act
+            var result = await this._handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            result.IsSuccess.Should().BeTrue();
+            result.Value.Count().Should().Be(0);
         }
     }
 }

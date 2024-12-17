@@ -15,6 +15,8 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using Streetcode.DAL.Specification;
+using Streetcode.BLL.Specifications.Streetcode.RelatedTerm;
 
 namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.GetById
 {
@@ -38,38 +40,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.GetById
         }
 
         [Fact]
-        public async Task WhenGetRelatedTermWithId1_thenReturnOKWithRelatedTerm()
-        {
-            this.CreateRepository();
-            var result = await this._handler.Handle(new GetRelatedTermByIdQuery(1), CancellationToken.None);
-            result.IsSuccess.Should().BeTrue();
-            result.Value.Should().NotBeNull();
-            result.Value.Should().BeOfType<RelatedTermDTO>();
-            result.Value.Id.Should().Be(1);
-        }
-
-        [Fact]
-        public async Task WhenGetRelatedTermWithId2_thenReturnOKWithRelatedTerm()
-        {
-            this.CreateRepository();
-            var result = await this._handler.Handle(new GetRelatedTermByIdQuery(2), CancellationToken.None);
-            result.IsSuccess.Should().BeTrue();
-            result.Value.Should().NotBeNull();
-            result.Value.Should().BeOfType<RelatedTermDTO>();
-            result.Value.Id.Should().Be(2);
-        }
-
-        [Fact]
-        public async Task WhenGetRelatedTermDoNotExist_thenReturnException()
-        {
-            this.CreateRepository();
-            var result = await this._handler.Handle(new GetRelatedTermByIdQuery(10), CancellationToken.None);
-            result.IsSuccess.Should().BeFalse();
-            result.Errors.Should().ContainSingle();
-            result.Errors[0].Message.Should().Be("Cannot get word by id");
-        }
-
-        private void CreateRepository()
+        public async Task whenGetRelatedTermWithId1_thenReturnOKWithRelatedTerm()
         {
             var terms = new List<Term>
         {
@@ -85,26 +56,66 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.GetById
         };
 
             this._mockRepositoryWrapper
-                .Setup(repo => repo.RelatedTermRepository.GetFirstOrDefaultAsync(
-                    It.IsAny<Expression<Func<RelatedTerm, bool>>>(),
-                    It.IsAny<Func<IQueryable<RelatedTerm>, IIncludableQueryable<RelatedTerm, object>>?>()))
-                .ReturnsAsync((
-                    Expression<Func<RelatedTerm, bool>> predicate,
-                    Func<IQueryable<RelatedTerm>, IIncludableQueryable<RelatedTerm, object>>? include) =>
-                {
-                    var query = relatedTerms.AsQueryable();
-                    if (predicate != null)
-                    {
-                        query = query.Where(predicate);
-                    }
+                .Setup(r => r.RelatedTermRepository.GetFirstOrDefaultBySpecAsync(It.IsAny<IBaseSpecification<RelatedTerm>>()))
+                .ReturnsAsync(relatedTerms.Where(rt => rt.Id == 1).FirstOrDefault());
+            var result = await this._handler.Handle(new GetRelatedTermByIdQuery(1), CancellationToken.None);
+            result.IsSuccess.Should().BeTrue();
+            result.Value.Should().NotBeNull();
+            result.Value.Should().BeOfType<RelatedTermDTO>();
+            result.Value.Id.Should().Be(1);
+            result.Value.Word.Should().Be("Hello");
+        }
 
-                    if (include != null)
-                    {
-                        query = include(query);
-                    }
+        [Fact]
+        public async Task whenGetRelatedTermWithId2_thenReturnOKWithRelatedTerm()
+        {
+            var terms = new List<Term>
+        {
+            new Term { Id = 1, Title = "Term1", Description = "Description1" },
+            new Term { Id = 2, Title = "Term2", Description = "Description2" },
+        };
 
-                    return query.FirstOrDefault();
-                });
+            var relatedTerms = new List<RelatedTerm>
+        {
+            new RelatedTerm { Id = 1, Word = "Hello", TermId = 1, Term = terms[0] },
+            new RelatedTerm { Id = 2, Word = "HelloelloH", TermId = 1, Term = terms[0] },
+            new RelatedTerm { Id = 3, Word = "He", TermId = 2, Term = terms[1] },
+        };
+
+            this._mockRepositoryWrapper
+                .Setup(r => r.RelatedTermRepository.GetFirstOrDefaultBySpecAsync(It.IsAny<IBaseSpecification<RelatedTerm>>()))
+                .ReturnsAsync(relatedTerms.Where(rt => rt.Id == 2).FirstOrDefault());
+            var result = await this._handler.Handle(new GetRelatedTermByIdQuery(1), CancellationToken.None);
+            result.IsSuccess.Should().BeTrue();
+            result.Value.Should().NotBeNull();
+            result.Value.Should().BeOfType<RelatedTermDTO>();
+            result.Value.Id.Should().Be(2);
+            result.Value.Word.Should().Be("HelloelloH");
+        }
+
+        [Fact]
+        public async Task whenGetRelatedTermDoNotExist_thenReturnException()
+        {
+            var terms = new List<Term>
+        {
+            new Term { Id = 1, Title = "Term1", Description = "Description1" },
+            new Term { Id = 2, Title = "Term2", Description = "Description2" },
+        };
+
+            var relatedTerms = new List<RelatedTerm>
+        {
+            new RelatedTerm { Id = 1, Word = "Hello", TermId = 1, Term = terms[0] },
+            new RelatedTerm { Id = 2, Word = "HelloelloH", TermId = 1, Term = terms[0] },
+            new RelatedTerm { Id = 3, Word = "He", TermId = 2, Term = terms[1] },
+        };
+
+            this._mockRepositoryWrapper
+                .Setup(r => r.RelatedTermRepository.GetFirstOrDefaultBySpecAsync(It.IsAny<IBaseSpecification<RelatedTerm>>()))
+                .ReturnsAsync(relatedTerms.Where(rt => rt.Id == 10).FirstOrDefault());
+            var result = await this._handler.Handle(new GetRelatedTermByIdQuery(10), CancellationToken.None);
+            result.IsSuccess.Should().BeFalse();
+            result.Errors.Should().ContainSingle();
+            result.Errors.First().Message.Should().Be("Cannot get word by id");
         }
     }
 }

@@ -23,7 +23,7 @@ public class CreateTagHandlerTest : AdditionalContentTestWrapper
         var tag = new TagEntity { Title = "Tag test 1" };
         var tagDtoCreate = new CreateTagDTO { Title = "Tag test 1" };
         var tagDto = new TagDTO { Id = 1, Title = "Tag test 1" };
-        var request = new CreateTagQuery(tagDtoCreate);
+        var request = new CreateTagCommand(tagDtoCreate);
 
         _repositoryWrapperMock.Setup(rep => rep.TagRepository.CreateAsync(It.IsAny<TagEntity>()))
             .ReturnsAsync(tag);
@@ -48,7 +48,7 @@ public class CreateTagHandlerTest : AdditionalContentTestWrapper
     public async Task Handle_ReturnOkResult_WhenTagAreNotCreate()
     {
         // Arrange
-        var request = new CreateTagQuery(new CreateTagDTO { Title = "test" });
+        var request = new CreateTagCommand(new CreateTagDTO { Title = "test" });
 
         _repositoryWrapperMock.Setup(rep => rep.TagRepository.CreateAsync(It.IsAny<TagEntity>()))
             .ReturnsAsync((TagEntity)null!);

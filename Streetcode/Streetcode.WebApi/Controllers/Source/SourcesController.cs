@@ -43,15 +43,15 @@ public class SourcesController : BaseApiController
 		return HandleResult(await Mediator.Send(new CreateCategoryContentCommand(newCategoryContent)));
 	}
   
-    [HttpGet("{streetcodeId:int}")]
-    public async Task<IActionResult> GetCategoriesByStreetcodeId([FromRoute] int streetcodeId)
-    {
+    	[HttpGet("{streetcodeId:int}")]
+    	public async Task<IActionResult> GetCategoriesByStreetcodeId([FromRoute] int streetcodeId)
+    	{
         return HandleResult(await Mediator.Send(new GetCategoriesByStreetcodeIdQuery(streetcodeId)));
-    }
+    	}
     
-    [HttpPost]
-    public async Task<IActionResult> UpdateCategories([FromBody] SourceLinkCategoryDTO sourceLinkCategory)
-    {
+    	[HttpPost]
+    	public async Task<IActionResult> UpdateCategories([FromBody] SourceLinkCategoryDTO sourceLinkCategory)
+    	{
         return HandleResult(await Mediator.Send(new UpdateSourceLinkCategoryCommand(sourceLinkCategory)));
-    }
+    	}
 }

@@ -26,5 +26,8 @@ namespace Streetcode.DAL.Entities.Streetcode.TextContent
         public int StreetcodeId { get; set; }
 
         public StreetcodeContent? Streetcode { get; set; }
+
+        [Required]
+        public int Index { get; set; }
     }
 }

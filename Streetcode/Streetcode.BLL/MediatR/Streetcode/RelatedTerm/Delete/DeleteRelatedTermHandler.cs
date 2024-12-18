@@ -4,6 +4,7 @@ using MediatR;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.DTO.Streetcode.TextContent;
 using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.BLL.Specifications.Streetcode.RelatedTerm;
 
 namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Delete
 {
@@ -22,7 +23,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Delete
 
         public async Task<Result<RelatedTermDTO>> Handle(DeleteRelatedTermCommand request, CancellationToken cancellationToken)
         {
-            var relatedTerm = await _repository.RelatedTermRepository.GetFirstOrDefaultAsync(rt => rt.Word.ToLower().Equals(request.word.ToLower()));
+            var relatedTerm = await _repository.RelatedTermRepository.GetFirstOrDefaultBySpecAsync(new RelatedTermByWordSpecification(request.word));
 
             if (relatedTerm is null)
             {

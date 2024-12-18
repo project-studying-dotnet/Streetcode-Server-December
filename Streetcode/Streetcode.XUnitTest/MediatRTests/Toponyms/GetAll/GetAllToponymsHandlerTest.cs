@@ -41,44 +41,6 @@ namespace Streetcode.XUnitTest.MediatRTests.Toponyms.GetAll
         }
 
         /// <summary>
-        /// Configures the repository with sample Toponym data.
-        /// </summary>
-        private void ConfigureRepository()
-        {
-            var toponyms = new List<Toponym>()
-            {
-                new Toponym()
-                {
-                    Id = 1,
-                    Community = "Riverdale Community",
-                    AdminRegionNew = "Central District",
-                    AdminRegionOld = "Old Central District",
-                    Oblast = "Springfield Region",
-                    StreetName = "Heroes Avenue",
-                },
-                new Toponym()
-                {
-                    Id = 2,
-                    Community = "Greenwood Community",
-                    AdminRegionNew = "Westside District",
-                    AdminRegionOld = "Old Westside District",
-                    Oblast = "Shelby Region",
-                    StreetName = "Oakwood Street",
-                },
-                new Toponym()
-                {
-                    Id = 3,
-                    Community = "Lakeside Community",
-                    AdminRegionNew = "Northern District",
-                    AdminRegionOld = "Old Northern District",
-                    Oblast = "Evergreen Region",
-                    StreetName = "Lakeview Drive",
-                },
-            };
-            _mockRepositoryWrapper.Setup(repo => repo.ToponymRepository.FindAll(It.IsAny<Expression<Func<Toponym, bool>>>())).Returns(toponyms.AsQueryable());
-        }
-
-        /// <summary>
         /// Validates that the handler returns all toponyms when no title filter is provided.
         /// </summary>
         [Fact]
@@ -158,6 +120,44 @@ namespace Streetcode.XUnitTest.MediatRTests.Toponyms.GetAll
             result.IsSuccess.Should().BeTrue();
             result.Value.Toponyms.Should().HaveCount(1); // Only one toponym should be on the second page
             result.Value.Toponyms.First().StreetName.Should().Be("Lakeview Drive");
+        }
+
+        /// <summary>
+        /// Configures the repository with sample Toponym data.
+        /// </summary>
+        private void ConfigureRepository()
+        {
+            var toponyms = new List<Toponym>()
+            {
+                new Toponym()
+                {
+                    Id = 1,
+                    Community = "Riverdale Community",
+                    AdminRegionNew = "Central District",
+                    AdminRegionOld = "Old Central District",
+                    Oblast = "Springfield Region",
+                    StreetName = "Heroes Avenue",
+                },
+                new Toponym()
+                {
+                    Id = 2,
+                    Community = "Greenwood Community",
+                    AdminRegionNew = "Westside District",
+                    AdminRegionOld = "Old Westside District",
+                    Oblast = "Shelby Region",
+                    StreetName = "Oakwood Street",
+                },
+                new Toponym()
+                {
+                    Id = 3,
+                    Community = "Lakeside Community",
+                    AdminRegionNew = "Northern District",
+                    AdminRegionOld = "Old Northern District",
+                    Oblast = "Evergreen Region",
+                    StreetName = "Lakeview Drive",
+                },
+            };
+            _mockRepositoryWrapper.Setup(repo => repo.ToponymRepository.FindAll(It.IsAny<Expression<Func<Toponym, bool>>>())).Returns(toponyms.AsQueryable());
         }
     }
 }

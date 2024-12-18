@@ -34,7 +34,6 @@ namespace Streetcode.XUnitTest.MediatRTests.Partners.GetPartnersByStreetcodeId
 			_handler = new GetPartnersByStreetcodeIdHandler(_mockMapper.Object, _mockRepositoryWapper.Object, _mockLogger.Object);
 		}
 
-
 		[Fact]
 		public async Task Handler_WhenNoStreetcodeFound_ShouldReturnsFail()
 		{
@@ -60,7 +59,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Partners.GetPartnersByStreetcodeId
 
 			_mockRepositoryWapper.Setup(repo => repo.StreetcodeRepository
 				.GetSingleOrDefaultAsync(It.IsAny<Expression<Func<StreetcodeContent, bool>>>(), null))
-				.ReturnsAsync((streetcode));
+				.ReturnsAsync(streetcode);
 
 			_mockRepositoryWapper.Setup(repo => repo.PartnersRepository
 				.GetAllAsync(It.IsAny<Expression<Func<Partner, bool>>>(), It.IsAny<Func<IQueryable<Partner>, IIncludableQueryable<Partner, object>>>()))
@@ -83,11 +82,11 @@ namespace Streetcode.XUnitTest.MediatRTests.Partners.GetPartnersByStreetcodeId
 
 			_mockRepositoryWapper.Setup(repo => repo.StreetcodeRepository
 				.GetSingleOrDefaultAsync(It.IsAny<Expression<Func<StreetcodeContent, bool>>>(), null))
-				.ReturnsAsync((streetcode));
+				.ReturnsAsync(streetcode);
 
 			_mockRepositoryWapper.Setup(repo => repo.PartnersRepository
 				.GetAllAsync(It.IsAny<Expression<Func<Partner, bool>>>(), It.IsAny<Func<IQueryable<Partner>, IIncludableQueryable<Partner, object>>>()))
-				.ReturnsAsync((partners));
+				.ReturnsAsync(partners);
 
 			// Act
 			var result = await _handler.Handle(new GetPartnersByStreetcodeIdQuery(1), CancellationToken.None);

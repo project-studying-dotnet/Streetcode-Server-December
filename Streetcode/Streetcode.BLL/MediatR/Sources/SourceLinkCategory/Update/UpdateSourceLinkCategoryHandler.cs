@@ -44,11 +44,6 @@ public class UpdateSourceLinkCategoryHandler : IRequestHandler<UpdateSourceLinkC
             return Result.Fail(new Error(errorMsg));
         }
 
-        // if (existSourceLinkCategory is null)
-        // {
-        //     
-        // }
-
         _repositoryWrapper.SourceCategoryRepository.Update(sourceLinkCategory);
         var resultIsSuccess = await _repositoryWrapper.SaveChangesAsync() > 0;
 

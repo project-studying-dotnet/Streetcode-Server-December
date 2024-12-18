@@ -68,7 +68,5 @@ public class GetAllTagsHandlerTest : AdditionalContentTestWrapper
 
         // Assert
         Assert.Equal(errorMsg, result.Errors[0].Message);
-
     }
-
 }

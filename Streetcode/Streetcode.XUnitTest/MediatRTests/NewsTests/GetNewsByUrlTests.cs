@@ -9,7 +9,6 @@ using Streetcode.DAL.Repositories.Interfaces.Base;
 using Microsoft.EntityFrameworkCore.Query;
 using Streetcode.BLL.MediatR.Newss.GetByUrl;
 using Streetcode.DAL.Entities.Media.Images;
-using Streetcode.BLL.DTO.Media.Images;
 using System.Linq.Expressions;
 using System;
 using System.Collections.Generic;

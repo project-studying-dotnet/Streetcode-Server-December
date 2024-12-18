@@ -3,12 +3,12 @@ using Moq;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Mapping.Streetcode.TextContent;
 using Streetcode.DAL.Repositories.Interfaces.Base;
-using TextEntity = Streetcode.DAL.Entities.Streetcode.TextContent.Text;
 using Streetcode.BLL.MediatR.Streetcode.Text.GetById;
 using Microsoft.EntityFrameworkCore.Query;
 using System.Linq.Expressions;
 using Xunit;
 using FluentAssertions;
+using TextEntity = Streetcode.DAL.Entities.Streetcode.TextContent.Text;
 
 namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Text.GetById
 {
@@ -85,7 +85,6 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Text.GetById
         [Fact]
         public async Task Handle_GetById_ReturnsError_WhenNoTextFound()
         {
-            List<TextEntity> text = null;
             _mockRepositoryWrapper
                 .Setup(repo => repo.TextRepository.GetFirstOrDefaultAsync(
                     It.IsAny<Expression<Func<TextEntity, bool>>>(),

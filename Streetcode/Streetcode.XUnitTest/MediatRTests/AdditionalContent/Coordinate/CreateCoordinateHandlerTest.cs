@@ -4,7 +4,6 @@ using Streetcode.BLL.MediatR.AdditionalContent.Coordinate.Create;
 using Xunit;
 using StreetcodeCoordinateEntity = Streetcode.DAL.Entities.AdditionalContent.Coordinates.Types.StreetcodeCoordinate;
 
-
 namespace Streetcode.XUnitTest.MediatRTests.AdditionalContent.Coordinate;
 
 public class CreateCoordinateHandlerTest : AdditionalContentTestWrapper
@@ -71,5 +70,4 @@ public class CreateCoordinateHandlerTest : AdditionalContentTestWrapper
         _mapperMock.Verify(m => m.Map<StreetcodeCoordinateEntity>(streetcodeCoordinateDto), Times.Once);
         _repositoryWrapperMock.Verify(rep => rep.SaveChangesAsync(), Times.Once());
     }
-
 }

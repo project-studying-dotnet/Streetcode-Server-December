@@ -4,12 +4,14 @@ using MediatR;
 using Streetcode.BLL.DTO.Streetcode.RelatedFigure;
 using Streetcode.BLL.DTO.Streetcode.TextContent;
 using Streetcode.BLL.DTO.Streetcode.TextContent.Fact;
+using Streetcode.BLL.Exceptions;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Specifications.Streetcode.Fact;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Streetcode.Fact.FactReorder
 {
-    public class FactReorderHandler : IRequestHandler<FactReorderCommand, Result<FactReorderDto>>
+    public class FactReorderHandler : IRequestHandler<FactReorderCommand, Result<List<FactDto>>>
     {
         private readonly IMapper _mapper;
         private readonly IRepositoryWrapper _repository;
@@ -22,66 +24,36 @@ namespace Streetcode.BLL.MediatR.Streetcode.Fact.FactReorder
             _logger = logger;
         }
 
-        public async Task<Result<FactReorderDto>> Handle(FactReorderCommand request, CancellationToken cancellationToken)
+        public async Task<Result<List<FactDto>>> Handle(FactReorderCommand request, CancellationToken cancellationToken)
         {
-            if (request.FactReorderDto.IdPositions.Count != request.FactReorderDto.FactReorders.Count)
-            {
-                const string errorMsg = "FactReorders and Positions should have equal count of objects!";
-                _logger.LogError(request, errorMsg);
-                return Result.Fail(new Error(errorMsg));
-            }
-
-            var factIds = request.FactReorderDto.FactReorders
-                .Select(f => f.Id).Order().ToList();
-
             var existingFacts = await _repository.FactRepository
-                .GetAllAsync(rt => factIds.Contains(rt.Id) && request.FactReorderDto.IdPositions.Contains(rt.Id));
+                .GetAllBySpecAsync(new GetAllFactsByStreetcodeIdSpecification(request.FactReorderDto.StreetcodeId));
 
             if (existingFacts == null || !existingFacts.Any())
             {
                 const string errorMsg = "Facts not found!";
                 _logger.LogError(request, errorMsg);
-                return Result.Fail(new Error(errorMsg));
+                throw new EntityNotFoundException();
             }
 
-            if (existingFacts.Count() != factIds.Count)
+            if (request.FactReorderDto.IdPositions.Count() != request.FactReorderDto.IdPositions.Distinct().Count())
             {
-                const string errorMsg = "All Facts should exist";
+                const string errorMsg = "IdPositions should not have duplicates";
                 _logger.LogError(request, errorMsg);
-                return Result.Fail(new Error(errorMsg));
+                throw new Exception(errorMsg);
             }
 
-            int streetcodeId = existingFacts.First().Id;
-            if (existingFacts.Count() != existingFacts.Where(x => x.StreetcodeId == streetcodeId).Count())
+            if (existingFacts.Count() != request.FactReorderDto.IdPositions.Count || !request.FactReorderDto.IdPositions.All(id => existingFacts.Any(x => x.Id == id)))
             {
-                const string errorMsg = "All Facts should be linked to one Streetcode";
+                const string errorMsg = "All IdPositions should be related to Facts with provided StreetcodeId";
                 _logger.LogError(request, errorMsg);
-                return Result.Fail(new Error(errorMsg));
+                throw new Exception(errorMsg);
             }
-
-            var reorderedFacts = new List<FactUpdateCreateDto>();
-            for (int i = 0; i < request.FactReorderDto.IdPositions.Count; i++)
-            {
-                var factToReorder = request.FactReorderDto.FactReorders.Where(x => x.Id == request.FactReorderDto.IdPositions[i]).First();
-                var reorderedFact = new FactUpdateCreateDto()
-                {
-                    Id = factIds[i],
-                    Title = factToReorder.Title,
-                    ImageId = factToReorder.ImageId,
-                    FactContent = factToReorder.FactContent,
-                    ImageDescription = factToReorder.ImageDescription,
-                };
-                reorderedFacts.Add(reorderedFact);
-            }
-
-            _mapper.Map(reorderedFacts, existingFacts);
 
             foreach (var fact in existingFacts)
             {
-                fact.StreetcodeId = streetcodeId;
+                fact.Index = request.FactReorderDto.IdPositions.IndexOf(fact.Id) + 1;
             }
-
-            _repository.FactRepository.UpdateRange(existingFacts);
 
             var isSuccess = await _repository.SaveChangesAsync() > 0;
 
@@ -89,16 +61,10 @@ namespace Streetcode.BLL.MediatR.Streetcode.Fact.FactReorder
             {
                 const string errorMsg = "Failed to save the reordered facts.";
                 _logger.LogError(request, errorMsg);
-                return Result.Fail(new Error(errorMsg));
+                throw new Exception(errorMsg);
             }
 
-            var updatedFactReorderDto = new FactReorderDto
-            {
-                FactReorders = _mapper.Map<List<FactUpdateCreateDto>>(reorderedFacts),
-                IdPositions = [],
-            };
-
-            return Result.Ok(updatedFactReorderDto);
+            return Result.Ok(_mapper.Map<List<FactDto>>(existingFacts));
         }
     }
 }

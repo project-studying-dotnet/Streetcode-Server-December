@@ -10,7 +10,7 @@ namespace Streetcode.BLL.DTO.Streetcode.TextContent.Fact
     public class FactReorderDto
     {
         [Required]
-        public List<FactUpdateCreateDto> FactReorders { get; set; } = null!;
+        public int StreetcodeId { get; set; }
         [Required]
         public List<int> IdPositions { get; set; } = null!;
     }

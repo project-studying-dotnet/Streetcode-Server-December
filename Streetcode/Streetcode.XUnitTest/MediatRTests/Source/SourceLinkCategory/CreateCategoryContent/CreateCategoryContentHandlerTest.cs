@@ -34,62 +34,83 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.SourceLinkCategory.CreateCate
 		}
 
 		[Fact]
-		public async Task Handle_ContentIsNull_ReturnsResultFail()
+		public async Task Handle_WhenCreationFails_ShouldReturnFail()
 		{
 			// Arrange
-			string errMsg = "Cannot create new CategoryContent";
+			var newContent = new CategoryContentCreateDTO
+			{
+				Text = "Sample Content",
+				SourceLinkCategoryId = 1,
+				StreetcodeId = 1
+			};
+			var request = new CreateCategoryContentCommand(newContent);
+			var newStreetcodeContent = new StreetcodeCategoryContent
+			{
+				Text = "Sample Content",
+				SourceLinkCategoryId = 1,
+				StreetcodeId = 1
+			};
+
+			_mockMapper.Setup(mapper => mapper.Map<StreetcodeCategoryContent>(newContent)).Returns(newStreetcodeContent);
+			_mockRepositoryWrapper.Setup(repo => repo.StreetcodeCategoryContentRepository.CreateAsync(It.IsAny<StreetcodeCategoryContent>())).ReturnsAsync(newStreetcodeContent);
+			_mockRepositoryWrapper.Setup(repo => repo.SourceCategoryRepository.GetSingleOrDefaultAsync(It.IsAny<Expression<Func<SourceEntity, bool>>>(), null))
+				.ReturnsAsync(new SourceEntity { Id = 1, Title = "Category" });
+			_mockRepositoryWrapper.Setup(repo => repo.StreetcodeRepository.GetSingleOrDefaultAsync(It.IsAny<Expression<Func<StreetcodeContent, bool>>>(), null))
+				.ReturnsAsync(new StreetcodeContent { Id = 1, Title = "Streetcode" });
+			_mockRepositoryWrapper.Setup(repo => repo.SaveChangesAsync()).ReturnsAsync(0);
 
 			// Act
-			var result = await _handler.Handle(new CreateCategoryContentCommand(null), CancellationToken.None);
-
-			// Assert
-			result.IsFailed.Should().BeTrue();
-			_mockLogger.Verify(c => c.LogError(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
-		}
-
-
-		[Fact]
-		public async Task Handle_WhenExceptionOccurs_ShouldReturnFail()
-		{
-			// Arrange
-			var command = new CreateCategoryContentCommand(new CategoryContentCreateDTO { Text = "Test Content", SourceLinkCategoryId = 1, StreetcodeId = 1 });
-			var contentEntity = new StreetcodeCategoryContent { Text = "Test Content", SourceLinkCategoryId = 1, StreetcodeId = 1 };
-
-			_mockMapper.Setup(m => m.Map<StreetcodeCategoryContent>(command.newContent)).Returns(contentEntity);
-			_mockRepositoryWrapper.Setup(r => r.StreetcodeCategoryContentRepository.CreateAsync(contentEntity))
-				.ThrowsAsync(new Exception("Database error"));
-
-			// Act
-			var result = await _handler.Handle(command, CancellationToken.None);
+			var result = await _handler.Handle(request, CancellationToken.None);
 
 			// Assert
 			Assert.False(result.IsSuccess);
-			Assert.Equal("An error occurred while creating the content.", result.Errors[0].Message);
-			_mockLogger.Verify(l => l.LogError(It.IsAny<string>(), "Database error"), Times.Once);
+			Assert.Single(result.Errors);
+			Assert.Equal("Failed to create source records", result.Errors.First().Message);
+
+			_mockLogger.Verify(logger => logger.LogError(It.IsAny<CreateCategoryContentCommand>(), "Failed to create source records"), Times.Once);
+			_mockRepositoryWrapper.Verify(repo => repo.StreetcodeCategoryContentRepository.CreateAsync(It.IsAny<StreetcodeCategoryContent>()), Times.Once);
+			_mockRepositoryWrapper.Verify(repo => repo.SaveChangesAsync(), Times.Once);
+			_mockRepositoryWrapper.Verify(repo => repo.SourceCategoryRepository.GetSingleOrDefaultAsync(It.IsAny<Expression<Func<SourceEntity, bool>>>(), null), Times.Once);
+			_mockRepositoryWrapper.Verify(repo => repo.StreetcodeRepository.GetSingleOrDefaultAsync(It.IsAny<Expression<Func<StreetcodeContent, bool>>>(), null), Times.Once);
 		}
 
 		[Fact]
-		public async Task Handle_WhenContentCreatedSuccessfully_ShouldReturnSuccess()
+		public async Task Handle_WhenCreationSucceeds_ShouldReturnSuccess()
 		{
 			// Arrange
-			var newContentDTO = new CategoryContentCreateDTO { Text = "Test Content", SourceLinkCategoryId = 1, StreetcodeId = 1 };
-			var contentEntity = new StreetcodeCategoryContent { Text = "Test Content", SourceLinkCategoryId = 1, StreetcodeId = 1 };
-			var command = new CreateCategoryContentCommand(newContentDTO);
-			var contentDto = new CategoryContentCreateDTO { Text = "Test Content", SourceLinkCategoryId = 1, StreetcodeId = 1 };
+			var newContent = new CategoryContentCreateDTO
+			{
+				Text = "Sample Content",
+				SourceLinkCategoryId = 1,
+				StreetcodeId = 1
+			};
+			var request = new CreateCategoryContentCommand(newContent);
+			var newStreetcodeContent = new StreetcodeCategoryContent
+			{
+				Text = "Sample Content",
+				SourceLinkCategoryId = 1,
+				StreetcodeId = 1
+			};
 
-			_mockMapper.Setup(m => m.Map<StreetcodeCategoryContent>(command.newContent)).Returns(contentEntity);
-			_mockRepositoryWrapper.Setup(r => r.StreetcodeCategoryContentRepository.CreateAsync(contentEntity)).ReturnsAsync(contentEntity);
-			_mockRepositoryWrapper.Setup(r => r.SourceCategoryRepository.GetSingleOrDefaultAsync(It.IsAny<Expression<Func<SourceEntity, bool>>>(), null)).ReturnsAsync(new SourceEntity());
-			_mockRepositoryWrapper.Setup(r => r.StreetcodeRepository.GetSingleOrDefaultAsync(It.IsAny<Expression<Func<StreetcodeContent, bool>>>(), null)).ReturnsAsync(new StreetcodeContent());
-			_mockRepositoryWrapper.Setup(r => r.SaveChanges()).Returns(1);
-			_mockMapper.Setup(m => m.Map<CategoryContentCreateDTO>(contentEntity)).Returns(contentDto);
+			_mockMapper.Setup(mapper => mapper.Map<StreetcodeCategoryContent>(newContent)).Returns(newStreetcodeContent);
+			_mockRepositoryWrapper.Setup(repo => repo.StreetcodeCategoryContentRepository.CreateAsync(It.IsAny<StreetcodeCategoryContent>())).ReturnsAsync(newStreetcodeContent);
+			_mockRepositoryWrapper.Setup(repo => repo.SourceCategoryRepository.GetSingleOrDefaultAsync(It.IsAny<Expression<Func<SourceEntity, bool>>>(), null))
+				.ReturnsAsync(new SourceEntity { Id = 1, Title = "Category" });
+			_mockRepositoryWrapper.Setup(repo => repo.StreetcodeRepository.GetSingleOrDefaultAsync(It.IsAny<Expression<Func<StreetcodeContent, bool>>>(), null))
+				.ReturnsAsync(new StreetcodeContent { Id = 1, Title = "Streetcode" });
+			_mockRepositoryWrapper.Setup(repo => repo.SaveChangesAsync()).ReturnsAsync(1);
 
 			// Act
-			var result = await _handler.Handle(command, CancellationToken.None);
+			var result = await _handler.Handle(request, CancellationToken.None);
 
 			// Assert
-			result.IsSuccess.Should().BeTrue();
-			result.Value.Should().BeEquivalentTo(contentDto);
+			Assert.True(result.IsSuccess);
+			Assert.Empty(result.Errors);
+
+			_mockRepositoryWrapper.Verify(repo => repo.StreetcodeCategoryContentRepository.CreateAsync(It.IsAny<StreetcodeCategoryContent>()), Times.Once);
+			_mockRepositoryWrapper.Verify(repo => repo.SaveChangesAsync(), Times.Once);
+			_mockRepositoryWrapper.Verify(repo => repo.SourceCategoryRepository.GetSingleOrDefaultAsync(It.IsAny<Expression<Func<SourceEntity, bool>>>(), null), Times.Once);
+			_mockRepositoryWrapper.Verify(repo => repo.StreetcodeRepository.GetSingleOrDefaultAsync(It.IsAny<Expression<Func<StreetcodeContent, bool>>>(), null), Times.Once);
 		}
 	}
 }

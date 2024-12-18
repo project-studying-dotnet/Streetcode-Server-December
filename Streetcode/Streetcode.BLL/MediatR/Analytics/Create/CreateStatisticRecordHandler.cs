@@ -29,45 +29,24 @@ namespace Streetcode.BLL.MediatR.Analytics
             CreateStatisticRecordCommand request,
             CancellationToken cancellationToken)
         {
-            try
+            var newStatisticRecord = _mapper.Map<StatisticRecord>(request.createStatisticRecord);
+
+            var entity = _repositoryWrapper.StatisticRecordRepository.Create(
+                newStatisticRecord);
+
+            if (entity is null)
             {
-                var newStatisticRecord = CreateStatisticRecord(request.createStatisticRecord);
-
-                var entity = _repositoryWrapper.StatisticRecordRepository.Create(
-                    newStatisticRecord);
-
-                if (entity is null)
-                {
-                    return LogAndFail("Cannot convert null to StatisticRecord", request);
-                }
-
-                var resultIsSuccess = await _repositoryWrapper.SaveChangesAsync() > 0;
-
-                if (!resultIsSuccess)
-                {
-                    return LogAndFail("Failed to create a StatisticRecord", request);
-                }
-
-                return Result.Ok(_mapper.Map<StatisticRecordDTO>(entity));
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Unexpected error occurred while creating StatisticRecord");
-                return Result.Fail(
-                    new Error("An unexpected error occurred during record creation"));
-            }
-        }
-
-        private StatisticRecord CreateStatisticRecord(CreateStatisticRecordDTO createDto)
-        {
-            var statisticRecord = _mapper.Map<StatisticRecord>(createDto);
-
-            if (statisticRecord is null)
-            {
-                throw new InvalidOperationException("Mapping resulted in a null StatisticRecord");
+                return LogAndFail("Cannot convert null to StatisticRecord", request);
             }
 
-            return statisticRecord;
+            var resultIsSuccess = await _repositoryWrapper.SaveChangesAsync() > 0;
+
+            if (!resultIsSuccess)
+            {
+                return LogAndFail("Failed to create a StatisticRecord", request);
+            }
+
+            return Result.Ok(_mapper.Map<StatisticRecordDTO>(entity));
         }
 
         private Result<StatisticRecordDTO> LogAndFail(string errorMessage, object request = null)

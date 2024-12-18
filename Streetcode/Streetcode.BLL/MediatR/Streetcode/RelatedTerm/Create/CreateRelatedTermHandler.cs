@@ -3,6 +3,7 @@ using FluentResults;
 using MediatR;
 using Streetcode.BLL.DTO.Streetcode.TextContent;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Specifications.Streetcode.RelatedTerm;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
 using Entity = Streetcode.DAL.Entities.Streetcode.TextContent.RelatedTerm;
@@ -34,8 +35,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Create
             }
 
             var existingTerms = await _repository.RelatedTermRepository
-                .GetAllAsync(
-                predicate: rt => rt.TermId == request.RelatedTerm.TermId && rt.Word == request.RelatedTerm.Word);
+                .GetAllBySpecAsync(new RelatedTermWithTermSpecification(request.RelatedTerm));
 
             if (existingTerms is null || existingTerms.Any())
             {

@@ -40,6 +40,61 @@ namespace Streetcode.XUnitTest.MediatRTests.Toponyms.GetByStreetcodeId
             _handler = new GetToponymsByStreetcodeIdHandler(_mockedRepositoryWrapper.Object, _mapper, _mockedLogger.Object);
         }
 
+        [Fact]
+        public async Task Handle_ReturnsToponyms_WhenToponymsAreFound()
+        {
+            ConfigureRepository();
+            int streetcodeId = 1;
+            var query = new GetToponymsByStreetcodeIdQuery(streetcodeId);
+
+            // Act
+            var result = await _handler.Handle(query, CancellationToken.None);
+
+            result.Should().NotBeNull();
+            result.Value.Should().NotBeNull();
+            result.Value.Should().HaveCount(2);
+            result.Value.First().StreetName.Should().Be("Taras Shevchenko Street");
+            result.Value.Last().StreetName.Should().Be("Shevchenko Lane");
+        }
+
+        /// <summary>
+        /// Test case: Handles the scenario when no toponyms with streetcodeId are found in the repository.
+        /// </summary>
+        [Fact]
+        public async Task Handle_ReturnsFailure_WhenNoToponymsFound()
+        {
+            ConfigureRepository();
+            int streetcodeId = 999;
+            var query = new GetToponymsByStreetcodeIdQuery(streetcodeId);
+            var result = await _handler.Handle(query, CancellationToken.None);
+            result.IsFailed.Should().BeTrue();
+            result.Errors.Should().NotBeEmpty();
+            result.Errors.Should().Contain(e => e.Message == $"Cannot find any toponym by the streetcode id: {streetcodeId}");
+        }
+
+        /// <summary>
+        /// Test case: Handles the scenario when toponyms is null.
+        /// </summary>
+        [Fact]
+        public async Task Handle_ReturnsFailure_WhenToponymsIsNull()
+        {
+            int streetcodeId = 1;
+            _mockedRepositoryWrapper.Setup(r => r.ToponymRepository.GetAllAsync(
+               It.IsAny<Expression<Func<Toponym, bool>>>(),
+               It.IsAny<Func<IQueryable<Toponym>, IIncludableQueryable<Toponym, object>>>()
+               )).ReturnsAsync((Expression<Func<Toponym, bool>> predicate,
+                                Func<IQueryable<Toponym>, IIncludableQueryable<Toponym, object>> _) =>
+               {
+                   return null;
+               });
+            var query = new GetToponymsByStreetcodeIdQuery(streetcodeId);
+            var result = await _handler.Handle(query, CancellationToken.None);
+
+            result.IsFailed.Should().BeTrue();
+            result.Errors.Should().NotBeEmpty();
+            result.Errors.Should().Contain(e => e.Message == $"Cannot find any toponym by the streetcode id: {streetcodeId}");
+        }
+
         /// <summary>
         /// Helper method to setup the repository with a list of toponyms.
         /// </summary>
@@ -137,62 +192,6 @@ namespace Streetcode.XUnitTest.MediatRTests.Toponyms.GetByStreetcodeId
                 {
                     return toponyms.AsQueryable().Where(predicate).ToList();
                 });
-        }
-
-        [Fact]
-        public async Task Handle_ReturnsToponyms_WhenToponymsAreFound()
-        {
-            ConfigureRepository();
-            int streetcodeId = 1;
-            var query = new GetToponymsByStreetcodeIdQuery(streetcodeId);
-
-            // Act
-            var result = await _handler.Handle(query, CancellationToken.None);
-
-            result.Should().NotBeNull();
-            result.Value.Should().NotBeNull();
-            result.Value.Should().HaveCount(2);
-            result.Value.First().StreetName.Should().Be("Taras Shevchenko Street");
-            result.Value.Last().StreetName.Should().Be("Shevchenko Lane");
-        }
-
-        /// <summary>
-        /// Test case: Handles the scenario when no toponyms with streetcodeId are found in the repository.
-        /// </summary>
-        [Fact]
-        public async Task Handle_ReturnsFailure_WhenNoToponymsFound()
-        {
-            ConfigureRepository();
-            int streetcodeId = 999;
-            var query = new GetToponymsByStreetcodeIdQuery(streetcodeId);
-            var result = await _handler.Handle(query, CancellationToken.None);
-            result.IsFailed.Should().BeTrue();
-            result.Errors.Should().NotBeEmpty();
-            result.Errors.Should().Contain(e => e.Message == $"Cannot find any toponym by the streetcode id: {streetcodeId}");
-        }
-
-        /// <summary>
-        /// Test case: Handles the scenario when toponyms is null.
-        /// </summary>
-        [Fact]
-        public async Task Handle_ReturnsFailure_WhenToponymsIsNull()
-        {
-            int streetcodeId = 1;
-            List<Toponym> toponyms = null;
-            _mockedRepositoryWrapper.Setup(r => r.ToponymRepository.GetAllAsync(
-               It.IsAny<Expression<Func<Toponym, bool>>>(),
-               It.IsAny<Func<IQueryable<Toponym>, IIncludableQueryable<Toponym, object>>>()
-               )).ReturnsAsync((Expression<Func<Toponym, bool>> predicate,
-                                Func<IQueryable<Toponym>, IIncludableQueryable<Toponym, object>> _) =>
-               {
-                   return null;
-               });
-            var query = new GetToponymsByStreetcodeIdQuery(streetcodeId);
-            var result = await _handler.Handle(query, CancellationToken.None);
-
-            result.IsFailed.Should().BeTrue();
-            result.Errors.Should().NotBeEmpty();
-            result.Errors.Should().Contain(e => e.Message == $"Cannot find any toponym by the streetcode id: {streetcodeId}");
         }
     }
 }

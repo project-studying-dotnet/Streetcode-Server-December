@@ -30,14 +30,13 @@ namespace Streetcode.XUnitTest.MediatRTests.Partners.GetAllPartnerShort
 			_handler = new GetAllPartnerShortHandler(_mockRepositoryWapper.Object, _mockMapper.Object, _mockLogger.Object);
 		}
 
-
 		[Fact]
 		public async Task Handler_WhenNoPartnerShortFound_ShouldReturnFail()
 		{
 			// Arrange
 			_mockRepositoryWapper.Setup(repo => repo.PartnersRepository
 				.GetAllAsync(null, It.IsAny<Func<IQueryable<Partner>, IIncludableQueryable<Partner, object>>>()))
-				.ReturnsAsync((List<Partner>) null);
+				.ReturnsAsync((List<Partner>)null);
 
 			// Act
 			var result = await _handler.Handle(new GetAllPartnersShortQuery(), CancellationToken.None);

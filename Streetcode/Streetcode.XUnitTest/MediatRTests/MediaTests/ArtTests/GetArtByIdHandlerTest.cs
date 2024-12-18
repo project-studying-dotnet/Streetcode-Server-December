@@ -31,45 +31,44 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.ArtTests
         [Fact]
         public async Task Handle_ShouldReturnArtById_WhenArtExists()
         {
-            //A(Arrange):
+            // A(Arrange):
 
             int artId = 3;
             var artById = new Art { Id = artId, Description = "None1", Title = "ArtById", ImageId = 11 };          
             var artDtoById = new ArtDTO { Id = artId, Description = "None1", Title = "ArtById", ImageId = 11 };
             var query = new GetArtByIdQuery(artId);
 
-            _repositoryMock.Setup(r => r.ArtRepository.GetFirstOrDefaultAsync(It.Is<Expression<Func<Art, bool>>>(predicate => predicate.Compile()(artById)),null)).ReturnsAsync(artById);
+            _repositoryMock.Setup(r => r.ArtRepository.GetFirstOrDefaultAsync(It.Is<Expression<Func<Art, bool>>>(predicate => predicate.Compile()(artById)), null)).ReturnsAsync(artById);
             _mapperMock.Setup(m => m.Map<ArtDTO>(artById)).Returns(artDtoById);
 
-            //A(Act):
+            // A(Act):
 
-            var res = await _getArtByIdHandler.Handle(new GetArtByIdQuery(artId), CancellationToken.None);
+            var res = await _getArtByIdHandler.Handle(query, CancellationToken.None);
 
-            //A(Assert):
+            // A(Assert):
 
             Assert.True(res.IsSuccess);
             Assert.Equal(artDtoById.Id, res.Value.Id);
            
-            _repositoryMock.Verify(r => r.ArtRepository.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<Art, bool>>>(), null) , Times.Once);
+            _repositoryMock.Verify(r => r.ArtRepository.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<Art, bool>>>(), null), Times.Once);
             _mapperMock.Verify(m => m.Map<ArtDTO>(artById), Times.Once);
             _loggerMock.VerifyNoOtherCalls();
         }
 
-
         [Fact]
         public async Task Handle_ShouldReturnFail_WhenArtDoesntExists()
         {
-            //A(Arrange):
+            // A(Arrange):
 
             int artIncorrectId = 3000;        
 
             _repositoryMock.Setup(r => r.ArtRepository.GetFirstOrDefaultAsync(It.Is<Expression<Func<Art, bool>>>(predicate => predicate.Compile()(new Art { Id = artIncorrectId })), null)).ReturnsAsync(null as Art);
 
-            //A(Act):
+            // A(Act):
 
             var res = await _getArtByIdHandler.Handle(new GetArtByIdQuery(artIncorrectId), CancellationToken.None);
 
-            //A(Assert):
+            // A(Assert):
 
             Assert.True(res.IsFailed);
             Assert.Single(res.Errors);

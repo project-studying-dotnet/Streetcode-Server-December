@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore.Query;
 using Moq;
 using System.Linq.Expressions;
 using Xunit;
+using Streetcode.DAL.Specification;
 
 namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.GetAll;
 
@@ -35,6 +36,27 @@ public class GetAllRelatedTermsHandlerTests
         this._handler = new GetAllRelatedTermsHandler(this._mapper, this._mockRepositoryWrapper.Object, this._mockLogger.Object);
     }
 
+    [Fact]
+    public async Task WhenGetAllRequestAndThereAreRelatedTerms_thenReturnOKWithRelatedTerms()
+    {
+        this.CreateRepository();
+        var result = await this._handler.Handle(new GetAllRelatedTermsQuery(), CancellationToken.None);
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Should().NotBeEmpty();
+        result.Value.Should().BeOfType<List<RelatedTermDTO>>();
+        result.Value.Count().Should().Be(3);
+    }
+
+    [Fact]
+    public async Task WhenGetAllRequestAndThereAreNoRelatedTerms_thenReturnEmptyList()
+    {
+        this.CreateEmptyRepository();
+        var result = await this._handler.Handle(new GetAllRelatedTermsQuery(), CancellationToken.None);
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Should().BeEmpty();
+        result.Value.Should().BeOfType<List<RelatedTermDTO>>();
+    }
+
     private void CreateRepository()
     {
         var terms = new List<Term>
@@ -50,56 +72,15 @@ public class GetAllRelatedTermsHandlerTests
             new RelatedTerm { Id = 3, Word = "He", TermId = 2, Term = terms[1] },
         };
 
-
-        this._mockRepositoryWrapper
-       .Setup(repo => repo.RelatedTermRepository.GetAllAsync(
-           It.IsAny<Expression<Func<RelatedTerm, bool>>>(),
-           It.IsAny<Func<IQueryable<RelatedTerm>, IIncludableQueryable<RelatedTerm, object>>?>()))
-       .ReturnsAsync((
-           Expression<Func<RelatedTerm, bool>> predicate,
-           Func<IQueryable<RelatedTerm>, IIncludableQueryable<RelatedTerm, object>>? include) =>
-       {
-           var query = relatedTerms.AsQueryable();
-
-           if (predicate != null)
-           {
-               query = query.Where(predicate);
-           }
-
-           if (include != null)
-           {
-               query = include(query);
-           }
-
-           return query.ToList();
-       });
+        this._mockRepositoryWrapper.Setup(r => r.RelatedTermRepository.GetAllBySpecAsync(
+            It.IsAny<IBaseSpecification<RelatedTerm>>())).ReturnsAsync(relatedTerms);
     }
 
     private void CreateEmptyRepository()
     {
         var relatedTerms = new List<RelatedTerm>();
-        this._mockRepositoryWrapper
-               .Setup(repo => repo.RelatedTermRepository.GetAllAsync(
-                   It.IsAny<Expression<Func<RelatedTerm, bool>>>(),
-                   It.IsAny<Func<IQueryable<RelatedTerm>, IIncludableQueryable<RelatedTerm, object>>?>()))
-               .ReturnsAsync((
-                   Expression<Func<RelatedTerm, bool>> predicate,
-                   Func<IQueryable<RelatedTerm>, IIncludableQueryable<RelatedTerm, object>>? include) =>
-               {
-                   var query = relatedTerms.AsQueryable();
-
-                   if (predicate != null)
-                   {
-                       query = query.Where(predicate);
-                   }
-
-                   if (include != null)
-                   {
-                       query = include(query);
-                   }
-
-                   return query.ToList();
-               });
+        this._mockRepositoryWrapper.Setup(r => r.RelatedTermRepository.GetAllBySpecAsync(
+            It.IsAny<IBaseSpecification<RelatedTerm>>())).ReturnsAsync(relatedTerms);
     }
 
     [Fact]

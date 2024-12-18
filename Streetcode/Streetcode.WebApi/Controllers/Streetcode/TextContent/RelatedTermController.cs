@@ -2,17 +2,31 @@
 using Streetcode.BLL.DTO.Streetcode.TextContent;
 using Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Create;
 using Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Delete;
+using Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetAll;
 using Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetAllByTermId;
+using Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetById;
 using Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Update;
 
 namespace Streetcode.WebApi.Controllers.Streetcode.TextContent
 {
     public class RelatedTermController : BaseApiController
     {
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetByTermId([FromRoute] int id)
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
         {
-            return HandleResult(await Mediator.Send(new GetAllRelatedTermsByTermIdQuery(id)));
+            return HandleResult(await Mediator.Send(new GetAllRelatedTermsQuery()));
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetById([FromRoute] int id)
+        {
+            return HandleResult(await Mediator.Send(new GetRelatedTermByIdQuery(id)));
+        }
+
+        [HttpGet("{termid:int}")]
+        public async Task<IActionResult> GetByTermId([FromRoute] int termid)
+        {
+            return HandleResult(await Mediator.Send(new GetAllRelatedTermsByTermIdQuery(termid)));
         }
 
         [HttpPost]

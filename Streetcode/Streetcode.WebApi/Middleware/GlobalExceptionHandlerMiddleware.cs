@@ -1,11 +1,10 @@
-﻿using System.Net;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Streetcode.BLL.Exceptions;
-using Microsoft.AspNetCore.Http;
+using Streetcode.BLL.Validators.Exceptions;
 
 namespace Streetcode.WebApi.Middleware
 {
-    public class GlobalExceptionHandlerMiddleware
+    public sealed class GlobalExceptionHandlerMiddleware
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<GlobalExceptionHandlerMiddleware> _logger;
@@ -26,6 +25,11 @@ namespace Streetcode.WebApi.Middleware
             {
                 _logger.LogError(ex, ex.Message);
                 await HandleExceptionAsync(context, ex);
+            }
+            catch (ValidationException ex)
+            {
+                _logger.LogError(ex, ex.Source);
+                await HandleFluentValidationErrorsAsync(context, ex);
             }
             catch (Exception ex)
             {
@@ -51,6 +55,32 @@ namespace Streetcode.WebApi.Middleware
                 Detail = exception.Message,
                 Instance = context.Request.Path
             };
+
+            await context.Response.WriteAsJsonAsync(problemDetails);
+        }
+
+        private async Task HandleFluentValidationErrorsAsync(HttpContext context, ValidationException ex)
+        {
+            var problemDetails = new ProblemDetails
+            {
+                Status = StatusCodes.Status400BadRequest,
+                Type = "ValidationFailure",
+                Title = "Validation error",
+                Detail = $"{ex.Errors.Count} validation errors has occurred"
+            };
+
+            if (ex.Errors is not null)
+            {
+                var formattedErrors = ex.Errors.Select(error => new
+                {
+                    errorProperty = error.PropertyName,
+                    errorMessage = error.ErrorMessage
+                });
+
+                problemDetails.Extensions["errorsDetails"] = ex.Errors;
+            }
+
+            context.Response.StatusCode = StatusCodes.Status400BadRequest;
 
             await context.Response.WriteAsJsonAsync(problemDetails);
         }

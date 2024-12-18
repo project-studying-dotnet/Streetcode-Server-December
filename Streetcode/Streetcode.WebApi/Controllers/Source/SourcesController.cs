@@ -51,7 +51,7 @@ public class SourcesController : BaseApiController
         return HandleResult(await Mediator.Send(new GetCategoriesByStreetcodeIdQuery(streetcodeId)));
     }
 
-    [HttpPost]
+    [HttpPut]
     public async Task<IActionResult> UpdateCategories([FromBody] SourceLinkCategoryDTO sourceLinkCategory)
     {
         return HandleResult(await Mediator.Send(new UpdateSourceLinkCategoryCommand(sourceLinkCategory)));

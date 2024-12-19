@@ -41,22 +41,22 @@ public class SourcesController : BaseApiController
 	public async Task<IActionResult> DeleteCategoryContent([FromRoute] int id)
 	{
 		return HandleResult(await Mediator.Send(new DeleteCategoryContentCommand(id)));
-  }
+  	}
   
-  [HttpGet("{streetcodeId:int}")]
-  public async Task<IActionResult> GetCategoriesByStreetcodeId([FromRoute] int streetcodeId)
-  {
-  	return HandleResult(await Mediator.Send(new GetCategoriesByStreetcodeIdQuery(streetcodeId)));
-  }
+  	[HttpGet("{streetcodeId:int}")]
+  	public async Task<IActionResult> GetCategoriesByStreetcodeId([FromRoute] int streetcodeId)
+  	{
+  		return HandleResult(await Mediator.Send(new GetCategoriesByStreetcodeIdQuery(streetcodeId)));
+  	}
    
-  [HttpPut]
-  public async Task<IActionResult> UpdateCategories([FromBody] SourceLinkCategoryDTO sourceLinkCategory)
-  {
-  	return HandleResult(await Mediator.Send(new UpdateSourceLinkCategoryCommand(sourceLinkCategory)));
-  }
+  	[HttpPut]
+  	public async Task<IActionResult> UpdateCategories([FromBody] SourceLinkCategoryDTO sourceLinkCategory)
+  	{
+  		return HandleResult(await Mediator.Send(new UpdateSourceLinkCategoryCommand(sourceLinkCategory)));
+  	}
 
-  [HttpPost]
-  public async Task<IActionResult> CreateCategoryContent([FromBody] CategoryContentCreateDTO newCategoryContent)
+  	[HttpPost]
+  	public async Task<IActionResult> CreateCategoryContent([FromBody] CategoryContentCreateDTO newCategoryContent)
 	{
 		return HandleResult(await Mediator.Send(new CreateCategoryContentCommand(newCategoryContent)));
 	}

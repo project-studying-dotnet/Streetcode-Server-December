@@ -4,7 +4,8 @@
       "commandName": "DockerCompose",
       "commandVersion": "1.0",
       "serviceActions": {
-        "streetcode.webapi": "StartDebugging"
+        "streetcode.webapi": "StartDebugging",
+        "userservice.webapi": "StartDebugging"
       }
     }
   }

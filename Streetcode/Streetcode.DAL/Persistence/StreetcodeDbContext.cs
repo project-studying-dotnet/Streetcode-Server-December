@@ -26,7 +26,7 @@ public class StreetcodeDbContext : DbContext
 {
     public StreetcodeDbContext()
     {
-        Database.EnsureCreated();
+      Database.EnsureCreated();
     }
 
     public StreetcodeDbContext(DbContextOptions<StreetcodeDbContext> options)

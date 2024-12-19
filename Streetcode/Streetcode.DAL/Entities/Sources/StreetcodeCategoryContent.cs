@@ -7,16 +7,11 @@ namespace Streetcode.DAL.Entities.Sources;
 [Table("streetcode_categoryContent", Schema = "sources")]
 public class StreetcodeCategoryContent
 {
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
-
+    
     [Required]
     [MaxLength(1000)]
     public string? Text { get; set; }
-
-    [Required]
-    public string? Title { get; set; }
 
     [Required]
     public int SourceLinkCategoryId { get; set; }

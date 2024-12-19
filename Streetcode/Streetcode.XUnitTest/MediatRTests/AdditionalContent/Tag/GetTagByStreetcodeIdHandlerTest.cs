@@ -10,7 +10,6 @@ using Streetcode.DAL.Entities.Streetcode;
 using Xunit;
 using StreetcodeTagIndexEntity = Streetcode.DAL.Entities.AdditionalContent.StreetcodeTagIndex;
 
-
 namespace Streetcode.XUnitTest.MediatRTests.AdditionalContent.Tag;
 
 public class GetTagByStreetcodeIdHandlerTest : AdditionalContentTestWrapper
@@ -54,7 +53,7 @@ public class GetTagByStreetcodeIdHandlerTest : AdditionalContentTestWrapper
 
         _repositoryWrapperMock.Verify(
             rep => rep.StreetcodeTagIndexRepository.GetAllAsync(
-            It.Is<Expression<Func<StreetcodeTagIndexEntity, bool>>>( exp => exp.Compile().Invoke(new StreetcodeTagIndexEntity { StreetcodeId = request.StreetcodeId })),
+            It.Is<Expression<Func<StreetcodeTagIndexEntity, bool>>>(exp => exp.Compile().Invoke(new StreetcodeTagIndexEntity { StreetcodeId = request.StreetcodeId })),
             It.IsAny<Func<IQueryable<StreetcodeTagIndexEntity>, IIncludableQueryable<StreetcodeTagIndexEntity, object>>>()), Times.Once);
         _mapperMock.Verify(m => m.Map<IEnumerable<StreetcodeTagDTO>>(streetcodeTagIndexList), Times.Once);
     }

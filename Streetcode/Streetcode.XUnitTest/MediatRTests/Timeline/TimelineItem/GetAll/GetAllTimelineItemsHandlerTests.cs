@@ -38,21 +38,7 @@ public class GetAllTimelineItemsHandlerTests
         this.handler = new GetAllTimelineItemsHandler(
             this.repositoryWrapperMock.Object,
             this.mapper,
-            this.loggerMock.Object
-        );
-    }
-
-    private void ConfigureRepository(List<TimelineItem>? timelineItems)
-    {
-        this.repositoryWrapperMock.Setup(repo =>
-                repo.TimelineRepository.GetAllAsync(
-                    It.IsAny<Expression<Func<TimelineItem, bool>>>(),
-                    It.IsAny<
-                        Func<IQueryable<TimelineItem>, IIncludableQueryable<TimelineItem, object>>
-                    >()
-                )
-            )
-            .ReturnsAsync(timelineItems);
+            this.loggerMock.Object);
     }
 
     [Fact]
@@ -103,11 +89,10 @@ public class GetAllTimelineItemsHandlerTests
 
         result.IsSuccess.Should().BeFalse("No items exist, so the handler should return failure.");
         result.Errors.Should().ContainSingle("There should be a single error message.");
-        result.Errors.First().Message.Should().Contain("Cannot find any timelineItem");
+        result.Errors[0].Message.Should().Contain("Cannot find any timelineItem");
         this.loggerMock.Verify(
             logger => logger.LogError(It.IsAny<object>(), "Cannot find any timelineItem"),
-            Times.Once
-        );
+            Times.Once);
     }
 
     [Theory]
@@ -116,8 +101,7 @@ public class GetAllTimelineItemsHandlerTests
     public async Task Handle_ShouldReturnCorrectResultBasedOnRepositoryData(
         int itemCount,
         bool expectedIsSuccess,
-        string expectedErrorMessage
-    )
+        string expectedErrorMessage)
     {
         var timelineItems =
             itemCount > 0
@@ -144,15 +128,25 @@ public class GetAllTimelineItemsHandlerTests
         if (!expectedIsSuccess)
         {
             result.Errors.Should().ContainSingle();
-            result.Errors.First().Message.Should().Contain(expectedErrorMessage);
+            result.Errors[0].Message.Should().Contain(expectedErrorMessage);
             this.loggerMock.Verify(
                 logger => logger.LogError(It.IsAny<object>(), expectedErrorMessage),
-                Times.Once
-            );
+                Times.Once);
         }
         else
         {
             result.Value.Should().HaveCount(itemCount);
         }
+    }
+
+    private void ConfigureRepository(List<TimelineItem>? timelineItems)
+    {
+        this.repositoryWrapperMock.Setup(repo =>
+                repo.TimelineRepository.GetAllAsync(
+                    It.IsAny<Expression<Func<TimelineItem, bool>>>(),
+                    It.IsAny<
+                        Func<IQueryable<TimelineItem>, IIncludableQueryable<TimelineItem, object>>
+                    >()))
+            .ReturnsAsync(timelineItems);
     }
 }

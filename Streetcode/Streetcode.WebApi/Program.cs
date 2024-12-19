@@ -1,5 +1,6 @@
 using Hangfire;
 using Streetcode.BLL.Services.BlobStorageService;
+using Streetcode.BLL.Validators;
 using Streetcode.WebApi.Extensions;
 using Streetcode.WebApi.Utils;
 
@@ -30,7 +31,11 @@ await app.ApplyMigrations();
 // func to seed data
 await app.SeedDataAsync();
 app.UseCors();
+
 app.UseHttpsRedirection();
+
+app.UseGlobalExceptionHandler();
+
 app.UseRouting();
 
 app.UseAuthentication();

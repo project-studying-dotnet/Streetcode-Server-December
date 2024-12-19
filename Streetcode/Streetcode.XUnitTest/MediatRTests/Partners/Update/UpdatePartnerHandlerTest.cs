@@ -33,7 +33,6 @@ namespace Streetcode.XUnitTest.MediatRTests.Partners.Update
 			_handler = new UpdatePartnerHandler(_mockRepositoryWrapper.Object, _mockMapper.Object, _mockLogger.Object);
 		}
 
-
 		[Fact]
 		public async Task Handler_WhenNoPartnerFound_ShouldReturnsFail()
 		{
@@ -60,7 +59,6 @@ namespace Streetcode.XUnitTest.MediatRTests.Partners.Update
 			var updatePartnerDTO = new CreatePartnerDTO { Id = 1, Streetcodes = new List<StreetcodeShortDTO> { new StreetcodeShortDTO { Id = 1 } } }; // Використовуємо CreatePartnerDTO з правильними типами
 			var partnerDTO = new PartnerDTO { Id = 1 };
 			var partner = new Partner { Id = 1, Streetcodes = new List<StreetcodeContent> { new StreetcodeContent { Id = 1 } } };
-			var updatedPartner = new Partner { Id = 1, Streetcodes = new List<StreetcodeContent> { new StreetcodeContent { Id = 1 } } };
 
 			_mockMapper.Setup(m => m.Map<Partner>(updatePartnerDTO)).Returns(partner);
 			_mockRepositoryWrapper.Setup(repo => repo.PartnersRepository.Update(partner));
@@ -108,9 +106,8 @@ namespace Streetcode.XUnitTest.MediatRTests.Partners.Update
 
 			// Assert
 			result.IsFailed.Should().BeTrue();
-			result.Errors.First().Message.Should().Be(errorMsg);
+			result.Errors[0].Message.Should().Be(errorMsg);
 			_mockLogger.Verify(x => x.LogError(It.IsAny<object>(), errorMsg), Times.Once);
 		}
-
 	}
 }

@@ -12,7 +12,6 @@ public class AdditionalContentTestWrapper
     protected readonly Mock<IRepositoryWrapper> _repositoryWrapperMock;
     protected readonly Mock<ILoggerService> _loggerMock;
     
-
     public AdditionalContentTestWrapper()
     {
         _mapperMock = new Mock<IMapper>();

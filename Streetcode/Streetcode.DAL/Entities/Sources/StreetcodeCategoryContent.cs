@@ -16,6 +16,9 @@ public class StreetcodeCategoryContent
     public string? Text { get; set; }
 
     [Required]
+    public string? Title { get; set; }
+
+    [Required]
     public int SourceLinkCategoryId { get; set; }
 
     [Required]

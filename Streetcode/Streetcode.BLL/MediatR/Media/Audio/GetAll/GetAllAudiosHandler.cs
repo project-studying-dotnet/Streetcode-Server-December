@@ -7,40 +7,41 @@ using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
-namespace Streetcode.BLL.MediatR.Media.Audio.GetAll;
-
-public class GetAllAudiosHandler : IRequestHandler<GetAllAudiosQuery, Result<IEnumerable<AudioDTO>>>
+namespace Streetcode.BLL.MediatR.Media.Audio.GetAll
 {
-    private readonly IMapper _mapper;
-    private readonly IRepositoryWrapper _repositoryWrapper;
-    private readonly IBlobService _blobService;
-    private readonly ILoggerService _logger;
-
-    public GetAllAudiosHandler(IRepositoryWrapper repositoryWrapper, IMapper mapper, IBlobService blobService, ILoggerService logger)
+    public class GetAllAudiosHandler : IRequestHandler<GetAllAudiosQuery, Result<IEnumerable<AudioDTO>>>
     {
-        _repositoryWrapper = repositoryWrapper;
-        _mapper = mapper;
-        _blobService = blobService;
-        _logger = logger;
-    }
+        private readonly IMapper _mapper;
+        private readonly IRepositoryWrapper _repositoryWrapper;
+        private readonly IBlobService _blobService;
+        private readonly ILoggerService _logger;
 
-    public async Task<Result<IEnumerable<AudioDTO>>> Handle(GetAllAudiosQuery request, CancellationToken cancellationToken)
-    {
-        var audios = await _repositoryWrapper.AudioRepository.GetAllAsync();
-
-        if (audios is null)
+        public GetAllAudiosHandler(IRepositoryWrapper repositoryWrapper, IMapper mapper, IBlobService blobService, ILoggerService logger)
         {
-            const string errorMsg = "Cannot find any audios";
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
+            _repositoryWrapper = repositoryWrapper;
+            _mapper = mapper;
+            _blobService = blobService;
+            _logger = logger;
         }
 
-        var audioDtos = _mapper.Map<IEnumerable<AudioDTO>>(audios);
-        foreach (var audio in audioDtos)
+        public async Task<Result<IEnumerable<AudioDTO>>> Handle(GetAllAudiosQuery request, CancellationToken cancellationToken)
         {
-            audio.Base64 = _blobService.FindFileInStorageAsBase64(audio.BlobName);
-        }
+            var audios = await _repositoryWrapper.AudioRepository.GetAllAsync();
 
-        return Result.Ok(audioDtos);
+            if (audios is null)
+            {
+                const string errorMsg = "Cannot find any audios";
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
+
+            var audioDtos = _mapper.Map<IEnumerable<AudioDTO>>(audios);
+            foreach (var audio in audioDtos)
+            {
+                audio.Base64 = _blobService.FindFileInStorageAsBase64(audio.BlobName);
+            }
+
+            return Result.Ok(audioDtos);
+        }
     }
 }

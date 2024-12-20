@@ -1,7 +1,9 @@
-﻿namespace Streetcode.BLL.DTO.Toponyms;
-
-public class GetAllToponymsResponseDTO
+﻿namespace Streetcode.BLL.DTO.Toponyms
 {
-    public int Pages { get; set; }
-    public IEnumerable<ToponymDTO> Toponyms { get; set; }
+
+    public class GetAllToponymsResponseDTO
+    {
+        public int Pages { get; set; }
+        public IEnumerable<ToponymDTO> Toponyms { get; set; }
+    }
 }

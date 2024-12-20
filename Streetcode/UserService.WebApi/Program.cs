@@ -1,37 +1,37 @@
-using Microsoft.AspNetCore.Identity;
-using MongoDB.Driver;
-using UserService.DAL.Entities.Roles;
-using UserService.DAL.Entities.Users;
-using AspNetCore.Identity.MongoDbCore;
+using AspNetCore.Identity.Mongo;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using UserService.DAL.Entities.Roles;
+using UserService.DAL.Entities.Users;
 using UserService.BLL.Interfaces.Jwt;
+using UserService.BLL.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 builder.Services.AddOpenApi();
+builder.Services.AddControllers();
 
 // MongoDB Configuration
 string mongoConnectionString = builder.Configuration.GetConnectionString("MongoDb")!;
-builder.Services.AddSingleton<IMongoClient>(serviceProvider =>
+
+builder.Services.AddIdentityMongoDbProvider<User, Role>(identityOptions =>
 {
-    return new MongoClient(mongoConnectionString);
+    identityOptions.Password.RequireDigit = false;
+    identityOptions.Password.RequiredLength = 6;
+    identityOptions.Password.RequireUppercase = false;
+}, mongoIdentityOptions =>
+{
+    mongoIdentityOptions.ConnectionString = mongoConnectionString;
 });
 
 
-// // Configuration Identity with MongoDB
-var databaseName = builder.Configuration["MongoDb:DatabaseName"];
-
-builder.Services.AddIdentity<User, Role>()
-    .AddMongoDbStores<User, Role, Guid>(mongoConnectionString, databaseName)
-    .AddDefaultTokenProviders();
-
 // JWT Configuration
 var jwtSettings = builder.Configuration.GetSection("Jwt");
-var key = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]);
+// var key = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]);
 
 
 builder.Services.AddAuthentication(options =>
@@ -49,26 +49,29 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         ValidIssuer = jwtSettings["Issuer"],
         ValidAudience = jwtSettings["Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(key)
+        // IssuerSigningKey = new SymmetricSecurityKey(key)
     };
 });
 
-builder.Services.AddScoped<IJwtService, IJwtService>();
-
-builder.Services.AddScoped<IMongoDatabase>(serviceProvider =>
+builder.Services.AddAuthorization(options =>
 {
-    var client = serviceProvider.GetRequiredService<IMongoClient>();
-    return client.GetDatabase("usersDB");
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
 });
+
+builder.Services.AddScoped<IJwtService, JwtService>();
+
 
 var app = builder.Build();
 
 app.UseAuthentication();
+app.UseAuthorization();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
+app.MapControllers();
 
 app.UseHttpsRedirection();
 

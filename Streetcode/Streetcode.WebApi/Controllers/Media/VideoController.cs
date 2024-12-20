@@ -29,11 +29,11 @@ namespace Streetcode.WebApi.Controllers.Media
         {
             return HandleResult(await Mediator.Send(new GetVideoByIdQuery(id)));
         }
-    }
 
-    [HttpPost]
-    public async Task<IActionResult> Create([FromBody] VideoCreateDTO video)
-    {
-        return HandleResult(await Mediator.Send(new CreateVideoCommand(video)));
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] VideoCreateDTO video)
+        {
+            return HandleResult(await Mediator.Send(new CreateVideoCommand(video)));
+        }
     }
 }

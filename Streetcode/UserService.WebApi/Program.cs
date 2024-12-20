@@ -1,4 +1,12 @@
+using Microsoft.AspNetCore.Identity;
 using MongoDB.Driver;
+using UserService.DAL.Entities.Roles;
+using UserService.DAL.Entities.Users;
+using AspNetCore.Identity.MongoDbCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using UserService.BLL.Interfaces.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +21,40 @@ builder.Services.AddSingleton<IMongoClient>(serviceProvider =>
     return new MongoClient(mongoConnectionString);
 });
 
+
+// // Configuration Identity with MongoDB
+var databaseName = builder.Configuration["MongoDb:DatabaseName"];
+
+builder.Services.AddIdentity<User, Role>()
+    .AddMongoDbStores<User, Role, Guid>(mongoConnectionString, databaseName)
+    .AddDefaultTokenProviders();
+
+// JWT Configuration
+var jwtSettings = builder.Configuration.GetSection("Jwt");
+var key = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]);
+
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtSettings["Issuer"],
+        ValidAudience = jwtSettings["Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(key)
+    };
+});
+
+builder.Services.AddScoped<IJwtService, IJwtService>();
+
 builder.Services.AddScoped<IMongoDatabase>(serviceProvider =>
 {
     var client = serviceProvider.GetRequiredService<IMongoClient>();
@@ -20,6 +62,8 @@ builder.Services.AddScoped<IMongoDatabase>(serviceProvider =>
 });
 
 var app = builder.Build();
+
+app.UseAuthentication();
 
 if (app.Environment.IsDevelopment())
 {

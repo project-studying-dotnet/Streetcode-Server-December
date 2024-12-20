@@ -35,7 +35,6 @@ namespace Streetcode.XUnitTest.MediatRTests.Partners.Create
 			_handler = new CreatePartnerHandler(_mockRepositoryWrapper.Object, _mockMapper.Object, _mockLogger.Object);
 		}
 
-
 		[Fact]
 		public async Task Handler_WhenValidRequest_ShouldReturnSuccess()
 		{
@@ -68,8 +67,6 @@ namespace Streetcode.XUnitTest.MediatRTests.Partners.Create
 			var newPartner = new Partner { Id = 1, Streetcodes = new List<StreetcodeContent>() };
 			var newPartnerDTO = new CreatePartnerDTO { Id = 1 };
 			var request = new CreatePartnerQuery(newPartnerDTO);
-
-			var createdPartner = new Partner { Id = 1, Streetcodes = new List<StreetcodeContent>() };
 
 			_mockMapper.Setup(m => m.Map<Partner>(It.IsAny<CreatePartnerDTO>())).Returns(newPartner);
 			_mockRepositoryWrapper.Setup(repo => repo.PartnersRepository

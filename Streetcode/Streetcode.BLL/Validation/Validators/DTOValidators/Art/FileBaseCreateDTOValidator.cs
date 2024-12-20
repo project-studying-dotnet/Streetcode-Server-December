@@ -34,6 +34,10 @@ namespace Streetcode.BLL.Validation.Validators.DTOValidators.Art
             "webm"
         };
 
+        public FileBaseCreateDTOValidator()
+        {
+        }
+
         public FileBaseCreateDTOValidator(string fileType)
         {
             var allowedMimeTypes = fileType switch

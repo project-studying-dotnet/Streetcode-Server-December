@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Query;
 using Streetcode.DAL.Persistence;
+using Streetcode.DAL.Specification;
 
 namespace Streetcode.DAL.Repositories.Interfaces.Base;
 
@@ -56,4 +57,8 @@ public interface IRepositoryBase<T>
         Expression<Func<T, T>> selector,
         Expression<Func<T, bool>>? predicate = default,
         Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = default);
+
+    Task<IEnumerable<T>> GetAllBySpecAsync(IBaseSpecification<T>? specification = null);
+
+    Task<T?> GetFirstOrDefaultBySpecAsync(IBaseSpecification<T>? specification = null);
 }

@@ -70,7 +70,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
         {
             // Arrange
             var command = new CreateNewsCommand(new NewsDTO { Title = "Test News" });
-
+                
             _mapperMock.Setup(m => m.Map<News>(command.newNews)).Returns((News)null);
 
             // Act

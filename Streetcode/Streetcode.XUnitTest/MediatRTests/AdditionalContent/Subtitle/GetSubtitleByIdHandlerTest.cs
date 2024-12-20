@@ -10,14 +10,13 @@ using Streetcode.BLL.MediatR.AdditionalContent.Subtitle.GetById;
 using Streetcode.DAL.Entities.Streetcode;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using Xunit;
-using SubtitleEntity =  Streetcode.DAL.Entities.AdditionalContent.Subtitle;
+using SubtitleEntity = Streetcode.DAL.Entities.AdditionalContent.Subtitle;
 
 namespace Streetcode.XUnitTest.MediatRTests.AdditionalContent.Subtitle;
 
 public class GetSubtitleByIdHandlerTest : AdditionalContentTestWrapper
 {
     private readonly GetSubtitleByIdHandler _handler;
-
 
     public GetSubtitleByIdHandlerTest()
     {

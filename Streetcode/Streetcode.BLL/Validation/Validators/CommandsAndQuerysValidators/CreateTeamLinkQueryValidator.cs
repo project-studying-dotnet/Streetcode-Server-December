@@ -4,7 +4,7 @@ using Streetcode.BLL.Validation.Validators.DTOValidators.Team;
 
 namespace Streetcode.BLL.Validation.Validators.CommandsAndQuerysValidators
 {
-    public class CreateTeamLinkQueryValidator : AbstractValidator<CreateTeamLinkQuery>
+    public class CreateTeamLinkQueryValidator : AbstractValidator<CreateTeamLinkCommand>
     {
         public CreateTeamLinkQueryValidator()
         {

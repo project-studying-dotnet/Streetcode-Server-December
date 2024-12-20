@@ -4,12 +4,12 @@ using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Streetcode.Text.GetAll;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Mapping.Streetcode.TextContent;
-using TextEntity = Streetcode.DAL.Entities.Streetcode.TextContent.Text;
 using Xunit;
 using Microsoft.EntityFrameworkCore.Query;
 using Streetcode.DAL.Entities.Streetcode;
 using System.Linq.Expressions;
 using FluentAssertions;
+using TextEntity = Streetcode.DAL.Entities.Streetcode.TextContent.Text;
 
 namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Text.GetAll
 {
@@ -67,7 +67,6 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Text.GetAll
             result.Value.Should().NotBeNull();
             result.Value.Count().Should().Be(2);
             result.Value.First().Title.Should().Be("Text 1");
-
         }
 
         [Fact]

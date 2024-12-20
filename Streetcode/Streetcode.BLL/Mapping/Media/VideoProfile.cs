@@ -5,11 +5,12 @@ using Streetcode.DAL.Entities.Media;
 namespace Streetcode.BLL.Mapping.Media
 {
 
-    public class VideoProfile : Profile
+public class VideoProfile : Profile
+{
+    public VideoProfile()
     {
-        public VideoProfile()
-        {
-            CreateMap<Video, VideoDTO>();
-        }
+        CreateMap<Video, VideoDTO>();
+        CreateMap<VideoCreateDTO, Video>();
+        CreateMap<VideoDTO, VideoCreateDTO>().ReverseMap();
     }
 }

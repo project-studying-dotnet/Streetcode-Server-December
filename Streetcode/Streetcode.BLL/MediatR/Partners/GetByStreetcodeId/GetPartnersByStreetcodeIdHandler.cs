@@ -27,24 +27,24 @@ namespace Streetcode.BLL.MediatR.Partners.GetByStreetcodeId
             var streetcode = await _repositoryWrapper.StreetcodeRepository
                 .GetSingleOrDefaultAsync(st => st.Id == request.StreetcodeId);
 
-        if (streetcode is null)
-        {
-            string errorMsg = ErrorManager.GetCustomErrorText("CantFindByStreetcodeIdError", "partner", request.StreetcodeId);
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
-        }
+            if (streetcode is null)
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByStreetcodeIdError", "partner", request.StreetcodeId);
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
 
             var partners = await _repositoryWrapper.PartnersRepository
-                .GetAllAsync(
-                    predicate: p => p.Streetcodes.Any(sc => sc.Id == streetcode.Id) || p.IsVisibleEverywhere,
-                    include: p => p.Include(pl => pl.PartnerSourceLinks));
+                    .GetAllAsync(
+                        predicate: p => p.Streetcodes.Any(sc => sc.Id == streetcode.Id) || p.IsVisibleEverywhere,
+                        include: p => p.Include(pl => pl.PartnerSourceLinks));
 
-        if (partners is null)
-        {
-            string errorMsg = ErrorManager.GetCustomErrorText("CantFindByStreetcodeIdError", "partner", request.StreetcodeId);
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
-        }
+            if (partners is null)
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByStreetcodeIdError", "partner", request.StreetcodeId);
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
 
             return Result.Ok(value: _mapper.Map<IEnumerable<PartnerDTO>>(partners));
         }

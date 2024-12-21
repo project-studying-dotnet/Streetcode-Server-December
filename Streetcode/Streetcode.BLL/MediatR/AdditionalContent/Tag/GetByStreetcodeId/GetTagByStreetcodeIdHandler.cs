@@ -39,12 +39,12 @@ namespace Streetcode.BLL.MediatR.AdditionalContent.Tag.GetByStreetcodeId
                     t => t.StreetcodeId == request.StreetcodeId,
                     include: q => q.Include(t => t.Tag));
 
-        if (tagIndexed is null)
-        {
-            string errorMsg = ErrorManager.GetCustomErrorText("CantFindByStreetcodeIdError", "tag", request.StreetcodeId);
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
-        }
+            if (tagIndexed is null)
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByStreetcodeIdError", "tag", request.StreetcodeId);
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
 
             var res = Result.Ok(_mapper.Map<IEnumerable<StreetcodeTagDTO>>(tagIndexed.OrderBy(ti => ti.Index)));
             return res;

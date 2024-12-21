@@ -23,24 +23,24 @@ namespace Streetcode.BLL.MediatR.Media.Video.GetByStreetcodeId
             _logger = logger;
         }
 
-    public async Task<Result<VideoDTO>> Handle(GetVideoByStreetcodeIdQuery request, CancellationToken cancellationToken)
-    {
-        var video = await _repositoryWrapper.VideoRepository
-            .GetFirstOrDefaultAsync(video => video.StreetcodeId == request.StreetcodeId);
-        if(video == null)
+        public async Task<Result<VideoDTO>> Handle(GetVideoByStreetcodeIdQuery request, CancellationToken cancellationToken)
         {
-            StreetcodeContent? streetcode = await _repositoryWrapper.StreetcodeRepository.GetFirstOrDefaultAsync(x => x.Id == request.StreetcodeId);
-            if (streetcode is null)
+            var video = await _repositoryWrapper.VideoRepository
+                .GetFirstOrDefaultAsync(video => video.StreetcodeId == request.StreetcodeId);
+            if(video == null)
             {
-                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByStreetcodeIdError", "video", request.StreetcodeId);
-                _logger.LogError(request, errorMsg);
-                return Result.Fail(new Error(errorMsg));
+                StreetcodeContent? streetcode = await _repositoryWrapper.StreetcodeRepository.GetFirstOrDefaultAsync(x => x.Id == request.StreetcodeId);
+                if (streetcode is null)
+                {
+                    string errorMsg = ErrorManager.GetCustomErrorText("CantFindByStreetcodeIdError", "video", request.StreetcodeId);
+                    _logger.LogError(request, errorMsg);
+                    return Result.Fail(new Error(errorMsg));
+                }
             }
-        }
 
             NullResult<VideoDTO> result = new NullResult<VideoDTO>();
             result.WithValue(_mapper.Map<VideoDTO>(video));
             return result;
+            }
         }
-    }
 }

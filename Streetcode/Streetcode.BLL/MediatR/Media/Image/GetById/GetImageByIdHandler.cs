@@ -31,12 +31,12 @@ namespace Streetcode.BLL.MediatR.Media.Image.GetById
                 f => f.Id == request.Id,
                 include: q => q.Include(i => i.ImageDetails)!);
 
-        if (image is null)
-        {
-            string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "image", request.Id);
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
-        }
+            if (image is null)
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "image", request.Id);
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
 
             var imageDto = _mapper.Map<ImageDTO>(image);
             if (imageDto.BlobName != null)

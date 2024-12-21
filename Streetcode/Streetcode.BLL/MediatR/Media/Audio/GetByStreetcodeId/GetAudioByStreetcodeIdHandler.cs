@@ -27,17 +27,18 @@ namespace Streetcode.BLL.MediatR.Media.Audio.GetByStreetcodeId
             _logger = logger;
         }
 
-    public async Task<Result<AudioDTO>> Handle(GetAudioByStreetcodeIdQuery request, CancellationToken cancellationToken)
-    {
-        var streetcode = await _repositoryWrapper.StreetcodeRepository.GetFirstOrDefaultAsync(
-            s => s.Id == request.StreetcodeId,
-            include: q => q.Include(s => s.Audio) !);
-        if (streetcode == null)
+        public async Task<Result<AudioDTO>> Handle(GetAudioByStreetcodeIdQuery request, CancellationToken cancellationToken)
         {
-            string errorMsg = ErrorManager.GetCustomErrorText("CantFindByStreetcodeIdError", "audio", request.StreetcodeId);
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
-        }
+            var streetcode = await _repositoryWrapper.StreetcodeRepository.GetFirstOrDefaultAsync(
+                s => s.Id == request.StreetcodeId,
+                include: q => q.Include(s => s.Audio)!);
+
+            if (streetcode == null)
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByStreetcodeIdError", "audio", request.StreetcodeId);
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
 
             NullResult<AudioDTO> result = new NullResult<AudioDTO>();
 

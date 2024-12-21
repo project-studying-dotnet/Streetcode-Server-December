@@ -33,12 +33,12 @@ namespace Streetcode.BLL.MediatR.Toponyms.GetByStreetcodeId
                     include: scl => scl
                         .Include(sc => sc.Coordinate));
 
-        if (toponyms is null || !toponyms.Any())
-        {
-            string errorMsg = ErrorManager.GetCustomErrorText("CantFindByStreetcodeIdError", "toponym", request.StreetcodeId);
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
-        }
+            if (toponyms is null || !toponyms.Any())
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByStreetcodeIdError", "toponym", request.StreetcodeId);
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
 
             var filteredToponyms = toponyms.DistinctBy(x => x.StreetName);
             var toponymDto = filteredToponyms.GroupBy(x => x.StreetName).Select(group => group.First()).Select(x => _mapper.Map<ToponymDTO>(x));

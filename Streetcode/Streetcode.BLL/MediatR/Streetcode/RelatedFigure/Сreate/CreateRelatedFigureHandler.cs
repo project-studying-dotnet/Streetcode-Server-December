@@ -26,19 +26,19 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedFigure.Create
             var observerEntity = await _repositoryWrapper.StreetcodeRepository.GetFirstOrDefaultAsync(rel => rel.Id == request.ObserverId);
             var targetEntity = await _repositoryWrapper.StreetcodeRepository.GetFirstOrDefaultAsync(rel => rel.Id == request.TargetId);
 
-        if (observerEntity is null)
-        {
-            string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "streetcode", request.ObserverId);
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
-        }
+            if (observerEntity is null)
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "streetcode", request.ObserverId);
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
 
-        if (targetEntity is null)
-        {
-            string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "streetcode", request.ObserverId);
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
-        }
+            if (targetEntity is null)
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "streetcode", request.ObserverId);
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
 
             var relation = new DAL.Entities.Streetcode.RelatedFigure
             {
@@ -48,16 +48,17 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedFigure.Create
 
             _repositoryWrapper.RelatedFigureRepository.Create(relation);
 
-        var resultIsSuccess = await _repositoryWrapper.SaveChangesAsync() > 0;
-        if(resultIsSuccess)
-        {
-            return Result.Ok(Unit.Value);
-        }
-        else
-        {
-            string errorMsg = ErrorManager.GetCustomErrorText("FailCreateError", "relation");
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
+            var resultIsSuccess = await _repositoryWrapper.SaveChangesAsync() > 0;
+            if (resultIsSuccess)
+            {
+                return Result.Ok(Unit.Value);
+            }
+            else
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("FailCreateError", "relation");
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
         }
     }
 }

@@ -31,12 +31,12 @@ namespace Streetcode.BLL.MediatR.Partners.GetById
                     include: p => p
                         .Include(pl => pl.PartnerSourceLinks));
 
-        if (partner is null)
-        {
-            string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "partner", request.Id);
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
-        }
+            if (partner is null)
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "partner", request.Id);
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
 
             return Result.Ok(_mapper.Map<PartnerDTO>(partner));
         }

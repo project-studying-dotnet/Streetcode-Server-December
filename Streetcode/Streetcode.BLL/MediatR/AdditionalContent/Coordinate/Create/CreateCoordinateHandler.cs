@@ -21,14 +21,15 @@ namespace Streetcode.BLL.MediatR.AdditionalContent.Coordinate.Create
         {
             var streetcodeCoordinate = _mapper.Map<DAL.Entities.AdditionalContent.Coordinates.Types.StreetcodeCoordinate>(request.StreetcodeCoordinate);
 
-        if (streetcodeCoordinate is null)
-        {
-            return Result.Fail(new Error(ErrorManager.GetCustomErrorText("ConvertationError", "null" , "streetcodeCoordinate")));
-        }
+            if (streetcodeCoordinate is null)
+            {
+                return Result.Fail(new Error(ErrorManager.GetCustomErrorText("ConvertationError", "null", "streetcodeCoordinate")));
+            }
 
             _repositoryWrapper.StreetcodeCoordinateRepository.Create(streetcodeCoordinate);
 
-        var resultIsSuccess = await _repositoryWrapper.SaveChangesAsync() > 0;
-        return resultIsSuccess ? Result.Ok(Unit.Value) : Result.Fail(new Error(ErrorManager.GetCustomErrorText("FailCreateError", "streetcodeCoordinate")));
+            var resultIsSuccess = await _repositoryWrapper.SaveChangesAsync() > 0;
+            return resultIsSuccess ? Result.Ok(Unit.Value) : Result.Fail(new Error(ErrorManager.GetCustomErrorText("FailCreateError", "streetcodeCoordinate")));
+        }
     }
 }

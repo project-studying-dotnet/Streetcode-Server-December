@@ -29,12 +29,12 @@ namespace Streetcode.BLL.MediatR.Media.Image.GetAll
         {
             var images = await _repositoryWrapper.ImageRepository.GetAllAsync();
 
-        if (images is null)
-        {
-            string errorMsg = ErrorManager.GetCustomErrorText("CantFindError", "image");
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
-        }
+            if (images is null)
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindError", "image");
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
 
             var imageDtos = _mapper.Map<IEnumerable<ImageDTO>>(images);
 

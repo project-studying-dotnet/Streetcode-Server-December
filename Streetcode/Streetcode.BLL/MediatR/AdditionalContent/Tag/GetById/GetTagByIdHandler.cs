@@ -25,12 +25,12 @@ namespace Streetcode.BLL.MediatR.AdditionalContent.Tag.GetById
         {
             var tag = await _repositoryWrapper.TagRepository.GetFirstOrDefaultAsync(f => f.Id == request.Id);
 
-        if (tag is null)
-        {
-            string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "tag", request.Id);
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
-        }
+            if (tag is null)
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "tag", request.Id);
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
 
             return Result.Ok(_mapper.Map<TagDTO>(tag));
         }

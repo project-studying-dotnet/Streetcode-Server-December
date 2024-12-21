@@ -28,12 +28,12 @@ namespace Streetcode.BLL.MediatR.Media.Audio.GetById
         {
             var audio = await _repositoryWrapper.AudioRepository.GetFirstOrDefaultAsync(f => f.Id == request.Id);
 
-        if (audio is null)
-        {
-            string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "audio", request.Id);
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
-        }
+            if (audio is null)
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "audio", request.Id);
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
 
             var audioDto = _mapper.Map<AudioDTO>(audio);
 

@@ -27,12 +27,12 @@ namespace Streetcode.BLL.MediatR.Media.Video.GetAll
         {
             var videos = await _repositoryWrapper.VideoRepository.GetAllAsync();
 
-        if (videos is null)
-        {
-            string errorMsg = ErrorManager.GetCustomErrorText("CantFindError", "video");
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
-        }
+            if (videos is null)
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindError", "video");
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
 
             return Result.Ok(_mapper.Map<IEnumerable<VideoDTO>>(videos));
         }

@@ -34,12 +34,12 @@ namespace Streetcode.BLL.MediatR.Sources.SourceLink.GetCategoriesByStreetcodeId
                     predicate: sc => sc.Streetcodes.Any(s => s.Id == request.StreetcodeId),
                     include: scl => scl.Include(sc => sc.Image)!);
 
-        if (srcCategories is null)
-        {
-            string errorMsg = ErrorManager.GetCustomErrorText("CantFindByStreetcodeIdError", "category" , request.StreetcodeId);
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
-        }
+            if (srcCategories is null)
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByStreetcodeIdError", "category" , request.StreetcodeId);
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
 
             var mappedSrcCategories = _mapper.Map<IEnumerable<SourceLinkCategoryDTO>>(srcCategories);
 

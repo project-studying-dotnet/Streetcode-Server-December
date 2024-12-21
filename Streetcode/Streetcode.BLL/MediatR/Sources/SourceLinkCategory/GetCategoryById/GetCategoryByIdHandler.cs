@@ -40,12 +40,12 @@ namespace Streetcode.BLL.MediatR.Sources.SourceLink.GetCategoryById
                         .Include(sc => sc.StreetcodeCategoryContents)
                         .Include(sc => sc.Image)!);
 
-        if (srcCategories is null)
-        {
-            string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "srcCategory", request.Id);
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
-        }
+            if (srcCategories is null)
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "srcCategory", request.Id);
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
 
             var mappedSrcCategories = _mapper.Map<SourceLinkCategoryDTO>(srcCategories);
 

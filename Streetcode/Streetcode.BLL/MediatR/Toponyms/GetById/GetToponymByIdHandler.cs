@@ -26,12 +26,12 @@ namespace Streetcode.BLL.MediatR.Toponyms.GetById
             var toponym = await _repositoryWrapper.ToponymRepository
                 .GetFirstOrDefaultAsync(f => f.Id == request.Id);
 
-        if (toponym is null)
-        {
-            string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "toponym", request.Id);
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
-        }
+            if (toponym is null)
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "toponym", request.Id);
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
 
             return Result.Ok(_mapper.Map<ToponymDTO>(toponym));
         }

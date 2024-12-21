@@ -21,23 +21,23 @@ namespace Streetcode.BLL.MediatR.AdditionalContent.Coordinate.GetByStreetcodeId
             _logger = logger;
         }
 
-    public async Task<Result<IEnumerable<StreetcodeCoordinateDTO>>> Handle(GetCoordinatesByStreetcodeIdQuery request, CancellationToken cancellationToken)
-    {
-        if ((await _repositoryWrapper.StreetcodeRepository.GetFirstOrDefaultAsync(s => s.Id == request.StreetcodeId)) is null)
+        public async Task<Result<IEnumerable<StreetcodeCoordinateDTO>>> Handle(GetCoordinatesByStreetcodeIdQuery request, CancellationToken cancellationToken)
         {
-            return Result.Fail(
-                new Error(ErrorManager.GetCustomErrorText("CantFindByStreetcodeIdError", "coordinate", request.StreetcodeId)));
-        }
+            if ((await _repositoryWrapper.StreetcodeRepository.GetFirstOrDefaultAsync(s => s.Id == request.StreetcodeId)) is null)
+            {
+                return Result.Fail(
+                    new Error(ErrorManager.GetCustomErrorText("CantFindByStreetcodeIdError", "coordinate", request.StreetcodeId)));
+            }
 
             var coordinates = await _repositoryWrapper.StreetcodeCoordinateRepository
-                .GetAllAsync(c => c.StreetcodeId == request.StreetcodeId);
+                    .GetAllAsync(c => c.StreetcodeId == request.StreetcodeId);
 
-        if (coordinates is null)
-        {
-            var msg = ErrorManager.GetCustomErrorText("CantFindByStreetcodeIdError", "coordinate", request.StreetcodeId);
-            _logger.LogError(request, msg);
-            return Result.Fail(new Error(msg));
-        }
+            if (coordinates is null)
+            {
+                var msg = ErrorManager.GetCustomErrorText("CantFindByStreetcodeIdError", "coordinate", request.StreetcodeId);
+                _logger.LogError(request, msg);
+                return Result.Fail(new Error(msg));
+            }
 
             return Result.Ok(_mapper.Map<IEnumerable<StreetcodeCoordinateDTO>>(coordinates));
         }

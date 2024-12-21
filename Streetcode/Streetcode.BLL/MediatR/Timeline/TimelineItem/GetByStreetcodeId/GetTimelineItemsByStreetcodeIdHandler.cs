@@ -31,12 +31,12 @@ namespace Streetcode.BLL.MediatR.Timeline.TimelineItem.GetByStreetcodeId
                         .Include(til => til.HistoricalContextTimelines)
                             .ThenInclude(x => x.HistoricalContext)!);
 
-        if (timelineItems is null)
-        {
-            string errorMsg = ErrorManager.GetCustomErrorText("CantFindByStreetcodeIdError", "timeline", request.StreetcodeId);
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
-        }
+            if (timelineItems is null)
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByStreetcodeIdError", "timeline", request.StreetcodeId);
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
 
             return Result.Ok(_mapper.Map<IEnumerable<TimelineItemDTO>>(timelineItems));
         }

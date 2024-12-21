@@ -32,12 +32,12 @@ namespace Streetcode.BLL.MediatR.Partners.GetAll
                         .Include(pl => pl.PartnerSourceLinks)
                         .Include(p => p.Streetcodes));
 
-        if (partners is null)
-        {
-            string errorMsg = ErrorManager.GetCustomErrorText("CantFindError", "partners");
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
-        }
+            if (partners is null)
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindError", "partners");
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
 
             return Result.Ok(_mapper.Map<IEnumerable<PartnerDTO>>(partners));
         }

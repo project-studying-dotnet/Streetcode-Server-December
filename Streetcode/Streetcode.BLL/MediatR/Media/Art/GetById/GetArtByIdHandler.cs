@@ -25,12 +25,12 @@ namespace Streetcode.BLL.MediatR.Media.Art.GetById
         {
             var art = await _repositoryWrapper.ArtRepository.GetFirstOrDefaultAsync(f => f.Id == request.Id);
 
-        if (art is null)
-        {
-            string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "art", request.Id);
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
-        }
+            if (art is null)
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "art", request.Id);
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
 
             return Result.Ok(_mapper.Map<ArtDTO>(art));
         }

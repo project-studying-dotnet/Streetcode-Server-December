@@ -28,12 +28,12 @@ namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.GetByIndex
                 predicate: st => st.Index == request.Index,
                 include: source => source.Include(l => l.Tags));
 
-        if (streetcode is null)
-        {
-            string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "streetcode", request.Index);
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
-        }
+            if (streetcode is null)
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "streetcode", request.Index);
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
 
             return Result.Ok(_mapper.Map<StreetcodeDTO>(streetcode));
         }

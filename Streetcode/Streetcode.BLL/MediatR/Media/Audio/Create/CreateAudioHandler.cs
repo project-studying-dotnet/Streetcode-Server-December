@@ -45,15 +45,16 @@ namespace Streetcode.BLL.MediatR.Media.Audio.Create
 
             var createdAudio = _mapper.Map<AudioDTO>(audio);
 
-        if(resultIsSuccess)
-        {
-            return Result.Ok(createdAudio);
-        }
-        else
-        {
-            string errorMsg = ErrorManager.GetCustomErrorText("FailCreateError", "audio");
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
+            if (resultIsSuccess)
+            {
+                return Result.Ok(createdAudio);
+            }
+            else
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("FailCreateError", "audio");
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
         }
     }
 }

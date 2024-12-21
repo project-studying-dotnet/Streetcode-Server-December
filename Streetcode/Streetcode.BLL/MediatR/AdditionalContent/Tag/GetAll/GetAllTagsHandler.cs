@@ -25,12 +25,12 @@ namespace Streetcode.BLL.MediatR.AdditionalContent.Tag.GetAll
         {
             var tags = await _repositoryWrapper.TagRepository.GetAllAsync();
 
-        if (tags is null)
-        {
-            string errorMsg = ErrorManager.GetCustomErrorText("CantFindError", "tags");
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
-        }
+            if (tags is null)
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindError", "tags");
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
 
             return Result.Ok(_mapper.Map<IEnumerable<TagDTO>>(tags));
         }

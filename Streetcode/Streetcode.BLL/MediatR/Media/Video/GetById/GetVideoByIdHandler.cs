@@ -26,12 +26,12 @@ namespace Streetcode.BLL.MediatR.Media.Video.GetById
         {
             var video = await _repositoryWrapper.VideoRepository.GetFirstOrDefaultAsync(f => f.Id == request.Id);
 
-        if (video is null)
-        {
-            string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "video", request.Id);
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
-        }
+            if (video is null)
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "video", request.Id);
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
 
             return Result.Ok(_mapper.Map<VideoDTO>(video));
         }

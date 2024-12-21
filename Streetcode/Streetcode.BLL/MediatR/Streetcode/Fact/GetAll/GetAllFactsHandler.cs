@@ -25,12 +25,12 @@ namespace Streetcode.BLL.MediatR.Streetcode.Fact.GetAll
         {
             var facts = await _repositoryWrapper.FactRepository.GetAllAsync();
 
-        if (facts is null)
-        {
-            string errorMsg = ErrorManager.GetCustomErrorText("CantFindError", "fact");
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
-        }
+            if (facts is null)
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindError", "fact");
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
 
             return Result.Ok(_mapper.Map<IEnumerable<FactDto>>(facts));
         }

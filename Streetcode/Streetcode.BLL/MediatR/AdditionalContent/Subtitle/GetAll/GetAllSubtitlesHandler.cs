@@ -25,9 +25,9 @@ namespace Streetcode.BLL.MediatR.AdditionalContent.Subtitle.GetAll
         {
             var subtitles = await _repositoryWrapper.SubtitleRepository.GetAllAsync();
 
-        if (subtitles is null)
-        {
-            string errorMsg = ErrorManager.GetCustomErrorText("CantFindError", "subtitles");
+            if (subtitles is null)
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindError", "subtitles");
 
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));

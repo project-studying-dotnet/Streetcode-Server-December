@@ -29,12 +29,12 @@ namespace Streetcode.BLL.MediatR.Media.Image.Delete
                 predicate: i => i.Id == request.Id,
                 include: s => s.Include(i => i.Streetcodes));
 
-        if (image is null)
-        {
-            string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "image", request.Id);
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
-        }
+            if (image is null)
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "image", request.Id);
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
 
             _repositoryWrapper.ImageRepository.Delete(image);
 
@@ -45,15 +45,16 @@ namespace Streetcode.BLL.MediatR.Media.Image.Delete
                 _blobService.DeleteFileInStorage(image.BlobName);
             }
 
-        if(resultIsSuccess)
-        {
-            return Result.Ok(Unit.Value);
-        }
-        else
-        {
-            string errorMsg = ErrorManager.GetCustomErrorText("FailDeleteError", "image");
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
+            if (resultIsSuccess)
+            {
+                return Result.Ok(Unit.Value);
+            }
+            else
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("FailDeleteError", "image");
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
         }
     }
 }

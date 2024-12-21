@@ -34,16 +34,17 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedFigure.Delete
 
             _repositoryWrapper.RelatedFigureRepository.Delete(relation);
 
-        var resultIsSuccess = await _repositoryWrapper.SaveChangesAsync() > 0;
-        if(resultIsSuccess)
-        {
-            return Result.Ok(Unit.Value);
-        }
-        else
-        {
-            string errorMsg = ErrorManager.GetCustomErrorText("FailDeleteError", "relation");
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
+            var resultIsSuccess = await _repositoryWrapper.SaveChangesAsync() > 0;
+            if (resultIsSuccess)
+            {
+                return Result.Ok(Unit.Value);
+            }
+            else
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("FailDeleteError", "relation");
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
         }
     }
 }

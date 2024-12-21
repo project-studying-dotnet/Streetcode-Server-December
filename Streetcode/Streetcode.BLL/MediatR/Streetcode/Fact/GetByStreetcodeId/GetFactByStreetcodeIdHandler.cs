@@ -26,12 +26,12 @@ namespace Streetcode.BLL.MediatR.Streetcode.Fact.GetByStreetcodeId
             var fact = await _repositoryWrapper.FactRepository
                 .GetAllAsync(f => f.StreetcodeId == request.StreetcodeId);
 
-        if (fact is null)
-        {
-            string errorMsg = ErrorManager.GetCustomErrorText("CantFindByStreetcodeId", "fact", request.StreetcodeId);
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
-        }
+            if (fact is null)
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByStreetcodeId", "fact", request.StreetcodeId);
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
 
             return Result.Ok(_mapper.Map<IEnumerable<FactDto>>(fact));
         }

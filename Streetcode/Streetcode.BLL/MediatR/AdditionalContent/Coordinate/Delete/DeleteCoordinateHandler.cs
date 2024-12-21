@@ -25,7 +25,8 @@ namespace Streetcode.BLL.MediatR.AdditionalContent.Coordinate.Delete
 
             _repositoryWrapper.StreetcodeCoordinateRepository.Delete(streetcodeCoordinate);
 
-        var resultIsSuccess = await _repositoryWrapper.SaveChangesAsync() > 0;
-        return resultIsSuccess ? Result.Ok(Unit.Value) : Result.Fail(new Error(ErrorManager.GetCustomErrorText("FailDeleteError", "coordinate")));
+            var resultIsSuccess = await _repositoryWrapper.SaveChangesAsync() > 0;
+            return resultIsSuccess ? Result.Ok(Unit.Value) : Result.Fail(new Error(ErrorManager.GetCustomErrorText("FailDeleteError", "coordinate")));
+        }
     }
 }

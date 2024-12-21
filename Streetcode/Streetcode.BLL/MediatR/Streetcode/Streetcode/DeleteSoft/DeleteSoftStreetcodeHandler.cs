@@ -36,15 +36,16 @@ namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.DeleteSoft
 
             var resultIsDeleteSucces = await _repositoryWrapper.SaveChangesAsync() > 0;
 
-        if(resultIsDeleteSucces)
-        {
-            return Result.Ok(Unit.Value);
-        }
-        else
-        {
-            string errorMsg = ErrorManager.GetCustomErrorText("FailDeleteError", "streetcode");
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
+            if (resultIsDeleteSucces)
+            {
+                return Result.Ok(Unit.Value);
+            }
+            else
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("FailDeleteError", "streetcode");
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
         }
     }
 }

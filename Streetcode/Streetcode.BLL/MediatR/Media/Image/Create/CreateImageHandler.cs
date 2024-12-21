@@ -46,15 +46,16 @@ namespace Streetcode.BLL.MediatR.Media.Image.Create
 
             createdImage.Base64 = _blobService.FindFileInStorageAsBase64(createdImage.BlobName);
 
-        if(resultIsSuccess)
-        {
-            return Result.Ok(createdImage);
-        }
-        else
-        {
-            string errorMsg = ErrorManager.GetCustomErrorText("FailCreateError", "image");
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
+            if (resultIsSuccess)
+            {
+                return Result.Ok(createdImage);
+            }
+            else
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("FailCreateError", "image");
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
         }
     }
 }

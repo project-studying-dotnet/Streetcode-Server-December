@@ -24,12 +24,12 @@ namespace Streetcode.BLL.MediatR.Media.Image.GetBaseImage
         {
             var image = await _repositoryWrapper.ImageRepository.GetFirstOrDefaultAsync(a => a.Id == request.Id);
 
-        if (image is null)
-        {
-            string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "image", request.Id);
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
-        }
+            if (image is null)
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "image", request.Id);
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
 
             return _blobStorage.FindFileInStorageAsMemoryStream(image.BlobName);
         }

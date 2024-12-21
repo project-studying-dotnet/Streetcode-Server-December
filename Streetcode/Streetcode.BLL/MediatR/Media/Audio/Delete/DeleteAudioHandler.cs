@@ -24,12 +24,12 @@ namespace Streetcode.BLL.MediatR.Media.Audio.Delete
         {
             var audio = await _repositoryWrapper.AudioRepository.GetFirstOrDefaultAsync(a => a.Id == request.Id);
 
-        if (audio is null)
-        {
-            string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "audio", request.Id);
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
-        }
+            if (audio is null)
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "audio", request.Id);
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
 
             _repositoryWrapper.AudioRepository.Delete(audio);
 
@@ -40,16 +40,17 @@ namespace Streetcode.BLL.MediatR.Media.Audio.Delete
                 _blobService.DeleteFileInStorage(audio.BlobName);
             }
 
-        if (resultIsSuccess)
-        {
-            _logger?.LogInformation($"DeleteAudioCommand handled successfully");
-            return Result.Ok(Unit.Value);
-        }
-        else
-        {
-            string errorMsg = ErrorManager.GetCustomErrorText("FailDeleteError", "audio");
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
+            if (resultIsSuccess)
+            {
+                _logger?.LogInformation($"DeleteAudioCommand handled successfully");
+                return Result.Ok(Unit.Value);
+            }
+            else
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("FailDeleteError", "audio");
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
         }
     }
 }

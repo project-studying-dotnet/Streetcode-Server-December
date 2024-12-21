@@ -2,11 +2,11 @@ using Microsoft.AspNetCore.Identity;
 using MongoDB.Driver;
 using UserService.DAL.Entities.Roles;
 using UserService.DAL.Entities.Users;
-using AspNetCore.Identity.MongoDbCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using UserService.BLL.Interfaces.Jwt;
+using UserService.BLL.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +23,7 @@ builder.Services.AddSingleton<IMongoClient>(serviceProvider =>
 });
 
 
-// // Configuration Identity with MongoDB
+// Configuration Identity with MongoDB
 var databaseName = builder.Configuration["MongoDb:DatabaseName"];
 
 builder.Services.AddIdentity<User, Role>()
@@ -52,9 +52,20 @@ builder.Services.AddAuthentication(options =>
         ValidAudience = jwtSettings["Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(key)
     };
+
+    // Extracting token from cookie
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            context.Token = context.HttpContext.Request.Cookies["AuthToken"];
+            return Task.CompletedTask;
+        }
+    };
+
 });
 
-builder.Services.AddScoped<IJwtService, IJwtService>();
+builder.Services.AddScoped<IGenerateJwtService, GenerateJwtService>();
 
 builder.Services.AddScoped<IMongoDatabase>(serviceProvider =>
 {
@@ -72,5 +83,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.MapControllers();
 
 app.Run();

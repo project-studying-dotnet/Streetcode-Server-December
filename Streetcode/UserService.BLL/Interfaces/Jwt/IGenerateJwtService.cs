@@ -7,9 +7,8 @@ using UserService.DAL.Entities.Users;
 
 namespace UserService.BLL.Interfaces.Jwt
 {
-    public interface IJwtService
+    public interface IGenerateJwtService
     {
         Task<string> GenerateTokenAsync(User user);
-        public (string Token, DateTime Expiry) GenerateRefreshToken();
     }
 }

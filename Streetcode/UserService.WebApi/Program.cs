@@ -16,6 +16,7 @@ builder.Services.AddOpenApi();
 
 // MongoDB Configuration
 string mongoConnectionString = builder.Configuration.GetConnectionString("MongoDb")!;
+
 builder.Services.AddSingleton<IMongoClient>(serviceProvider =>
 {
     return new MongoClient(mongoConnectionString);

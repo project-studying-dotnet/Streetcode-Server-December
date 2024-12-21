@@ -29,7 +29,7 @@ else
 await app.ApplyMigrations();
 
 // func to seed data
-await app.SeedDataAsync();
+// await app.SeedDataAsync();
 app.UseCors();
 
 app.UseHttpsRedirection();

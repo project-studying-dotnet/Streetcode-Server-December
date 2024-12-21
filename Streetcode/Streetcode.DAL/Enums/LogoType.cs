@@ -1,9 +1,10 @@
-﻿namespace Streetcode.DAL.Enums;
-
-public enum LogoType : byte
+﻿namespace Streetcode.DAL.Enums
 {
-    Twitter,
-    Instagram,
-    Facebook,
-    YouTube
+    public enum LogoType : byte
+    {
+        Twitter,
+        Instagram,
+        Facebook,
+        YouTube
+    }
 }

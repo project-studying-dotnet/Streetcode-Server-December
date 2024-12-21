@@ -6,7 +6,6 @@ using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.Interfaces.Logging;
-using Streetcode.BLL.DTO.AdditionalContent.Subtitles;
 
 namespace Streetcode.BLL.MediatR.Newss.GetAll
 {

@@ -4,7 +4,6 @@ using MediatR;
 using Streetcode.BLL.DTO.AdditionalContent.Subtitles;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.ResultVariations;
-using Streetcode.DAL.Entities.Media;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.AdditionalContent.Subtitle.GetByStreetcodeId

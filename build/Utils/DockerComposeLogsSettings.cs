@@ -1,24 +1,25 @@
 ﻿using System;
 using Nuke.Common.Tooling;
 
-namespace Utils;
-
-[Serializable]
-public class DockerComposeLogsSettings : DockerComposeSettings
+namespace Utils
 {
-    public bool Follow { get; internal set; }
-
-    public DockerComposeLogsSettings SetFollow(bool follow)
+    [Serializable]
+    public class DockerComposeLogsSettings : DockerComposeSettings
     {
-        Follow = follow;
-        return this;
-    }
+        public bool Follow { get; internal set; }
 
-    protected override Arguments ConfigureProcessArguments(Arguments arguments)
-    {
-        arguments = base.ConfigureProcessArguments(arguments);
-        arguments.Add("logs")
-            .Add("--follow", Follow);
-        return arguments;
+        public DockerComposeLogsSettings SetFollow(bool follow)
+        {
+            Follow = follow;
+            return this;
+        }
+
+        protected override Arguments ConfigureProcessArguments(Arguments arguments)
+        {
+            arguments = base.ConfigureProcessArguments(arguments);
+            arguments.Add("logs")
+                .Add("--follow", Follow);
+            return arguments;
+        }
     }
 }

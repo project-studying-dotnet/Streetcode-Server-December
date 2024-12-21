@@ -11,6 +11,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="cache.env" />
+    <None Include="mongodb.env" />
     <None Include="sqlserver.env" />
     <None Include="docker-compose.override.yml">
       <DependentUpon>docker-compose.yml</DependentUpon>

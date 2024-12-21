@@ -2,12 +2,13 @@ using AutoMapper;
 using Streetcode.BLL.DTO.Streetcode.TextContent;
 using Streetcode.DAL.Entities.Streetcode.TextContent;
 
-namespace Streetcode.BLL.Mapping.Streetcode.TextContent;
-
-public class RelatedTermProfile : Profile
+namespace Streetcode.BLL.Mapping.Streetcode.TextContent
 {
-    public RelatedTermProfile()
+    public class RelatedTermProfile : Profile
     {
-        CreateMap<RelatedTerm, RelatedTermDTO>().ReverseMap();
-     }
+        public RelatedTermProfile()
+        {
+            CreateMap<RelatedTerm, RelatedTermDTO>().ReverseMap();
+        }
+    }
 }

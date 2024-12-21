@@ -9,36 +9,36 @@ using Streetcode.BLL.Resources;
 using Streetcode.DAL.Entities.AdditionalContent.Coordinates;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
-namespace Streetcode.BLL.MediatR.Sources.SourceLink.GetCategoryById;
-
-public class GetCategoryByIdHandler : IRequestHandler<GetCategoryByIdQuery, Result<SourceLinkCategoryDTO>>
+namespace Streetcode.BLL.MediatR.Sources.SourceLink.GetCategoryById
 {
-    private readonly IMapper _mapper;
-    private readonly IRepositoryWrapper _repositoryWrapper;
-    private readonly IBlobService _blobService;
-    private readonly ILoggerService _logger;
-
-    public GetCategoryByIdHandler(
-        IRepositoryWrapper repositoryWrapper,
-        IMapper mapper,
-        IBlobService blobService,
-        ILoggerService logger)
+    public class GetCategoryByIdHandler : IRequestHandler<GetCategoryByIdQuery, Result<SourceLinkCategoryDTO>>
     {
-        _repositoryWrapper = repositoryWrapper;
-        _mapper = mapper;
-        _blobService = blobService;
-        _logger = logger;
-    }
+        private readonly IMapper _mapper;
+        private readonly IRepositoryWrapper _repositoryWrapper;
+        private readonly IBlobService _blobService;
+        private readonly ILoggerService _logger;
 
-    public async Task<Result<SourceLinkCategoryDTO>> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
-    {
-        var srcCategories = await _repositoryWrapper
-            .SourceCategoryRepository
-            .GetFirstOrDefaultAsync(
-                predicate: sc => sc.Id == request.Id,
-                include: scl => scl
-                    .Include(sc => sc.StreetcodeCategoryContents)
-                    .Include(sc => sc.Image) !);
+        public GetCategoryByIdHandler(
+            IRepositoryWrapper repositoryWrapper,
+            IMapper mapper,
+            IBlobService blobService,
+            ILoggerService logger)
+        {
+            _repositoryWrapper = repositoryWrapper;
+            _mapper = mapper;
+            _blobService = blobService;
+            _logger = logger;
+        }
+
+        public async Task<Result<SourceLinkCategoryDTO>> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
+        {
+            var srcCategories = await _repositoryWrapper
+                .SourceCategoryRepository
+                .GetFirstOrDefaultAsync(
+                    predicate: sc => sc.Id == request.Id,
+                    include: scl => scl
+                        .Include(sc => sc.StreetcodeCategoryContents)
+                        .Include(sc => sc.Image)!);
 
         if (srcCategories is null)
         {
@@ -47,10 +47,11 @@ public class GetCategoryByIdHandler : IRequestHandler<GetCategoryByIdQuery, Resu
             return Result.Fail(new Error(errorMsg));
         }
 
-        var mappedSrcCategories = _mapper.Map<SourceLinkCategoryDTO>(srcCategories);
+            var mappedSrcCategories = _mapper.Map<SourceLinkCategoryDTO>(srcCategories);
 
-        mappedSrcCategories.Image.Base64 = _blobService.FindFileInStorageAsBase64(mappedSrcCategories.Image.BlobName);
+            mappedSrcCategories.Image.Base64 = _blobService.FindFileInStorageAsBase64(mappedSrcCategories.Image.BlobName);
 
-        return Result.Ok(mappedSrcCategories);
+            return Result.Ok(mappedSrcCategories);
+        }
     }
 }

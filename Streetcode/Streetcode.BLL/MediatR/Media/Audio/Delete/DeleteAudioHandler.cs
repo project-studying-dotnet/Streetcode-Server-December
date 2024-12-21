@@ -5,24 +5,24 @@ using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Resources;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
-namespace Streetcode.BLL.MediatR.Media.Audio.Delete;
-
-public class DeleteAudioHandler : IRequestHandler<DeleteAudioCommand, Result<Unit>>
+namespace Streetcode.BLL.MediatR.Media.Audio.Delete
 {
-    private readonly IRepositoryWrapper _repositoryWrapper;
-    private readonly IBlobService _blobService;
-    private readonly ILoggerService _logger;
-
-    public DeleteAudioHandler(IRepositoryWrapper repositoryWrapper, IBlobService blobService, ILoggerService logger)
+    public class DeleteAudioHandler : IRequestHandler<DeleteAudioCommand, Result<Unit>>
     {
-        _repositoryWrapper = repositoryWrapper;
-        _blobService = blobService;
-        _logger = logger;
-    }
+        private readonly IRepositoryWrapper _repositoryWrapper;
+        private readonly IBlobService _blobService;
+        private readonly ILoggerService _logger;
 
-    public async Task<Result<Unit>> Handle(DeleteAudioCommand request, CancellationToken cancellationToken)
-    {
-        var audio = await _repositoryWrapper.AudioRepository.GetFirstOrDefaultAsync(a => a.Id == request.Id);
+        public DeleteAudioHandler(IRepositoryWrapper repositoryWrapper, IBlobService blobService, ILoggerService logger)
+        {
+            _repositoryWrapper = repositoryWrapper;
+            _blobService = blobService;
+            _logger = logger;
+        }
+
+        public async Task<Result<Unit>> Handle(DeleteAudioCommand request, CancellationToken cancellationToken)
+        {
+            var audio = await _repositoryWrapper.AudioRepository.GetFirstOrDefaultAsync(a => a.Id == request.Id);
 
         if (audio is null)
         {
@@ -31,14 +31,14 @@ public class DeleteAudioHandler : IRequestHandler<DeleteAudioCommand, Result<Uni
             return Result.Fail(new Error(errorMsg));
         }
 
-        _repositoryWrapper.AudioRepository.Delete(audio);
+            _repositoryWrapper.AudioRepository.Delete(audio);
 
-        var resultIsSuccess = await _repositoryWrapper.SaveChangesAsync() > 0;
+            var resultIsSuccess = await _repositoryWrapper.SaveChangesAsync() > 0;
 
-        if (resultIsSuccess)
-        {
-            _blobService.DeleteFileInStorage(audio.BlobName);
-        }
+            if (resultIsSuccess)
+            {
+                _blobService.DeleteFileInStorage(audio.BlobName);
+            }
 
         if (resultIsSuccess)
         {

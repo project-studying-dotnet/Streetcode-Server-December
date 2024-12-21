@@ -1,26 +1,25 @@
 using AutoMapper;
 using FluentResults;
 using MediatR;
-using Microsoft.Extensions.Logging;
 using Streetcode.BLL.DTO.Sources;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Resources;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
-namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.Update;
-
-public class UpdateSourceLinkCategoryHandler : IRequestHandler<UpdateSourceLinkCategoryCommand, Result<SourceLinkCategoryDTO>>
+namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.Update
 {
-    private readonly IMapper _mapper;
-    private readonly IRepositoryWrapper _repositoryWrapper;
-    private readonly ILoggerService _logger;
-
-    public UpdateSourceLinkCategoryHandler(IMapper mapper, IRepositoryWrapper repositoryWrapper, ILoggerService loggerService)
+    public class UpdateSourceLinkCategoryHandler : IRequestHandler<UpdateSourceLinkCategoryCommand, Result<SourceLinkCategoryDTO>>
     {
-        _mapper = mapper;
-        _repositoryWrapper = repositoryWrapper;
-        _logger = loggerService;
-    }
+        private readonly IMapper _mapper;
+        private readonly IRepositoryWrapper _repositoryWrapper;
+        private readonly ILoggerService _logger;
+
+        public UpdateSourceLinkCategoryHandler(IMapper mapper, IRepositoryWrapper repositoryWrapper, ILoggerService loggerService)
+        {
+            _mapper = mapper;
+            _repositoryWrapper = repositoryWrapper;
+            _logger = loggerService;
+        }
 
     public async Task<Result<SourceLinkCategoryDTO>> Handle(UpdateSourceLinkCategoryCommand request, CancellationToken cancellationToken)
     {
@@ -45,8 +44,8 @@ public class UpdateSourceLinkCategoryHandler : IRequestHandler<UpdateSourceLinkC
             return Result.Fail(new Error(errorMsg));
         }
 
-        _repositoryWrapper.SourceCategoryRepository.Update(sourceLinkCategory);
-        var resultIsSuccess = await _repositoryWrapper.SaveChangesAsync() > 0;
+            _repositoryWrapper.SourceCategoryRepository.Update(sourceLinkCategory);
+            var resultIsSuccess = await _repositoryWrapper.SaveChangesAsync() > 0;
 
         if (resultIsSuccess)
         {

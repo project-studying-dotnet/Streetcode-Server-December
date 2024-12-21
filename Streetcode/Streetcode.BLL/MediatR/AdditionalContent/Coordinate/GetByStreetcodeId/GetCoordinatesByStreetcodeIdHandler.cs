@@ -6,20 +6,20 @@ using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Resources;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
-namespace Streetcode.BLL.MediatR.AdditionalContent.Coordinate.GetByStreetcodeId;
-
-public class GetCoordinatesByStreetcodeIdHandler : IRequestHandler<GetCoordinatesByStreetcodeIdQuery, Result<IEnumerable<StreetcodeCoordinateDTO>>>
+namespace Streetcode.BLL.MediatR.AdditionalContent.Coordinate.GetByStreetcodeId
 {
-    private readonly IMapper _mapper;
-    private readonly IRepositoryWrapper _repositoryWrapper;
-    private readonly ILoggerService _logger;
-
-    public GetCoordinatesByStreetcodeIdHandler(IRepositoryWrapper repositoryWrapper, IMapper mapper, ILoggerService logger)
+    public class GetCoordinatesByStreetcodeIdHandler : IRequestHandler<GetCoordinatesByStreetcodeIdQuery, Result<IEnumerable<StreetcodeCoordinateDTO>>>
     {
-        _repositoryWrapper = repositoryWrapper;
-        _mapper = mapper;
-        _logger = logger;
-    }
+        private readonly IMapper _mapper;
+        private readonly IRepositoryWrapper _repositoryWrapper;
+        private readonly ILoggerService _logger;
+
+        public GetCoordinatesByStreetcodeIdHandler(IRepositoryWrapper repositoryWrapper, IMapper mapper, ILoggerService logger)
+        {
+            _repositoryWrapper = repositoryWrapper;
+            _mapper = mapper;
+            _logger = logger;
+        }
 
     public async Task<Result<IEnumerable<StreetcodeCoordinateDTO>>> Handle(GetCoordinatesByStreetcodeIdQuery request, CancellationToken cancellationToken)
     {
@@ -29,8 +29,8 @@ public class GetCoordinatesByStreetcodeIdHandler : IRequestHandler<GetCoordinate
                 new Error(ErrorManager.GetCustomErrorText("CantFindByStreetcodeIdError", "coordinate", request.StreetcodeId)));
         }
 
-        var coordinates = await _repositoryWrapper.StreetcodeCoordinateRepository
-            .GetAllAsync(c => c.StreetcodeId == request.StreetcodeId);
+            var coordinates = await _repositoryWrapper.StreetcodeCoordinateRepository
+                .GetAllAsync(c => c.StreetcodeId == request.StreetcodeId);
 
         if (coordinates is null)
         {
@@ -39,6 +39,7 @@ public class GetCoordinatesByStreetcodeIdHandler : IRequestHandler<GetCoordinate
             return Result.Fail(new Error(msg));
         }
 
-        return Result.Ok(_mapper.Map<IEnumerable<StreetcodeCoordinateDTO>>(coordinates));
+            return Result.Ok(_mapper.Map<IEnumerable<StreetcodeCoordinateDTO>>(coordinates));
+        }
     }
 }

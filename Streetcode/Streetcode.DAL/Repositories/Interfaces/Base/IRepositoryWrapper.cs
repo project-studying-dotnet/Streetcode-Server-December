@@ -53,8 +53,6 @@ public interface IRepositoryWrapper
     IStreetcodeToponymRepository StreetcodeToponymRepository { get; }
     IStreetcodeImageRepository StreetcodeImageRepository { get; }
     public int SaveChanges();
-
     public Task<int> SaveChangesAsync();
-
     public TransactionScope BeginTransaction();
 }

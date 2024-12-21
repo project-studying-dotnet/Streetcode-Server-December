@@ -9,49 +9,50 @@ using Streetcode.BLL.MediatR.Streetcode.Fact.GetById;
 using Streetcode.BLL.MediatR.Streetcode.Fact.GetByStreetcodeId;
 using Streetcode.BLL.MediatR.Streetcode.Fact.Update;
 
-namespace Streetcode.WebApi.Controllers.Streetcode.TextContent;
-
-public class FactController : BaseApiController
+namespace Streetcode.WebApi.Controllers.Streetcode.TextContent
 {
-    [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public class FactController : BaseApiController
     {
-        return HandleResult(await Mediator.Send(new GetAllFactsQuery()));
-    }
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            return HandleResult(await Mediator.Send(new GetAllFactsQuery()));
+        }
 
-    [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetById([FromRoute] int id)
-    {
-        return HandleResult(await Mediator.Send(new GetFactByIdQuery(id)));
-    }
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetById([FromRoute] int id)
+        {
+            return HandleResult(await Mediator.Send(new GetFactByIdQuery(id)));
+        }
 
-    [HttpGet("{streetcodeId:int}")]
-    public async Task<IActionResult> GetByStreetcodeId([FromRoute] int streetcodeId)
-    {
-        return HandleResult(await Mediator.Send(new GetFactByStreetcodeIdQuery(streetcodeId)));
-    }
+        [HttpGet("{streetcodeId:int}")]
+        public async Task<IActionResult> GetByStreetcodeId([FromRoute] int streetcodeId)
+        {
+            return HandleResult(await Mediator.Send(new GetFactByStreetcodeIdQuery(streetcodeId)));
+        }
 
-    [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateFactDTO fact)
-    {
-        return HandleResult(await Mediator.Send(new CreateFactCommand(fact)));
-    }
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateFactDTO fact)
+        {
+            return HandleResult(await Mediator.Send(new CreateFactCommand(fact)));
+        }
 
-    [HttpPut]
-    public async Task<IActionResult> Update([FromBody] FactDto fact)
-    {
-        return HandleResult(await Mediator.Send(new UpdateFactCommand(fact)));
-    }
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] FactDto fact)
+        {
+            return HandleResult(await Mediator.Send(new UpdateFactCommand(fact)));
+        }
 
-    [HttpPut]
-    public async Task<IActionResult> ReorderFacts([FromBody] FactReorderDto factReorderDto)
-    {
-        return HandleResult(await Mediator.Send(new FactReorderCommand(factReorderDto)));
-    }
+        [HttpPut]
+        public async Task<IActionResult> ReorderFacts([FromBody] FactReorderDto factReorderDto)
+        {
+            return HandleResult(await Mediator.Send(new FactReorderCommand(factReorderDto)));
+        }
 
-    [HttpDelete("{id:int}")]
-    public async Task<IActionResult> DeleteFact([FromRoute] int id)
-	{
-		return HandleResult(await Mediator.Send(new DeleteFactCommand(id)));
-	}
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteFact([FromRoute] int id)
+        {
+            return HandleResult(await Mediator.Send(new DeleteFactCommand(id)));
+        }
+    }
 }

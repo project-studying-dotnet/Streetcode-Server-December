@@ -8,26 +8,26 @@ using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
 
-namespace Streetcode.BLL.MediatR.Media.Audio.GetAll;
-
-public class GetAllAudiosHandler : IRequestHandler<GetAllAudiosQuery, Result<IEnumerable<AudioDTO>>>
+namespace Streetcode.BLL.MediatR.Media.Audio.GetAll
 {
-    private readonly IMapper _mapper;
-    private readonly IRepositoryWrapper _repositoryWrapper;
-    private readonly IBlobService _blobService;
-    private readonly ILoggerService _logger;
-
-    public GetAllAudiosHandler(IRepositoryWrapper repositoryWrapper, IMapper mapper, IBlobService blobService, ILoggerService logger)
+    public class GetAllAudiosHandler : IRequestHandler<GetAllAudiosQuery, Result<IEnumerable<AudioDTO>>>
     {
-        _repositoryWrapper = repositoryWrapper;
-        _mapper = mapper;
-        _blobService = blobService;
-        _logger = logger;
-    }
+        private readonly IMapper _mapper;
+        private readonly IRepositoryWrapper _repositoryWrapper;
+        private readonly IBlobService _blobService;
+        private readonly ILoggerService _logger;
 
-    public async Task<Result<IEnumerable<AudioDTO>>> Handle(GetAllAudiosQuery request, CancellationToken cancellationToken)
-    {
-        var audios = await _repositoryWrapper.AudioRepository.GetAllAsync();
+        public GetAllAudiosHandler(IRepositoryWrapper repositoryWrapper, IMapper mapper, IBlobService blobService, ILoggerService logger)
+        {
+            _repositoryWrapper = repositoryWrapper;
+            _mapper = mapper;
+            _blobService = blobService;
+            _logger = logger;
+        }
+
+        public async Task<Result<IEnumerable<AudioDTO>>> Handle(GetAllAudiosQuery request, CancellationToken cancellationToken)
+        {
+            var audios = await _repositoryWrapper.AudioRepository.GetAllAsync();
 
         if (audios is null)
         {
@@ -36,12 +36,13 @@ public class GetAllAudiosHandler : IRequestHandler<GetAllAudiosQuery, Result<IEn
             return Result.Fail(new Error(errorMsg));
         }
 
-        var audioDtos = _mapper.Map<IEnumerable<AudioDTO>>(audios);
-        foreach (var audio in audioDtos)
-        {
-            audio.Base64 = _blobService.FindFileInStorageAsBase64(audio.BlobName);
-        }
+            var audioDtos = _mapper.Map<IEnumerable<AudioDTO>>(audios);
+            foreach (var audio in audioDtos)
+            {
+                audio.Base64 = _blobService.FindFileInStorageAsBase64(audio.BlobName);
+            }
 
-        return Result.Ok(audioDtos);
+            return Result.Ok(audioDtos);
+        }
     }
 }

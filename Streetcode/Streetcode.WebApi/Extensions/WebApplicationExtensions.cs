@@ -1,21 +1,22 @@
 using Microsoft.EntityFrameworkCore;
 using Streetcode.DAL.Persistence;
 
-namespace Streetcode.WebApi.Extensions;
-
-public static class WebApplicationExtensions
+namespace Streetcode.WebApi.Extensions
 {
-    public static async Task ApplyMigrations(this WebApplication app)
+    public static class WebApplicationExtensions
     {
-        var logger = app.Services.GetRequiredService<ILogger<Program>>();
-        try
+        public static async Task ApplyMigrations(this WebApplication app)
         {
-            var streetcodeContext = app.Services.GetRequiredService<StreetcodeDbContext>();
-            await streetcodeContext.Database.MigrateAsync();
-        }
-        catch (Exception ex)
-        {
-            logger.LogError(ex, "An error occured during startup migration");
+            var logger = app.Services.GetRequiredService<ILogger<Program>>();
+            try
+            {
+                var streetcodeContext = app.Services.GetRequiredService<StreetcodeDbContext>();
+                await streetcodeContext.Database.MigrateAsync();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "An error occured during startup migration");
+            }
         }
     }
 }

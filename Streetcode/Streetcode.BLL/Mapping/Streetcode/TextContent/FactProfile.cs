@@ -2,14 +2,15 @@ using AutoMapper;
 using Streetcode.BLL.DTO.Streetcode.TextContent.Fact;
 using Streetcode.DAL.Entities.Streetcode.TextContent;
 
-namespace Streetcode.BLL.Mapping.Streetcode.TextContent;
-
-public class FactProfile : Profile
+namespace Streetcode.BLL.Mapping.Streetcode.TextContent
 {
-    public FactProfile()
+    public class FactProfile : Profile
     {
-        CreateMap<Fact, FactDto>().ReverseMap();
-        CreateMap<Fact, CreateFactDTO>().ReverseMap();
-        CreateMap<Fact, FactUpdateCreateDto>().ReverseMap();
+        public FactProfile()
+        {
+            CreateMap<Fact, FactDto>().ReverseMap();
+            CreateMap<Fact, CreateFactDTO>().ReverseMap();
+            CreateMap<Fact, FactUpdateCreateDto>().ReverseMap();
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Streetcode.DAL.Enums;
+
 namespace Streetcode.BLL.DTO.Timeline.Update
 {
     public class TimelineItemUpdateDto

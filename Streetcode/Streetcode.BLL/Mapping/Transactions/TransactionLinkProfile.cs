@@ -2,13 +2,14 @@
 using Streetcode.BLL.DTO.Transactions;
 using Streetcode.DAL.Entities.Transactions;
 
-namespace Streetcode.BLL.Mapping.Transactions;
-
-public class TransactionLinkProfile : Profile
+namespace Streetcode.BLL.Mapping.Transactions
 {
-    public TransactionLinkProfile()
+    public class TransactionLinkProfile : Profile
     {
-        CreateMap<TransactionLink, TransactLinkDTO>()
-           .ReverseMap();
-	}
+        public TransactionLinkProfile()
+        {
+            CreateMap<TransactionLink, TransactLinkDTO>()
+               .ReverseMap();
+        }
+    }
 }

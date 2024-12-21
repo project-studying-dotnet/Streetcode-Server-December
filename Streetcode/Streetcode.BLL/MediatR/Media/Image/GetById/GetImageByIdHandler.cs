@@ -8,28 +8,28 @@ using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Resources;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
-namespace Streetcode.BLL.MediatR.Media.Image.GetById;
-
-public class GetImageByIdHandler : IRequestHandler<GetImageByIdQuery, Result<ImageDTO>>
+namespace Streetcode.BLL.MediatR.Media.Image.GetById
 {
-    private readonly IMapper _mapper;
-    private readonly IRepositoryWrapper _repositoryWrapper;
-    private readonly IBlobService _blobService;
-    private readonly ILoggerService _logger;
-
-    public GetImageByIdHandler(IRepositoryWrapper repositoryWrapper, IMapper mapper, IBlobService blobService, ILoggerService logger)
+    public class GetImageByIdHandler : IRequestHandler<GetImageByIdQuery, Result<ImageDTO>>
     {
-        _repositoryWrapper = repositoryWrapper;
-        _mapper = mapper;
-        _blobService = blobService;
-        _logger = logger;
-    }
+        private readonly IMapper _mapper;
+        private readonly IRepositoryWrapper _repositoryWrapper;
+        private readonly IBlobService _blobService;
+        private readonly ILoggerService _logger;
 
-    public async Task<Result<ImageDTO>> Handle(GetImageByIdQuery request, CancellationToken cancellationToken)
-    {
-        var image = await _repositoryWrapper.ImageRepository.GetFirstOrDefaultAsync(
-            f => f.Id == request.Id,
-            include: q => q.Include(i => i.ImageDetails) !);
+        public GetImageByIdHandler(IRepositoryWrapper repositoryWrapper, IMapper mapper, IBlobService blobService, ILoggerService logger)
+        {
+            _repositoryWrapper = repositoryWrapper;
+            _mapper = mapper;
+            _blobService = blobService;
+            _logger = logger;
+        }
+
+        public async Task<Result<ImageDTO>> Handle(GetImageByIdQuery request, CancellationToken cancellationToken)
+        {
+            var image = await _repositoryWrapper.ImageRepository.GetFirstOrDefaultAsync(
+                f => f.Id == request.Id,
+                include: q => q.Include(i => i.ImageDetails)!);
 
         if (image is null)
         {
@@ -38,12 +38,13 @@ public class GetImageByIdHandler : IRequestHandler<GetImageByIdQuery, Result<Ima
             return Result.Fail(new Error(errorMsg));
         }
 
-        var imageDto = _mapper.Map<ImageDTO>(image);
-        if(imageDto.BlobName != null)
-        {
-            imageDto.Base64 = _blobService.FindFileInStorageAsBase64(image.BlobName);
-        }
+            var imageDto = _mapper.Map<ImageDTO>(image);
+            if (imageDto.BlobName != null)
+            {
+                imageDto.Base64 = _blobService.FindFileInStorageAsBase64(image.BlobName);
+            }
 
-        return Result.Ok(imageDto);
+            return Result.Ok(imageDto);
+        }
     }
 }

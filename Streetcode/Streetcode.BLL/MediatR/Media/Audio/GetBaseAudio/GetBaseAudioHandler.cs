@@ -5,24 +5,24 @@ using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Resources;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
-namespace Streetcode.BLL.MediatR.Media.Audio.GetBaseAudio;
-
-public class GetBaseAudioHandler : IRequestHandler<GetBaseAudioQuery, Result<MemoryStream>>
+namespace Streetcode.BLL.MediatR.Media.Audio.GetBaseAudio
 {
-    private readonly IBlobService _blobStorage;
-    private readonly IRepositoryWrapper _repositoryWrapper;
-    private readonly ILoggerService _logger;
-
-    public GetBaseAudioHandler(IBlobService blobService, IRepositoryWrapper repositoryWrapper, ILoggerService logger)
+    public class GetBaseAudioHandler : IRequestHandler<GetBaseAudioQuery, Result<MemoryStream>>
     {
-        _blobStorage = blobService;
-        _repositoryWrapper = repositoryWrapper;
-        _logger = logger;
-    }
+        private readonly IBlobService _blobStorage;
+        private readonly IRepositoryWrapper _repositoryWrapper;
+        private readonly ILoggerService _logger;
 
-    public async Task<Result<MemoryStream>> Handle(GetBaseAudioQuery request, CancellationToken cancellationToken)
-    {
-        var audio = await _repositoryWrapper.AudioRepository.GetFirstOrDefaultAsync(a => a.Id == request.Id);
+        public GetBaseAudioHandler(IBlobService blobService, IRepositoryWrapper repositoryWrapper, ILoggerService logger)
+        {
+            _blobStorage = blobService;
+            _repositoryWrapper = repositoryWrapper;
+            _logger = logger;
+        }
+
+        public async Task<Result<MemoryStream>> Handle(GetBaseAudioQuery request, CancellationToken cancellationToken)
+        {
+            var audio = await _repositoryWrapper.AudioRepository.GetFirstOrDefaultAsync(a => a.Id == request.Id);
 
         if (audio is null)
         {
@@ -31,6 +31,7 @@ public class GetBaseAudioHandler : IRequestHandler<GetBaseAudioQuery, Result<Mem
             return Result.Fail(new Error(errorMsg));
         }
 
-        return _blobStorage.FindFileInStorageAsMemoryStream(audio.BlobName);
+            return _blobStorage.FindFileInStorageAsMemoryStream(audio.BlobName);
+        }
     }
 }

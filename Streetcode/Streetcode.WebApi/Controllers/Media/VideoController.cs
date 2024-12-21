@@ -8,31 +8,32 @@ using Streetcode.BLL.MediatR.Media.Video.GetAll;
 using Streetcode.BLL.MediatR.Media.Video.GetById;
 using Streetcode.BLL.MediatR.Media.Video.GetByStreetcodeId;
 
-namespace Streetcode.WebApi.Controllers.Media;
-
-public class VideoController : BaseApiController
+namespace Streetcode.WebApi.Controllers.Media
 {
-    [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public class VideoController : BaseApiController
     {
-        return HandleResult(await Mediator.Send(new GetAllVideosQuery()));
-    }
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            return HandleResult(await Mediator.Send(new GetAllVideosQuery()));
+        }
 
-    [HttpGet("{streetcodeId:int}")]
-    public async Task<IActionResult> GetByStreetcodeId([FromRoute] int streetcodeId)
-    {
-        return HandleResult(await Mediator.Send(new GetVideoByStreetcodeIdQuery(streetcodeId)));
-    }
+        [HttpGet("{streetcodeId:int}")]
+        public async Task<IActionResult> GetByStreetcodeId([FromRoute] int streetcodeId)
+        {
+            return HandleResult(await Mediator.Send(new GetVideoByStreetcodeIdQuery(streetcodeId)));
+        }
 
-    [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetById([FromRoute] int id)
-    {
-        return HandleResult(await Mediator.Send(new GetVideoByIdQuery(id)));
-    }
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetById([FromRoute] int id)
+        {
+            return HandleResult(await Mediator.Send(new GetVideoByIdQuery(id)));
+        }
 
-    [HttpPost]
-    public async Task<IActionResult> Create([FromBody] VideoCreateDTO video)
-    {
-        return HandleResult(await Mediator.Send(new CreateVideoCommand(video)));
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] VideoCreateDTO video)
+        {
+            return HandleResult(await Mediator.Send(new CreateVideoCommand(video)));
+        }
     }
 }

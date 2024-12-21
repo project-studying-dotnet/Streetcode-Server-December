@@ -1,31 +1,30 @@
 ﻿using AutoMapper;
 using FluentResults;
 using MediatR;
-using NLog.Targets;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Resources;
 using Streetcode.DAL.Entities.Streetcode;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
-namespace Streetcode.BLL.MediatR.Streetcode.RelatedFigure.Create;
-
-public class CreateRelatedFigureHandler : IRequestHandler<CreateRelatedFigureCommand, Result<Unit>>
+namespace Streetcode.BLL.MediatR.Streetcode.RelatedFigure.Create
 {
-    private readonly IMapper _mapper;
-    private readonly IRepositoryWrapper _repositoryWrapper;
-    private readonly ILoggerService _logger;
-
-    public CreateRelatedFigureHandler(IRepositoryWrapper repositoryWrapper, IMapper mapper, ILoggerService logger)
+    public class CreateRelatedFigureHandler : IRequestHandler<CreateRelatedFigureCommand, Result<Unit>>
     {
-        _repositoryWrapper = repositoryWrapper;
-        _mapper = mapper;
-        _logger = logger;
-    }
+        private readonly IMapper _mapper;
+        private readonly IRepositoryWrapper _repositoryWrapper;
+        private readonly ILoggerService _logger;
 
-    public async Task<Result<Unit>> Handle(CreateRelatedFigureCommand request, CancellationToken cancellationToken)
-    {
-        var observerEntity = await _repositoryWrapper.StreetcodeRepository.GetFirstOrDefaultAsync(rel => rel.Id == request.ObserverId);
-        var targetEntity = await _repositoryWrapper.StreetcodeRepository.GetFirstOrDefaultAsync(rel => rel.Id == request.TargetId);
+        public CreateRelatedFigureHandler(IRepositoryWrapper repositoryWrapper, IMapper mapper, ILoggerService logger)
+        {
+            _repositoryWrapper = repositoryWrapper;
+            _mapper = mapper;
+            _logger = logger;
+        }
+
+        public async Task<Result<Unit>> Handle(CreateRelatedFigureCommand request, CancellationToken cancellationToken)
+        {
+            var observerEntity = await _repositoryWrapper.StreetcodeRepository.GetFirstOrDefaultAsync(rel => rel.Id == request.ObserverId);
+            var targetEntity = await _repositoryWrapper.StreetcodeRepository.GetFirstOrDefaultAsync(rel => rel.Id == request.TargetId);
 
         if (observerEntity is null)
         {
@@ -41,13 +40,13 @@ public class CreateRelatedFigureHandler : IRequestHandler<CreateRelatedFigureCom
             return Result.Fail(new Error(errorMsg));
         }
 
-        var relation = new DAL.Entities.Streetcode.RelatedFigure
-        {
-            ObserverId = observerEntity.Id,
-            TargetId = targetEntity.Id,
-        };
+            var relation = new DAL.Entities.Streetcode.RelatedFigure
+            {
+                ObserverId = observerEntity.Id,
+                TargetId = targetEntity.Id,
+            };
 
-        _repositoryWrapper.RelatedFigureRepository.Create(relation);
+            _repositoryWrapper.RelatedFigureRepository.Create(relation);
 
         var resultIsSuccess = await _repositoryWrapper.SaveChangesAsync() > 0;
         if(resultIsSuccess)

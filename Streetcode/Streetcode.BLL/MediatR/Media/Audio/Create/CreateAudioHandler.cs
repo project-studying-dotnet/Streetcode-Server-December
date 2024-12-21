@@ -7,43 +7,43 @@ using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Resources;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
-namespace Streetcode.BLL.MediatR.Media.Audio.Create;
-
-public class CreateAudioHandler : IRequestHandler<CreateAudioCommand, Result<AudioDTO>>
+namespace Streetcode.BLL.MediatR.Media.Audio.Create
 {
-    private readonly IMapper _mapper;
-    private readonly IRepositoryWrapper _repositoryWrapper;
-    private readonly IBlobService _blobService;
-    private readonly ILoggerService _logger;
-
-    public CreateAudioHandler(
-        IBlobService blobService,
-        IRepositoryWrapper repositoryWrapper,
-        IMapper mapper,
-        ILoggerService logger)
+    public class CreateAudioHandler : IRequestHandler<CreateAudioCommand, Result<AudioDTO>>
     {
-        _blobService = blobService;
-        _repositoryWrapper = repositoryWrapper;
-        _mapper = mapper;
-        _logger = logger;
-    }
+        private readonly IMapper _mapper;
+        private readonly IRepositoryWrapper _repositoryWrapper;
+        private readonly IBlobService _blobService;
+        private readonly ILoggerService _logger;
 
-    public async Task<Result<AudioDTO>> Handle(CreateAudioCommand request, CancellationToken cancellationToken)
-    {
-        string hashBlobStorageName = _blobService.SaveFileInStorage(
-            request.Audio.BaseFormat,
-            request.Audio.Title,
-            request.Audio.Extension);
+        public CreateAudioHandler(
+            IBlobService blobService,
+            IRepositoryWrapper repositoryWrapper,
+            IMapper mapper,
+            ILoggerService logger)
+        {
+            _blobService = blobService;
+            _repositoryWrapper = repositoryWrapper;
+            _mapper = mapper;
+            _logger = logger;
+        }
 
-        var audio = _mapper.Map<DAL.Entities.Media.Audio>(request.Audio);
+        public async Task<Result<AudioDTO>> Handle(CreateAudioCommand request, CancellationToken cancellationToken)
+        {
+            string hashBlobStorageName = _blobService.SaveFileInStorage(
+                request.Audio.BaseFormat,
+                request.Audio.Title,
+                request.Audio.Extension);
 
-        audio.BlobName = $"{hashBlobStorageName}.{request.Audio.Extension}";
+            var audio = _mapper.Map<DAL.Entities.Media.Audio>(request.Audio);
 
-        await _repositoryWrapper.AudioRepository.CreateAsync(audio);
+            audio.BlobName = $"{hashBlobStorageName}.{request.Audio.Extension}";
 
-        var resultIsSuccess = await _repositoryWrapper.SaveChangesAsync() > 0;
+            await _repositoryWrapper.AudioRepository.CreateAsync(audio);
 
-        var createdAudio = _mapper.Map<AudioDTO>(audio);
+            var resultIsSuccess = await _repositoryWrapper.SaveChangesAsync() > 0;
+
+            var createdAudio = _mapper.Map<AudioDTO>(audio);
 
         if(resultIsSuccess)
         {

@@ -8,29 +8,29 @@ using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Resources;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
-namespace Streetcode.BLL.MediatR.Media.Image.GetByStreetcodeId;
-
-public class GetImageByStreetcodeIdHandler : IRequestHandler<GetImageByStreetcodeIdQuery, Result<IEnumerable<ImageDTO>>>
+namespace Streetcode.BLL.MediatR.Media.Image.GetByStreetcodeId
 {
-    private readonly IBlobService _blobService;
-    private readonly IMapper _mapper;
-    private readonly IRepositoryWrapper _repositoryWrapper;
-    private readonly ILoggerService _logger;
-
-    public GetImageByStreetcodeIdHandler(IRepositoryWrapper repositoryWrapper, IMapper mapper, IBlobService blobService, ILoggerService logger)
+    public class GetImageByStreetcodeIdHandler : IRequestHandler<GetImageByStreetcodeIdQuery, Result<IEnumerable<ImageDTO>>>
     {
-        _repositoryWrapper = repositoryWrapper;
-        _mapper = mapper;
-        _blobService = blobService;
-        _logger = logger;
-    }
+        private readonly IBlobService _blobService;
+        private readonly IMapper _mapper;
+        private readonly IRepositoryWrapper _repositoryWrapper;
+        private readonly ILoggerService _logger;
 
-    public async Task<Result<IEnumerable<ImageDTO>>> Handle(GetImageByStreetcodeIdQuery request, CancellationToken cancellationToken)
-    {
-        var images = (await _repositoryWrapper.ImageRepository
-            .GetAllAsync(
-            f => f.Streetcodes.Any(s => s.Id == request.StreetcodeId),
-            include: q => q.Include(img => img.ImageDetails))).OrderBy(img => img.ImageDetails?.Alt);
+        public GetImageByStreetcodeIdHandler(IRepositoryWrapper repositoryWrapper, IMapper mapper, IBlobService blobService, ILoggerService logger)
+        {
+            _repositoryWrapper = repositoryWrapper;
+            _mapper = mapper;
+            _blobService = blobService;
+            _logger = logger;
+        }
+
+        public async Task<Result<IEnumerable<ImageDTO>>> Handle(GetImageByStreetcodeIdQuery request, CancellationToken cancellationToken)
+        {
+            var images = (await _repositoryWrapper.ImageRepository
+                .GetAllAsync(
+                f => f.Streetcodes.Any(s => s.Id == request.StreetcodeId),
+                include: q => q.Include(img => img.ImageDetails))).OrderBy(img => img.ImageDetails?.Alt);
 
         if (images is null || images.Count() == 0)
         {
@@ -39,13 +39,14 @@ public class GetImageByStreetcodeIdHandler : IRequestHandler<GetImageByStreetcod
             return Result.Fail(new Error(errorMsg));
         }
 
-        var imageDtos = _mapper.Map<IEnumerable<ImageDTO>>(images);
+            var imageDtos = _mapper.Map<IEnumerable<ImageDTO>>(images);
 
-        foreach (var image in imageDtos)
-        {
-            image.Base64 = _blobService.FindFileInStorageAsBase64(image.BlobName);
+            foreach (var image in imageDtos)
+            {
+                image.Base64 = _blobService.FindFileInStorageAsBase64(image.BlobName);
+            }
+
+            return Result.Ok(imageDtos);
         }
-
-        return Result.Ok(imageDtos);
     }
 }

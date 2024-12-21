@@ -23,6 +23,18 @@ services:
     networks:
       - streetcode
 
+  cache:
+    image: redis:6.2-alpine
+    container_name: redis-cache
+    restart: always
+    hostname: redis-cache
+    ports:
+      - '6379:6379'
+    env_file:
+      - cache.env
+    networks:
+      - streetcode
+
 networks:
   streetcode:
     driver: bridge

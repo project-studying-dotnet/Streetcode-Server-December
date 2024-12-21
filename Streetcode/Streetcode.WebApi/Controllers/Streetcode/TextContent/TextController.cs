@@ -35,11 +35,11 @@ namespace Streetcode.WebApi.Controllers.Streetcode.TextContent
         {
             return HandleResult(await Mediator.Send(new GetParsedTextForAdminPreviewQuery(text)));
         }
-    }
 
-    [HttpPost]
-    public async Task<IActionResult> Create([FromBody] TextCreateDTO text)
-    {
-        return HandleResult(await Mediator.Send(new CreateTextCommand(text)));
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] TextCreateDTO text)
+        {
+            return HandleResult(await Mediator.Send(new CreateTextCommand(text)));
+        }
     }
 }

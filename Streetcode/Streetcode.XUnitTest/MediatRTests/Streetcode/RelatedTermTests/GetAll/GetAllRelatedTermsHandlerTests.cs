@@ -14,6 +14,8 @@ using Moq;
 using System.Linq.Expressions;
 using Xunit;
 using Streetcode.DAL.Specification;
+using Microsoft.Extensions.Caching.Distributed;
+using Streetcode.BLL.Interfaces.RedisCache;
 
 namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.GetAll;
 
@@ -23,6 +25,7 @@ public class GetAllRelatedTermsHandlerTests
     private readonly Mock<IRepositoryWrapper> _mockRepositoryWrapper;
     private readonly Mock<ILoggerService> _mockLogger;
     private readonly GetAllRelatedTermsHandler _handler;
+    private readonly Mock<IRedisCacheService> _mockRedisCacheService;
 
     public GetAllRelatedTermsHandlerTests()
     {
@@ -33,7 +36,10 @@ public class GetAllRelatedTermsHandlerTests
             cfg.AddProfile(new RelatedTermProfile());
         });
         this._mapper = configuration.CreateMapper();
-        this._handler = new GetAllRelatedTermsHandler(this._mapper, this._mockRepositoryWrapper.Object, this._mockLogger.Object);
+
+        this._mockRedisCacheService = new Mock<IRedisCacheService>();
+
+        this._handler = new GetAllRelatedTermsHandler(this._mapper, this._mockRepositoryWrapper.Object, this._mockLogger.Object, this._mockRedisCacheService.Object);
     }
 
     [Fact]

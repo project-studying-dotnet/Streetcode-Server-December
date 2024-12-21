@@ -9,12 +9,14 @@ using Streetcode.BLL.Interfaces.Email;
 using Streetcode.BLL.Interfaces.Instagram;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Interfaces.Payment;
+using Streetcode.BLL.Interfaces.RedisCache;
 using Streetcode.BLL.Interfaces.Text;
 using Streetcode.BLL.Services.BlobStorageService;
 using Streetcode.BLL.Services.Email;
 using Streetcode.BLL.Services.Instagram;
 using Streetcode.BLL.Services.Logging;
 using Streetcode.BLL.Services.Payment;
+using Streetcode.BLL.Services.RedisCache;
 using Streetcode.BLL.Services.Text;
 using Streetcode.BLL.Validators;
 using Streetcode.DAL.Entities.AdditionalContent.Email;
@@ -45,6 +47,7 @@ namespace Streetcode.WebApi.Extensions
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<IInstagramService, InstagramService>();
             services.AddScoped<ITextService, AddTermsToTextService>();
+            services.AddScoped<IRedisCacheService, RedisCacheService>();
 
             services.AddValidatorsFromAssembly(typeof(ValidationError).Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
@@ -68,6 +71,13 @@ namespace Streetcode.WebApi.Extensions
             services.AddHangfire(config =>
             {
                 config.UseSqlServerStorage(connectionString);
+            });
+
+            // Redis-Caching
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = configuration["RedisCache:Configuration"];
+                options.InstanceName = configuration["RedisCache:InstanceName"];
             });
 
             services.AddHangfireServer();

@@ -34,6 +34,14 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetAll
             {
                 var relatedTermsfromDb = await _repository.RelatedTermRepository
                     .GetAllBySpecAsync(new RelatedTermWithTermSpecification());
+
+                if (relatedTermsfromDb is null)
+                {
+                    const string errorMsg = "Cannot get words";
+                    _logger.LogError(request, errorMsg);
+                    return new Error(errorMsg);
+                }
+
                 relatedTerms = relatedTermsfromDb.ToList();
                 await _redisCacheService.SetCachedDataAsync(_cacheKey, relatedTerms, 10);
                 _logger.LogInformation("Cached RelatedTerms for 10 minutes");
@@ -41,13 +49,6 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetAll
             else 
             {
                 relatedTerms = relatedTermsFromCache;
-            }
-
-            if (relatedTerms is null)
-            {
-                const string errorMsg = "Cannot get words";
-                _logger.LogError(request, errorMsg);
-                return new Error(errorMsg);
             }
 
             var relatedTermsDTO = _mapper.Map<IEnumerable<RelatedTermDTO>>(relatedTerms);

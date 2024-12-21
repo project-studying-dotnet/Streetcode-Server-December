@@ -137,7 +137,7 @@ public class UpdateSourceLinkCategoryHandlerTest
             Image = new ImageDTO { Id = 2 },
         };
         var command = new UpdateSourceLinkCategoryCommand(sourceLinkCategoryDto);
-        const string errorMsg = $"Cannot find source link category in db";
+        const string errorMsg = $"Cannot find any source link category";
         
         _mapperMock
             .Setup(m => m.Map<DAL.Entities.Sources.SourceLinkCategory>(sourceLinkCategoryDto))
@@ -171,7 +171,7 @@ public class UpdateSourceLinkCategoryHandlerTest
         };
 
         var command = new UpdateSourceLinkCategoryCommand(sourceLinkCategoryDto);
-        const string errorMsg = $"Failed to update news";
+        const string errorMsg = $"Failed to update a source link";
         
         _mapperMock
             .Setup(m => m.Map<DAL.Entities.Sources.SourceLinkCategory>(sourceLinkCategoryDto))

@@ -85,8 +85,8 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Fact.Update
             // Assert
             result.IsFailed.Should().BeTrue();
             result.Errors.Should().NotBeEmpty();
-            result.Errors.Should().Contain(e => e.Message == $"Fact with id {factDto.Id} not found");
-            _loggerMock.Verify(l => l.LogError(command, $"Fact with id {factDto.Id} not found"));
+            result.Errors.Should().Contain(e => e.Message == $"Cannot find a fact with corresponding id: {factDto.Id}");
+            _loggerMock.Verify(l => l.LogError(command, $"Cannot find a fact with corresponding id: {factDto.Id}"));
         }
 
         /// <summary>
@@ -115,12 +115,12 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Fact.Update
 
             result.IsFailed.Should().BeTrue();
             result.Errors.Should().NotBeEmpty();
-            result.Errors.Should().Contain(e => e.Message == "An error occurred while updating the fact.");
+            result.Errors.Should().Contain(e => e.Message == "Failed to update a fact");
 
             _loggerMock.Verify(
                 l => l.LogError(
                 It.Is<Exception>(ex => ex.Message == "Database error"),
-                "An error occurred while updating the fact."),
+                "Failed to update a fact"),
                 Times.Once);
 
             _repositoryWrapperMock.Verify(r => r.FactRepository.Update(It.IsAny<FactEntity>()), Times.Once);

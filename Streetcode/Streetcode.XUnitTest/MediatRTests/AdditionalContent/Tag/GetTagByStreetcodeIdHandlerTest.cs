@@ -64,7 +64,7 @@ public class GetTagByStreetcodeIdHandlerTest : AdditionalContentTestWrapper
         // Arrange
         var streetcodeId = 1;
         var request = new GetTagByStreetcodeIdQuery(streetcodeId);
-        string errorMsg = $"Cannot find any tag by the streetcode id: {request.StreetcodeId}";
+        string errorMsg = $"Cannot find a tag by a streetcode id: {request.StreetcodeId}";
 
         _repositoryWrapperMock.Setup(rep => rep.StreetcodeTagIndexRepository.GetAllAsync(
                 It.IsAny<Expression<Func<StreetcodeTagIndexEntity, bool>>>(),

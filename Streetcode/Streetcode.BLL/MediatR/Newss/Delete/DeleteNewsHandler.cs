@@ -42,7 +42,7 @@ namespace Streetcode.BLL.MediatR.Newss.Delete
             }
             else
             {
-                string errorMsg = ErrorManager.GetCustomErrorText("CantDeleteError", "news", request.id);
+                string errorMsg = ErrorManager.GetCustomErrorText("FailDeleteError", "news", request.id);
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }

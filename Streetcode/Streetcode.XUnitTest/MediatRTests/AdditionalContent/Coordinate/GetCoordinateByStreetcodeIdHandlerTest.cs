@@ -78,7 +78,7 @@ public class GetCoordinateByStreetcodeIdHandlerTest : AdditionalContentTestWrapp
         // Arrange
         var streetcodeId = 1;
         var request = new GetCoordinatesByStreetcodeIdQuery(streetcodeId);
-        string errorMsg = $"Cannot find a coordinates by a streetcode id: {request.StreetcodeId}";
+        string errorMsg = $"Cannot find a coordinate by a streetcode id: {request.StreetcodeId}";
         var streetcodeContent = new StreetcodeContent { Id = 1, };
 
         _repositoryWrapperMock.Setup(rep => rep.StreetcodeRepository.GetFirstOrDefaultAsync(

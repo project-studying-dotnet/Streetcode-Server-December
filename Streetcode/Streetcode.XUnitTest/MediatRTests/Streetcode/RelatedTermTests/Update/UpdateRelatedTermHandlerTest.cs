@@ -77,7 +77,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.Update
 
             // Assert
             result.IsSuccess.Should().BeFalse();
-            result.Errors.Should().ContainSingle(error => error.Message == "Related term not found!");
+            result.Errors.Should().ContainSingle(error => error.Message == "Cannot find any related term");
         }
 
         [Fact]
@@ -98,7 +98,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.Update
 
             // Assert
             result.IsSuccess.Should().BeFalse();
-            result.Errors.Should().ContainSingle(error => error.Message == "Failed to save the updated related term.");
+            result.Errors.Should().ContainSingle(error => error.Message == "Failed to update a related term");
         }
     }
 }

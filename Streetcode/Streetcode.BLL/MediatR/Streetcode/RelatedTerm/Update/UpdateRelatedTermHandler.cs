@@ -43,7 +43,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Update
 
             if (!isSuccess)
             {
-                string errorMsg = ErrorManager.GetCustomErrorText("CantUpdateError", "related term");
+                string errorMsg = ErrorManager.GetCustomErrorText("FailUpdateError", "related term");
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }

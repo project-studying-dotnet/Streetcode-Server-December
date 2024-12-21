@@ -34,7 +34,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Fact.Create
         {
             // Arrange
             var command = new CreateFactCommand(null);
-            const string errorMsg = "Cannot create new fact!";
+            const string errorMsg = "Failed to create a fact";
 
             // Act
             var result = await _createFactHandler.Handle(command, default);
@@ -52,7 +52,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Fact.Create
             SetupCreate(null);
 
             var command = new CreateFactCommand(_createFactDto);
-            const string errorMsg = "Cannot create fact!";
+            const string errorMsg = "Failed to create a fact";
 
             // Act
             var result = await _createFactHandler.Handle(command, default);

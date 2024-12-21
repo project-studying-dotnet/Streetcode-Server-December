@@ -86,7 +86,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Timeline.TimelineItems.Update
             // Assert
             result.IsSuccess.Should().BeFalse();
             result.Errors.Should().NotBeEmpty();
-            result.Errors.First().Message.Should().Be("Timeline item does not exist.");
+            result.Errors.First().Message.Should().Be("Cannot find any timeline");
             VerifySaveChangesAsync(Times.Never());
             VerifyRepositoryUpdate(Times.Never());
         }
@@ -113,7 +113,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Timeline.TimelineItems.Update
             // Assert
             result.IsSuccess.Should().BeFalse();
             result.Errors.Should().NotBeEmpty();
-            result.Errors.First().Message.Should().Be("Failed to update timeline.");
+            result.Errors.First().Message.Should().Be("Failed to update a timeline");
         }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Timeline.TimelineItems.Update
             // Assert
             _loggerMock.Verify(logger => logger.LogError(
                 It.IsAny<object>(),
-                It.Is<string>(msg => msg.Contains("Timeline item does not exist."))),
+                It.Is<string>(msg => msg.Contains("Cannot find any timeline"))),
                 Times.Once());
         }
 

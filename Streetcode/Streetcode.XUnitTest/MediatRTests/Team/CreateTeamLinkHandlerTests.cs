@@ -53,7 +53,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
             SetupCreateTeamLink(null);
 
             var request = new CreateTeamLinkCommand(_teamLinkDTO);
-            const string errorMsg = "Cannot create team link";
+            const string errorMsg = "Failed to create a positions";
 
             // Act
             var result = await _createTeamLinkHandler.Handle(request, default);

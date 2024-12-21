@@ -94,17 +94,17 @@ public class GetTimelineItemsByStreetcodeIdHandlerTests
         result
             .Errors[0]
             .Message.Should()
-            .Contain($"Cannot find any timeline item by the streetcode id: {streetcodeId}");
+            .Contain($"Cannot find a timeline by a streetcode id: {streetcodeId}");
         this.loggerMock.Verify(
             logger =>
                 logger.LogError(
                     It.IsAny<object>(),
-                    $"Cannot find any timeline item by the streetcode id: {streetcodeId}"),
+                    $"Cannot find a timeline by a streetcode id: {streetcodeId}"),
             Times.Once);
     }
 
     [Theory]
-    [InlineData(1, 0, false, "Cannot find any timeline item by the streetcode id: 1")]
+    [InlineData(1, 0, false, "Cannot find a timeline by a streetcode id: 1")]
     [InlineData(1, 2, true, "")]
     public async Task Handle_ShouldReturnCorrectResultBasedOnRepositoryData(
         int streetcodeId,

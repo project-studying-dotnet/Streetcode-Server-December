@@ -28,7 +28,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.ArtTests
         {
             // Arrange
             var command = new DeleteArtCommand(1);
-            string errorMsg = $"Cannot find an art with Id: {command.Id}";
+            string errorMsg = $"Cannot find a art with corresponding id: {command.Id}";
 
             SetupGetFirstOrDefault(null!);
 
@@ -45,7 +45,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.ArtTests
         {
             // Arrange
             var art = new Art { Id = 1, Description = "New Desc", Title = "New Title", ImageId = 1 };
-            string errorMsg = $"Failed to delete an art";
+            string errorMsg = $"Failed to delete a art";
 
             var command = new DeleteArtCommand(1);
 

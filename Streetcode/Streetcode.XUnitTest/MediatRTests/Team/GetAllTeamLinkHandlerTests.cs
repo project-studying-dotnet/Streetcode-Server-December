@@ -68,7 +68,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
             // Arrange
             ArrangeTeamLinks(null);
             var request = new GetAllTeamLinkQuery();
-            const string errorMsg = $"Cannot find any team links";
+            const string errorMsg = $"Cannot convert null to team link";
 
             // Act
             var result = await _getAllTeamLinkHandler.Handle(request, CancellationToken.None);

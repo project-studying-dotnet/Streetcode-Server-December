@@ -133,8 +133,8 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.VideoTests
 
             Assert.True(result.IsFailed);
             Assert.Single(result.Errors);
-            Assert.Equal("Failed to create an video", result.Errors[0].Message);
-            _mockLogger.Verify(l => l.LogError(new CreateVideoCommand(videoCreateDTO), "Failed to create an video"), Times.Once);
+            Assert.Equal("Failed to create a video", result.Errors[0].Message);
+            _mockLogger.Verify(l => l.LogError(new CreateVideoCommand(videoCreateDTO), "Failed to create a video"), Times.Once);
         }
     }
 }

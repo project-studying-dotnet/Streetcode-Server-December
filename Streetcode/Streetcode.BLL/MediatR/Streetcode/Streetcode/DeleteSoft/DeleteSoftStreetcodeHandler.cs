@@ -42,7 +42,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.DeleteSoft
             }
             else
             {
-                string errorMsg = ErrorManager.GetCustomErrorText("FailDeleteError", "streetcode");
+                string errorMsg = ErrorManager.GetCustomErrorText("FailDeleteError", "stretcode");
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }

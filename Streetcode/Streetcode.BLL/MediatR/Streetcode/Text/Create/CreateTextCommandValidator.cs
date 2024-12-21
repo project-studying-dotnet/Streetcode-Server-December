@@ -38,5 +38,6 @@ namespace Streetcode.BLL.MediatR.Streetcode.Text.Create
                 .GreaterThan(0)
                 .WithMessage("Text StreetcodeId must be > 0");
         }
+
     }
 }

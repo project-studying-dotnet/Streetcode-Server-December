@@ -3,6 +3,7 @@ using FluentResults;
 using MediatR;
 using Streetcode.BLL.DTO.Media.Images;
 using Streetcode.BLL.Interfaces.BlobStorage;
+using Streetcode.BLL.Interfaces.Image;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
@@ -12,40 +13,33 @@ public class CreateImageHandler : IRequestHandler<CreateImageCommand, Result<Ima
 {
     private readonly IMapper _mapper;
     private readonly IRepositoryWrapper _repositoryWrapper;
-    private readonly IBlobService _blobService;
+    private readonly IImageService _imageService;
     private readonly ILoggerService _logger;
 
     public CreateImageHandler(
-        IBlobService blobService,
         IRepositoryWrapper repositoryWrapper,
         IMapper mapper,
-        ILoggerService logger)
+        ILoggerService logger,
+        IImageService imageService)
     {
-        _blobService = blobService;
         _repositoryWrapper = repositoryWrapper;
         _mapper = mapper;
         _logger = logger;
+        _imageService = imageService;
     }
 
     public async Task<Result<ImageDTO>> Handle(CreateImageCommand request, CancellationToken cancellationToken)
     {
-        string hashBlobStorageName = _blobService.SaveFileInStorage(
-            request.Image.BaseFormat,
-            request.Image.Title,
-            request.Image.Extension);
-
-        var image = _mapper.Map<DAL.Entities.Media.Images.Image>(request.Image);
-
-        image.BlobName = $"{hashBlobStorageName}.{request.Image.Extension}";
+        DAL.Entities.Media.Images.Image image = _imageService.ConfigureImage(request.Image);
 
         await _repositoryWrapper.ImageRepository.CreateAsync(image);
         var resultIsSuccess = await _repositoryWrapper.SaveChangesAsync() > 0;
 
         var createdImage = _mapper.Map<ImageDTO>(image);
 
-        createdImage.Base64 = _blobService.FindFileInStorageAsBase64(createdImage.BlobName);
+        createdImage.Base64 = _imageService.ImageBase64(createdImage);
 
-        if(resultIsSuccess)
+        if (resultIsSuccess)
         {
             return Result.Ok(createdImage);
         }

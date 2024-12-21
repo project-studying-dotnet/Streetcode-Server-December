@@ -20,16 +20,14 @@ namespace UserService.BLL.Services
         private readonly string _audience;
         private readonly string _secretKey;
         private readonly int _accessTokenLifetime;
-        private readonly int _refreshTokenLifetime;
 
         public JwtService(IConfiguration configuration, UserManager<User> userManager)
         {
             var jwtSettings = configuration.GetSection("JwtSettings");
-            _issuer = jwtSettings["Issuer"];
-            _audience = jwtSettings["Audience"];
+            _issuer = "streetcodes.in.ua";
+            _audience = "streetcodes.in.ua";
             _secretKey = jwtSettings["Key"];
             _accessTokenLifetime = int.Parse(jwtSettings["AccessTokenLifetime"]);
-            _refreshTokenLifetime = int.Parse(jwtSettings["RefreshTokenLifetime"]);
             _userManager = userManager;
         }
         public async Task<string> GenerateTokenAsync(User user)
@@ -55,18 +53,11 @@ namespace UserService.BLL.Services
                 issuer: _issuer,
                 audience: _audience,
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(_accessTokenLifetime),
+                expires: DateTime.UtcNow.AddHours(_accessTokenLifetime),
                 signingCredentials: credentials
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
-        public (string Token, DateTime Expiry) GenerateRefreshToken()
-        {
-            var token = Guid.NewGuid().ToString("N");
-            var expiry = DateTime.UtcNow.AddDays(_refreshTokenLifetime);
-            return (token, expiry);
         }
     }
 }

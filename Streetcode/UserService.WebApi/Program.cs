@@ -6,6 +6,7 @@ using UserService.DAL.Entities.Users;
 using UserService.BLL.Interfaces.Jwt;
 using UserService.BLL.Interfaces.User;
 using UserService.BLL.Services;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,7 +33,7 @@ builder.Services.AddIdentityMongoDbProvider<User, Role>(identityOptions =>
 
 // JWT Configuration
 var jwtSettings = builder.Configuration.GetSection("Jwt");
-// var key = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]);
+var key = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]);
 
 
 builder.Services.AddAuthentication(options =>
@@ -50,13 +51,18 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         ValidIssuer = jwtSettings["Issuer"],
         ValidAudience = jwtSettings["Audience"],
-        // IssuerSigningKey = new SymmetricSecurityKey(key)
+        IssuerSigningKey = new SymmetricSecurityKey(key)
     };
-});
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+    // Extracting token from cookie
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            context.Token = context.HttpContext.Request.Cookies["AuthToken"];
+            return Task.CompletedTask;
+        }
+    };
 });
 
 builder.Services.AddScoped<IJwtService, JwtService>();

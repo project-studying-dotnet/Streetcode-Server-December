@@ -12,6 +12,15 @@ services:
     networks:
       - streetcode
 
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"  
+    env_file:
+      - mongodb.env
+    restart: always
+
   streetcode.webapi:
     image: ${DOCKER_REGISTRY-}streetcodewebapi
     build:
@@ -20,6 +29,17 @@ services:
     ports:
       - 8001:80
     hostname: street-code-api
+    networks:
+      - streetcode
+
+  userservice.webapi:
+    image: ${DOCKER_REGISTRY-}userservicewebapi
+    build:
+      context: .
+      dockerfile: UserService.WebApi/Dockerfile
+    ports:
+      - 8002:80
+    hostname: streetcode-user-api
     networks:
       - streetcode
 

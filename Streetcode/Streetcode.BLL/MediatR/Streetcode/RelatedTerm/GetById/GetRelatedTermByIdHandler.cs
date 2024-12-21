@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using FluentResults;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.DTO.Streetcode.TextContent;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Resources;
 using Streetcode.BLL.Specifications.Streetcode.RelatedTerm;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
@@ -29,7 +29,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetById
 
             if (relatedTerms is null)
             {
-                const string errorMsg = "Cannot get word by id";
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "word" , request.id);
                 _logger.LogError(request, errorMsg);
                 return new Error(errorMsg);
             }
@@ -38,7 +38,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetById
 
             if (relatedTermsDTO is null)
             {
-                const string errorMsg = "Cannot create DTO for related word!";
+                string errorMsg = ErrorManager.GetCustomErrorText("CantCreateError", "DTOS for related words");
                 _logger.LogError(request, errorMsg);
                 return new Error(errorMsg);
             }

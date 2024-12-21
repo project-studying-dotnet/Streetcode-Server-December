@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.DTO.AdditionalContent.Subtitles;
 using Streetcode.BLL.DTO.AdditionalContent.Tag;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Resources;
 using Streetcode.DAL.Entities.Streetcode;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
@@ -39,7 +40,7 @@ public class GetTagByStreetcodeIdHandler : IRequestHandler<GetTagByStreetcodeIdQ
 
         if (tagIndexed is null)
         {
-            string errorMsg = $"Cannot find any tag by the streetcode id: {request.StreetcodeId}";
+            string errorMsg = ErrorManager.GetCustomErrorText("CantFindByStreetcodeIdError", "tag", request.StreetcodeId);
             _logger.LogError(request, errorMsg);
             return Result.Fail(new Error(errorMsg));
         }

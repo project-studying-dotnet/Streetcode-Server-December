@@ -4,6 +4,7 @@ using MediatR;
 using Streetcode.BLL.DTO.AdditionalContent.Subtitles;
 using Streetcode.BLL.DTO.Media.Video;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Resources;
 using Streetcode.DAL.Entities.AdditionalContent.Coordinates;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
@@ -28,7 +29,7 @@ public class GetAllVideosHandler : IRequestHandler<GetAllVideosQuery, Result<IEn
 
         if (videos is null)
         {
-            const string errorMsg = "Cannot find any videos";
+            string errorMsg = ErrorManager.GetCustomErrorText("CantFindError", "video");
             _logger.LogError(request, errorMsg);
             return Result.Fail(new Error(errorMsg));
         }

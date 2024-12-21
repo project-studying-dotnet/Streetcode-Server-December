@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.DTO.Sources;
 using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Resources;
 using Streetcode.DAL.Entities.AdditionalContent.Coordinates;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
@@ -41,7 +42,7 @@ public class GetCategoryByIdHandler : IRequestHandler<GetCategoryByIdQuery, Resu
 
         if (srcCategories is null)
         {
-            string errorMsg = $"Cannot find any srcCategory by the corresponding id: {request.Id}";
+            string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "srcCategory", request.Id);
             _logger.LogError(request, errorMsg);
             return Result.Fail(new Error(errorMsg));
         }

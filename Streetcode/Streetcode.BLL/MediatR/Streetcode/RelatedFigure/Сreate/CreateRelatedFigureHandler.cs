@@ -3,6 +3,7 @@ using FluentResults;
 using MediatR;
 using NLog.Targets;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Resources;
 using Streetcode.DAL.Entities.Streetcode;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
@@ -28,14 +29,14 @@ public class CreateRelatedFigureHandler : IRequestHandler<CreateRelatedFigureCom
 
         if (observerEntity is null)
         {
-            string errorMsg = $"No existing streetcode with id: {request.ObserverId}";
+            string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "streetcode", request.ObserverId);
             _logger.LogError(request, errorMsg);
             return Result.Fail(new Error(errorMsg));
         }
 
         if (targetEntity is null)
         {
-            string errorMsg = $"No existing streetcode with id: {request.TargetId}";
+            string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "streetcode", request.ObserverId);
             _logger.LogError(request, errorMsg);
             return Result.Fail(new Error(errorMsg));
         }
@@ -55,7 +56,7 @@ public class CreateRelatedFigureHandler : IRequestHandler<CreateRelatedFigureCom
         }
         else
         {
-            string errorMsg = "Failed to create a relation.";
+            string errorMsg = ErrorManager.GetCustomErrorText("FailCreateError", "relation");
             _logger.LogError(request, errorMsg);
             return Result.Fail(new Error(errorMsg));
         }

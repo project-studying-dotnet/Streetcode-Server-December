@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.DTO.AdditionalContent.Subtitles;
 using Streetcode.BLL.DTO.Partners;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Resources;
 using Streetcode.DAL.Entities.AdditionalContent.Coordinates;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
@@ -34,7 +35,7 @@ public class GetAllPartnersHandler : IRequestHandler<GetAllPartnersQuery, Result
 
         if (partners is null)
         {
-            const string errorMsg = $"Cannot find any partners";
+            string errorMsg = ErrorManager.GetCustomErrorText("CantFindError", "partners");
             _logger.LogError(request, errorMsg);
             return Result.Fail(new Error(errorMsg));
         }

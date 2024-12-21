@@ -6,6 +6,7 @@ using Streetcode.BLL.DTO.Media.Audio;
 using Streetcode.BLL.DTO.Media.Video;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.ResultVariations;
+using Streetcode.BLL.Resources;
 using Streetcode.DAL.Entities.Streetcode;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
@@ -33,7 +34,7 @@ public class GetVideoByStreetcodeIdHandler : IRequestHandler<GetVideoByStreetcod
             StreetcodeContent? streetcode = await _repositoryWrapper.StreetcodeRepository.GetFirstOrDefaultAsync(x => x.Id == request.StreetcodeId);
             if (streetcode is null)
             {
-                string errorMsg = $"Streetcode with id: {request.StreetcodeId} doesn`t exist";
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByStreetcodeIdError", "video", request.StreetcodeId);
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }

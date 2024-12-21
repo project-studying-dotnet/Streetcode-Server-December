@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.DTO.Timeline;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Resources;
 using Streetcode.DAL.Entities.Timeline;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using Streetcode.DAL.Repositories.Realizations.Base;
@@ -33,7 +34,7 @@ namespace Streetcode.BLL.MediatR.Timeline.TimelineItem.Update
 
             if (updatingTimelineItem == null)
             {
-                const string errorMessage = "Timeline item does not exist.";
+                string errorMessage = ErrorManager.GetCustomErrorText("CantFindError", "timeline");
                 _logger.LogError(request, errorMessage);
                 return Result.Fail(errorMessage);
             }
@@ -68,7 +69,7 @@ namespace Streetcode.BLL.MediatR.Timeline.TimelineItem.Update
 
             if (saveResult == 0)
             {
-                const string errorMessage = "Failed to update timeline.";
+                string errorMessage = ErrorManager.GetCustomErrorText("FailUpdateError", "timeline");
                 _logger.LogError(request, errorMessage);
                 return Result.Fail(errorMessage);
             }

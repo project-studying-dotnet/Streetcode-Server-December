@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.DTO.AdditionalContent.Subtitles;
 using Streetcode.BLL.DTO.Timeline;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Resources;
 using Streetcode.DAL.Entities.AdditionalContent.Coordinates;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
@@ -33,7 +34,7 @@ public class GetAllTimelineItemsHandler : IRequestHandler<GetAllTimelineItemsQue
 
         if (timelineItems is null)
         {
-            const string errorMsg = $"Cannot find any timelineItem";
+            string errorMsg = ErrorManager.GetCustomErrorText("CantFindError", "timeline");
             _logger.LogError(request, errorMsg);
             return Result.Fail(new Error(errorMsg));
         }

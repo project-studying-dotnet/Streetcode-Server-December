@@ -1,6 +1,7 @@
 ﻿using FluentResults;
 using MediatR;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Resources;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.DeleteSoft;
@@ -41,7 +42,7 @@ public class DeleteSoftStreetcodeHandler : IRequestHandler<DeleteSoftStreetcodeC
         }
         else
         {
-            const string errorMsg = "Failed to change status of streetcode to deleted";
+            string errorMsg = ErrorManager.GetCustomErrorText("FailDeleteError", "streetcode");
             _logger.LogError(request, errorMsg);
             return Result.Fail(new Error(errorMsg));
         }

@@ -4,6 +4,7 @@ using MediatR;
 using Streetcode.BLL.DTO.Team;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Team.Create;
+using Streetcode.BLL.Resources;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Team.TeamMembersLinks.Create
@@ -27,7 +28,7 @@ namespace Streetcode.BLL.MediatR.Team.TeamMembersLinks.Create
 
             if (teamMemberLink is null)
             {
-                const string errorMsg = "Cannot convert null to team link";
+                string errorMsg = ErrorManager.GetCustomErrorText("ConvertationError", "null", "team link");
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }
@@ -36,7 +37,7 @@ namespace Streetcode.BLL.MediatR.Team.TeamMembersLinks.Create
 
             if (createdTeamLink is null)
             {
-                const string errorMsg = "Cannot create team link";
+                string errorMsg = ErrorManager.GetCustomErrorText("FailCreateError", "positions");
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }
@@ -45,7 +46,7 @@ namespace Streetcode.BLL.MediatR.Team.TeamMembersLinks.Create
 
             if (!resultIsSuccess)
             {
-                const string errorMsg = "Failed to create a team";
+                string errorMsg = ErrorManager.GetCustomErrorText("FailCreateError", "team");
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }

@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.DTO.Streetcode;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Resources;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.GetByIndex;
@@ -29,7 +30,7 @@ public class GetStreetcodeByIndexHandler : IRequestHandler<GetStreetcodeByIndexQ
 
         if (streetcode is null)
         {
-            string errorMsg = $"Cannot find any streetcode with corresponding index: {request.Index}";
+            string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "streetcode", request.Index);
             _logger.LogError(request, errorMsg);
             return Result.Fail(new Error(errorMsg));
         }

@@ -26,7 +26,6 @@ using Streetcode.DAL.Repositories.Realizations.Base;
 
 namespace Streetcode.WebApi.Extensions
 {
-
     public static class ServiceCollectionExtensions
     {
         public static void AddRepositoryServices(this IServiceCollection services)

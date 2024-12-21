@@ -26,12 +26,12 @@ namespace Streetcode.BLL.MediatR.AdditionalContent.Subtitle.GetById
         {
             var subtitle = await _repositoryWrapper.SubtitleRepository.GetFirstOrDefaultAsync(f => f.Id == request.Id);
 
-        if (subtitle is null)
-        {
-            string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "subtitle", request.Id);
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
-        }
+            if(subtitle is null)
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "subtitle", request.Id);
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
 
             return Result.Ok(_mapper.Map<SubtitleDTO>(subtitle));
         }

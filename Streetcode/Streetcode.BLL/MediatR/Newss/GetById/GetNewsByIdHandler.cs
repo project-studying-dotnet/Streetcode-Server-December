@@ -3,7 +3,6 @@ using FluentResults;
 using MediatR;
 using Streetcode.BLL.DTO.News;
 using Streetcode.BLL.Interfaces.BlobStorage;
-using Streetcode.DAL.Entities.News;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.Interfaces.Logging;

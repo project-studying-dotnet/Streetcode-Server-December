@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using FluentResults;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.DTO.Streetcode.TextContent;
 using Streetcode.BLL.Interfaces.Logging;
-using Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetAllByTermId;
 using Streetcode.BLL.Specifications.Streetcode.RelatedTerm;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 

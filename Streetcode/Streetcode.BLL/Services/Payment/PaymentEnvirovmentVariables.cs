@@ -1,6 +1,7 @@
-﻿namespace Streetcode.BLL.Services.Payment;
-
-public class PaymentEnvirovmentVariables
+﻿namespace Streetcode.BLL.Services.Payment
 {
-    public string Token { get; set; }
+    public class PaymentEnvirovmentVariables
+    {
+        public string Token { get; set; }
+    }
 }

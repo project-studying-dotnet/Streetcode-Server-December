@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Streetcode.WebApi.Middleware;
+﻿using Streetcode.WebApi.Middleware;
 
 namespace Streetcode.WebApi.Extensions
 {

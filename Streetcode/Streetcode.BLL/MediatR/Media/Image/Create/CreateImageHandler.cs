@@ -7,47 +7,48 @@ using Streetcode.BLL.Interfaces.Image;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
-namespace Streetcode.BLL.MediatR.Media.Image.Create;
-
-public class CreateImageHandler : IRequestHandler<CreateImageCommand, Result<ImageDTO>>
+namespace Streetcode.BLL.MediatR.Media.Image.Create
 {
-    private readonly IMapper _mapper;
-    private readonly IRepositoryWrapper _repositoryWrapper;
-    private readonly IImageService _imageService;
-    private readonly ILoggerService _logger;
-
-    public CreateImageHandler(
-        IRepositoryWrapper repositoryWrapper,
-        IMapper mapper,
-        ILoggerService logger,
-        IImageService imageService)
+    public class CreateImageHandler : IRequestHandler<CreateImageCommand, Result<ImageDTO>>
     {
-        _repositoryWrapper = repositoryWrapper;
-        _mapper = mapper;
-        _logger = logger;
-        _imageService = imageService;
-    }
+        private readonly IMapper _mapper;
+        private readonly IRepositoryWrapper _repositoryWrapper;
+        private readonly IImageService _imageService;
+        private readonly ILoggerService _logger;
 
-    public async Task<Result<ImageDTO>> Handle(CreateImageCommand request, CancellationToken cancellationToken)
-    {
-        DAL.Entities.Media.Images.Image image = _imageService.ConfigureImage(request.Image);
-
-        await _repositoryWrapper.ImageRepository.CreateAsync(image);
-        var resultIsSuccess = await _repositoryWrapper.SaveChangesAsync() > 0;
-
-        var createdImage = _mapper.Map<ImageDTO>(image);
-
-        createdImage.Base64 = _imageService.ImageBase64(createdImage);
-
-        if (resultIsSuccess)
+        public CreateImageHandler(
+            IRepositoryWrapper repositoryWrapper,
+            IMapper mapper,
+            ILoggerService logger,
+            IImageService imageService)
         {
-            return Result.Ok(createdImage);
+            _repositoryWrapper = repositoryWrapper;
+            _mapper = mapper;
+            _logger = logger;
+            _imageService = imageService;
         }
-        else
+
+        public async Task<Result<ImageDTO>> Handle(CreateImageCommand request, CancellationToken cancellationToken)
         {
-            const string errorMsg = "Failed to create an image";
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
+            DAL.Entities.Media.Images.Image image = _imageService.ConfigureImage(request.Image);
+
+            await _repositoryWrapper.ImageRepository.CreateAsync(image);
+            var resultIsSuccess = await _repositoryWrapper.SaveChangesAsync() > 0;
+
+            var createdImage = _mapper.Map<ImageDTO>(image);
+
+            createdImage.Base64 = _imageService.ImageBase64(createdImage);
+
+            if (resultIsSuccess)
+            {
+                return Result.Ok(createdImage);
+            }
+            else
+            {
+                const string errorMsg = "Failed to create an image";
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
         }
     }
 }

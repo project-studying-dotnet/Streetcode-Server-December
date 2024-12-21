@@ -4,30 +4,31 @@ using Streetcode.DAL.Entities.Streetcode;
 using Streetcode.DAL.Entities.Streetcode.Types;
 using Streetcode.DAL.Enums;
 
-namespace Streetcode.BLL.Mapping.Streetcode;
-
-public class StreetcodeProfile : Profile
+namespace Streetcode.BLL.Mapping.Streetcode
 {
-    public StreetcodeProfile()
+    public class StreetcodeProfile : Profile
     {
-        CreateMap<StreetcodeContent, StreetcodeDTO>()
-            .ForMember(x => x.StreetcodeType, conf => conf.MapFrom(s => GetStreetcodeType(s)))
-            .ReverseMap();
-        CreateMap<StreetcodeContent, StreetcodeShortDTO>().ReverseMap();
-        CreateMap<StreetcodeContent, StreetcodeMainPageDTO>()
-             .ForPath(dto => dto.Text, conf => conf
-                .MapFrom(e => e.Text.Title))
-            .ForPath(dto => dto.ImageId, conf => conf
-                .MapFrom(e => e.Images.Select(i => i.Id).LastOrDefault()));
-    }
-
-    private StreetcodeType GetStreetcodeType(StreetcodeContent streetcode)
-    {
-        if(streetcode is EventStreetcode)
+        public StreetcodeProfile()
         {
-            return StreetcodeType.Event;
+            CreateMap<StreetcodeContent, StreetcodeDTO>()
+                .ForMember(x => x.StreetcodeType, conf => conf.MapFrom(s => GetStreetcodeType(s)))
+                .ReverseMap();
+            CreateMap<StreetcodeContent, StreetcodeShortDTO>().ReverseMap();
+            CreateMap<StreetcodeContent, StreetcodeMainPageDTO>()
+                 .ForPath(dto => dto.Text, conf => conf
+                    .MapFrom(e => e.Text.Title))
+                .ForPath(dto => dto.ImageId, conf => conf
+                    .MapFrom(e => e.Images.Select(i => i.Id).LastOrDefault()));
         }
 
-        return StreetcodeType.Person;
+        private StreetcodeType GetStreetcodeType(StreetcodeContent streetcode)
+        {
+            if (streetcode is EventStreetcode)
+            {
+                return StreetcodeType.Event;
+            }
+
+            return StreetcodeType.Person;
+        }
     }
 }

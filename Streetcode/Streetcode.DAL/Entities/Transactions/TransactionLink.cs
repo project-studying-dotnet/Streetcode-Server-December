@@ -2,23 +2,24 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Streetcode.DAL.Entities.Streetcode;
 
-namespace Streetcode.DAL.Entities.Transactions;
-
-[Table("transaction_links", Schema = "transactions")]
-public class TransactionLink
+namespace Streetcode.DAL.Entities.Transactions
 {
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
-    [MaxLength(255)]
-    public string? UrlTitle { get; set; }
+    [Table("transaction_links", Schema = "transactions")]
+    public class TransactionLink
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+        [MaxLength(255)]
+        public string? UrlTitle { get; set; }
 
-    [Required]
-    [MaxLength(255)]
-    public string? Url { get; set; }
+        [Required]
+        [MaxLength(255)]
+        public string? Url { get; set; }
 
-    [Required]
-    public int StreetcodeId { get; set; }
+        [Required]
+        public int StreetcodeId { get; set; }
 
-    public StreetcodeContent? Streetcode { get; set; }
+        public StreetcodeContent? Streetcode { get; set; }
+    }
 }

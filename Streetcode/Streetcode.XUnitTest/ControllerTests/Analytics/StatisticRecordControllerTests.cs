@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Streetcode.BLL.DTO.Analytics;
 using Streetcode.BLL.MediatR.Analytics;
+using Streetcode.BLL.MediatR.Analytics.Delete;
 using Streetcode.WebApi.Controllers;
 using Streetcode.WebApi.Controllers.Analytics;
 using Xunit;
@@ -88,6 +89,43 @@ namespace Streetcode.XUnitTest.ControllerTests.Analytics
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
             _mediatorMock.Verify(
                 m => m.Send(It.IsAny<CreateStatisticRecordCommand>(), default),
+                Times.Once
+            );
+        }
+
+        [Fact]
+        public async Task Delete_ReturnsOkResult_WhenCommandIsSuccessful()
+        {
+            var recordId = 1;
+
+            _mediatorMock
+                .Setup(m => m.Send(It.IsAny<DeleteStatisticRecordCommand>(), default))
+                .ReturnsAsync(Result.Ok(true));
+
+            var result = await _controller.Delete(recordId);
+
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            Assert.True((bool)okResult.Value);
+            _mediatorMock.Verify(
+                m => m.Send(It.IsAny<DeleteStatisticRecordCommand>(), default),
+                Times.Once
+            );
+        }
+
+        [Fact]
+        public async Task Delete_ReturnsBadRequest_WhenCommandFails()
+        {
+            var recordId = 1;
+
+            _mediatorMock
+                .Setup(m => m.Send(It.IsAny<DeleteStatisticRecordCommand>(), default))
+                .ReturnsAsync(Result.Fail("Failed to delete record"));
+
+            var result = await _controller.Delete(recordId);
+
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+            _mediatorMock.Verify(
+                m => m.Send(It.IsAny<DeleteStatisticRecordCommand>(), default),
                 Times.Once
             );
         }

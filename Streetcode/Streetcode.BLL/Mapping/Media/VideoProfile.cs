@@ -2,12 +2,15 @@ using AutoMapper;
 using Streetcode.BLL.DTO.Media.Video;
 using Streetcode.DAL.Entities.Media;
 
-namespace Streetcode.BLL.Mapping.Media;
-
-public class VideoProfile : Profile
+namespace Streetcode.BLL.Mapping.Media
 {
-    public VideoProfile()
+    public class VideoProfile : Profile 
     {
-        CreateMap<Video, VideoDTO>();
+        public VideoProfile()
+        {
+            CreateMap<Video, VideoDTO>();
+            CreateMap<VideoCreateDTO, Video>();
+            CreateMap<VideoDTO, VideoCreateDTO>().ReverseMap();
+        }
     }
 }

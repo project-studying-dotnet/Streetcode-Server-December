@@ -5,8 +5,9 @@ using UserService.DAL.Entities.Roles;
 using UserService.DAL.Entities.Users;
 using UserService.BLL.Interfaces.Jwt;
 using UserService.BLL.Interfaces.User;
-using UserService.BLL.Services;
 using System.Text;
+using UserService.BLL.Services.Jwt;
+using UserService.BLL.Services.User;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -66,7 +67,8 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddScoped<IJwtService, JwtService>();
-builder.Services.AddScoped<IUserService, UserService.BLL.Services.UserService>();
+builder.Services.AddScoped<ILoginService, LoginService>();
+builder.Services.AddScoped<IUserService, UserService.BLL.Services.User.UserService>();
 
 
 var app = builder.Build();

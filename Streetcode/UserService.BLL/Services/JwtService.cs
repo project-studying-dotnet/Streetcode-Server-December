@@ -23,10 +23,10 @@ namespace UserService.BLL.Services
 
         public JwtService(IConfiguration configuration, UserManager<User> userManager)
         {
-            var jwtSettings = configuration.GetSection("JwtSettings");
+            var jwtSettings = configuration.GetSection("Jwt");
             _issuer = "streetcodes.in.ua";
             _audience = "streetcodes.in.ua";
-            _secretKey = jwtSettings["Key"];
+            _secretKey = jwtSettings["SecretKey"];
             _accessTokenLifetime = int.Parse(jwtSettings["AccessTokenLifetime"]);
             _userManager = userManager;
         }

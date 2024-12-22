@@ -13,13 +13,12 @@ services:
       - streetcode
 
   mongodb:
-    image: mongo:latest
     container_name: mongodb
+    image: mongo
     ports:
-      - "27017:27017"  
-    env_file:
-      - mongodb.env
-    restart: always
+      - 18005:27017
+    networks:
+      - streetcode
 
   streetcode.webapi:
     image: ${DOCKER_REGISTRY-}streetcodewebapi

@@ -88,12 +88,12 @@ public class GetTimelineItemByIdHandlerTests
         result
             .Errors[0]
             .Message.Should()
-            .Contain("Cannot find a timeline item with corresponding id: 99");
+            .Contain("Cannot find a timeline with corresponding id: 99");
         this.loggerMock.Verify(
             logger =>
                 logger.LogError(
                     It.IsAny<object>(),
-                    "Cannot find a timeline item with corresponding id: 99"
+                    "Cannot find a timeline with corresponding id: 99"
                 ),
             Times.Once
         );

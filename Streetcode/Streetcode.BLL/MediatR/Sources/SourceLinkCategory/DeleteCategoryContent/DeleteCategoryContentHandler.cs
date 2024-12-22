@@ -2,6 +2,7 @@
 using FluentResults;
 using MediatR;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Resources;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.DeleteCategoryContent
@@ -25,7 +26,7 @@ namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.DeleteCategoryConten
 				.GetFirstOrDefaultAsync(s => s.Id == command.id);
 			if (source == null)
 			{
-				string errMsg = "No source with such id";
+				string errMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "source", command.id);
 				_logger.LogError(command, errMsg);
 				return Result.Fail(errMsg);
 			}
@@ -35,7 +36,7 @@ namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.DeleteCategoryConten
 
 			if (!resultIsSuccess)
 			{
-				const string errorMsg = "Failed to delete source records";
+				string errorMsg = ErrorManager.GetCustomErrorText("FailDeleteError", "source");
 				_logger.LogError(command, errorMsg);
 				return Result.Fail(new Error(errorMsg));
 			}

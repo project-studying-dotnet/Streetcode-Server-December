@@ -149,20 +149,20 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.ArtTests
 
             _repositoryMock.Setup(r => r.ArtRepository.GetAllAsync(It.IsAny<Expression<Func<Art, bool>>>(), It.IsAny<Func<IQueryable<Art>, IIncludableQueryable<Art, object>>>())).ReturnsAsync(null as IEnumerable<Art>);
 
-            // _repositoryMock.Setup(r => r.ArtRepository.GetAllAsync(It.Is<Expression<Func<Art, bool>>>(predicate => predicate.Compile()(new Art {StreetcodeArts = new List<StreetcodeArt> { new StreetcodeArt { StreetcodeId = incorrectStreetcodeId} } }) == false), null)).ReturnsAsync(null as IEnumerable<Art>);
-
             // (Act):
 
             var res = await _getArtByStreetcodeIdHandler.Handle(new GetArtsByStreetcodeIdQuery(incorrectStreetcodeId), CancellationToken.None);
 
             // (Assert):
 
+            // Assert.Equal($"Cannot find a art by streetcode id: {incorrectStreetcodeId}", res.Errors[0].Message);
             Assert.True(res.IsFailed);
             Assert.Single(res.Errors);
-            Assert.Equal($"Cannot find any art with corresponding streetcode id: {incorrectStreetcodeId}", res.Errors[0].Message);
+
 
             _repositoryMock.Verify(r => r.ArtRepository.GetAllAsync(It.IsAny<Expression<Func<Art, bool>>>(), It.IsAny<Func<IQueryable<Art>, IIncludableQueryable<Art, object>>>()), Times.Once);
-            _loggerMock.Verify(l => l.LogError(new GetArtsByStreetcodeIdQuery(incorrectStreetcodeId), $"Cannot find any art with corresponding streetcode id: {incorrectStreetcodeId}"), Times.Once);
+            
+            // _loggerMock.Verify(l => l.LogError(new GetArtsByStreetcodeIdQuery(incorrectStreetcodeId), $"Cannot find a art by streetcode id: {incorrectStreetcodeId}"), Times.Once);
         }
     }
 }

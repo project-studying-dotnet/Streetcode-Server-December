@@ -69,7 +69,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Toponyms.GetByStreetcodeId
             var result = await _handler.Handle(query, CancellationToken.None);
             result.IsFailed.Should().BeTrue();
             result.Errors.Should().NotBeEmpty();
-            result.Errors.Should().Contain(e => e.Message == $"Cannot find any toponym by the streetcode id: {streetcodeId}");
+            result.Errors.Should().Contain(e => e.Message == $"Cannot find a toponym by a streetcode id: {streetcodeId}");
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Toponyms.GetByStreetcodeId
 
             result.IsFailed.Should().BeTrue();
             result.Errors.Should().NotBeEmpty();
-            result.Errors.Should().Contain(e => e.Message == $"Cannot find any toponym by the streetcode id: {streetcodeId}");
+            result.Errors.Should().Contain(e => e.Message == $"Cannot find a toponym by a streetcode id: {streetcodeId}");
         }
 
         /// <summary>

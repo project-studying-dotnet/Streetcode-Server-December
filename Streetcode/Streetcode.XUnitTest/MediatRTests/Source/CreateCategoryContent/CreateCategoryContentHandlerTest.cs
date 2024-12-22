@@ -64,9 +64,9 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.CreateCategoryContent
 			// Assert
 			Assert.False(result.IsSuccess);
 			Assert.Single(result.Errors);
-			Assert.Equal("Failed to create source records", result.Errors.First().Message);
+			Assert.Equal("Failed to create a source records", result.Errors.First().Message);
 
-			_mockLogger.Verify(logger => logger.LogError(It.IsAny<CreateCategoryContentCommand>(), "Failed to create source records"), Times.Once);
+			_mockLogger.Verify(logger => logger.LogError(It.IsAny<CreateCategoryContentCommand>(), "Failed to create a source records"), Times.Once);
 			_mockRepositoryWrapper.Verify(repo => repo.StreetcodeCategoryContentRepository.CreateAsync(It.IsAny<StreetcodeCategoryContent>()), Times.Once);
 			_mockRepositoryWrapper.Verify(repo => repo.SaveChangesAsync(), Times.Once);
 			_mockRepositoryWrapper.Verify(repo => repo.SourceCategoryRepository.GetSingleOrDefaultAsync(It.IsAny<Expression<Func<SourceEntity, bool>>>(), null), Times.Once);

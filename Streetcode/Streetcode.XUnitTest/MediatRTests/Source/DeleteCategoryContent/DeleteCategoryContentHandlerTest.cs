@@ -44,8 +44,8 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.DeleteCategoryContent
 
 			// Assert
 			result.IsFailed.Should().BeTrue();
-			result.Errors.First().Message.Should().Be("No source with such id");
-			_mockLogger.Verify(x => x.LogError(It.IsAny<object>(), "No source with such id"), Times.Once);
+			result.Errors.First().Message.Should().Be("Cannot find a source with corresponding id: 1");
+			_mockLogger.Verify(x => x.LogError(It.IsAny<object>(), "Cannot find a source with corresponding id: 1"), Times.Once);
 		}
 
 		[Fact]
@@ -90,8 +90,8 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.DeleteCategoryContent
 
 			// Assert
 			result.IsFailed.Should().BeTrue();
-			result.Errors.First().Message.Should().Be("Failed to delete source records");
-			_mockLogger.Verify(x => x.LogError(It.IsAny<object>(), "Failed to delete source records"), Times.Once);
+			result.Errors.First().Message.Should().Be("Failed to delete a source");
+			_mockLogger.Verify(x => x.LogError(It.IsAny<object>(), "Failed to delete a source"), Times.Once);
 		}
 	}
 

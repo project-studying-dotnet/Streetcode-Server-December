@@ -102,7 +102,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Text.GetById
             _mockLogger.Verify(
                 logger => logger.LogError(
                 It.Is<GetTextByIdQuery>(q => q.Id == id),
-                It.Is<string>(s => s == $"Cannot find any text with corresponding id: {id}")),
+                It.Is<string>(s => s == $"Cannot find a text with corresponding id: {id}")),
                 Times.Once);
         }
     }

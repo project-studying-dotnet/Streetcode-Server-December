@@ -4,6 +4,7 @@ using MediatR;
 using Streetcode.BLL.DTO.Media.Video;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.ResultVariations;
+using Streetcode.BLL.Resources;
 using Streetcode.DAL.Entities.Streetcode;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
@@ -26,12 +27,12 @@ namespace Streetcode.BLL.MediatR.Media.Video.GetByStreetcodeId
         {
             var video = await _repositoryWrapper.VideoRepository
                 .GetFirstOrDefaultAsync(video => video.StreetcodeId == request.StreetcodeId);
-            if (video == null)
+            if(video == null)
             {
                 StreetcodeContent? streetcode = await _repositoryWrapper.StreetcodeRepository.GetFirstOrDefaultAsync(x => x.Id == request.StreetcodeId);
                 if (streetcode is null)
                 {
-                    string errorMsg = $"Streetcode with id: {request.StreetcodeId} doesn`t exist";
+                    string errorMsg = ErrorManager.GetCustomErrorText("CantFindByStreetcodeIdError", "video", request.StreetcodeId);
                     _logger.LogError(request, errorMsg);
                     return Result.Fail(new Error(errorMsg));
                 }
@@ -40,6 +41,6 @@ namespace Streetcode.BLL.MediatR.Media.Video.GetByStreetcodeId
             NullResult<VideoDTO> result = new NullResult<VideoDTO>();
             result.WithValue(_mapper.Map<VideoDTO>(video));
             return result;
+            }
         }
-    }
 }

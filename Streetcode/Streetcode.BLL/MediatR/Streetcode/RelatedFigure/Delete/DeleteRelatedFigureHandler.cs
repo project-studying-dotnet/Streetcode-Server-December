@@ -1,6 +1,7 @@
 using FluentResults;
 using MediatR;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Resources;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Streetcode.RelatedFigure.Delete
@@ -40,7 +41,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedFigure.Delete
             }
             else
             {
-                const string errorMsg = "Failed to delete a relation.";
+                string errorMsg = ErrorManager.GetCustomErrorText("FailDeleteError", "relation");
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }

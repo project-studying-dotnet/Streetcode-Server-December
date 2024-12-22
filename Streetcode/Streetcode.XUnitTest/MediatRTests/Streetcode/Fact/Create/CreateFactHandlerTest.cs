@@ -50,7 +50,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Fact.Create
         [Fact]
         public async Task Handle_FactIsNull_ReturnsResultFail()
         {
-            // Arrange
+
             var command = new CreateFactCommand(null!);
             const string errorMsg = "Cannot create new fact!";
 
@@ -86,6 +86,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Fact.Create
             SetupGetAll();
             SetupSaveFileInStorage();
             SetupCreate(null!);
+
 
             var command = new CreateFactCommand(_createFactWithImageDto);
             const string errorMsg = "Cannot create fact!";

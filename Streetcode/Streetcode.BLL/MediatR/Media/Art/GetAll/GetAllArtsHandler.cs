@@ -4,6 +4,7 @@ using MediatR;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.DTO.Media.Art;
 using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.BLL.Resources;
 
 namespace Streetcode.BLL.MediatR.Media.Art.GetAll
 {
@@ -26,7 +27,7 @@ namespace Streetcode.BLL.MediatR.Media.Art.GetAll
 
             if (arts is null)
             {
-                const string errorMsg = $"Cannot find any arts";
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindError", "art");
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }

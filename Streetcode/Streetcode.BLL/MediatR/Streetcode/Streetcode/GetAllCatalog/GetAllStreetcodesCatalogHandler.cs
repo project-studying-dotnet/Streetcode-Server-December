@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.DTO.Streetcode.RelatedFigure;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Resources;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.GetAllCatalog
@@ -34,7 +35,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.GetAllCatalog
                 return Result.Ok(_mapper.Map<IEnumerable<RelatedFigureDTO>>(skipped));
             }
 
-            const string errorMsg = $"Cannot find any subtitles";
+            string errorMsg = ErrorManager.GetCustomErrorText("CantFindError", "subtitles");
             _logger.LogError(request, errorMsg);
             return Result.Fail(errorMsg);
         }

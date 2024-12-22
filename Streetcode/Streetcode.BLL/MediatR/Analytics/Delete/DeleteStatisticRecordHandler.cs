@@ -1,6 +1,7 @@
 ﻿using FluentResults;
 using MediatR;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Resources;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Analytics.Delete
@@ -22,7 +23,7 @@ namespace Streetcode.BLL.MediatR.Analytics.Delete
 
             if (statisticRecordItem == null)
             {
-                string errorMsg = $"Cannot find statisticRecord item with Id: {request.id}";
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "StatisticRecord", request.id);
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }
@@ -33,7 +34,7 @@ namespace Streetcode.BLL.MediatR.Analytics.Delete
 
             if (!resultIsSuccess)
             {
-                const string errorMsg = $"Failed to delete statisticRecord item";
+                string errorMsg = ErrorManager.GetCustomErrorText("FailDeleteError", "StatisticRecord");
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }

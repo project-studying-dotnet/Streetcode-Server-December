@@ -95,9 +95,9 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
             // Assert
             Assert.True(result.IsFailed);
             Assert.Single(result.Errors);
-            Assert.Equal("Cannot find any audios", result.Errors[0].Message);
+            Assert.Equal("Cannot find any audio", result.Errors[0].Message);
 
-            _mockLogger.Verify(l => l.LogError(new GetAllAudiosQuery(), "Cannot find any audios"), Times.Once);
+            _mockLogger.Verify(l => l.LogError(new GetAllAudiosQuery(), "Cannot find any audio"), Times.Once);
             _mockRepository.Verify(r => r.AudioRepository.GetAllAsync(It.IsAny<Expression<Func<Audio, bool>>>(), It.IsAny<Func<IQueryable<Audio>, IIncludableQueryable<Audio, object>>>()), Times.Once);
         }
     }

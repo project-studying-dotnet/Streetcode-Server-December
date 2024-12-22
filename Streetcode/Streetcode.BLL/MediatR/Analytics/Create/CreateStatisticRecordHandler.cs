@@ -3,6 +3,7 @@ using FluentResults;
 using MediatR;
 using Streetcode.BLL.DTO.Analytics;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Resources;
 using Streetcode.DAL.Entities.Analytics;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
@@ -36,14 +37,14 @@ namespace Streetcode.BLL.MediatR.Analytics
 
             if (entity is null)
             {
-                return LogAndFail("Cannot convert null to StatisticRecord", request);
+                return LogAndFail(ErrorManager.GetCustomErrorText("ConvertationError", "null", "StatisticRecord"), request);
             }
 
             var resultIsSuccess = await _repositoryWrapper.SaveChangesAsync() > 0;
 
             if (!resultIsSuccess)
             {
-                return LogAndFail("Failed to create a StatisticRecord", request);
+                return LogAndFail(ErrorManager.GetCustomErrorText("FailCreateError", "StatisticRecord"), request);
             }
 
             return Result.Ok(_mapper.Map<StatisticRecordDTO>(entity));

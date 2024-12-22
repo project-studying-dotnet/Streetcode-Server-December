@@ -3,6 +3,7 @@ using FluentResults;
 using MediatR;
 using Streetcode.BLL.DTO.Sources;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Resources;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.GetCategoryContentByStreetcodeId
@@ -25,7 +26,7 @@ namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.GetCategoryContentBy
             if((await _repositoryWrapper.StreetcodeRepository
                 .GetFirstOrDefaultAsync(s => s.Id == request.streetcodeId)) == null)
             {
-                string errorMsg = $"No such streetcode with id = {request.streetcodeId}";
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByStreetcodeIdError", "streetcode content", request.streetcodeId);
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }
@@ -36,7 +37,7 @@ namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.GetCategoryContentBy
 
             if (streetcodeContent == null)
             {
-                string errorMsg = "The streetcode content is null";
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindError", "streetcode content");
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }

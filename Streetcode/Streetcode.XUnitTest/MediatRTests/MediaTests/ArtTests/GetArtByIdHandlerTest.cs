@@ -72,10 +72,10 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.ArtTests
 
             Assert.True(res.IsFailed);
             Assert.Single(res.Errors);
-            Assert.Equal($"Cannot find an art with corresponding id: {artIncorrectId}", res.Errors[0].Message);
+            Assert.Equal($"Cannot find a art with corresponding id: {artIncorrectId}", res.Errors[0].Message);
 
             _repositoryMock.Verify(r => r.ArtRepository.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<Art, bool>>>(), null), Times.Once);
-            _loggerMock.Verify(l => l.LogError(new GetArtByIdQuery(artIncorrectId), $"Cannot find an art with corresponding id: {artIncorrectId}"), Times.Once);
+            _loggerMock.Verify(l => l.LogError(new GetArtByIdQuery(artIncorrectId), $"Cannot find a art with corresponding id: {artIncorrectId}"), Times.Once);
         }
     }
 }

@@ -4,6 +4,7 @@ using MediatR;
 using Streetcode.BLL.DTO.Streetcode.TextContent.Fact;
 using Streetcode.BLL.Interfaces.Image;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Resources;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Streetcode.Fact.Create
@@ -29,7 +30,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.Fact.Create
 
             if (fact is null)
             {
-                const string errorMsg = "Cannot create new fact!";
+                string errorMsg = ErrorManager.GetCustomErrorText("FailCreateError", "fact");
                 _logger.LogError(command, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }
@@ -50,7 +51,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.Fact.Create
 
             if (createdFact is null)
             {
-                const string errorMsg = "Cannot create fact!";
+                string errorMsg = ErrorManager.GetCustomErrorText("FailCreateError", "fact");
                 _logger.LogError(command, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }

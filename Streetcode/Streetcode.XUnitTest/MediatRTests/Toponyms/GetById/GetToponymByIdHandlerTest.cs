@@ -81,7 +81,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Toponyms.GetById
             var result = await this._handler.Handle(new GetToponymByIdQuery(toponimId), CancellationToken.None);
             result.IsSuccess.Should().BeFalse();
             result.Errors.Should().NotBeEmpty();
-            this._mockLogger.Verify(logger => logger.LogError(It.IsAny<object>(), $"Cannot find any toponym with corresponding id: {toponimId}"), Times.Once);
+            this._mockLogger.Verify(logger => logger.LogError(It.IsAny<object>(), $"Cannot find a toponym with corresponding id: {toponimId}"), Times.Once);
         }
 
         /// <summary>

@@ -3,6 +3,7 @@ using FluentResults;
 using MediatR;
 using Streetcode.BLL.DTO.Sources;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Resources;
 using Streetcode.DAL.Entities.Sources;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
@@ -36,7 +37,7 @@ namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.CreateCategoryConten
 
 			if (!resultIsSuccess)
 			{
-				const string errorMsg = "Failed to create source records";
+				string errorMsg = ErrorManager.GetCustomErrorText("FailCreateError", "source records");
 				_logger.LogError(request, errorMsg);
 				return Result.Fail(new Error(errorMsg));
 			}

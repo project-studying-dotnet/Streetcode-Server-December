@@ -3,6 +3,7 @@ using FluentResults;
 using MediatR;
 using Streetcode.BLL.DTO.Streetcode.TextContent;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Resources;
 using Streetcode.BLL.Specifications.Streetcode.RelatedTerm;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
@@ -28,7 +29,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetAll
 
             if (relatedTerms is null)
             {
-                const string errorMsg = "Cannot get words";
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindError", "words");
                 _logger.LogError(request, errorMsg);
                 return new Error(errorMsg);
             }
@@ -37,7 +38,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetAll
 
             if (relatedTermsDTO is null)
             {
-                const string errorMsg = "Cannot create DTOs for related words!";
+                string errorMsg = ErrorManager.GetCustomErrorText("CantCreateError", "DTOS for related words");
                 _logger.LogError(request, errorMsg);
                 return new Error(errorMsg);
             }

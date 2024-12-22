@@ -1,5 +1,11 @@
-﻿using Xunit;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Xunit;
 using FluentValidation.TestHelper;
+using Streetcode.BLL.DTO.Media.Art;
 using Streetcode.BLL.MediatR.Streetcode.Fact.Create;
 using Streetcode.BLL.Validation.Validators.CommandsAndQuerysValidators;
 using Streetcode.BLL.DTO.Streetcode.TextContent.Fact;
@@ -18,7 +24,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         [Fact]
         public void Should_Have_Error_When_Fact_Is_Null()
         {
-            var model = new CreateFactCommand(null);
+            var model = new CreateFactCommand(null); 
             var result = _validator.TestValidate(model);
             result.ShouldHaveValidationErrorFor(x => x.Fact);
         }
@@ -33,7 +39,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
                 ImageDescription = "Valid image description"
             };
 
-            var model = new CreateFactCommand(factDto);
+            var model = new CreateFactCommand(factDto); 
             var result = _validator.TestValidate(model);
             result.ShouldHaveValidationErrorFor("Fact.Title");
         }
@@ -44,11 +50,11 @@ namespace Streetcode.XUnitTest.ValidatorTests
             var factDto = new CreateFactDTO
             {
                 Title = "Valid Title",
-                Text = new string('A', 601),
+                Text = new string('A', 601), 
                 ImageDescription = "Valid description"
             };
 
-            var model = new CreateFactCommand(factDto);
+            var model = new CreateFactCommand(factDto); 
             var result = _validator.TestValidate(model);
             result.ShouldHaveValidationErrorFor("Fact.Text");
         }
@@ -63,7 +69,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
                 ImageDescription = "Valid description within 200 characters."
             };
 
-            var model = new CreateFactCommand(factDto);
+            var model = new CreateFactCommand(factDto); 
             var result = _validator.TestValidate(model);
             result.ShouldNotHaveAnyValidationErrors();
         }

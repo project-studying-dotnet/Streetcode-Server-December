@@ -7,7 +7,6 @@ using AspNetCore.Identity.Mongo.Model;
 
 namespace UserService.DAL.Entities.Users
 {
-    // [CollectionName("Users")]
     public class User : MongoUser
     {
         public string FullName { get; set; }

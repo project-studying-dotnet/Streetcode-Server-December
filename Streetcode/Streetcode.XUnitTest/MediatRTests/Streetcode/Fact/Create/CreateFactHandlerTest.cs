@@ -7,6 +7,7 @@ using Streetcode.BLL.Interfaces.Image;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Mapping.Streetcode.TextContent;
 using Streetcode.BLL.MediatR.Streetcode.Fact.Create;
+using Streetcode.BLL.Resources;
 using Streetcode.BLL.Services.Image;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using System.Linq.Expressions;
@@ -52,7 +53,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Fact.Create
         {
 
             var command = new CreateFactCommand(null!);
-            const string errorMsg = "Cannot create new fact!";
+            string errorMsg = ErrorManager.GetCustomErrorText("FailCreateError", "fact");
 
             // Act
             var result = await _createFactHandler.Handle(command, default);
@@ -89,7 +90,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Fact.Create
 
 
             var command = new CreateFactCommand(_createFactWithImageDto);
-            const string errorMsg = "Cannot create fact!";
+            string errorMsg = ErrorManager.GetCustomErrorText("FailCreateError", "fact");
 
             // Act
             var result = await _createFactHandler.Handle(command, default);

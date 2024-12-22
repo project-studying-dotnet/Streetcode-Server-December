@@ -12,7 +12,7 @@ namespace UserService.XUnitTest.ServicesTests.Jwt
     {
         private readonly Mock<IConfiguration> _configMock;
         private readonly Mock<UserManager<UserEntity>> _userManagerMock;
-        private readonly Mock<ILogger> _loggerMock;
+        private readonly Mock<ILogger<JwtService>> _loggerMock;
         private readonly JwtService _jwtService;
 
         public JwtServiceTests()
@@ -20,7 +20,7 @@ namespace UserService.XUnitTest.ServicesTests.Jwt
             _configMock = new Mock<IConfiguration>();
             _userManagerMock = new Mock<UserManager<UserEntity>>(
                 Mock.Of<IUserStore<UserEntity>>(), null, null, null, null, null, null, null, null);
-            _loggerMock = new Mock<ILogger>();
+            _loggerMock = new Mock<ILogger<JwtService>>();
 
             _configMock.Setup(c => c.GetSection("Jwt")["SecretKey"]).Returns("VerySecretKey12345678901234567890");
             _configMock.Setup(c => c.GetSection("Jwt")["AccessTokenLifetime"]).Returns("1");

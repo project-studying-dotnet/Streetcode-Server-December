@@ -17,13 +17,13 @@ namespace UserService.BLL.Services.Jwt
     public class JwtService : IJwtService
     {
         private readonly UserManager<UserEntity> _userManager;
-        private readonly ILogger _logger;
+        private readonly ILogger<JwtService> _logger;
         private readonly string _issuer;
         private readonly string _audience;
         private readonly string _secretKey;
         private readonly int _accessTokenLifetime;
 
-        public JwtService(IConfiguration configuration, UserManager<UserEntity> userManager, ILogger logger)
+        public JwtService(IConfiguration configuration, UserManager<UserEntity> userManager, ILogger<JwtService> logger)
         {
             var jwtSettings = configuration.GetSection("Jwt");
             _issuer = "streetcodes.in.ua";

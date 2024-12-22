@@ -17,9 +17,9 @@ services:
     container_name: mongodb
     ports:
       - "27017:27017"  
-    env_file:
-      - mongodb.env
-    restart: always
+    networks:
+      - streetcode
+
 
   streetcode.webapi:
     image: ${DOCKER_REGISTRY-}streetcodewebapi

@@ -11,28 +11,23 @@ using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Logging;
 using UserEntity = UserService.DAL.Entities.Users.User;
+using UserService.BLL.Interfaces.User;
 
 namespace UserService.BLL.Services.Jwt
 {
     public class JwtService : IJwtService
     {
-        private readonly UserManager<UserEntity> _userManager;
+        private readonly JwtConfiguration _jwtConfiguration;
+        private readonly IClaimsService _claimsService;
         private readonly ILogger<JwtService> _logger;
-        private readonly string _issuer;
-        private readonly string _audience;
-        private readonly string _secretKey;
-        private readonly int _accessTokenLifetime;
 
-        public JwtService(IConfiguration configuration, UserManager<UserEntity> userManager, ILogger<JwtService> logger)
+        public JwtService(JwtConfiguration jwtConfiguration, IClaimsService claimsService, ILogger<JwtService> logger)
         {
-            var jwtSettings = configuration.GetSection("Jwt");
-            _issuer = "streetcodes.in.ua";
-            _audience = "streetcodes.in.ua";
-            _secretKey = jwtSettings["SecretKey"];
-            _accessTokenLifetime = int.Parse(jwtSettings["AccessTokenLifetime"]);
-            _userManager = userManager;
+            _jwtConfiguration = jwtConfiguration;
+            _claimsService = claimsService;
             _logger = logger;
         }
+
         public async Task<string> GenerateTokenAsync(UserEntity user)
         {
             if (user == null)
@@ -41,36 +36,16 @@ namespace UserService.BLL.Services.Jwt
                 throw new ArgumentNullException(nameof(user), "User cannot be null.");
             }
 
-            var claims = new List<Claim>
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
-            };
+            var claims = await _claimsService.CreateClaimsAsync(user);
 
-            try
-            {
-                var roles = await _userManager.GetRolesAsync(user);
-
-                foreach (var role in roles)
-                {
-                    claims.Add(new Claim(ClaimTypes.Role, role));
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while retrieving user roles.");
-                throw new InvalidOperationException("An error occurred while retrieving user roles.", ex);
-            }
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfiguration.SecretKey));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
-                issuer: _issuer,
-                audience: _audience,
+                issuer: _jwtConfiguration.Issuer,
+                audience: _jwtConfiguration.Audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddHours(_accessTokenLifetime),
+                expires: DateTime.UtcNow.AddHours(_jwtConfiguration.AccessTokenLifetime),
                 signingCredentials: credentials
             );
 

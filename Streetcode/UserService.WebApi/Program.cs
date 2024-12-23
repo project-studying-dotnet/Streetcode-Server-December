@@ -8,6 +8,7 @@ using UserService.BLL.Interfaces.User;
 using System.Text;
 using UserService.BLL.Services.Jwt;
 using UserService.BLL.Services.User;
+using UserService.WebApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,8 +34,9 @@ builder.Services.AddIdentityMongoDbProvider<User, Role>(identityOptions =>
 
 
 // JWT Configuration
-var jwtSettings = builder.Configuration.GetSection("Jwt");
-var key = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]);
+var jwtConfiguration = JwtConfiguration.LoadFromConfiguration(builder.Configuration);
+builder.Services.AddSingleton(jwtConfiguration);
+var key = Encoding.UTF8.GetBytes(jwtConfiguration.SecretKey);
 
 
 builder.Services.AddAuthentication(options =>
@@ -50,8 +52,8 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = jwtSettings["Issuer"],
-        ValidAudience = jwtSettings["Audience"],
+        ValidIssuer = jwtConfiguration.Issuer,
+        ValidAudience = jwtConfiguration.Audience,
         IssuerSigningKey = new SymmetricSecurityKey(key)
     };
 
@@ -66,6 +68,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Services.AddScoped<IClaimsService, ClaimsService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<IUserService, UserService.BLL.Services.User.UserService>();

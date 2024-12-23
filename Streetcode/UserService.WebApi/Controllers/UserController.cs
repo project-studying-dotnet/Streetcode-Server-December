@@ -1,3 +1,4 @@
+using FluentResults;
 using Microsoft.AspNetCore.Mvc;
 using UserService.BLL.DTO.User;
 using UserService.BLL.Interfaces.User;
@@ -28,25 +29,15 @@ public class UserController : ControllerBase
     [HttpPost]
     public async Task<ActionResult> Login([FromBody] LoginDTO loginDto)
     {
-        var result = await _loginService.Login(loginDto);
+        var loginResult = await _loginService.Login(loginDto);
 
-        if (result.IsFailed)
+        if (loginResult.IsFailed)
         {
-            return BadRequest(result.Errors);
+            return BadRequest(loginResult.Errors);
         }
 
-        var token = result.Value;
+        var token = loginResult.Value;
 
-        var cookieOptions = new CookieOptions
-        {
-            HttpOnly = true,
-            Secure = Request.IsHttps,
-            SameSite = SameSiteMode.Strict,
-            Expires = DateTime.UtcNow.AddHours(1)
-        };
-
-        Response.Cookies.Append("AuthToken", token, cookieOptions);
-
-        return Ok("Login successful.");
+        return Ok(new { token });
     }
 }

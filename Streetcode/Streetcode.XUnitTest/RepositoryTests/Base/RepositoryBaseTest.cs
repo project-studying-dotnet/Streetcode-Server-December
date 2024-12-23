@@ -19,15 +19,20 @@ namespace Streetcode.XUnitTest.RepositoryTests.Base
     public class RepositoryBaseTest
     {
         private readonly Mock<IRedisCacheService> _mockRedisCacheService;
-        private readonly StreetcodeDbContext _dbContext;
-        private readonly RepositoryBase<TestEntity> _repository;
+        private StreetcodeDbContext _dbContext;
+        private RepositoryBase<TestEntity> _repository;
 
         public RepositoryBaseTest()
         {
             _mockRedisCacheService = new Mock<IRedisCacheService>();
+        }
 
+        [Fact]
+        public async Task GetAllBySpecAsync_ReturnsDataFromCache_WhenCacheExists()
+        {
+            // Arrange
             var options = new DbContextOptionsBuilder<StreetcodeDbContext>()
-                .UseInMemoryDatabase(databaseName: "TestDatabase")
+                .UseInMemoryDatabase(databaseName: "TestDatabase1")
                 .Options;
             _dbContext = new StreetcodeDbContext(options);
 
@@ -38,12 +43,7 @@ namespace Streetcode.XUnitTest.RepositoryTests.Base
             _dbContext.SaveChanges();
 
             _repository = new RelatedTermRepository(_dbContext, _mockRedisCacheService.Object);
-        }
 
-        [Fact]
-        public async Task GetAllBySpecAsync_ReturnsDataFromCache_WhenCacheExists()
-        {
-            // Arrange
             var specification = new RelatedTermWithTermSpecification();
             var cachedData = new List<TestEntity>
         {
@@ -71,6 +71,19 @@ namespace Streetcode.XUnitTest.RepositoryTests.Base
         public async Task GetAllBySpecAsync_SetsCache_WhenCacheDoesNotExist()
         {
             // Arrange
+            var options = new DbContextOptionsBuilder<StreetcodeDbContext>()
+                .UseInMemoryDatabase(databaseName: "TestDatabase2")
+                .Options;
+            _dbContext = new StreetcodeDbContext(options);
+
+            _dbContext.Set<TestEntity>().AddRange(
+                new TestEntity { Id = 1, Word = "Entity1", TermId = 1, Term = new DAL.Entities.Streetcode.TextContent.Term { Id = 1, Title = "aa", Description = "a" } },
+                new TestEntity { Id = 2, Word = "Entity2", TermId = 2, Term = new DAL.Entities.Streetcode.TextContent.Term { Id = 2, Title = "aaa", Description = "a" } }
+            );
+            _dbContext.SaveChanges();
+
+            _repository = new RelatedTermRepository(_dbContext, _mockRedisCacheService.Object);
+
             var specification = new RelatedTermWithTermSpecification();
             _mockRedisCacheService
                 .Setup(service => service.GetCachedDataAsync<IEnumerable<TestEntity>>(specification.CacheKey))
@@ -89,6 +102,19 @@ namespace Streetcode.XUnitTest.RepositoryTests.Base
         public async Task GetFirstOrDefaultBySpecAsync_ReturnsDataFromCache_WhenCacheExists()
         {
             // Arrange
+            var options = new DbContextOptionsBuilder<StreetcodeDbContext>()
+                .UseInMemoryDatabase(databaseName: "TestDatabase3")
+                .Options;
+            _dbContext = new StreetcodeDbContext(options);
+
+            _dbContext.Set<TestEntity>().AddRange(
+                new TestEntity { Id = 1, Word = "Entity1", TermId = 1, Term = new DAL.Entities.Streetcode.TextContent.Term { Id = 1, Title = "aa", Description = "a" } },
+                new TestEntity { Id = 2, Word = "Entity2", TermId = 2, Term = new DAL.Entities.Streetcode.TextContent.Term { Id = 2, Title = "aaa", Description = "a" } }
+            );
+            _dbContext.SaveChanges();
+
+            _repository = new RelatedTermRepository(_dbContext, _mockRedisCacheService.Object);
+
             var specification = new RelatedTermWithTermSpecification();
             var cachedData = new TestEntity { Id = 3, Word = "CachedEntity", TermId = 1 };
             _mockRedisCacheService
@@ -107,6 +133,19 @@ namespace Streetcode.XUnitTest.RepositoryTests.Base
         public async Task GetFirstOrDefaultBySpecAsync_SetsCache_WhenCacheDoesNotExist()
         {
             // Arrange
+            var options = new DbContextOptionsBuilder<StreetcodeDbContext>()
+                .UseInMemoryDatabase(databaseName: "TestDatabase4")
+                .Options;
+            _dbContext = new StreetcodeDbContext(options);
+
+            _dbContext.Set<TestEntity>().AddRange(
+                new TestEntity { Id = 1, Word = "Entity1", TermId = 1, Term = new DAL.Entities.Streetcode.TextContent.Term { Id = 1, Title = "aa", Description = "a" } },
+                new TestEntity { Id = 2, Word = "Entity2", TermId = 2, Term = new DAL.Entities.Streetcode.TextContent.Term { Id = 2, Title = "aaa", Description = "a" } }
+            );
+            _dbContext.SaveChanges();
+
+            _repository = new RelatedTermRepository(_dbContext, _mockRedisCacheService.Object);
+
             var specification = new RelatedTermWithTermSpecification();
             _mockRedisCacheService
                 .Setup(service => service.GetCachedDataAsync<TestEntity>(specification.CacheKey))

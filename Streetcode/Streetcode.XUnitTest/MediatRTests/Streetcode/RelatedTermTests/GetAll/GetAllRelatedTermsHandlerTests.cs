@@ -15,7 +15,7 @@ using System.Linq.Expressions;
 using Xunit;
 using Streetcode.DAL.Specification;
 using Microsoft.Extensions.Caching.Distributed;
-using Streetcode.BLL.Interfaces.RedisCache;
+using Streetcode.DAL.Caching.RedisCache;
 
 namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.GetAll;
 

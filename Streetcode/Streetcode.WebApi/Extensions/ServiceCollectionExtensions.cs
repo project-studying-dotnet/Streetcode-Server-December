@@ -10,7 +10,6 @@ using Streetcode.BLL.Interfaces.Image;
 using Streetcode.BLL.Interfaces.Instagram;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Interfaces.Payment;
-using Streetcode.BLL.Interfaces.RedisCache;
 using Streetcode.BLL.Interfaces.Text;
 using Streetcode.BLL.Services.BlobStorageService;
 using Streetcode.BLL.Services.Email;
@@ -18,9 +17,9 @@ using Streetcode.BLL.Services.Image;
 using Streetcode.BLL.Services.Instagram;
 using Streetcode.BLL.Services.Logging;
 using Streetcode.BLL.Services.Payment;
-using Streetcode.BLL.Services.RedisCache;
 using Streetcode.BLL.Services.Text;
 using Streetcode.BLL.Validators;
+using Streetcode.DAL.Caching.RedisCache;
 using Streetcode.DAL.Entities.AdditionalContent.Email;
 using Streetcode.DAL.Persistence;
 using Streetcode.DAL.Repositories.Interfaces.Base;
@@ -33,6 +32,7 @@ namespace Streetcode.WebApi.Extensions
         public static void AddRepositoryServices(this IServiceCollection services)
         {
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+            services.AddScoped(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
         }
 
         public static void AddCustomServices(this IServiceCollection services)

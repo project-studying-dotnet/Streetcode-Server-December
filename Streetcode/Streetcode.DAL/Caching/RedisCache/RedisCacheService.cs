@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
-using Streetcode.BLL.Interfaces.RedisCache;
 using Streetcode.DAL.Entities.Streetcode.TextContent;
 using System;
 using System.Collections.Generic;
@@ -10,7 +9,7 @@ using System.Threading.Tasks;
 using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
-namespace Streetcode.BLL.Services.RedisCache
+namespace Streetcode.DAL.Caching.RedisCache
 {
     public class RedisCacheService : IRedisCacheService
     {

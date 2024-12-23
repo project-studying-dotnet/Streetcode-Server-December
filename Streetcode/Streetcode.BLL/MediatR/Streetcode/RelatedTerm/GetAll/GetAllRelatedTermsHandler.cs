@@ -3,8 +3,9 @@ using FluentResults;
 using MediatR;
 using Streetcode.BLL.DTO.Streetcode.TextContent;
 using Streetcode.BLL.Interfaces.Logging;
-using Streetcode.BLL.Interfaces.RedisCache;
+using Streetcode.BLL.Resources;
 using Streetcode.BLL.Specifications.Streetcode.RelatedTerm;
+using Streetcode.DAL.Caching.RedisCache;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using RelatedTermEntity = Streetcode.DAL.Entities.Streetcode.TextContent.RelatedTerm;
 
@@ -28,27 +29,14 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetAll
 
         public async Task<Result<IEnumerable<RelatedTermDTO>>> Handle(GetAllRelatedTermsQuery request, CancellationToken cancellationToken)
         {
-            var relatedTerms = new List<RelatedTermEntity>();
-            var relatedTermsFromCache = await _redisCacheService.GetCachedDataAsync<List<RelatedTermEntity>>(_cacheKey);
-            if (relatedTermsFromCache == null)
-            {
-                var relatedTermsfromDb = await _repository.RelatedTermRepository
-                    .GetAllBySpecAsync(new RelatedTermWithTermSpecification());
+            var relatedTerms = await _repository.RelatedTermRepository
+                .GetAllBySpecAsync(new RelatedTermWithTermSpecification());
 
-                if (relatedTermsfromDb is null)
-                {
-                    const string errorMsg = "Cannot get words";
-                    _logger.LogError(request, errorMsg);
-                    return new Error(errorMsg);
-                }
-
-                relatedTerms = relatedTermsfromDb.ToList();
-                await _redisCacheService.SetCachedDataAsync(_cacheKey, relatedTerms, 10);
-                _logger.LogInformation("Cached RelatedTerms for 10 minutes");
-            }
-            else 
+            if (relatedTerms is null)
             {
-                relatedTerms = relatedTermsFromCache;
+                const string errorMsg = "Cannot get words";
+                _logger.LogError(request, errorMsg);
+                return new Error(errorMsg);
             }
 
             var relatedTermsDTO = _mapper.Map<IEnumerable<RelatedTermDTO>>(relatedTerms);

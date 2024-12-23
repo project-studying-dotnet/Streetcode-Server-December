@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using RedisCacheServiceClass = Streetcode.BLL.Services.RedisCache.RedisCacheService;
+using RedisCacheServiceClass = Streetcode.DAL.Caching.RedisCache.RedisCacheService;
 
 namespace Streetcode.XUnitTest.ServicesTests.RedisCacheService
 {

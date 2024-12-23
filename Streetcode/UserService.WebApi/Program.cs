@@ -8,7 +8,6 @@ using UserService.BLL.Interfaces.User;
 using System.Text;
 using UserService.BLL.Services.Jwt;
 using UserService.BLL.Services.User;
-using UserService.WebApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,16 +54,6 @@ builder.Services.AddAuthentication(options =>
         ValidIssuer = jwtConfiguration.Issuer,
         ValidAudience = jwtConfiguration.Audience,
         IssuerSigningKey = new SymmetricSecurityKey(key)
-    };
-
-    // Extracting token from cookie
-    options.Events = new JwtBearerEvents
-    {
-        OnMessageReceived = context =>
-        {
-            context.Token = context.HttpContext.Request.Cookies["AuthToken"];
-            return Task.CompletedTask;
-        }
     };
 });
 

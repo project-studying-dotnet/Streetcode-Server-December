@@ -21,22 +21,8 @@ public class UserService(UserManager<UserEntity> userManager) : IUserService
             FullName = registrationDto.fullName
         };
 
-        var result = await userManager.CreateAsync(user, registrationDto.password);
+        await userManager.CreateAsync(user, registrationDto.password);
 
-        if (!result.Succeeded)
-        {
-            var errors = string.Join(", ", result.Errors.Select(e => e.Description));
-            throw new Exception($"Ошибка при регистрации пользователя: {errors}");
-        }
-
-        var registeredUser = await userManager.Users
-                                               .FirstOrDefaultAsync(u => u.Id == user.Id);
-
-        if (registeredUser == null)
-        {
-            throw new Exception("Пользователь не найден после регистрации.");
-        }
-
-        return registeredUser;
+        return await userManager.Users.FirstAsync(u => u.Id == user.Id);
     }
 }

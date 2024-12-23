@@ -6,6 +6,7 @@ using UserService.DAL.Entities.Users;
 using UserService.BLL.Interfaces.Jwt;
 using UserService.BLL.Interfaces.User;
 using UserService.BLL.Services;
+using UserService.WebApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -64,6 +65,7 @@ builder.Services.AddScoped<IUserService, UserService.BLL.Services.UserService>()
 
 
 var app = builder.Build();
+await app.SeedDataAsync();
 
 app.UseAuthentication();
 app.UseAuthorization();

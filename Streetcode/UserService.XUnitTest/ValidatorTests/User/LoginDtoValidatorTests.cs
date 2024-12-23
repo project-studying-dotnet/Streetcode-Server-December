@@ -53,8 +53,6 @@ namespace UserService.XUnitTest.ValidatorTests.User
             var dto = new LoginDTO
             {
                 UserName = "ValidUser",
-                FullName = "Valid Full Name",
-                Email = "user@example.com",
                 Password = "password123!"
             };
 

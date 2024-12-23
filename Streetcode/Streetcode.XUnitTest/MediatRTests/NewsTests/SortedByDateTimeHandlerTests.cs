@@ -60,7 +60,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
             // Assert
             Assert.True(result.IsFailed);
             Assert.Single(result.Errors);
-            _loggerMock.Verify(log => log.LogError(query, "There are no news in the database"), Times.Once());
+            _loggerMock.Verify(log => log.LogError(query, "Cannot find any news"), Times.Once());
         }
 
         [Fact]

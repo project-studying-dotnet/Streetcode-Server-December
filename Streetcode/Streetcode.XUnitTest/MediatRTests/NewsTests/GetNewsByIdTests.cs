@@ -56,7 +56,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
 
             // Assert
             Assert.True(result.IsFailed);
-            _loggerMock.Verify(log => log.LogError(query, "No news by entered Id - 1"), Times.Once());
+            _loggerMock.Verify(log => log.LogError(query, "Cannot find a news with corresponding id: 1"), Times.Once());
         }
 
         [Fact]

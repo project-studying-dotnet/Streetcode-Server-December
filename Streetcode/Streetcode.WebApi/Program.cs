@@ -34,6 +34,8 @@ app.UseCors();
 
 app.UseHttpsRedirection();
 
+app.UseGlobalExceptionHandler();
+
 app.UseRouting();
 
 app.UseAuthentication();

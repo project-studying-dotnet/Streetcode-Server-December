@@ -37,7 +37,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
 
             // Assert
             Assert.False(result.IsSuccess);
-            _loggerMock.Verify(log => log.LogError(command, "No news found by entered Id - 1"), Times.Once);
+            _loggerMock.Verify(log => log.LogError(command, "Cannot find a news with corresponding id: 1"), Times.Once);
         }
 
         [Fact]
@@ -102,7 +102,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
 
             // Assert
             Assert.False(result.IsSuccess);
-            _loggerMock.Verify(log => log.LogError(command, "Failed to delete news"), Times.Once);
+            _loggerMock.Verify(log => log.LogError(command, "Failed to delete a news"), Times.Once);
         }
     }
 }

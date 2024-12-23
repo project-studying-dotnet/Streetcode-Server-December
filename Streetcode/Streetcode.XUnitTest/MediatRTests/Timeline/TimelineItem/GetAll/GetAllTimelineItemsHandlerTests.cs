@@ -89,14 +89,14 @@ public class GetAllTimelineItemsHandlerTests
 
         result.IsSuccess.Should().BeFalse("No items exist, so the handler should return failure.");
         result.Errors.Should().ContainSingle("There should be a single error message.");
-        result.Errors[0].Message.Should().Contain("Cannot find any timelineItem");
+        result.Errors[0].Message.Should().Contain("Cannot find any timeline");
         this.loggerMock.Verify(
-            logger => logger.LogError(It.IsAny<object>(), "Cannot find any timelineItem"),
+            logger => logger.LogError(It.IsAny<object>(), "Cannot find any timeline"),
             Times.Once);
     }
 
     [Theory]
-    [InlineData(0, false, "Cannot find any timelineItem")]
+    [InlineData(0, false, "Cannot find any timeline")]
     [InlineData(2, true, "")]
     public async Task Handle_ShouldReturnCorrectResultBasedOnRepositoryData(
         int itemCount,

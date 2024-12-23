@@ -2,10 +2,10 @@
 using FluentResults;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Streetcode.BLL.DTO.Media.Images;
 using Streetcode.BLL.DTO.Sources;
 using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Resources;
 using Streetcode.BLL.Services.BlobStorageService;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
@@ -31,7 +31,7 @@ namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.GetAll
                 include: cat => cat.Include(img => img.Image) !);
             if (allCategories == null)
             {
-                const string errorMsg = $"Categories is null";
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindError", "categories");
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }

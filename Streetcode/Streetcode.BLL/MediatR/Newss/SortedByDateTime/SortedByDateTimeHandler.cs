@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.DTO.AdditionalContent.Subtitles;
+using Streetcode.BLL.Resources;
 
 namespace Streetcode.BLL.MediatR.Newss.SortedByDateTime
 {
@@ -31,7 +32,7 @@ namespace Streetcode.BLL.MediatR.Newss.SortedByDateTime
                 include: cat => cat.Include(img => img.Image));
             if (news == null)
             {
-                const string errorMsg = "There are no news in the database";
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindError", "news");
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(errorMsg);
             }

@@ -96,7 +96,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Text.GetByStreetcodeId
             _mockLogger.Verify(
                 logger => logger.LogError(
                        It.IsAny<GetTextByStreetcodeIdQuery>(),
-                       It.Is<string>(s => s == $"Cannot find a transaction link by a streetcode id: {streetcodeId}, because such streetcode doesn`t exist")),
+                       It.Is<string>(s => s == $"Cannot find a transaction link by a streetcode id: {streetcodeId}")),
                 Times.Once);
         }
 

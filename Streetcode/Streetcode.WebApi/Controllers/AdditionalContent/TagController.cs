@@ -6,31 +6,32 @@ using Streetcode.BLL.MediatR.AdditionalContent.Tag.GetAll;
 using Streetcode.BLL.MediatR.AdditionalContent.Tag.GetById;
 using Streetcode.BLL.MediatR.AdditionalContent.Tag.GetByStreetcodeId;
 
-namespace Streetcode.WebApi.Controllers.AdditionalContent;
-
-public class TagController : BaseApiController
+namespace Streetcode.WebApi.Controllers.AdditionalContent
 {
-    [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public class TagController : BaseApiController
     {
-        return HandleResult(await Mediator.Send(new GetAllTagsQuery()));
-    }
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            return HandleResult(await Mediator.Send(new GetAllTagsQuery()));
+        }
 
-    [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetById([FromRoute] int id)
-    {
-        return HandleResult(await Mediator.Send(new GetTagByIdQuery(id)));
-    }
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetById([FromRoute] int id)
+        {
+            return HandleResult(await Mediator.Send(new GetTagByIdQuery(id)));
+        }
 
-    [HttpGet("{streetcodeId:int}")]
-    public async Task<IActionResult> GetByStreetcodeId([FromRoute] int streetcodeId)
-    {
-        return HandleResult(await Mediator.Send(new GetTagByStreetcodeIdQuery(streetcodeId)));
-    }
+        [HttpGet("{streetcodeId:int}")]
+        public async Task<IActionResult> GetByStreetcodeId([FromRoute] int streetcodeId)
+        {
+            return HandleResult(await Mediator.Send(new GetTagByStreetcodeIdQuery(streetcodeId)));
+        }
 
-    [HttpGet("{title}")]
-    public async Task<IActionResult> GetTagByTitle([FromRoute] string title)
-    {
-        return HandleResult(await Mediator.Send(new GetTagByTitleQuery(title)));
+        [HttpGet("{title}")]
+        public async Task<IActionResult> GetTagByTitle([FromRoute] string title)
+        {
+            return HandleResult(await Mediator.Send(new GetTagByTitleQuery(title)));
+        }
     }
 }

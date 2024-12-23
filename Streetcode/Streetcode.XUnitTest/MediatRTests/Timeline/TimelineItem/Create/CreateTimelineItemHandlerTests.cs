@@ -59,7 +59,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Timeline.TimelineItems.Create
 
             // Assert
             result.IsFailed.Should().BeTrue();
-            result.Errors.Should().ContainSingle(error => error.Message == "Streetcode does not exist.");
+            result.Errors.Should().ContainSingle(error => error.Message == "Cannot find any streetcode");
         }
 
         /// <summary>

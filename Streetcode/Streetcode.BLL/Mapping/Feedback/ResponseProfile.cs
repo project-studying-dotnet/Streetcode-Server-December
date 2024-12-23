@@ -2,12 +2,13 @@
 using Streetcode.BLL.DTO.Feedback;
 using Streetcode.DAL.Entities.Feedback;
 
-namespace Streetcode.BLL.Mapping.Feedback;
-
-public class ResponseProfile : Profile
+namespace Streetcode.BLL.Mapping.Feedback
 {
-    public ResponseProfile()
+    public class ResponseProfile : Profile
     {
-        CreateMap<Response, ResponseDTO>().ReverseMap();
+        public ResponseProfile()
+        {
+            CreateMap<Response, ResponseDTO>().ReverseMap();
+        }
     }
 }

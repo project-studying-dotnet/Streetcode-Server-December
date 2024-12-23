@@ -70,7 +70,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
 
             Assert.True(result.IsFailed);
             Assert.Single(result.Errors);
-            Assert.Equal($"Cannot find an audio with corresponding id: {nonExistentAudioId}", result.Errors[0].Message);
+            Assert.Equal($"Cannot find a audio with corresponding id: {nonExistentAudioId}", result.Errors[0].Message);
 
             _mockLogger.Verify(l => l.LogError(It.IsAny<GetBaseAudioQuery>(), It.Is<string>(msg => msg.Contains($"id: {nonExistentAudioId}"))), Times.Once);
             _mockRepository.Verify(r => r.AudioRepository.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<Audio, bool>>>(), null), Times.Once);

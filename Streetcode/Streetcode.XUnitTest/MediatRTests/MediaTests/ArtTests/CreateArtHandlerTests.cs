@@ -177,7 +177,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.ArtTests
 
             // Assert
             Assert.True(result.IsFailed);
-            _loggerMock.Verify(l => l.LogError(command, "Failed to create a Art"), Times.Once);
+            _loggerMock.Verify(l => l.LogError(command, "Failed to create a art"), Times.Once);
         }
 
         [Fact]
@@ -221,7 +221,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.ArtTests
 
             // Assert
             Assert.True(result.IsFailed);
-            _loggerMock.Verify(l => l.LogError(command, "Failed to create StreetcodeArt records"), Times.Once);
+            _loggerMock.Verify(l => l.LogError(command, "Failed to create a StreetcodeArt records"), Times.Once);
             _repositoryWrapperMock.Verify(r => r.SaveChangesAsync(), Times.Exactly(2)); // One for Art and one for StreetcodeArt
         }
 

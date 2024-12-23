@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Streetcode.BLL.DTO.AdditionalContent.Subtitles;
 using Streetcode.BLL.MediatR.AdditionalContent.Coordinate.GetByStreetcodeId;
 
-namespace Streetcode.WebApi.Controllers.AdditionalContent;
-
-public class CoordinateController : BaseApiController
+namespace Streetcode.WebApi.Controllers.AdditionalContent
 {
-    [HttpGet("{streetcodeId:int}")]
-    public async Task<IActionResult> GetByStreetcodeId([FromRoute] int streetcodeId)
+    public class CoordinateController : BaseApiController
     {
-        return HandleResult(await Mediator.Send(new GetCoordinatesByStreetcodeIdQuery(streetcodeId)));
+        [HttpGet("{streetcodeId:int}")]
+        public async Task<IActionResult> GetByStreetcodeId([FromRoute] int streetcodeId)
+        {
+            return HandleResult(await Mediator.Send(new GetCoordinatesByStreetcodeIdQuery(streetcodeId)));
+        }
     }
 }

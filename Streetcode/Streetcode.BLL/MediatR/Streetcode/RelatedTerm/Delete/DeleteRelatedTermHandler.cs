@@ -5,6 +5,7 @@ using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.DTO.Streetcode.TextContent;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Specifications.Streetcode.RelatedTerm;
+using Streetcode.BLL.Resources;
 
 namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Delete
 {
@@ -42,7 +43,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Delete
             }
             else
             {
-                const string errorMsg = "Failed to delete a related term";
+                string errorMsg = ErrorManager.GetCustomErrorText("FailDeleteError", "related term");
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }

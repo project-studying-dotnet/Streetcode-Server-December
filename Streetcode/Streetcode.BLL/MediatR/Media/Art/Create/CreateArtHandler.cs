@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MediatR;
+﻿using MediatR;
 using FluentResults;
 using Streetcode.BLL.DTO.Media.Art;
 using AutoMapper;
@@ -11,6 +6,7 @@ using Streetcode.BLL.Interfaces.Logging;
 using ArtEntity = Streetcode.DAL.Entities.Media.Images.Art;
 using StreetcodeArtEntity = Streetcode.DAL.Entities.Streetcode.StreetcodeArt;
 using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.BLL.Resources;
 
 namespace Streetcode.BLL.MediatR.Media.Art.Create
 {
@@ -33,7 +29,7 @@ namespace Streetcode.BLL.MediatR.Media.Art.Create
             var newArt = _mapper.Map<ArtEntity>(command.newArt);
             if (newArt == null)
             {
-                string errorMsg = "Cannot convert null to art";
+                string errorMsg = ErrorManager.GetCustomErrorText("ConvertationError", "null", "art");
                 _logger.LogError(command, errorMsg);
                 return Result.Fail(errorMsg);
             }
@@ -69,7 +65,7 @@ namespace Streetcode.BLL.MediatR.Media.Art.Create
 
             if (!isArtSaved)
             {
-                const string errorMsg = "Failed to create a Art";
+                string errorMsg = ErrorManager.GetCustomErrorText("FailCreateError", "art");
                 _logger.LogError(command, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }
@@ -91,7 +87,7 @@ namespace Streetcode.BLL.MediatR.Media.Art.Create
 
                 if(!areStreetcodeArtsSaved)
                 {
-                    const string errorMsg = "Failed to create StreetcodeArt records";
+                    string errorMsg = ErrorManager.GetCustomErrorText("FailCreateError", "StreetcodeArt records");
                     _logger.LogError(command, errorMsg);
                     return Result.Fail(new Error(errorMsg));
                 }

@@ -3,10 +3,10 @@ using FluentResults;
 using MediatR;
 using Streetcode.BLL.DTO.News;
 using Streetcode.BLL.Interfaces.BlobStorage;
-using Streetcode.DAL.Entities.News;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Resources;
 
 namespace Streetcode.BLL.MediatR.Newss.GetNewsAndLinksByUrl
 {
@@ -34,7 +34,7 @@ namespace Streetcode.BLL.MediatR.Newss.GetNewsAndLinksByUrl
 
             if (newsDTO is null)
             {
-                string errorMsg = $"No news by entered Url - {url}";
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByURLError", "news", request.url);
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(errorMsg);
             }

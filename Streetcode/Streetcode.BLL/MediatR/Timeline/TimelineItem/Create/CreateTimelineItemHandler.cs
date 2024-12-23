@@ -6,6 +6,7 @@ using Streetcode.DAL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Interfaces.Logging;
 using TimelineEntity = Streetcode.DAL.Entities.Timeline.TimelineItem;
 using Streetcode.DAL.Entities.Timeline;
+using Streetcode.BLL.Resources;
 
 namespace Streetcode.BLL.MediatR.Timeline.TimelineItem.Create
 {
@@ -26,7 +27,7 @@ namespace Streetcode.BLL.MediatR.Timeline.TimelineItem.Create
             var streetcodeExists = await _repository.StreetcodeRepository.GetFirstOrDefaultAsync(s => s.Id == request.timelineItemCreateDto.StreetcodeId);
             if (streetcodeExists == null)
             {
-                const string errorMessage = "Streetcode does not exist.";
+                string errorMessage = ErrorManager.GetCustomErrorText("CantFindError", "streetcode");
                 _logger.LogError(request, errorMessage);
                 return Result.Fail(errorMessage);
             }
@@ -35,7 +36,7 @@ namespace Streetcode.BLL.MediatR.Timeline.TimelineItem.Create
 
             if (newTimelineItem == null)
             {
-                const string errorMessage = "Failed to create timeline.";
+                string errorMessage = ErrorManager.GetCustomErrorText("FailCreateError", "timeline");
                 _logger.LogError(request, errorMessage);
                 return Result.Fail(errorMessage);
             }

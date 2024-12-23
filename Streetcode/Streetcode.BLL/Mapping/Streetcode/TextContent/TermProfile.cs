@@ -2,12 +2,13 @@
 using Streetcode.BLL.DTO.Streetcode.TextContent;
 using Streetcode.DAL.Entities.Streetcode.TextContent;
 
-namespace Streetcode.BLL.Mapping.Streetcode.TextContent;
-
-public class TermProfile : Profile
+namespace Streetcode.BLL.Mapping.Streetcode.TextContent
 {
-    public TermProfile()
+    public class TermProfile : Profile
     {
-        CreateMap<Term, TermDTO>().ReverseMap();
+        public TermProfile()
+        {
+            CreateMap<Term, TermDTO>().ReverseMap();
+        }
     }
 }

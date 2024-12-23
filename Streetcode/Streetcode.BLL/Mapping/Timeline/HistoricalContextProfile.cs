@@ -2,12 +2,13 @@ using AutoMapper;
 using Streetcode.BLL.DTO.Timeline;
 using Streetcode.DAL.Entities.Timeline;
 
-namespace Streetcode.BLL.Mapping.Timeline;
-
-public class HistoricalContextProfile : Profile
+namespace Streetcode.BLL.Mapping.Timeline
 {
-    public HistoricalContextProfile()
+    public class HistoricalContextProfile : Profile
     {
-        CreateMap<HistoricalContext, HistoricalContextDTO>().ReverseMap();
+        public HistoricalContextProfile()
+        {
+            CreateMap<HistoricalContext, HistoricalContextDTO>().ReverseMap();
+        }
     }
 }

@@ -1,7 +1,6 @@
-using System.ComponentModel.DataAnnotations;
-
-namespace Streetcode.DAL.Entities.Streetcode.Types;
-
-public class EventStreetcode : StreetcodeContent
+namespace Streetcode.DAL.Entities.Streetcode.Types
 {
+    public class EventStreetcode : StreetcodeContent
+    {
+    }
 }

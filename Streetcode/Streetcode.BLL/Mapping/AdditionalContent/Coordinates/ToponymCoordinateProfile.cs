@@ -2,12 +2,13 @@
 using Streetcode.BLL.DTO.AdditionalContent.Coordinates.Types;
 using Streetcode.DAL.Entities.AdditionalContent.Coordinates.Types;
 
-namespace Streetcode.BLL.Mapping.AdditionalContent.Coordinates;
-
-public class ToponymCoordinateProfile : Profile
+namespace Streetcode.BLL.Mapping.AdditionalContent.Coordinates
 {
-    public ToponymCoordinateProfile()
+    public class ToponymCoordinateProfile : Profile
     {
-        CreateMap<ToponymCoordinate, ToponymCoordinateDTO>().ReverseMap();
+        public ToponymCoordinateProfile()
+        {
+            CreateMap<ToponymCoordinate, ToponymCoordinateDTO>().ReverseMap();
+        }
     }
 }

@@ -60,7 +60,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
             var id = 1;
             var request = new GetByIdTeamQuery(id);
 
-            string errorMsg = $"Cannot find any team with corresponding id: {request.Id}";
+            string errorMsg = $"Cannot find a team with corresponding id: {request.Id}";
 
             // Act
             var result = await _getByIdTeamHandler.Handle(request, CancellationToken.None);

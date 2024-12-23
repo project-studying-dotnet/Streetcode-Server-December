@@ -4,6 +4,7 @@ using MediatR;
 using Streetcode.BLL.DTO.Streetcode.RelatedFigure;
 using Streetcode.BLL.DTO.Streetcode.TextContent;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Resources;
 using Streetcode.BLL.Specifications.Streetcode.RelatedTerm;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
@@ -29,7 +30,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Update
 
             if (existingRelatedTerm == null)
             {
-                const string errorMsg = "Related term not found!";
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindError", "related term");
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }
@@ -42,7 +43,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Update
 
             if (!isSuccess)
             {
-                const string errorMsg = "Failed to save the updated related term.";
+                string errorMsg = ErrorManager.GetCustomErrorText("FailUpdateError", "related term");
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }

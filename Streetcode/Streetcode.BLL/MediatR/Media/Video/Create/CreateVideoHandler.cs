@@ -5,6 +5,7 @@ using Streetcode.BLL.DTO.Media.Images;
 using Streetcode.BLL.DTO.Media.Video;
 using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Resources;
 using Streetcode.BLL.Services.BlobStorageService;
 using Streetcode.DAL.Entities.Media;
 using Streetcode.DAL.Repositories.Interfaces.Base;
@@ -32,7 +33,7 @@ namespace Streetcode.BLL.MediatR.Media.Video.Create
 
             if (isStreetcodeExsit == null)
             {
-                string error = $"Cant find StreetcodeContent with id={request.Video.StreetcodeId} for video creation";
+                string error = ErrorManager.GetCustomErrorText("CantFindByStreetcodeIdError", "StreetcodeContent", request.Video.StreetcodeId);
                 _logger.LogError(request, error);
                 return Result.Fail(new Error(error));
             }
@@ -53,7 +54,7 @@ namespace Streetcode.BLL.MediatR.Media.Video.Create
             }
             else
             {
-                const string errorMessage = "Failed to create an video";
+                string errorMessage = ErrorManager.GetCustomErrorText("FailCreateError", "video");
                 _logger.LogError(request, errorMessage);
                 return Result.Fail(new Error(errorMessage));
             }

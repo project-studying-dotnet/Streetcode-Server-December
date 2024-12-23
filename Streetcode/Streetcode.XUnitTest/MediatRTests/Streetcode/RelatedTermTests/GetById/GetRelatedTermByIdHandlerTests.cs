@@ -115,7 +115,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.GetById
             var result = await this._handler.Handle(new GetRelatedTermByIdQuery(10), CancellationToken.None);
             result.IsSuccess.Should().BeFalse();
             result.Errors.Should().ContainSingle();
-            result.Errors.First().Message.Should().Be("Cannot get word by id");
+            result.Errors.First().Message.Should().Be("Cannot find a word with corresponding id: 10");
         }
     }
 }

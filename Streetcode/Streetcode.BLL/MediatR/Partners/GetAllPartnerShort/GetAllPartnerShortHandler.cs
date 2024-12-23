@@ -3,6 +3,7 @@ using FluentResults;
 using MediatR;
 using Streetcode.BLL.DTO.Partners;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Resources;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Partners.GetAllPartnerShort
@@ -26,7 +27,7 @@ namespace Streetcode.BLL.MediatR.Partners.GetAllPartnerShort
 
             if (partners is null)
             {
-                const string errorMsg = $"Cannot find any partners";
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindError", "partners");
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }

@@ -98,9 +98,9 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.ArtTests
 
             Assert.Single(res.Errors);
             Assert.True(res.IsFailed);
-            Assert.Equal("Cannot find any arts", res.Errors[0].Message);
+            Assert.Equal("Cannot find any art", res.Errors[0].Message);
 
-            _loggerMock.Verify(l => l.LogError(new GetAllArtsQuery(), "Cannot find any arts"), Times.Once);
+            _loggerMock.Verify(l => l.LogError(new GetAllArtsQuery(), "Cannot find any art"), Times.Once);
         }
     }
 }

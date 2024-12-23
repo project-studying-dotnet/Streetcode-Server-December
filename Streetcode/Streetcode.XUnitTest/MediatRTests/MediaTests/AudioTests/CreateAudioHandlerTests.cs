@@ -115,8 +115,8 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
 
             Assert.True(result.IsFailed);
             Assert.Single(result.Errors);            
-            Assert.Equal("Failed to create an audio", result.Errors[0].Message);
-            _mockLogger.Verify(l => l.LogError(new CreateAudioCommand(audioCreateDTO), "Failed to create an audio"), Times.Once);
+            Assert.Equal("Failed to create a audio", result.Errors[0].Message);
+            _mockLogger.Verify(l => l.LogError(new CreateAudioCommand(audioCreateDTO), "Failed to create a audio"), Times.Once);
         }
     }
 }

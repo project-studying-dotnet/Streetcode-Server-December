@@ -55,7 +55,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.GetCategoriesByStreetcodeId
 			// Assert
 			Assert.False(result.IsSuccess);
 			Assert.Single(result.Errors);
-			Assert.Equal($"Cant find any source category with the streetcode id {request.StreetcodeId}", result.Errors.First().Message);
+			Assert.Equal($"Cannot find a category by a streetcode id: {request.StreetcodeId}", result.Errors.First().Message);
 		}
 
 		[Fact]

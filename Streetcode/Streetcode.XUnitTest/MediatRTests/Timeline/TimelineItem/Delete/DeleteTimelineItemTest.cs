@@ -28,7 +28,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Timeline.TimelineItems.Delete
         {
             // Arrange
             var command = new DeleteTimelineItemCommand(1);
-            string errorMsg = $"Cannot find timeline item with Id: {command.id}";
+            string errorMsg = $"Cannot find a timeline with corresponding id: {command.id}";
             SetupGetFirstOrDefault(null!);
 
             // Act
@@ -44,7 +44,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Timeline.TimelineItems.Delete
         {
             // Arrange
             var timelineItem = new TimelineItem { Id = 1, Date = DateTime.Now, Title = "New Title" };
-            string errorMsg = $"Failed to delete timeline item";
+            string errorMsg = $"Failed to delete a timeline";
 
             var command = new DeleteTimelineItemCommand(1);
 

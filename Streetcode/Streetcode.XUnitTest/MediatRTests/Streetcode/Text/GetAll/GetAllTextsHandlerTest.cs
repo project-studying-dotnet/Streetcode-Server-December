@@ -83,7 +83,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Text.GetAll
 
             result.IsSuccess.Should().BeFalse();
             result.Errors.Should().NotBeEmpty();
-            _mockLogger.Verify(logger => logger.LogError(It.IsAny<GetAllTextsQuery>(), It.Is<string>(s => s == "Cannot find any text")), Times.Once);
+            _mockLogger.Verify(logger => logger.LogError(It.IsAny<GetAllTextsQuery>(), It.Is<string>(s => s == "Cannot find any term")), Times.Once);
         }
     }
 }

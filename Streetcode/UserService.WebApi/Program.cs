@@ -8,6 +8,8 @@ using UserService.BLL.Interfaces.User;
 using System.Text;
 using UserService.BLL.Services.Jwt;
 using UserService.BLL.Services.User;
+using UserService.BLL.Services;
+using UserService.WebApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -64,6 +66,7 @@ builder.Services.AddScoped<IUserService, UserService.BLL.Services.User.UserServi
 
 
 var app = builder.Build();
+await app.SeedDataAsync();
 
 app.UseAuthentication();
 app.UseAuthorization();

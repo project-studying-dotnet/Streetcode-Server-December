@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.DTO.Sources;
 using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Resources;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Sources.SourceLink.GetCategoriesByStreetcodeId
@@ -35,7 +36,7 @@ namespace Streetcode.BLL.MediatR.Sources.SourceLink.GetCategoriesByStreetcodeId
 
             if (srcCategories is null)
             {
-                string errorMsg = $"Cant find any source category with the streetcode id {request.StreetcodeId}";
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByStreetcodeIdError", "category" , request.StreetcodeId);
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }

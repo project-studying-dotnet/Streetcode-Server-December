@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Resources;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Media.Art.Delete
@@ -24,7 +25,7 @@ namespace Streetcode.BLL.MediatR.Media.Art.Delete
 
             if (art is null)
             {
-                string errorMsg = $"Cannot find an art with Id: {request.Id}";
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "art", request.Id);
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }
@@ -40,7 +41,7 @@ namespace Streetcode.BLL.MediatR.Media.Art.Delete
 
             if (!resultIsSuccess)
             {
-                const string errorMsg = $"Failed to delete an art";
+                string errorMsg = ErrorManager.GetCustomErrorText("FailDeleteError", "art");
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }

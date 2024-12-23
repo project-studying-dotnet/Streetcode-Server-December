@@ -42,7 +42,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Analytics.Delete
             var result = await _handler.Handle(command, default);
 
             Assert.False(result.IsSuccess);
-            Assert.Contains("Failed to delete statisticRecord item", result.Errors.First().Message);
+            Assert.Contains("Failed to delete a StatisticRecord", result.Errors.First().Message);
         }
 
         [Fact]
@@ -55,7 +55,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Analytics.Delete
             var result = await _handler.Handle(command, default);
 
             Assert.False(result.IsSuccess);
-            Assert.Contains($"Cannot find statisticRecord item with Id: {command.id}", result.Errors.First().Message);
+            Assert.Contains($"Cannot find a StatisticRecord with corresponding id: {command.id}", result.Errors.First().Message);
         }
 
         private void SetupGetFirstOrDefault(StatisticRecord statisticRecord)

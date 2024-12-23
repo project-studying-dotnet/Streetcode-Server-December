@@ -7,6 +7,8 @@ using Streetcode.BLL.MediatR.Timeline.TimelineItem.Delete;
 using Streetcode.BLL.MediatR.Timeline.TimelineItem.GetAll;
 using Streetcode.BLL.MediatR.Timeline.TimelineItem.GetById;
 using Streetcode.BLL.MediatR.Timeline.TimelineItem.GetByStreetcodeId;
+using UserService.BLL.Attributes;
+using UserService.DAL.Enums;
 
 namespace Streetcode.WebApi.Controllers.Timeline
 {
@@ -33,21 +35,21 @@ namespace Streetcode.WebApi.Controllers.Timeline
             return HandleResult(await Mediator.Send(new GetTimelineItemsByStreetcodeIdQuery(streetcodeId)));
         }
 
-        [Authorize(Roles = "Admin")]
+        [AuthorizeRoles(UserRole.Admin)]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] TimelineItemCreateDto timeline)
         {
             return HandleResult(await Mediator.Send(new CreateTimelineItemCommand(timeline)));
         }
 
-        [Authorize(Roles = "Admin")]
+        [AuthorizeRoles(UserRole.Admin)]
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] TimelineItemUpdateDto timelineItem)
         {
             return HandleResult(await Mediator.Send(new BLL.MediatR.Timeline.TimelineItem.Update.UpdateTimelineItemCommand(timelineItem)));
         }
 
-        [Authorize(Roles = "Admin")]
+        [AuthorizeRoles(UserRole.Admin)]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {

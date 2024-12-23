@@ -7,6 +7,8 @@ using Streetcode.BLL.MediatR.Media.Art.GetByStreetcodeId;
 using Streetcode.BLL.DTO.Media.Art;
 using Streetcode.BLL.MediatR.Media.Art.Delete;
 using Microsoft.AspNetCore.Authorization;
+using UserService.BLL.Attributes;
+using UserService.DAL.Enums;
 
 namespace Streetcode.WebApi.Controllers.Media.Images
 {
@@ -33,14 +35,14 @@ namespace Streetcode.WebApi.Controllers.Media.Images
             return HandleResult(await Mediator.Send(new GetArtsByStreetcodeIdQuery(streetcodeId)));
         }
 
-        [Authorize(Roles = "Admin")]
+        [AuthorizeRoles(UserRole.Admin)]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] ArtCreateDTO art)
         {
             return HandleResult(await Mediator.Send(new CreateArtCommand(art)));
         }
 
-        [Authorize(Roles = "Admin")]
+        [AuthorizeRoles(UserRole.Admin)]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {

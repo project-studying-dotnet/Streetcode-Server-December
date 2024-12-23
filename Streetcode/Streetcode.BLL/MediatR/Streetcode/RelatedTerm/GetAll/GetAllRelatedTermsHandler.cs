@@ -55,7 +55,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetAll
 
             if (relatedTermsDTO is null)
             {
-                const string errorMsg = "Cannot create DTOs for related words!";
+                string errorMsg = ErrorManager.GetCustomErrorText("CantCreateError", "DTOS for related words");
                 _logger.LogError(request, errorMsg);
                 return new Error(errorMsg);
             }

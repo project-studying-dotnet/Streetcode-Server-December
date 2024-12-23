@@ -2,6 +2,7 @@
 using MediatR;
 using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Resources;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Media.Image.GetBaseImage
@@ -25,7 +26,7 @@ namespace Streetcode.BLL.MediatR.Media.Image.GetBaseImage
 
             if (image is null)
             {
-                string errorMsg = $"Cannot find an image with corresponding id: {request.Id}";
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "image", request.Id);
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }

@@ -3,6 +3,7 @@ using FluentResults;
 using MediatR;
 using Streetcode.BLL.DTO.Sources;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Resources;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.Update
@@ -25,7 +26,7 @@ namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.Update
             var sourceLinkCategory = _mapper.Map<DAL.Entities.Sources.SourceLinkCategory>(request.SourceLinkCategory);
             if (sourceLinkCategory is null)
             {
-                const string errorMsg = $"Cannot convert null to source link category";
+                string errorMsg = ErrorManager.GetCustomErrorText("ConvertationError", "null", "source link category");
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }
@@ -38,7 +39,7 @@ namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.Update
             }
             catch (Exception e)
             {
-                const string errorMsg = $"Cannot find source link category in db";
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindError", "source link category");
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }
@@ -52,7 +53,7 @@ namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.Update
             }
             else
             {
-                const string errorMsg = $"Failed to update news";
+                string errorMsg = ErrorManager.GetCustomErrorText("FailUpdateError", "source link");
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }

@@ -42,7 +42,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.GetAll
 		{
 			// Arrange
 			var query = new GetAllCategoriesQuery();
-			const string errorMsg = "Categories is null";
+			const string errorMsg = "Cannot find any categories";
 
 			_mockRepositoryWrapper.Setup(r => r.SourceCategoryRepository.GetAllAsync(
 				null,

@@ -3,6 +3,7 @@ using FluentResults;
 using MediatR;
 using Streetcode.BLL.DTO.Streetcode;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Resources;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.GetShortById
@@ -26,7 +27,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.GetShortById
 
             if (streetcode == null)
             {
-                const string errorMsg = "Cannot find streetcode by id";
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "streetcode", request.id);
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }

@@ -6,6 +6,7 @@ using Microsoft.FeatureManagement;
 using Microsoft.OpenApi.Models;
 using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Email;
+using Streetcode.BLL.Interfaces.Image;
 using Streetcode.BLL.Interfaces.Instagram;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Interfaces.Payment;
@@ -13,6 +14,7 @@ using Streetcode.BLL.Interfaces.RedisCache;
 using Streetcode.BLL.Interfaces.Text;
 using Streetcode.BLL.Services.BlobStorageService;
 using Streetcode.BLL.Services.Email;
+using Streetcode.BLL.Services.Image;
 using Streetcode.BLL.Services.Instagram;
 using Streetcode.BLL.Services.Logging;
 using Streetcode.BLL.Services.Payment;
@@ -26,7 +28,6 @@ using Streetcode.DAL.Repositories.Realizations.Base;
 
 namespace Streetcode.WebApi.Extensions
 {
-
     public static class ServiceCollectionExtensions
     {
         public static void AddRepositoryServices(this IServiceCollection services)
@@ -48,6 +49,7 @@ namespace Streetcode.WebApi.Extensions
             services.AddScoped<IInstagramService, InstagramService>();
             services.AddScoped<ITextService, AddTermsToTextService>();
             services.AddScoped<IRedisCacheService, RedisCacheService>();
+            services.AddScoped<IImageService, ImageService>();
 
             services.AddValidatorsFromAssembly(typeof(ValidationError).Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));

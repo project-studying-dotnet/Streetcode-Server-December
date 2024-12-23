@@ -54,9 +54,9 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.GetCategoryContentByStreetcod
 			// Assert
 			result.IsFailed.Should().BeTrue();
 			result.Errors.Should().ContainSingle();
-			result.Errors[0].Message.Should().Be("The streetcode content is null");
+			result.Errors[0].Message.Should().Be("Cannot find any streetcode content");
 
-			_mockLogger.Verify(logger => logger.LogError(It.IsAny<object>(), "The streetcode content is null"), Times.Once);
+			_mockLogger.Verify(logger => logger.LogError(It.IsAny<object>(), "Cannot find any streetcode content"), Times.Once);
 
 			_mockRepositoryWrapper.Verify(repo => repo.StreetcodeRepository
 				.GetFirstOrDefaultAsync(

@@ -154,7 +154,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
 
             // Assert
             Assert.True(result.IsFailed);
-            _loggerMock.Verify(log => log.LogError(command, "Failed to update news"), Times.Once);
+            _loggerMock.Verify(log => log.LogError(command, "Failed to update a news"), Times.Once);
         }
     }
 }

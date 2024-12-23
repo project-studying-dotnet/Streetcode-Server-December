@@ -74,9 +74,9 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
 
             Assert.True(result.IsFailed);
             Assert.Single(result.Errors);
-            Assert.Equal($"Cannot find an audio with corresponding categoryId: {audioId}", result.Errors[0].Message);
+            Assert.Equal($"Cannot find a audio with corresponding id: {audioId}", result.Errors[0].Message);
 
-            _mockLogger.Verify(l => l.LogError(new DeleteAudioCommand(audioId), $"Cannot find an audio with corresponding categoryId: {audioId}"), Times.Once);
+            _mockLogger.Verify(l => l.LogError(new DeleteAudioCommand(audioId), $"Cannot find a audio with corresponding id: {audioId}"), Times.Once);
 
             _mockRepository.Verify(r => r.AudioRepository.Delete(It.IsAny<Audio>()), Times.Never);
             _mockBlob.Verify(b => b.DeleteFileInStorage(It.IsAny<string>()), Times.Never);

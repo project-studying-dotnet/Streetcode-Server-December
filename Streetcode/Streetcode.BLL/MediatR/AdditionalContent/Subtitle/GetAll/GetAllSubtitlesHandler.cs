@@ -3,6 +3,7 @@ using FluentResults;
 using MediatR;
 using Streetcode.BLL.DTO.AdditionalContent.Subtitles;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Resources;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.AdditionalContent.Subtitle.GetAll
@@ -26,7 +27,7 @@ namespace Streetcode.BLL.MediatR.AdditionalContent.Subtitle.GetAll
 
             if (subtitles is null)
             {
-                const string errorMsg = $"Cannot find any subtitles";
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindError", "subtitles");
 
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));

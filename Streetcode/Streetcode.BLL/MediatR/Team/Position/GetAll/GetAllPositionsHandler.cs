@@ -3,6 +3,8 @@ using FluentResults;
 using MediatR;
 using Streetcode.BLL.DTO.Team;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.MediatR.Team.GetAll;
+using Streetcode.BLL.Resources;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Team.Position.GetAll
@@ -28,7 +30,7 @@ namespace Streetcode.BLL.MediatR.Team.Position.GetAll
 
             if (positions is null)
             {
-                const string errorMsg = $"Cannot find any positions";
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindError", "positions");
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }

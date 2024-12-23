@@ -55,7 +55,7 @@ public class GetTagsByIdHandlerTest : AdditionalContentTestWrapper
         // Arrange
         var tagId = 1;
         var request = new GetTagByIdQuery(tagId);
-        string errorMsg = $"Cannot find a Tag with corresponding id: {request.Id}";
+        string errorMsg = $"Cannot find a tag with corresponding id: {request.Id}";
 
         _repositoryWrapperMock.Setup(rep => rep.TagRepository.GetFirstOrDefaultAsync(
                 It.IsAny<Expression<Func<TagEntity, bool>>>(),

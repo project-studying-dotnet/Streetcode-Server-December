@@ -57,7 +57,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
 
             // Assert
             Assert.True(result.IsFailed);
-            _loggerMock.Verify(log => log.LogError(query, "No news by entered Url - test-url.com"), Times.Once());
+            _loggerMock.Verify(log => log.LogError(query, "Cannot find any news by Url: test-url.com"), Times.Once());
         }
 
         [Fact]

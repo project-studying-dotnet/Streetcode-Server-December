@@ -3,6 +3,8 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.MediatR.Media.Audio.Delete;
+using Streetcode.BLL.Resources;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Media.Image.Delete
@@ -29,7 +31,7 @@ namespace Streetcode.BLL.MediatR.Media.Image.Delete
 
             if (image is null)
             {
-                string errorMsg = $"Cannot find an image with corresponding categoryId: {request.Id}";
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "image", request.Id);
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }
@@ -49,7 +51,7 @@ namespace Streetcode.BLL.MediatR.Media.Image.Delete
             }
             else
             {
-                const string errorMsg = $"Failed to delete an image";
+                string errorMsg = ErrorManager.GetCustomErrorText("FailDeleteError", "image");
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }

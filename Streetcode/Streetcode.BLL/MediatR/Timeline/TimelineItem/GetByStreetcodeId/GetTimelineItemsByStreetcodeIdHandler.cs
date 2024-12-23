@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.DTO.Timeline;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Resources;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Timeline.TimelineItem.GetByStreetcodeId
@@ -32,7 +33,7 @@ namespace Streetcode.BLL.MediatR.Timeline.TimelineItem.GetByStreetcodeId
 
             if (timelineItems is null)
             {
-                string errorMsg = $"Cannot find any timeline item by the streetcode id: {request.StreetcodeId}";
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByStreetcodeIdError", "timeline", request.StreetcodeId);
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }

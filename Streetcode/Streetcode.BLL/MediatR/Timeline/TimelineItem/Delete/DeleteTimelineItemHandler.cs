@@ -1,6 +1,7 @@
 ﻿using FluentResults;
 using MediatR;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Resources;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Timeline.TimelineItem.Delete
@@ -22,7 +23,7 @@ namespace Streetcode.BLL.MediatR.Timeline.TimelineItem.Delete
 
             if (timelineItem == null)
             {
-                string errorMsg = $"Cannot find timeline item with Id: {request.id}";
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "timeline", request.id);
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }
@@ -33,7 +34,7 @@ namespace Streetcode.BLL.MediatR.Timeline.TimelineItem.Delete
 
             if (!resultIsSuccess)
             {
-                const string errorMsg = $"Failed to delete timeline item";
+                string errorMsg = ErrorManager.GetCustomErrorText("FailDeleteError", "timeline");
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }

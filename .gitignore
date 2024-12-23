@@ -347,5 +347,6 @@ BlobStorageFolder/
 BlobStorageTestFolder/
 /Streetcode/sqlserver.env
 /Streetcode/Streetcode.WebApi/houses.zip
+/Streetcode/Streetcode.DAL/InitialData/houses.zip
 /Streetcode/cache.env
 *.env

@@ -1,3 +1,4 @@
+using FluentResults;
 using Microsoft.AspNetCore.Mvc;
 using UserService.BLL.DTO.User;
 using UserService.BLL.Interfaces.User;
@@ -10,8 +11,8 @@ namespace UserService.WebApi.Controllers;
 public class UserController(IUserService userService) : ControllerBase
 {
     [HttpPost]
-    public async Task<ActionResult<User>> Register([FromBody] RegistrationDTO registrationDto)
+    public async Task<ActionResult<UserDto>> Register([FromBody] RegistrationDto registrationDto)
     {
-        return await userService.Registration(registrationDto);
+        return (await userService.Registration(registrationDto)).Value;
     }
 }

@@ -62,6 +62,8 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IUserService, UserService.BLL.Services.UserService>();
+var currentAssemblies = AppDomain.CurrentDomain.GetAssemblies();
+builder.Services.AddAutoMapper(currentAssemblies);
 
 
 var app = builder.Build();

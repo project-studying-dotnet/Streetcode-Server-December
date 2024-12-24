@@ -7,6 +7,5 @@ namespace Streetcode.BLL.MediatR.Streetcode.Fact.Create
 {
     public record CreateFactCommand(CreateFactDTO Fact) : IRequest<Result<FactDto>>
     {
-        public CreateFactDTO Fact { get; set; }
     }
 }

@@ -16,15 +16,12 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetAll
         private readonly IMapper _mapper;
         private readonly IRepositoryWrapper _repository;
         private readonly ILoggerService _logger;
-        private readonly IRedisCacheService _redisCacheService;
-        private string _cacheKey = "AllRelatedTerms";
 
-        public GetAllRelatedTermsHandler(IMapper mapper, IRepositoryWrapper repositoryWrapper, ILoggerService logger, IRedisCacheService redisCacheService)
+        public GetAllRelatedTermsHandler(IMapper mapper, IRepositoryWrapper repositoryWrapper, ILoggerService logger)
         {
             _mapper = mapper;
             _repository = repositoryWrapper;
             _logger = logger;
-            _redisCacheService = redisCacheService;
         }
 
         public async Task<Result<IEnumerable<RelatedTermDTO>>> Handle(GetAllRelatedTermsQuery request, CancellationToken cancellationToken)
@@ -34,7 +31,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetAll
 
             if (relatedTerms is null)
             {
-                const string errorMsg = "Cannot get words";
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindError", "words");
                 _logger.LogError(request, errorMsg);
                 return new Error(errorMsg);
             }

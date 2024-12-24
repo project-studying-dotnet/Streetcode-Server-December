@@ -13,17 +13,5 @@ namespace UserService.BLL.Services.Jwt
         public string Audience { get; set; }
         public string SecretKey { get; set; }
         public int AccessTokenLifetime { get; set; }
-
-        public static JwtConfiguration LoadFromConfiguration(IConfiguration configuration)
-        {
-            var jwtSettings = configuration.GetSection("Jwt");
-            return new JwtConfiguration
-            {
-                Issuer = jwtSettings["Issuer"],
-                Audience = jwtSettings["Audience"],
-                SecretKey = jwtSettings["SecretKey"],
-                AccessTokenLifetime = int.Parse(jwtSettings["AccessTokenLifetime"])
-            };
-        }
     }
 }

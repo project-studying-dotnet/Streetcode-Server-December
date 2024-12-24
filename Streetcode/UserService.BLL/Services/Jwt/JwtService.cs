@@ -12,6 +12,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Logging;
 using UserEntity = UserService.DAL.Entities.Users.User;
 using UserService.BLL.Interfaces.User;
+using Microsoft.Extensions.Options;
 
 namespace UserService.BLL.Services.Jwt
 {
@@ -21,9 +22,9 @@ namespace UserService.BLL.Services.Jwt
         private readonly IClaimsService _claimsService;
         private readonly ILogger<JwtService> _logger;
 
-        public JwtService(JwtConfiguration jwtConfiguration, IClaimsService claimsService, ILogger<JwtService> logger)
+        public JwtService(IOptions<JwtConfiguration> options, IClaimsService claimsService, ILogger<JwtService> logger)
         {
-            _jwtConfiguration = jwtConfiguration;
+            _jwtConfiguration = options.Value;
             _claimsService = claimsService;
             _logger = logger;
         }

@@ -34,10 +34,11 @@ builder.Services.AddIdentityMongoDbProvider<User, Role>(identityOptions =>
 });
 
 
-// JWT Configuration
-var jwtConfiguration = JwtConfiguration.LoadFromConfiguration(builder.Configuration);
-builder.Services.AddSingleton(jwtConfiguration);
-var key = Encoding.UTF8.GetBytes(jwtConfiguration.SecretKey);
+// JWT Configuration for DI
+builder.Services.Configure<JwtConfiguration>(builder.Configuration.GetSection("Jwt"));
+
+// JWT Configuration for Program.cs
+var jwtConfiguration = builder.Configuration.GetSection("Jwt").Get<JwtConfiguration>();
 
 
 builder.Services.AddAuthentication(options =>
@@ -55,7 +56,7 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         ValidIssuer = jwtConfiguration.Issuer,
         ValidAudience = jwtConfiguration.Audience,
-        IssuerSigningKey = new SymmetricSecurityKey(key)
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfiguration.SecretKey))
     };
 });
 

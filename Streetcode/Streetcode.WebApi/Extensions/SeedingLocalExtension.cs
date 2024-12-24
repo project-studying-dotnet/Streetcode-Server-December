@@ -275,7 +275,7 @@ namespace Streetcode.WebApi.Extensions
                             new DAL.Entities.Users.User
                             {
                                 Email = "admin",
-                                Role = UserRole.Admin,
+                                Role = UserRole.Administrator,
                                 Login = "admin",
                                 Name = "admin",
                                 Password = "admin",

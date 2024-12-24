@@ -54,6 +54,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Streetcode.BLL\Streetcode.BLL.csproj" />
+    <ProjectReference Include="..\UserService.BLL\UserService.BLL.csproj" />
+    <ProjectReference Include="..\UserService.DAL\UserService.DAL.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\Analytics\" />

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Streetcode.BLL.Services.BlobStorageService;
+using Streetcode.DAL.Caching.RedisCache;
 using Streetcode.DAL.Entities.AdditionalContent;
 using Streetcode.DAL.Entities.AdditionalContent.Coordinates.Types;
 using Streetcode.DAL.Entities.Feedback;
@@ -29,9 +30,10 @@ namespace Streetcode.WebApi.Extensions
             {
                 Directory.CreateDirectory(app.Configuration.GetValue<string>("Blob:BlobStorePath"));
                 var dbContext = scope.ServiceProvider.GetRequiredService<StreetcodeDbContext>();
+                var redisCacheService = scope.ServiceProvider.GetRequiredService<IRedisCacheService>();
                 var blobOptions = app.Services.GetRequiredService<IOptions<BlobEnvironmentVariables>>();
                 string blobPath = app.Configuration.GetValue<string>("Blob:BlobStorePath");
-                var repo = new RepositoryWrapper(dbContext);
+                var repo = new RepositoryWrapper(dbContext, redisCacheService);
                 var blobService = new BlobService(blobOptions, repo);
                 string initialDataImagePath = "/src/Streetcode.DAL/InitialData/images.json";
                 string initialDataAudioPath = "/src/Streetcode.DAL/InitialData/audios.json";
@@ -273,7 +275,7 @@ namespace Streetcode.WebApi.Extensions
                             new DAL.Entities.Users.User
                             {
                                 Email = "admin",
-                                Role = UserRole.MainAdministrator,
+                                Role = UserRole.Administrator,
                                 Login = "admin",
                                 Name = "admin",
                                 Password = "admin",

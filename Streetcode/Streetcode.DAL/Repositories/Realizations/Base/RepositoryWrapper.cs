@@ -1,5 +1,6 @@
 using System.Transactions;
 using Repositories.Interfaces;
+using Streetcode.DAL.Caching.RedisCache;
 using Streetcode.DAL.Persistence;
 using Streetcode.DAL.Repositories.Interfaces.AdditionalContent;
 using Streetcode.DAL.Repositories.Interfaces.Analytics;
@@ -34,6 +35,7 @@ namespace Streetcode.DAL.Repositories.Realizations.Base
 {
     public class RepositoryWrapper : IRepositoryWrapper
     {
+        private readonly IRedisCacheService redisCacheService;
         private readonly StreetcodeDbContext _streetcodeDbContext;
 
         private IVideoRepository _videoRepository;
@@ -106,9 +108,10 @@ namespace Streetcode.DAL.Repositories.Realizations.Base
 
         private IStreetcodeImageRepository _streetcodeImageRepository;
 
-        public RepositoryWrapper(StreetcodeDbContext streetcodeDbContext)
+        public RepositoryWrapper(StreetcodeDbContext streetcodeDbContext, IRedisCacheService redisCacheService)
         {
             _streetcodeDbContext = streetcodeDbContext;
+            this.redisCacheService = redisCacheService;
         }
 
         public INewsRepository NewsRepository
@@ -442,7 +445,7 @@ namespace Streetcode.DAL.Repositories.Realizations.Base
             {
                 if (_relatedTermRepository is null)
                 {
-                    _relatedTermRepository = new RelatedTermRepository(_streetcodeDbContext);
+                    _relatedTermRepository = new RelatedTermRepository(_streetcodeDbContext, redisCacheService);
                 }
 
                 return _relatedTermRepository;

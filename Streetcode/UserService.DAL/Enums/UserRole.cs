@@ -1,7 +1,11 @@
-namespace UserService.DAL.Enums;
+using System;
 
-public enum UserRole
+namespace UserService.DAL.Enums
 {
-    Admin,
-    User
+    [Flags]
+    public enum UserRole
+    {
+        Admin,
+        User
+    }
 }

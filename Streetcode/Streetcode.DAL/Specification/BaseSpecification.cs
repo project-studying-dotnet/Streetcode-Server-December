@@ -28,10 +28,22 @@ namespace Streetcode.DAL.Specification
         public int? Skip { get; private set; }
 
         public bool IsPagingEnabled { get; private set; } = false;
+        public string CacheKey { get; private set; } = string.Empty;
+        public int CacheMinutes { get; private set; } = 10;
 
         protected virtual void AddInclude(Expression<Func<T, object>>? includeExpresion)
         {
             Includes.Add(includeExpresion);
+        }
+
+        protected virtual void AddCaching(string cacheKey)
+        {
+            CacheKey = cacheKey;
+        }
+
+        protected virtual void AddCachingTime(int minutes)
+        {
+            CacheMinutes = minutes;
         }
 
         protected virtual void ApplyPaging(int? skip, int? take)

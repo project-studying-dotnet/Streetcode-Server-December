@@ -14,6 +14,8 @@ using Moq;
 using System.Linq.Expressions;
 using Xunit;
 using Streetcode.DAL.Specification;
+using Microsoft.Extensions.Caching.Distributed;
+using Streetcode.DAL.Caching.RedisCache;
 
 namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.GetAll;
 
@@ -33,6 +35,7 @@ public class GetAllRelatedTermsHandlerTests
             cfg.AddProfile(new RelatedTermProfile());
         });
         this._mapper = configuration.CreateMapper();
+
         this._handler = new GetAllRelatedTermsHandler(this._mapper, this._mockRepositoryWrapper.Object, this._mockLogger.Object);
     }
 

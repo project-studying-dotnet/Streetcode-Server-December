@@ -25,7 +25,6 @@ public class GetAllRelatedTermsHandlerTests
     private readonly Mock<IRepositoryWrapper> _mockRepositoryWrapper;
     private readonly Mock<ILoggerService> _mockLogger;
     private readonly GetAllRelatedTermsHandler _handler;
-    private readonly Mock<IRedisCacheService> _mockRedisCacheService;
 
     public GetAllRelatedTermsHandlerTests()
     {
@@ -37,9 +36,7 @@ public class GetAllRelatedTermsHandlerTests
         });
         this._mapper = configuration.CreateMapper();
 
-        this._mockRedisCacheService = new Mock<IRedisCacheService>();
-
-        this._handler = new GetAllRelatedTermsHandler(this._mapper, this._mockRepositoryWrapper.Object, this._mockLogger.Object, this._mockRedisCacheService.Object);
+        this._handler = new GetAllRelatedTermsHandler(this._mapper, this._mockRepositoryWrapper.Object, this._mockLogger.Object);
     }
 
     [Fact]

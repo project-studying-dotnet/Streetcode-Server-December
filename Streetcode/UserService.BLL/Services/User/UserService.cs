@@ -1,19 +1,20 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using MongoDB.Bson;
 using MongoDB.Driver.Linq;
 using UserService.BLL.DTO.User;
 using UserService.BLL.Interfaces.User;
-using UserService.DAL.Entities.Users;
+using UserEntity = UserService.DAL.Entities.Users.User;
 
-namespace UserService.BLL.Services;
+namespace UserService.BLL.Services.User;
 
-public class UserService(UserManager<User> userManager) : IUserService
+public class UserService(UserManager<UserEntity> userManager) : IUserService
 {
-    public async Task<User> Registration(RegistrationDTO registrationDto)
+    public async Task<UserEntity> Registration(RegistrationDTO registrationDto)
     {
-        var user = new User
+        var user = new UserEntity
         {
             Id = ObjectId.GenerateNewId(),
             UserName = registrationDto.userName,

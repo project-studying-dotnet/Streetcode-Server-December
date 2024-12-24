@@ -7,7 +7,6 @@ using AspNetCore.Identity.Mongo.Model;
 
 namespace UserService.DAL.Entities.Roles
 {
-    // [CollectionName("Roles")]
     public class Role : MongoRole
     {
     }

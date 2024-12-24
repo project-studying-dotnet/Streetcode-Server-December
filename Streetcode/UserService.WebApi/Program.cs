@@ -5,6 +5,9 @@ using UserService.DAL.Entities.Roles;
 using UserService.DAL.Entities.Users;
 using UserService.BLL.Interfaces.Jwt;
 using UserService.BLL.Interfaces.User;
+using System.Text;
+using UserService.BLL.Services.Jwt;
+using UserService.BLL.Services.User;
 using UserService.BLL.Services;
 using UserService.WebApi.Extensions;
 
@@ -31,9 +34,11 @@ builder.Services.AddIdentityMongoDbProvider<User, Role>(identityOptions =>
 });
 
 
-// JWT Configuration
-var jwtSettings = builder.Configuration.GetSection("Jwt");
-// var key = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]);
+// JWT Configuration for DI
+builder.Services.Configure<JwtConfiguration>(builder.Configuration.GetSection("Jwt"));
+
+// JWT Configuration for Program.cs
+var jwtConfiguration = builder.Configuration.GetSection("Jwt").Get<JwtConfiguration>();
 
 
 builder.Services.AddAuthentication(options =>
@@ -49,19 +54,16 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = jwtSettings["Issuer"],
-        ValidAudience = jwtSettings["Audience"],
-        // IssuerSigningKey = new SymmetricSecurityKey(key)
+        ValidIssuer = jwtConfiguration.Issuer,
+        ValidAudience = jwtConfiguration.Audience,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfiguration.SecretKey))
     };
 });
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
-});
-
+builder.Services.AddScoped<IClaimsService, ClaimsService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
-builder.Services.AddScoped<IUserService, UserService.BLL.Services.UserService>();
+builder.Services.AddScoped<ILoginService, LoginService>();
+builder.Services.AddScoped<IUserService, UserService.BLL.Services.User.UserService>();
 
 
 var app = builder.Build();

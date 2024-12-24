@@ -12,5 +12,7 @@ namespace Streetcode.DAL.Specification
         int? Take { get; }
         int? Skip { get; }
         bool IsPagingEnabled { get; }
+        string CacheKey { get; }
+        int CacheMinutes { get; }
     }
 }

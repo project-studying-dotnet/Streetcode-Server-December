@@ -72,8 +72,8 @@ namespace Streetcode.XUnitTest.MediatRTests.Analytics.Create
             var createStatisticRecord = command.createStatisticRecord;
 
             _repositoryWrapperMock
-                .Setup(r => r.StatisticRecordRepository.Create(It.IsAny<StatisticRecord>()))
-                .Returns(_mapper.Map<StatisticRecord>(createStatisticRecord));
+                .Setup(r => r.StatisticRecordRepository.CreateAsync(It.IsAny<StatisticRecord>()))
+                .Returns(Task.FromResult(_mapper.Map<StatisticRecord>(createStatisticRecord)));
 
             _repositoryWrapperMock.Setup(r => r.SaveChangesAsync()).ReturnsAsync(1);
 
@@ -96,7 +96,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Analytics.Create
                 );
 
             _repositoryWrapperMock.Verify(
-                r => r.StatisticRecordRepository.Create(It.IsAny<StatisticRecord>()),
+                r => r.StatisticRecordRepository.CreateAsync(It.IsAny<StatisticRecord>()),
                 Times.Once
             );
             _repositoryWrapperMock.Verify(r => r.SaveChangesAsync(), Times.Once);

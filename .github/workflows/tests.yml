@@ -1,0 +1,42 @@
+name: Run Unit Tests for All Projects
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+      - enhancement/SSAD-218/implement-pipeline-to-run-unit-tests-on-pushmerge-to-maindev-branch
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  test-all:
+    name: Build and Test All Projects
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '7.0' # Укажите нужную версию .NET
+
+      - name: Restore and Build All Projects
+        run: |
+          # Найти все .csproj и восстановить зависимости
+          for project in $(find . -name "*.csproj"); do
+            echo "Restoring dependencies for $project"
+            dotnet restore "$project"
+          done
+
+      - name: Run Unit Tests
+        run: |
+          # Найти все тестовые проекты и выполнить юнит-тесты
+          for testProject in $(find . -name "*Tests.csproj"); do
+            echo "Running tests for $testProject"
+            dotnet test "$testProject" --no-build --configuration Release --collect:"XPlat Code Coverage"
+          done

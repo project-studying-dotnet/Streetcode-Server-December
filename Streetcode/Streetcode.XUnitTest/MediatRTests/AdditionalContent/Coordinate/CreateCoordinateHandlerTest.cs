@@ -26,8 +26,8 @@ public class CreateCoordinateHandlerTest : AdditionalContentTestWrapper
         _mapperMock.Setup(m => m.Map<StreetcodeCoordinateEntity>(streetcodeCoordinateDto))
             .Returns(streetcodeCoordinate);
 
-        _repositoryWrapperMock.Setup(rep => rep.StreetcodeCoordinateRepository.Create(streetcodeCoordinate))
-            .Returns(streetcodeCoordinate);
+        _repositoryWrapperMock.Setup(rep => rep.StreetcodeCoordinateRepository.CreateAsync(It.IsAny<StreetcodeCoordinateEntity>()))
+            .Returns(Task.FromResult(streetcodeCoordinate));
         _repositoryWrapperMock.Setup(rep => rep.SaveChangesAsync())
             .ReturnsAsync(1);
 
@@ -37,7 +37,7 @@ public class CreateCoordinateHandlerTest : AdditionalContentTestWrapper
         // Assert
         Assert.True(result.IsSuccess);
 
-        _repositoryWrapperMock.Verify(rep => rep.StreetcodeCoordinateRepository.Create(streetcodeCoordinate), Times.Once);
+        _repositoryWrapperMock.Verify(rep => rep.StreetcodeCoordinateRepository.CreateAsync(streetcodeCoordinate), Times.Once);
         _mapperMock.Verify(m => m.Map<StreetcodeCoordinateEntity>(streetcodeCoordinateDto), Times.Once);
         _repositoryWrapperMock.Verify(rep => rep.SaveChangesAsync(), Times.Once());
     }
@@ -54,8 +54,8 @@ public class CreateCoordinateHandlerTest : AdditionalContentTestWrapper
         _mapperMock.Setup(m => m.Map<StreetcodeCoordinateEntity>(streetcodeCoordinateDto))
             .Returns(streetcodeCoordinate);
 
-        _repositoryWrapperMock.Setup(rep => rep.StreetcodeCoordinateRepository.Create(streetcodeCoordinate))
-            .Returns((StreetcodeCoordinateEntity)null!);
+        _repositoryWrapperMock.Setup(rep => rep.StreetcodeCoordinateRepository.CreateAsync(streetcodeCoordinate))
+            .Returns(Task.FromResult((StreetcodeCoordinateEntity)null!));
         _repositoryWrapperMock.Setup(rep => rep.SaveChangesAsync())
             .ReturnsAsync(0);
 
@@ -66,7 +66,7 @@ public class CreateCoordinateHandlerTest : AdditionalContentTestWrapper
         Assert.True(result.IsFailed);
         Assert.Equal(errMsg, result.Errors[0].Message);
 
-        _repositoryWrapperMock.Verify(rep => rep.StreetcodeCoordinateRepository.Create(streetcodeCoordinate), Times.Once);
+        _repositoryWrapperMock.Verify(rep => rep.StreetcodeCoordinateRepository.CreateAsync(streetcodeCoordinate), Times.Once);
         _mapperMock.Verify(m => m.Map<StreetcodeCoordinateEntity>(streetcodeCoordinateDto), Times.Once);
         _repositoryWrapperMock.Verify(rep => rep.SaveChangesAsync(), Times.Once());
     }

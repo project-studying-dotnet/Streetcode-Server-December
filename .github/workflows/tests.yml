@@ -33,6 +33,15 @@ jobs:
         
       - name: Find and run tests
         run: |
-          for testProject in $(find . -name "*Test.csproj"); do
-            dotnet test "$testProject"
+          testProjects=$(find . -type f -name "*Test.csproj" -o -name "*Tests.csproj")
+          if [ -z "$testProjects" ]; then
+            echo "No test projects found"
+            exit 1
+          fi
+          echo "Found test projects:"
+          echo "$testProjects"
+          echo "Running tests..."
+          for project in $testProjects; do
+            echo "Testing $project"
+            dotnet test "$project"
           done

@@ -23,7 +23,7 @@ jobs:
       - name: Set up .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '7.0' # Укажите нужную версию .NET
+          dotnet-version: '9.0' 
 
       - name: Restore and Build All Projects
         run: |

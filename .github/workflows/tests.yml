@@ -25,18 +25,7 @@ jobs:
         with:
           dotnet-version: '9.0' 
 
-      - name: Restore and Build All Projects
-        run: |
-          # Найти все .csproj и восстановить зависимости
-          for project in $(find . -name "*.csproj"); do
-            echo "Restoring dependencies for $project"
-            dotnet restore "$project"
-          done
-
-      - name: Run Unit Tests
-        run: |
-          # Найти все тестовые проекты и выполнить юнит-тесты
-          for testProject in $(find . -name "*Tests.csproj"); do
-            echo "Running tests for $testProject"
-            dotnet test "$testProject" --no-build --configuration Release --collect:"XPlat Code Coverage"
-          done
+      - name: Build
+        run: dotnet build
+      - name: Test with the dotnet CLI
+        run: dotnet test

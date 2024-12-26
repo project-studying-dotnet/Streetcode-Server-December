@@ -36,7 +36,6 @@ namespace Streetcode.XUnitTest.ValidatorTests
             {
                 Title = "",
                 FactContent  = "Valid fact content ",
-                ImageDescription = "Valid image description"
             };
 
             var model = new CreateFactCommand(factDto); 
@@ -51,7 +50,6 @@ namespace Streetcode.XUnitTest.ValidatorTests
             {
                 Title = "Valid Title",
                 FactContent = new string('A', 601), 
-                ImageDescription = "Valid description"
             };
 
             var model = new CreateFactCommand(factDto); 
@@ -66,7 +64,6 @@ namespace Streetcode.XUnitTest.ValidatorTests
             {
                 Title = "Valid Title",
                 FactContent = "Valid FactContent within 600 characters.",
-                ImageDescription = "Valid description within 200 characters."
             };
 
             var model = new CreateFactCommand(factDto); 

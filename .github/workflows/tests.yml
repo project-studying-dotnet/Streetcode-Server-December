@@ -26,7 +26,10 @@ jobs:
           dotnet-version: '9.0' 
 
       - name: Build
-        run: dotnet build
+        run: |
+          for testProject in $(find . -name "*Test.csproj"); do
+              dotnet build "$testProject"
+            done
         
       - name: Find and run tests
         run: |

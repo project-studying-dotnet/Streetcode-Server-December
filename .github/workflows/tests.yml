@@ -1,21 +1,41 @@
-name: Run Unit Tests
+name: Run Unit Tests for All Projects
+
 on:
   push:
-    branches: [main, dev, enhancement/SSAD-218/implement-pipeline-to-run-unit-tests-on-pushmerge-to-maindev-branch]
+    branches:
+      - main
+      - dev
+      - enhancement/SSAD-218/implement-pipeline-to-run-unit-tests-on-pushmerge-to-maindev-branch
   pull_request:
-    branches: [main, dev]
+    branches:
+      - main
+      - dev
 
 jobs:
-  test:
+  test-all:
+    name: Build and Test All Projects
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-dotnet@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '9.0'
-      
+          dotnet-version: '9.0' 
+
+      - name: Restore and Build All Projects
+        run: |
+          # Find all .csproj with  and restore dependencies
+          for project in $(find . -name "*.csproj"); do
+            echo "Restoring dependencies for $project"
+            dotnet restore "$project"
+          done
+
       - name: Run tests
         run: |
+          # Find  all .csproj with tests and test
           testProjects=$(find . -type f \( -name "*Test.csproj" -o -name "*Tests.csproj" \))
           if [ -z "$testProjects" ]; then
             echo "No test projects found"
@@ -24,9 +44,8 @@ jobs:
           echo "Found test projects:"
           echo "$testProjects"
           echo "Running tests..."
-          # Перебор файлов
+          # Go though files
           for project in $testProjects; do
             echo "Testing $project"
             dotnet test "$project"
           done
-

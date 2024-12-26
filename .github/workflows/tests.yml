@@ -25,14 +25,14 @@ jobs:
         with:
           dotnet-version: '9.0'
 
-      - name: Restore and Build All Projects
+      - name: Restore and Build All Projects (excluding _build.csproj)
         run: |
-          # Find all .csproj and restore dependencies and build projects
-          for project in $(find . -name "*.csproj"); do
+          # Find all .csproj files except _build.csproj, and restore dependencies and build projects
+          for project in $(find . -name "*.csproj" -not -name "_build.csproj"); do
             echo "Restoring dependencies for $project"
             dotnet restore "$project"
             echo "Building $project"
-            dotnet build "$project"
+            dotnet build "$project" --configuration Release
           done
 
       - name: Run tests
@@ -48,5 +48,5 @@ jobs:
           echo "Running tests..."
           for project in $testProjects; do
             echo "Testing $project"
-            dotnet test "$project"
+            dotnet test "$project" --configuration Release
           done

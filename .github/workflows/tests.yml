@@ -32,7 +32,7 @@ jobs:
             echo "Restoring dependencies for $project"
             dotnet restore "$project"
             echo "Building $project"
-            dotnet build "$project" --configuration Release
+            dotnet build "$project"
           done
 
       - name: Run tests
@@ -48,5 +48,5 @@ jobs:
           echo "Running tests..."
           for project in $testProjects; do
             echo "Testing $project"
-            dotnet test "$project" --configuration Release
+            dotnet test "$project"
           done

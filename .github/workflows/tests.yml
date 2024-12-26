@@ -1,4 +1,4 @@
-name: Run Unit Tests for All Projects
+name: Unit Testing
 
 on:
   push:

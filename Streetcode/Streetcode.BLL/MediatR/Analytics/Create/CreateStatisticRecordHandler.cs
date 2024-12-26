@@ -32,7 +32,7 @@ namespace Streetcode.BLL.MediatR.Analytics
         {
             var newStatisticRecord = _mapper.Map<StatisticRecord>(request.createStatisticRecord);
 
-            var entity = _repositoryWrapper.StatisticRecordRepository.Create(
+            var entity = await _repositoryWrapper.StatisticRecordRepository.CreateAsync(
                 newStatisticRecord);
 
             if (entity is null)

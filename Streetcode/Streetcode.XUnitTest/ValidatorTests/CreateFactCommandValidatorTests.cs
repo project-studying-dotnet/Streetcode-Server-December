@@ -35,7 +35,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
             var factDto = new CreateFactDTO
             {
                 Title = "",
-                Text = "Valid text",
+                FactContent  = "Valid fact content ",
                 ImageDescription = "Valid image description"
             };
 

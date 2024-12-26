@@ -27,5 +27,9 @@ jobs:
 
       - name: Build
         run: dotnet build
-      - name: Test with the dotnet CLI
-        run: dotnet test
+        
+      - name: Find and run tests
+        run: |
+          for testProject in $(find . -name "*Test.csproj"); do
+            dotnet test "$testProject"
+          done

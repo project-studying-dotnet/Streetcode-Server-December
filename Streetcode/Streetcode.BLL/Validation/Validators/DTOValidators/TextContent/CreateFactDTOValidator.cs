@@ -19,7 +19,7 @@ namespace Streetcode.BLL.Validation.Validators.DTOValidators.TextContent
 
             RuleFor(x => x.FactContent)
                 .NotEmpty().WithMessage("FactContent is mandatory.")
-                .MaximumLength(600).WithMessage("Text must not exceed 600 characters.");
+                .MaximumLength(600).WithMessage("FactContent must not exceed 600 characters.");
 
             RuleFor(x => x.ImageDescription)
                 .MaximumLength(200).WithMessage("Image description must not exceed 200 characters.");

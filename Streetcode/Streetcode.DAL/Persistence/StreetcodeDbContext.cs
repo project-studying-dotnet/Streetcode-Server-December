@@ -4,6 +4,7 @@ using Streetcode.DAL.Entities.AdditionalContent;
 using Streetcode.DAL.Entities.AdditionalContent.Coordinates;
 using Streetcode.DAL.Entities.AdditionalContent.Coordinates.Types;
 using Streetcode.DAL.Entities.Analytics;
+using Streetcode.DAL.Entities.Comment;
 using Streetcode.DAL.Entities.Feedback;
 using Streetcode.DAL.Entities.Media;
 using Streetcode.DAL.Entities.Media.Images;
@@ -71,6 +72,7 @@ namespace Streetcode.DAL.Persistence
         public DbSet<HistoricalContextTimeline> HistoricalContextsTimelines { get; set; }
         public DbSet<StreetcodePartner> StreetcodePartners { get; set; }
         public DbSet<TeamMemberPositions> TeamMemberPosition { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

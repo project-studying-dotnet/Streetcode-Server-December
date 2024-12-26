@@ -16,7 +16,7 @@ jobs:
       
       - name: Run tests
         run: |
-          testProjects=$(find . -type f -name "*Test.csproj" -o -name "*Tests.csproj")
+          testProjects=$(find . -type f \( -name "*Test.csproj" -o -name "*Tests.csproj" \))
           if [ -z "$testProjects" ]; then
             echo "No test projects found"
             exit 1
@@ -24,7 +24,9 @@ jobs:
           echo "Found test projects:"
           echo "$testProjects"
           echo "Running tests..."
+          # Перебор файлов
           for project in $testProjects; do
             echo "Testing $project"
             dotnet test "$project"
           done
+

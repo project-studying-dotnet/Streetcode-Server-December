@@ -1,47 +1,25 @@
-name: Run Unit Tests for All Projects
+name: Unit Testing of project
 
 on:
   push:
-    branches:
-      - main
-      - dev
-      - enhancement/SSAD-218/implement-pipeline-to-run-unit-tests-on-pushmerge-to-maindev-branch
+    branches: [ "dev","enhancement/SSAD-218/implement-pipeline-to-run-unit-tests-on-pushmerge-to-maindev-branch"]
   pull_request:
-    branches:
-      - main
-      - dev
+    branches: [ "dev" ]
 
 jobs:
-  test-all:
-    name: Build and Test All Projects
+  build:
+
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '9.0' 
-
-      - name: Build
-        run: |
-          for testProject in $(find . -name "*Test.csproj"); do
-              dotnet build "$testProject"
-            done
-        
-      - name: Find and run tests
-        run: |
-          testProjects=$(find . -type f -name "*Test.csproj" -o -name "*Tests.csproj")
-          if [ -z "$testProjects" ]; then
-            echo "No test projects found"
-            exit 1
-          fi
-          echo "Found test projects:"
-          echo "$testProjects"
-          echo "Running tests..."
-          for project in $testProjects; do
-            echo "Testing $project"
-            dotnet test "$project"
-          done
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0'
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore
+    - name: Test
+      run: dotnet test --no-build --verbosity normal

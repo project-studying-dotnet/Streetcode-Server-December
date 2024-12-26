@@ -13,9 +13,6 @@ namespace Streetcode.BLL.Validation.Validators.CommandsAndQuerysValidators
     {
         public CreateTimelineItemCommandValidator()
         {
-            RuleFor(x => x.TimelineItem)
-                .NotNull().WithMessage("TimelineItem cannot be null.")
-                .SetValidator(new TimelineItemCreateDTOValidator());
         }
     }
 }

@@ -11,7 +11,6 @@ namespace Streetcode.WebApi.Controllers.Comment
 {
     public class CommentController : BaseApiController
     {
-        // [AuthorizeRoles(UserRole.Admin, UserRole.User)]
         [HttpGet("{streetcodeid:int}")]
         public async Task<IActionResult> GetByStreetcodeId([FromRoute] int streetcodeid)
         {

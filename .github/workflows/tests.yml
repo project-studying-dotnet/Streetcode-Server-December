@@ -23,19 +23,21 @@ jobs:
       - name: Set up .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '9.0' 
+          dotnet-version: '9.0'
 
       - name: Restore and Build All Projects
         run: |
-          # Find all .csproj with  and restore dependencies
+          # Find all .csproj and restore dependencies and build projects
           for project in $(find . -name "*.csproj"); do
             echo "Restoring dependencies for $project"
             dotnet restore "$project"
+            echo "Building $project"
+            dotnet build "$project" --configuration Release
           done
 
       - name: Run tests
         run: |
-          # Find  all .csproj with tests and test
+          # Find all .csproj with tests and run them
           testProjects=$(find . -type f \( -name "*Test.csproj" -o -name "*Tests.csproj" \))
           if [ -z "$testProjects" ]; then
             echo "No test projects found"
@@ -44,8 +46,7 @@ jobs:
           echo "Found test projects:"
           echo "$testProjects"
           echo "Running tests..."
-          # Go though files
           for project in $testProjects; do
             echo "Testing $project"
-            dotnet test "$project"
+            dotnet test "$project" --configuration Release
           done

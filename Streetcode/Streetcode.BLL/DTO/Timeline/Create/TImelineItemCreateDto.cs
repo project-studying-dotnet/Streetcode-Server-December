@@ -1,4 +1,5 @@
-﻿using Streetcode.DAL.Enums;
+﻿using Streetcode.BLL.DTO.Team;
+using Streetcode.DAL.Enums;
 
 namespace Streetcode.BLL.DTO.Timeline.Create
 {
@@ -10,5 +11,6 @@ namespace Streetcode.BLL.DTO.Timeline.Create
         public DateViewPattern DateViewPattern { get; set; }
         public IEnumerable<HistoricalContextDTO>? HistoricalContexts { get; set; } = new List<HistoricalContextDTO>();
         public int StreetcodeId { get; set; }
+        public TeamMemberDTO TeamMember { get; set; }
     }
 }

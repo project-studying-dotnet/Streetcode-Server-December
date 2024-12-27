@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using FluentValidation.TestHelper;
+using Streetcode.BLL.DTO.Team;
 
 namespace Streetcode.XUnitTest.ValidatorTests
 {
@@ -35,7 +36,8 @@ namespace Streetcode.XUnitTest.ValidatorTests
             {
                 Date = new DateTime(2024, 1, 1),
                 Title = new string('A', 27),
-                Description = "Valid description"
+                Description = "Valid description",
+                TeamMember = new TeamMemberDTO { }
             };
 
             var model = new CreateTimelineItemCommand(timelineItemDto);
@@ -50,7 +52,8 @@ namespace Streetcode.XUnitTest.ValidatorTests
             {
                 Date = new DateTime(2024, 1, 1),
                 Title = "Valid Title",
-                Description = "Valid description within 400 characters."
+                Description = "Valid description within 400 characters.",
+                TeamMember = new TeamMemberDTO { }
             };
 
             var model = new CreateTimelineItemCommand(timelineItemDto);

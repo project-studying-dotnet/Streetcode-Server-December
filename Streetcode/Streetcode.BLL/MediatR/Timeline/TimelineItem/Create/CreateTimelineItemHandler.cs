@@ -41,7 +41,7 @@ namespace Streetcode.BLL.MediatR.Timeline.TimelineItem.Create
                 return Result.Fail(errorMessage);
             }
 
-            // if historical context doesnt exist create timeline without it
+            // If historical context doesnt exist create timeline without it
             if (!request.timelineItemCreateDto.HistoricalContexts!.Any())
             {
                 var createResult = await _repository.TimelineRepository.CreateAsync(newTimelineItem);

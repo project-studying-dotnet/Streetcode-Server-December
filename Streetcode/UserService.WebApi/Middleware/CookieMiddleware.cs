@@ -138,7 +138,7 @@ namespace UserService.WebApi.Middleware
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
-                Secure = context.Request.IsHttps,
+                Secure = true,
                 SameSite = SameSiteMode.Strict,
                 Expires = DateTime.UtcNow.AddHours(_jwtConfiguration.AccessTokenLifetime)
             };

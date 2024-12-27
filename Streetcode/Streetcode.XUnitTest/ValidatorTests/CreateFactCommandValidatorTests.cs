@@ -35,7 +35,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
             var factDto = new CreateFactDTO
             {
                 Title = "",
-                FactContent  = "Valid fact content ",
+                FactContent = "Valid fact content ",
             };
 
             var model = new CreateFactCommand(factDto); 
@@ -54,7 +54,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
 
             var model = new CreateFactCommand(factDto); 
             var result = _validator.TestValidate(model);
-            result.ShouldHaveValidationErrorFor("Fact.Text");
+            result.ShouldHaveValidationErrorFor("Fact.FactContent");
         }
 
         [Fact]

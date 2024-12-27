@@ -269,22 +269,6 @@ namespace Streetcode.WebApi.Extensions
                         }
                     }
 
-                    if (!dbContext.Users.Any())
-                    {
-                        dbContext.Users.AddRange(
-                            new DAL.Entities.Users.User
-                            {
-                                Email = "admin",
-                                Role = UserRole.Administrator,
-                                Login = "admin",
-                                Name = "admin",
-                                Password = "admin",
-                                Surname = "admin",
-                            });
-
-                        await dbContext.SaveChangesAsync();
-                    }
-
                     if (!dbContext.News.Any())
                     {
                         dbContext.News.AddRange(

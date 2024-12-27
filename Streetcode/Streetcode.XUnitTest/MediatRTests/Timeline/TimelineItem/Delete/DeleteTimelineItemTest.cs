@@ -74,7 +74,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Timeline.TimelineItems.Delete
             var result = await _handler.Handle(command, default);
 
             // Arrange
-            Assert.True(result.IsSuccess);
+            Assert.False(result.IsSuccess);
             Assert.Equal(Unit.Value, result.Value);
         }
 

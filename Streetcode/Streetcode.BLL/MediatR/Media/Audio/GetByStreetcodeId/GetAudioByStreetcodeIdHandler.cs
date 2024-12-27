@@ -45,7 +45,6 @@ namespace Streetcode.BLL.MediatR.Media.Audio.GetByStreetcodeId
             if (streetcode.Audio != null)
             {
                 AudioDTO audioDto = _mapper.Map<AudioDTO>(streetcode.Audio);
-                audioDto = _mapper.Map<AudioDTO>(streetcode.Audio);
                 audioDto.Base64 = _blobService.FindFileInStorageAsBase64(audioDto.BlobName);
                 result.WithValue(audioDto);
             }

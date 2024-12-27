@@ -3,23 +3,28 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Query;
 using MimeKit;
+using Streetcode.DAL.Caching.RedisCache;
+using Streetcode.DAL.Entities.Streetcode.TextContent;
 using Streetcode.DAL.Persistence;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using Streetcode.DAL.Specification;
 using Streetcode.DAL.Specification.Evaluator;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Streetcode.DAL.Repositories.Realizations.Base
 {
-    public abstract class RepositoryBase<T> : IRepositoryBase<T>
+    public class RepositoryBase<T> : IRepositoryBase<T>
         where T : class
     {
         protected readonly DbSet<T> _dbSet;
         private readonly StreetcodeDbContext _dbContext;
+        private readonly IRedisCacheService _redisCacheService;
 
-        protected RepositoryBase(StreetcodeDbContext context)
+        protected RepositoryBase(StreetcodeDbContext context, IRedisCacheService redisCacheService = null!)
         {
             _dbContext = context;
             _dbSet = _dbContext.Set<T>();
+            _redisCacheService = redisCacheService;
         }
 
         public IQueryable<T> FindAll(Expression<Func<T, bool>>? predicate = default)
@@ -140,12 +145,46 @@ namespace Streetcode.DAL.Repositories.Realizations.Base
         // Specification Pattern Methods
         public async Task<IEnumerable<T>> GetAllBySpecAsync(IBaseSpecification<T>? specification = null)
         {
-            return ApplySpecificationForList(specification);
+            if (specification.CacheKey != string.Empty)
+            {
+                var dataFromCache = await _redisCacheService.GetCachedDataAsync<IEnumerable<T>>(specification.CacheKey);
+                if (dataFromCache != null)
+                {
+                    return dataFromCache;
+                }
+
+                var dataFromDb = ApplySpecificationForList(specification);
+
+                await _redisCacheService.SetCachedDataAsync(specification.CacheKey, dataFromDb, specification.CacheMinutes);
+
+                return dataFromDb;
+            }
+            else
+            {
+                return ApplySpecificationForList(specification);
+            }
         }
 
         public async Task<T?> GetFirstOrDefaultBySpecAsync(IBaseSpecification<T>? specification = null)
         {
-            return await ApplySpecificationForList(specification).FirstOrDefaultAsync();
+            if (specification.CacheKey != string.Empty)
+            {
+                var dataFromCache = await _redisCacheService.GetCachedDataAsync<T>(specification.CacheKey);
+                if (dataFromCache != null)
+                {
+                    return dataFromCache;
+                }
+
+                var dataFromDb = await ApplySpecificationForList(specification).FirstOrDefaultAsync();
+
+                await _redisCacheService.SetCachedDataAsync(specification.CacheKey, dataFromDb, specification.CacheMinutes);
+
+                return dataFromDb;
+            }
+            else
+            {
+                return await ApplySpecificationForList(specification).FirstOrDefaultAsync();
+            }
         }
 
         private IQueryable<T> ApplySpecificationForList(IBaseSpecification<T> specification)

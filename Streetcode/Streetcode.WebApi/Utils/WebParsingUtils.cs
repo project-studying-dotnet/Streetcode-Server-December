@@ -4,6 +4,7 @@ using System.Net;
 using System.Text;
 using Newtonsoft.Json;
 using Polly;
+using Streetcode.DAL.Caching.RedisCache;
 using Streetcode.DAL.Entities.AdditionalContent.Coordinates.Types;
 using Streetcode.DAL.Entities.Toponyms;
 using Streetcode.DAL.Persistence;
@@ -27,12 +28,14 @@ namespace Streetcode.WebApi.Utils
 
 		private readonly IRepositoryWrapper _repository;
 		private readonly StreetcodeDbContext _streetcodeContext;
+		private readonly IRedisCacheService _redisCacheService;
 
-		public WebParsingUtils(StreetcodeDbContext streetcodeContext)
-		{
-			_repository = new RepositoryWrapper(streetcodeContext);
-			_streetcodeContext = streetcodeContext;
-		}
+		public WebParsingUtils(StreetcodeDbContext streetcodeContext, IRedisCacheService redisCacheService)
+        {
+            _repository = new RepositoryWrapper(streetcodeContext, redisCacheService);
+            _streetcodeContext = streetcodeContext;
+            _redisCacheService = redisCacheService;
+        }
 
 		public static async Task DownloadAndExtractAsync(
 			string fileUrl,

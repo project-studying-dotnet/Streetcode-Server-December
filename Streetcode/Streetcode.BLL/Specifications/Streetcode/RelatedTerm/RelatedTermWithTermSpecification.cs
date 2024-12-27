@@ -9,6 +9,7 @@ namespace Streetcode.BLL.Specifications.Streetcode.RelatedTerm
         public RelatedTermWithTermSpecification()
         {
             AddInclude(x => x.Term);
+            AddCaching("AllRelatedTermsWithTerm");
         }
 
         public RelatedTermWithTermSpecification(int id)

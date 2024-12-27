@@ -29,15 +29,11 @@ jobs:
         with:
           dotnet-version: '9.0'
 
-      - name: Restore and Build All Projects (excluding _build.csproj)
-        run: |
-          # Find all .csproj files except _build.csproj, and restore dependencies and build projects
-          for project in $(find . -name "*.csproj" -not -name "_build.csproj"); do
-            echo "Restoring dependencies for $project"
-            dotnet restore "$project"
-            echo "Building $project"
-            dotnet build "$project" --configuration Release
-          done
+      - name: Restore Dependencies
+        run: dotnet restore ./Streetcode/Streetcode.sln
+
+      - name: Build
+        run: dotnet build ./Streetcode/Streetcode.sln --configuration Release --no-restore
 
       - name: Run tests
         run: |

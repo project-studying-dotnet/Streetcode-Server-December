@@ -1,5 +1,6 @@
 using FluentResults;
 using Microsoft.AspNetCore.Mvc;
+using Streetcode.BLL.DTO.Users;
 using UserService.BLL.DTO.User;
 using UserService.BLL.Interfaces.User;
 using UserService.BLL.Services.User;
@@ -21,9 +22,9 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<User>> Register([FromBody] RegistrationDTO registrationDto)
+    public async Task<ActionResult<UserDTO>> Register([FromBody] RegistrationDTO registrationDto)
     {
-        return await _userService.Registration(registrationDto);
+        return (await _userService.Registration(registrationDto)).Value;
     }
 
     [HttpPost]

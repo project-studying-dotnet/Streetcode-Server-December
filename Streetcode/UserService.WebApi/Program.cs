@@ -63,7 +63,9 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddScoped<IClaimsService, ClaimsService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<ILoginService, LoginService>();
-builder.Services.AddScoped<IUserService, UserService.BLL.Services.User.UserService>();
+builder.Services.AddScoped<IUserService, UserService.BLL.Services.User.RegistrationService>();
+var currentAssemblies = AppDomain.CurrentDomain.GetAssemblies();
+builder.Services.AddAutoMapper(currentAssemblies);
 
 
 var app = builder.Build();

@@ -37,14 +37,18 @@ jobs:
       - name: Build
         run: dotnet build ./Streetcode/Streetcode.sln --configuration Release --no-restore
 
-      - name: Test
-        run: dotnet test $env:SOLUTION_PATH --configuration $env:BUILD_CONFIG --no-build --verbosity normal --logger "trx;LogFileName=test-res.trx" || true
-      - name: Create-Testing-Result-Report
-        uses: phoenix-actions/test-reporting@v8      
-        if: success() || failure()
-        id: test-report
-        with:
-          name: Test-Results
-          reporter: dotnet-trx
-          path: "**/test-res.trx"        
-          fail-on-error: true
+      - name: Run tests
+        run: |
+          # Find all .csproj with tests and run them
+          testProjects=$(find . -type f \( -name "*Test.csproj" -o -name "*Tests.csproj" \))
+          if [ -z "$testProjects" ]; then
+            echo "No test projects found"
+            exit 1
+          fi
+          echo "Found test projects:"
+          echo "$testProjects"
+          echo "Running tests..."
+          for project in $testProjects; do
+            echo "Testing $project"
+            dotnet test "$project" --configuration Release
+          done

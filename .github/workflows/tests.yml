@@ -1,0 +1,56 @@
+name: Unit Testing
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main
+      - dev
+    types:
+      - opened
+      - synchronize
+      - reopened
+   
+
+jobs:
+  test-all:
+    name: Build and Test All Projects
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0'
+
+      - name: Restore and Build All Projects (excluding _build.csproj)
+        run: |
+          # Find all .csproj files except _build.csproj, and restore dependencies and build projects
+          for project in $(find . -name "*.csproj" -not -name "_build.csproj"); do
+            echo "Restoring dependencies for $project"
+            dotnet restore "$project"
+            echo "Building $project"
+            dotnet build "$project" --configuration Release
+          done
+
+      - name: Run tests
+        run: |
+          # Find all .csproj with tests and run them
+          testProjects=$(find . -type f \( -name "*Test.csproj" -o -name "*Tests.csproj" \))
+          if [ -z "$testProjects" ]; then
+            echo "No test projects found"
+            exit 1
+          fi
+          echo "Found test projects:"
+          echo "$testProjects"
+          echo "Running tests..."
+          for project in $testProjects; do
+            echo "Testing $project"
+            dotnet test "$project" --configuration Release
+          done

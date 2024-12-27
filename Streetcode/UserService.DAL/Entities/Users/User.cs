@@ -10,5 +10,7 @@ namespace UserService.DAL.Entities.Users
     public class User : MongoUser
     {
         public string FullName { get; set; }
+        public string RefreshToken { get; set; }
+        public DateTime RefreshTokenExpiryTime { get; set; }
     }
 }

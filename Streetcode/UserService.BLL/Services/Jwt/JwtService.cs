@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using UserEntity = UserService.DAL.Entities.Users.User;
 using UserService.BLL.Interfaces.User;
 using Microsoft.Extensions.Options;
+using System.Security.Cryptography;
 
 namespace UserService.BLL.Services.Jwt
 {
@@ -52,5 +53,16 @@ namespace UserService.BLL.Services.Jwt
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+        public string GenerateRefreshToken()
+        {
+            var randomNumber = new byte[64];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(randomNumber);
+            }
+            return Convert.ToBase64String(randomNumber);
+        }
+
     }
 }

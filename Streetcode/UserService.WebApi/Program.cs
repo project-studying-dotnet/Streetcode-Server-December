@@ -37,13 +37,33 @@ builder.Services.AddIdentityMongoDbProvider<User, Role>(identityOptions =>
 // JWT Configuration for DI
 builder.Services.Configure<JwtConfiguration>(builder.Configuration.GetSection("Jwt"));
 
+var jwtConfiguration = builder.Configuration.GetSection("Jwt").Get<JwtConfiguration>();
 
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtConfiguration.Issuer,
+        ValidAudience = jwtConfiguration.Audience,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfiguration.SecretKey))
+    };
+});
 
 builder.Services.AddScoped<IClaimsService, ClaimsService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<IUserService, UserService.BLL.Services.User.RegistrationService>();
-builder.Services.AddAuth(builder.Configuration);
+
 var currentAssemblies = AppDomain.CurrentDomain.GetAssemblies();
 builder.Services.AddAutoMapper(currentAssemblies);
 

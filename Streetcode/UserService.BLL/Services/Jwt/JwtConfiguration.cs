@@ -13,5 +13,6 @@ namespace UserService.BLL.Services.Jwt
         public string Audience { get; set; }
         public string SecretKey { get; set; }
         public int AccessTokenLifetime { get; set; }
+        public int RefreshTokenLifetime { get; set; }
     }
 }

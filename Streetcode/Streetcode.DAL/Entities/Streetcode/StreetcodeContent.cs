@@ -58,6 +58,9 @@ namespace Streetcode.DAL.Entities.Streetcode
 
         public DateTime? EventEndOrPersonDeathDate { get; set; }
 
+        [MaxLength(33)]
+        public string? BriefDescription { get; set; }
+
         public int? AudioId { get; set; }
 
         public Text? Text { get; set; }

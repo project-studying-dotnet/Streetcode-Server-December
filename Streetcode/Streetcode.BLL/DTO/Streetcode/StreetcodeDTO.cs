@@ -20,5 +20,8 @@ namespace Streetcode.BLL.DTO.Streetcode
         public IEnumerable<StreetcodeTagDTO> Tags { get; set; }
         public string Teaser { get; set; }
         public StreetcodeType StreetcodeType { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+
     }
 }

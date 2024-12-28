@@ -13,15 +13,15 @@ on:
       - opened
       - synchronize
       - reopened
-   
 
 jobs:
   test-all:
     name: Build and Test All Projects
     runs-on: ubuntu-latest
     env:
-      SOLUTION_PATH: 'Streetcode\Streetcode.sln'
+      SOLUTION_PATH: 'Streetcode/Streetcode.sln'
       BUILD_CONFIG: 'Release'
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -32,23 +32,23 @@ jobs:
           dotnet-version: '9.0'
 
       - name: Restore Dependencies
-        run: dotnet restore ./Streetcode/Streetcode.sln
+        run: dotnet restore ${{ env.SOLUTION_PATH }}
 
       - name: Build
-        run: dotnet build ./Streetcode/Streetcode.sln --configuration Release --no-restore
+        run: dotnet build ${{ env.SOLUTION_PATH }} --configuration ${{ env.BUILD_CONFIG }} --no-restore
 
-      - name: Run tests
-        run: |
-          # Find all .csproj with tests and run them
-          testProjects=$(find . -type f \( -name "*Test.csproj" -o -name "*Tests.csproj" \))
-          if [ -z "$testProjects" ]; then
-            echo "No test projects found"
-            exit 1
-          fi
-          echo "Found test projects:"
-          echo "$testProjects"
-          echo "Running tests..."
-          for project in $testProjects; do
-            echo "Testing $project"
-            dotnet test "$project" --configuration Release
-          done
+      - name: Run Tests
+        run: dotnet test ${{ env.SOLUTION_PATH }} 
+          --configuration ${{ env.BUILD_CONFIG }} 
+          --no-build 
+          --logger "trx;LogFileName=test-results.trx" 
+          --results-directory ./test-results
+
+      - name: Test Report
+        uses: phoenix-actions/test-reporting@v8
+        if: success() || failure()    # Запускать даже если тесты провалились
+        with:
+          name: Test Results
+          path: "**/test-results/*.trx"    
+          reporter: dotnet-trx
+          fail-on-error: true

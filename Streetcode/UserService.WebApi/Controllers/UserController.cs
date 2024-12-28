@@ -2,6 +2,7 @@ using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Streetcode.BLL.DTO.Users;
+using System.Security.Claims;
 using UserService.BLL.DTO.User;
 using UserService.BLL.Interfaces.User;
 using UserService.BLL.Services.User;
@@ -37,28 +38,28 @@ public class UserController : ControllerBase
         {
             return BadRequest(loginResult.Errors);
         }
-
         var token = loginResult.Value;
 
         return Ok(new { token });
     }
 
     [HttpPost]
-    public async Task<ActionResult> Logout([FromBody] string userId)
+    public async Task<ActionResult> Logout()
     {
-        var logoutResult = await _loginService.Logout(userId);
+        var logoutResult = await _loginService.Logout(User);
 
         if (logoutResult.IsFailed)
         {
             return BadRequest(logoutResult.Errors);
         }
-
-        return Ok("User successfully logged out.");
+        Response.Cookies.Delete("AuthToken");
+        return Ok($"User successfully logged out.");
     }
+
     [HttpPost]
     public async Task<ActionResult> RefreshToken([FromBody] TokenRequestDTO tokenRequest)
     {
-        var refreshResult = await _loginService.RefreshToken(tokenRequest.Token, tokenRequest.RefreshToken);
+        var refreshResult = await _loginService.RefreshToken(tokenRequest.RefreshToken);
 
         if (refreshResult.IsFailed)
         {
@@ -66,5 +67,12 @@ public class UserController : ControllerBase
         }
 
         return Ok(refreshResult.Value);
+    }
+
+    [HttpGet]
+    [Authorize]
+    public ActionResult TestEndPoint()
+    {
+        return Ok("Hello from User Service");
     }
 }

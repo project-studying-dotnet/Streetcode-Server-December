@@ -83,8 +83,6 @@ namespace UserService.WebApi.Middleware
 
                 // Copy the modified response back to the original stream
                 memoryStream.Seek(0, SeekOrigin.Begin);
-
-                // Copy the modified response back to the original stream
                 await memoryStream.CopyToAsync(originalBodyStream);
             }
             finally
@@ -113,9 +111,31 @@ namespace UserService.WebApi.Middleware
             try
             {
                 var json = JsonDocument.Parse(responseBody);
-                if (json.RootElement.TryGetProperty("token", out var tokenElement))
+
+                // Check if the root element is an object
+                if (json.RootElement.ValueKind == JsonValueKind.Object)
                 {
-                    return tokenElement.GetString();
+                    if (json.RootElement.TryGetProperty("token", out var tokenElement) &&
+                        tokenElement.TryGetProperty("accessToken", out var accessTokenElement))
+                    {
+                        return accessTokenElement.GetString();
+                    }
+                    else if (json.RootElement.TryGetProperty("accessToken", out var singleAccessTokenElement))
+                    {
+                        return singleAccessTokenElement.GetString();
+                    }
+                }
+                // Check if the root element is an array
+                else if (json.RootElement.ValueKind == JsonValueKind.Array)
+                {
+                    foreach (var element in json.RootElement.EnumerateArray())
+                    {
+                        if (element.TryGetProperty("token", out var tokenElement) &&
+                            tokenElement.TryGetProperty("accessToken", out var accessTokenElement))
+                        {
+                            return accessTokenElement.GetString();
+                        }
+                    }
                 }
             }
             catch (JsonException ex)
@@ -123,6 +143,8 @@ namespace UserService.WebApi.Middleware
                 _logger.LogWarning(ex, "Failed to parse response body for token.");
             }
 
+            // Return null or throw an exception if the accessToken is not found
+            _logger.LogWarning("Access token not found in the response body.");
             return null;
         }
 
@@ -140,7 +162,7 @@ namespace UserService.WebApi.Middleware
                 HttpOnly = true,
                 Secure = true,
                 SameSite = SameSiteMode.Strict,
-                Expires = DateTime.UtcNow.AddHours(_jwtConfiguration.AccessTokenLifetime)
+                Expires = DateTime.UtcNow.AddSeconds(_jwtConfiguration.AccessTokenLifetime)
             };
 
             context.Response.Cookies.Append("AuthToken", token, cookieOptions);

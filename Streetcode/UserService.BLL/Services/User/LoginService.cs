@@ -5,10 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using FluentResults;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using MongoDB.Driver.Linq;
 using Streetcode.BLL.DTO.Users;
 using UserService.BLL.DTO.User;
 using UserService.BLL.Interfaces.Jwt;
@@ -24,14 +26,14 @@ namespace UserService.BLL.Services.User
         private readonly ILogger<LoginService> _logger;
         private readonly IMapper _mapper;
         private readonly JwtConfiguration _jwtConfiguration;
+        private readonly SignInManager<UserEntity> _signInManager;
         public LoginService(UserManager<UserEntity> userManager, IJwtService jwtService, ILogger<LoginService> logger, IMapper mapper, IOptions<JwtConfiguration> options)
         {
-            _userManager = userManager;
-            _jwtService = jwtService;
-            _logger = logger;
-
-            _mapper = mapper;
-            _jwtConfiguration = options.Value;
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            _jwtService = jwtService ?? throw new ArgumentNullException(nameof(jwtService));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _jwtConfiguration = options?.Value ?? throw new ArgumentNullException(nameof(options));
         }
 
         public async Task<Result<LoginResultDTO>> Login(LoginDTO loginDto)
@@ -75,12 +77,13 @@ namespace UserService.BLL.Services.User
         }
 
 
-        public async Task<Result> Logout(string userId)
+        public async Task<Result> Logout(ClaimsPrincipal userPrincipal)
         {
-            var user = await _userManager.FindByIdAsync(userId);
+            var userName = userPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userManager.FindByNameAsync(userName);
             if (user == null)
             {
-                _logger.LogWarning("Logout attempt for non-existing user ID: {UserId}", userId);
+                _logger.LogWarning("Logout attempt for non-existing user: {UserName}", userName);
                 return Result.Fail("User not found.");
             }
 
@@ -91,27 +94,19 @@ namespace UserService.BLL.Services.User
 
             if (!updateResult.Succeeded)
             {
-                _logger.LogError("Failed to update user {UserId} during logout.", userId);
+                _logger.LogError("Failed to update user {UserName} during logout.", userName);
                 return Result.Fail("Failed to logout user.");
             }
-
-            _logger.LogInformation("User {UserId} successfully logged out.", userId);
+            await _signInManager.SignOutAsync();
+            _logger.LogInformation("User {UserName} successfully logged out.", userName);
             return Result.Ok();
         }
-        public async Task<Result<LoginResultDTO>> RefreshToken(string token, string refreshToken)
+        public async Task<Result<LoginResultDTO>> RefreshToken(string refreshToken)
         {
-            var principal = GetPrincipalFromExpiredToken(token);
-            if (principal == null)
+            var user = await _userManager.Users.SingleOrDefaultAsync(u => u.RefreshToken == refreshToken && u.RefreshTokenExpiryTime > DateTime.UtcNow);
+            if (user == null)
             {
-                return Result.Fail("Invalid access token or refresh token.");
-            }
-
-            var userName = principal.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = await _userManager.FindByNameAsync(userName);
-
-            if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
-            {
-                return Result.Fail("Invalid access token or refresh token.");
+                return Result.Fail("Invalid refresh token.");
             }
 
             var newAccessToken = await _jwtService.GenerateTokenAsync(user);
@@ -128,34 +123,6 @@ namespace UserService.BLL.Services.User
 
             var result = _mapper.Map<LoginResultDTO>((newAccessToken, newRefreshToken));
             return Result.Ok(result);
-        }
-
-        private ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
-        {
-            var tokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateAudience = false,
-                ValidateIssuer = false,
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfiguration.SecretKey)),
-                ValidateLifetime = false // we want to get the principal from an expired token
-            };
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            try
-            {
-                var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);
-                if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    return null;
-                }
-
-                return principal;
-            }
-            catch
-            {
-                return null;
-            }
         }
     }
 }

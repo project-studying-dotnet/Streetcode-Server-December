@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Security.Claims;
+using System.Threading.Tasks;
 using UserEntity = UserService.DAL.Entities.Users.User;
 
 namespace UserService.BLL.Interfaces.Jwt

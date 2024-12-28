@@ -56,27 +56,7 @@ builder.Services.AddAuthentication(options =>
         ValidIssuer = jwtConfiguration.Issuer,
         ValidAudience = jwtConfiguration.Audience,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfiguration.SecretKey)),
-        ClockSkew = TimeSpan.Zero
     };
-
-    options.Events = new JwtBearerEvents
-    {
-        OnMessageReceived = context =>
-        {
-            if (context.Request.Headers.TryGetValue("Authorization", out var authorizationHeader))
-            {
-                context.Token = authorizationHeader.ToString().Split(" ").Last();
-            }
-
-            if (string.IsNullOrEmpty(context.Token) && context.Request.Cookies.TryGetValue("AuthToken", out var cookieToken))
-            {
-                context.Token = cookieToken;
-            }
-
-            return Task.CompletedTask;
-        }
-    };
-
     options.Events = new JwtBearerEvents
     {
         OnMessageReceived = context =>

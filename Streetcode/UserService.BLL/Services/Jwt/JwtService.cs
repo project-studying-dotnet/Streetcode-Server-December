@@ -47,7 +47,7 @@ namespace UserService.BLL.Services.Jwt
                 issuer: _jwtConfiguration.Issuer,
                 audience: _jwtConfiguration.Audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddSeconds(_jwtConfiguration.AccessTokenLifetime),
+                expires: DateTime.UtcNow.AddHours(_jwtConfiguration.AccessTokenLifetime),
                 signingCredentials: credentials
             );
 

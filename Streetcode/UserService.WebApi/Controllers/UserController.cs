@@ -1,4 +1,5 @@
 using FluentResults;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Streetcode.BLL.DTO.Users;
 using UserService.BLL.DTO.User;
@@ -40,5 +41,30 @@ public class UserController : ControllerBase
         var token = loginResult.Value;
 
         return Ok(new { token });
+    }
+
+    [HttpPost]
+    public async Task<ActionResult> Logout([FromBody] string userId)
+    {
+        var logoutResult = await _loginService.Logout(userId);
+
+        if (logoutResult.IsFailed)
+        {
+            return BadRequest(logoutResult.Errors);
+        }
+
+        return Ok("User successfully logged out.");
+    }
+    [HttpPost]
+    public async Task<ActionResult> RefreshToken([FromBody] TokenRequestDTO tokenRequest)
+    {
+        var refreshResult = await _loginService.RefreshToken(tokenRequest.Token, tokenRequest.RefreshToken);
+
+        if (refreshResult.IsFailed)
+        {
+            return BadRequest(refreshResult.Errors);
+        }
+
+        return Ok(refreshResult.Value);
     }
 }

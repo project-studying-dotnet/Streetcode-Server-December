@@ -22,7 +22,7 @@ namespace Streetcode.BLL.Validation.Validators.DTOValidators.Timeline
                 .NotEmpty().WithMessage("Description is mandatory.")
                 .MaximumLength(400).WithMessage("Description must not exceed 400 characters.");
             RuleFor(x => x.TeamMember)
-            .NotNull().WithMessage("Description is mandatory.");
+            .NotEmpty().WithMessage("Description is mandatory.");
         }
     }
 }

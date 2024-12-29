@@ -462,6 +462,8 @@ namespace Streetcode.DAL.Repositories.Realizations.Base
 
                 return _commentRepository;
             }
+        }
+
         public IStreetcodeTagIndexRepository StreetcodeTagIndexRepository
         {
             get

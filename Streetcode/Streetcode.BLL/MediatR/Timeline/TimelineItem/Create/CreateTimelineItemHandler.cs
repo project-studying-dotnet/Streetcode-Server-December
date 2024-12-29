@@ -24,7 +24,7 @@ namespace Streetcode.BLL.MediatR.Timeline.TimelineItem.Create
 
         public async Task<Result<TimelineItemDTO>> Handle(CreateTimelineItemCommand request, CancellationToken cancellationToken)
         {
-            var streetcodeExists = await _repository.StreetcodeRepository.GetFirstOrDefaultAsync(s => s.Id == request.timelineItemCreateDto.StreetcodeId);
+            var streetcodeExists = await _repository.StreetcodeRepository.GetFirstOrDefaultAsync(s => s.Id == request.TimelineItem.StreetcodeId);
             if (streetcodeExists == null)
             {
                 string errorMessage = ErrorManager.GetCustomErrorText("CantFindError", "streetcode");
@@ -32,7 +32,7 @@ namespace Streetcode.BLL.MediatR.Timeline.TimelineItem.Create
                 return Result.Fail(errorMessage);
             }
 
-            var newTimelineItem = _mapper.Map<TimelineEntity>(request.timelineItemCreateDto);
+            var newTimelineItem = _mapper.Map<TimelineEntity>(request.TimelineItem);
 
             if (newTimelineItem == null)
             {
@@ -42,7 +42,7 @@ namespace Streetcode.BLL.MediatR.Timeline.TimelineItem.Create
             }
 
             // If historical context doesnt exist create timeline without it
-            if (!request.timelineItemCreateDto.HistoricalContexts!.Any())
+            if (!request.TimelineItem.HistoricalContexts!.Any())
             {
                 var createResult = await _repository.TimelineRepository.CreateAsync(newTimelineItem);
                 var saveResult = await _repository.SaveChangesAsync();
@@ -53,7 +53,7 @@ namespace Streetcode.BLL.MediatR.Timeline.TimelineItem.Create
             await _repository.TimelineRepository.CreateAsync(newTimelineItem);
             await _repository.SaveChangesAsync();
 
-            var historicalContextIds = request.timelineItemCreateDto.HistoricalContexts.Select(hc => hc.Id).ToList();
+            var historicalContextIds = request.TimelineItem.HistoricalContexts.Select(hc => hc.Id).ToList();
 
             var historicalContexts = await _repository.HistoricalContextRepository
                 .GetAllAsync(hc => historicalContextIds.Contains(hc.Id));

@@ -71,7 +71,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Timeline.TimelineItems.Create
         {
             // Arrange
             var command = CreateCommandWithoutHistoricalContexts();
-            var timelineEntity = command.timelineItemCreateDto;
+            var timelineEntity = command.TimelineItem;
             SetupStreetcodeRepositoryToReturnValidEntity();
 
             _repositoryWrapperMock.Setup(r => r.TimelineRepository.CreateAsync(It.IsAny<TimelineItem>()))
@@ -96,7 +96,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Timeline.TimelineItems.Create
         {
             // Arrange
             var command = CreateCommandWithHistoricalContexts();
-            var timelineEntity = command.timelineItemCreateDto;
+            var timelineEntity = command.TimelineItem;
             SetupStreetcodeRepositoryToReturnValidEntity();
             SetupHistoricalContextsRepository();
 

@@ -10,13 +10,11 @@ namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.DeleteCategoryConten
 	public class DeleteCategoryContentHandler : IRequestHandler<DeleteCategoryContentCommand, Result<Unit>>
 	{
 		private readonly IRepositoryWrapper _repositoryWrapper;
-		private readonly IMapper _mapper;
 		private readonly ILoggerService _logger;
 
-		public DeleteCategoryContentHandler(IRepositoryWrapper repositoryWrapper, IMapper mapper, ILoggerService logger)
+		public DeleteCategoryContentHandler(IRepositoryWrapper repositoryWrapper, ILoggerService logger)
 		{
 			_repositoryWrapper = repositoryWrapper;
-			_mapper = mapper;
 			_logger = logger;
 		}
 

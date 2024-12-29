@@ -36,7 +36,12 @@ namespace Streetcode.XUnitTest.ValidatorTests
             {
                 Date = new DateTime(2024, 1, 1),
                 Description = "Valid description",
-                TeamMember = new TeamMemberDTO { }
+                TeamMember = new TeamMemberDTO 
+                {
+                    FirstName = "TestFirstName",
+                    LastName = "TestLastName",
+                    Description = "Test Team Member Description"
+                }
             };
 
             var model = new CreateTimelineItemCommand(timelineItemDto);
@@ -50,7 +55,12 @@ namespace Streetcode.XUnitTest.ValidatorTests
             {
                 Date = new DateTime(2024, 1, 1),
                 Description = "Valid description within 400 characters.",
-                TeamMember = new TeamMemberDTO { }
+                TeamMember = new TeamMemberDTO
+                {
+                    FirstName = "TestFirstName",
+                    LastName = "TestLastName",
+                    Description = "Test Team Member Description"
+                }
             };
 
             var model = new CreateTimelineItemCommand(timelineItemDto);

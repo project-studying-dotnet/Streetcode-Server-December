@@ -18,8 +18,6 @@ using Streetcode.DAL.Entities.Team;
 using Streetcode.DAL.Entities.Timeline;
 using Streetcode.DAL.Entities.Toponyms;
 using Streetcode.DAL.Entities.Transactions;
-using Streetcode.DAL.Entities.Users;
-using Streetcode.DAL.Enums;
 
 namespace Streetcode.DAL.Persistence
 {
@@ -61,7 +59,6 @@ namespace Streetcode.DAL.Persistence
         public DbSet<Video> Videos { get; set; }
         public DbSet<StreetcodeCategoryContent> StreetcodeCategoryContent { get; set; }
         public DbSet<StreetcodeArt> StreetcodeArts { get; set; }
-        public DbSet<User> Users { get; set; }
         public DbSet<StreetcodeTagIndex> StreetcodeTagIndices { get; set; }
         public DbSet<TeamMember> TeamMembers { get; set; }
         public DbSet<TeamMemberLink> TeamMemberLinks { get; set; }

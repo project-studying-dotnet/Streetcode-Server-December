@@ -16,7 +16,6 @@ using Streetcode.DAL.Repositories.Interfaces.Team;
 using Streetcode.DAL.Repositories.Interfaces.Timeline;
 using Streetcode.DAL.Repositories.Interfaces.Toponyms;
 using Streetcode.DAL.Repositories.Interfaces.Transactions;
-using Streetcode.DAL.Repositories.Interfaces.Users;
 using Streetcode.DAL.Repositories.Realizations.AdditionalContent;
 using Streetcode.DAL.Repositories.Realizations.Analytics;
 using Streetcode.DAL.Repositories.Realizations.Comment;
@@ -31,7 +30,6 @@ using Streetcode.DAL.Repositories.Realizations.Team;
 using Streetcode.DAL.Repositories.Realizations.Timeline;
 using Streetcode.DAL.Repositories.Realizations.Toponyms;
 using Streetcode.DAL.Repositories.Realizations.Transactions;
-using Streetcode.DAL.Repositories.Realizations.Users;
 
 namespace Streetcode.DAL.Repositories.Realizations.Base
 {
@@ -91,8 +89,6 @@ namespace Streetcode.DAL.Repositories.Realizations.Base
         private IHistoricalContextRepository _historyContextRepository;
 
         private IPartnerSourceLinkRepository _partnerSourceLinkRepository;
-
-        private IUserRepository _userRepository;
 
         private IStreetcodeTagIndexRepository _streetcodeTagIndexRepository;
 
@@ -465,19 +461,6 @@ namespace Streetcode.DAL.Repositories.Realizations.Base
                 }
 
                 return _commentRepository;
-            }
-        }
-
-        public IUserRepository UserRepository
-        {
-            get
-            {
-                if (_userRepository is null)
-                {
-                    _userRepository = new UserRepository(_streetcodeDbContext);
-                }
-
-                return _userRepository;
             }
         }
 

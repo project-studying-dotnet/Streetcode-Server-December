@@ -15,6 +15,9 @@ using Streetcode.BLL.MediatR.Comment.GetCommentsByStreetcodeId;
 using Streetcode.BLL.DTO.Comment;
 using Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetById;
 using Streetcode.WebApi.Controllers.Comment;
+using FluentResults;
+using Streetcode.BLL.MediatR.Comment.AdminDeleteComment;
+using FluentAssertions;
 
 namespace Streetcode.XUnitTest.ControllerTests
 {
@@ -54,6 +57,38 @@ namespace Streetcode.XUnitTest.ControllerTests
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
             Assert.Equal(mockDtos, okResult.Value);
+        }
+
+        [Fact]
+        public async Task AdminDeleteComment_ReturnsOkResult_WithValidCommentId()
+        {
+            // Arrange
+            int commentId = 1;
+            _mediatorMock
+                .Setup(m => m.Send(It.IsAny<AdminDeleteCommentCommand>(), default))
+                .ReturnsAsync(Result.Ok());
+
+            // Act
+            var result = await _controller.AdminDeleteComment(commentId);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task AdminDeleteComment_ReturnsBadRequest_WhenDeletionFails()
+        {
+            // Arrange
+            int commentId = 1;
+            _mediatorMock
+                .Setup(m => m.Send(It.IsAny<AdminDeleteCommentCommand>(), default))
+                .ReturnsAsync(Result.Fail("Deletion failed"));
+
+            // Act
+            var result = await _controller.AdminDeleteComment(commentId);
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>();
         }
     }
 }

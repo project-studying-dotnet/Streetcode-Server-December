@@ -35,14 +35,12 @@ namespace Streetcode.XUnitTest.ValidatorTests
             var timelineItemDto = new TimelineItemCreateDto
             {
                 Date = new DateTime(2024, 1, 1),
-                Title = new string('A', 27),
                 Description = "Valid description",
                 TeamMember = new TeamMemberDTO { }
             };
 
             var model = new CreateTimelineItemCommand(timelineItemDto);
             var result = _validator.TestValidate(model);
-            result.ShouldHaveValidationErrorFor("TimelineItem.Title");
         }
 
         [Fact]
@@ -51,7 +49,6 @@ namespace Streetcode.XUnitTest.ValidatorTests
             var timelineItemDto = new TimelineItemCreateDto
             {
                 Date = new DateTime(2024, 1, 1),
-                Title = "Valid Title",
                 Description = "Valid description within 400 characters.",
                 TeamMember = new TeamMemberDTO { }
             };

@@ -16,7 +16,6 @@ namespace Streetcode.BLL.Validation.Validators.DTOValidators.Timeline
                 .NotEmpty().WithMessage("Date is mandatory.");
 
             RuleFor(x => x.Title)
-                .NotEmpty().WithMessage("Title is mandatory.")
                 .MaximumLength(26).WithMessage("Title must not exceed 26 characters.");
 
             RuleFor(x => x.Description)

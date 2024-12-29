@@ -1,4 +1,6 @@
-﻿namespace Streetcode.BLL.DTO.Users
+﻿using System;
+
+namespace Streetcode.BLL.DTO.Users
 {
     public class RefreshTokenResponce
     {

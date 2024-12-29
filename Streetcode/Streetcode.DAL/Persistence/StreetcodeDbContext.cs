@@ -4,6 +4,7 @@ using Streetcode.DAL.Entities.AdditionalContent;
 using Streetcode.DAL.Entities.AdditionalContent.Coordinates;
 using Streetcode.DAL.Entities.AdditionalContent.Coordinates.Types;
 using Streetcode.DAL.Entities.Analytics;
+using Streetcode.DAL.Entities.Comment;
 using Streetcode.DAL.Entities.Feedback;
 using Streetcode.DAL.Entities.Media;
 using Streetcode.DAL.Entities.Media.Images;
@@ -17,8 +18,6 @@ using Streetcode.DAL.Entities.Team;
 using Streetcode.DAL.Entities.Timeline;
 using Streetcode.DAL.Entities.Toponyms;
 using Streetcode.DAL.Entities.Transactions;
-using Streetcode.DAL.Entities.Users;
-using Streetcode.DAL.Enums;
 
 namespace Streetcode.DAL.Persistence
 {
@@ -60,7 +59,6 @@ namespace Streetcode.DAL.Persistence
         public DbSet<Video> Videos { get; set; }
         public DbSet<StreetcodeCategoryContent> StreetcodeCategoryContent { get; set; }
         public DbSet<StreetcodeArt> StreetcodeArts { get; set; }
-        public DbSet<User> Users { get; set; }
         public DbSet<StreetcodeTagIndex> StreetcodeTagIndices { get; set; }
         public DbSet<TeamMember> TeamMembers { get; set; }
         public DbSet<TeamMemberLink> TeamMemberLinks { get; set; }
@@ -71,6 +69,7 @@ namespace Streetcode.DAL.Persistence
         public DbSet<HistoricalContextTimeline> HistoricalContextsTimelines { get; set; }
         public DbSet<StreetcodePartner> StreetcodePartners { get; set; }
         public DbSet<TeamMemberPositions> TeamMemberPosition { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

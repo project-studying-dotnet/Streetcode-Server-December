@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Streetcode.DAL.Entities.AdditionalContent;
 using Streetcode.DAL.Entities.AdditionalContent.Coordinates.Types;
 using Streetcode.DAL.Entities.Analytics;
+using CommentEntity = Streetcode.DAL.Entities.Comment.Comment;
 using Streetcode.DAL.Entities.Media;
 using Streetcode.DAL.Entities.Media.Images;
 using Streetcode.DAL.Entities.Partners;
@@ -97,5 +98,7 @@ namespace Streetcode.DAL.Entities.Streetcode
         public List<StreetcodeArt> StreetcodeArts { get; set; } = new();
 
         public List<StreetcodeCategoryContent> StreetcodeCategoryContents { get; set; } = new();
+
+        public List<CommentEntity> Comments { get; set; } = new();
     }
 }

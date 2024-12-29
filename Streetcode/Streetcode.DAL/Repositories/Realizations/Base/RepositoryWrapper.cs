@@ -5,6 +5,7 @@ using Streetcode.DAL.Persistence;
 using Streetcode.DAL.Repositories.Interfaces.AdditionalContent;
 using Streetcode.DAL.Repositories.Interfaces.Analytics;
 using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.DAL.Repositories.Interfaces.Comment;
 using Streetcode.DAL.Repositories.Interfaces.Media.Images;
 using Streetcode.DAL.Repositories.Interfaces.Newss;
 using Streetcode.DAL.Repositories.Interfaces.Partners;
@@ -17,6 +18,7 @@ using Streetcode.DAL.Repositories.Interfaces.Toponyms;
 using Streetcode.DAL.Repositories.Interfaces.Transactions;
 using Streetcode.DAL.Repositories.Realizations.AdditionalContent;
 using Streetcode.DAL.Repositories.Realizations.Analytics;
+using Streetcode.DAL.Repositories.Realizations.Comment;
 using Streetcode.DAL.Repositories.Realizations.Media;
 using Streetcode.DAL.Repositories.Realizations.Media.Images;
 using Streetcode.DAL.Repositories.Realizations.Newss;
@@ -103,6 +105,7 @@ namespace Streetcode.DAL.Repositories.Realizations.Base
         private IStreetcodeToponymRepository _streetcodeToponymRepository;
 
         private IStreetcodeImageRepository _streetcodeImageRepository;
+        private ICommentRepository _commentRepository;
 
         public RepositoryWrapper(StreetcodeDbContext streetcodeDbContext, IRedisCacheService redisCacheService)
         {
@@ -448,6 +451,17 @@ namespace Streetcode.DAL.Repositories.Realizations.Base
             }
         }
 
+        public ICommentRepository CommentRepository
+        {
+            get
+            {
+                if (_commentRepository is null)
+                {
+                    _commentRepository = new CommentRepository(_streetcodeDbContext, redisCacheService);
+                }
+
+                return _commentRepository;
+            }
         public IStreetcodeTagIndexRepository StreetcodeTagIndexRepository
         {
             get

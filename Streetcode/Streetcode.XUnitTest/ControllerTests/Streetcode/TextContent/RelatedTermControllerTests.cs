@@ -137,16 +137,33 @@ namespace Streetcode.XUnitTest.ControllerTests.Streetcode.TextContent
         {
             // Arrange
             var wordToDelete = "TestTerm";
-            var relatedTerm = new RelatedTermDTO { Id = 1, Word = "TestTerm", TermId = 1 };
-            this._mediatorMock.Setup(m => m.Send(It.IsAny<DeleteRelatedTermCommand>(), default))
-                              .ReturnsAsync(relatedTerm);
+            int termIdToDelete = 1;
+            _mediatorMock.Setup(m => m.Send(It.IsAny<DeleteRelatedTermCommand>(), default))
+                .ReturnsAsync(Unit.Value);
 
             // Act
-            var result = await this._controller.Delete(wordToDelete);
+            var result = await _controller.Delete(wordToDelete, termIdToDelete);
 
             // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result);
-            Assert.Equal(relatedTerm, okResult.Value);
+            result.Should().BeOfType<OkObjectResult>();
+        }
+
+        [Fact]
+        public async Task Delete_WhenHandlerFails_ReturnsBadRequest()
+        {
+            // Arrange
+            var word = "nonexistentWord";
+            var termId = 1;
+            var command = new DeleteRelatedTermCommand(word, termId);
+
+            _mediatorMock.Setup(m => m.Send(command, default))
+                .ReturnsAsync(Result.Fail("Failed to delete related term"));
+
+            // Act
+            var result = await _controller.Delete(word, termId);
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>();
         }
     }
 }

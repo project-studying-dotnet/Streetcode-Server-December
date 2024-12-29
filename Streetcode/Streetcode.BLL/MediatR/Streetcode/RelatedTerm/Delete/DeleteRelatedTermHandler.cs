@@ -1,52 +1,42 @@
-﻿using AutoMapper;
-using FluentResults;
+﻿using FluentResults;
 using MediatR;
-using Streetcode.BLL.Interfaces.Logging;
-using Streetcode.BLL.DTO.Streetcode.TextContent;
+using Streetcode.BLL.Resources;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Specifications.Streetcode.RelatedTerm;
-using Streetcode.BLL.Resources;
 
 namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Delete
 {
-    public class DeleteRelatedTermHandler : IRequestHandler<DeleteRelatedTermCommand, Result<RelatedTermDTO>>
+    public class DeleteRelatedTermHandler : IRequestHandler<DeleteRelatedTermCommand, Result<Unit>>
     {
         private readonly IRepositoryWrapper _repository;
-        private readonly IMapper _mapper;
-        private readonly ILoggerService _logger;
 
-        public DeleteRelatedTermHandler(IRepositoryWrapper repository, IMapper mapper, ILoggerService logger)
+        public DeleteRelatedTermHandler(IRepositoryWrapper repository)
         {
             _repository = repository;
-            _mapper = mapper;
-            _logger = logger;
         }
 
-        public async Task<Result<RelatedTermDTO>> Handle(DeleteRelatedTermCommand request, CancellationToken cancellationToken)
+        public async Task<Result<Unit>> Handle(DeleteRelatedTermCommand request, CancellationToken cancellationToken)
         {
-            var relatedTerm = await _repository.RelatedTermRepository.GetFirstOrDefaultBySpecAsync(new RelatedTermByWordSpecification(request.word));
+            var relatedTerm = await _repository.RelatedTermRepository
+                .GetFirstOrDefaultBySpecAsync(new RelatedTermByWordAndTermIdSpecification(request.Word, request.TermId));
 
             if (relatedTerm is null)
             {
-                string errorMsg = $"Cannot find a related term: {request.word}";
-                _logger.LogError(request, errorMsg);
-                return Result.Fail(new Error(errorMsg));
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindError", "word", request.TermId);
+                throw new Exception(errorMsg);
             }
 
             _repository.RelatedTermRepository.Delete(relatedTerm);
 
             var resultIsSuccess = await _repository.SaveChangesAsync() > 0;
-            var relatedTermDto = _mapper.Map<RelatedTermDTO>(relatedTerm);
-            if(resultIsSuccess && relatedTermDto != null)
+
+            if(!resultIsSuccess)
             {
-                return Result.Ok(relatedTermDto);
+                string errorMsg = ErrorManager.GetCustomErrorText("FailDeleteError", "word", request.TermId);
+                throw new Exception(errorMsg);
             }
-            else
-            {
-                string errorMsg = ErrorManager.GetCustomErrorText("FailDeleteError", "related term");
-                _logger.LogError(request, errorMsg);
-                return Result.Fail(new Error(errorMsg));
-            }
+
+            return Result.Ok(Unit.Value);
         }
     }
 }

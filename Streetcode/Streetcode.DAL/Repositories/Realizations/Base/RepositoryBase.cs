@@ -155,6 +155,11 @@ namespace Streetcode.DAL.Repositories.Realizations.Base
 
                 var dataFromDb = ApplySpecificationForList(specification);
 
+                if (!dataFromDb.Any()) 
+                {
+                    return dataFromDb!;
+                }
+
                 await _redisCacheService.SetCachedDataAsync(specification.CacheKey, dataFromDb, specification.CacheMinutes);
 
                 return dataFromDb;
@@ -176,6 +181,11 @@ namespace Streetcode.DAL.Repositories.Realizations.Base
                 }
 
                 var dataFromDb = await ApplySpecificationForList(specification).FirstOrDefaultAsync();
+
+                if (dataFromDb == null)
+                {
+                    return dataFromDb!;
+                }
 
                 await _redisCacheService.SetCachedDataAsync(specification.CacheKey, dataFromDb, specification.CacheMinutes);
 

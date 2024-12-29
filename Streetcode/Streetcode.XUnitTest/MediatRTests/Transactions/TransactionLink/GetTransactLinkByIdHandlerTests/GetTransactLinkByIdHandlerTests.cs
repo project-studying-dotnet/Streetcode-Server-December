@@ -26,7 +26,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Transactions.TransactionLink.GetTran
 
             var mapperConfig = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<TransactLinkEntity, TransactLinkDTO>();
+                cfg.CreateMap<TransactLinkEntity, TransactLinkDto>();
             });
             _mapper = mapperConfig.CreateMapper();
 

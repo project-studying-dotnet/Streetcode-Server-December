@@ -5,7 +5,6 @@ using Streetcode.BLL.DTO.Sources;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.DAL.Entities.Sources;
 using Streetcode.DAL.Repositories.Interfaces.Base;
-using SourceCategory = Streetcode.DAL.Entities.Sources.SourceLinkCategory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Streetcode.BLL.Resources;
 using Streetcode.BLL.DTO.Media.Images;
+using SourceCategory = Streetcode.DAL.Entities.Sources.SourceLinkCategory;
 
 namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.Create
 {
@@ -43,7 +43,6 @@ namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.Create
 
 			try
 			{
-
 				var newCategory = _mapper.Map<SourceCategory>(command.SourceLinkCategory);
 
 				newCategory = await _repositoryWrapper.SourceCategoryRepository.CreateAsync(newCategory);

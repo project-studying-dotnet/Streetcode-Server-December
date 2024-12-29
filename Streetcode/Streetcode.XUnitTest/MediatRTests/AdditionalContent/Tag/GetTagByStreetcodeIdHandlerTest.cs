@@ -31,9 +31,9 @@ public class GetTagByStreetcodeIdHandlerTest : AdditionalContentTestWrapper
         {
             new StreetcodeTagIndexEntity { Index = 1, StreetcodeId = 1 },
         };
-        IEnumerable<StreetcodeTagDTO> streetcodeTagIndexDto = new[]
+        IEnumerable<StreetcodeTagDto> streetcodeTagIndexDto = new[]
         {
-            new StreetcodeTagDTO { Index = 1 },
+            new StreetcodeTagDto { Index = 1 },
         };
 
         _repositoryWrapperMock.Setup(rep => rep.StreetcodeTagIndexRepository.GetAllAsync(
@@ -41,7 +41,7 @@ public class GetTagByStreetcodeIdHandlerTest : AdditionalContentTestWrapper
                 It.IsAny<Func<IQueryable<StreetcodeTagIndexEntity>, IIncludableQueryable<StreetcodeTagIndexEntity, object>>>()))
             .ReturnsAsync(streetcodeTagIndexList);
 
-        _mapperMock.Setup(m => m.Map<IEnumerable<StreetcodeTagDTO>>(streetcodeTagIndexList))
+        _mapperMock.Setup(m => m.Map<IEnumerable<StreetcodeTagDto>>(streetcodeTagIndexList))
             .Returns(streetcodeTagIndexDto);
 
         // Act
@@ -55,7 +55,7 @@ public class GetTagByStreetcodeIdHandlerTest : AdditionalContentTestWrapper
             rep => rep.StreetcodeTagIndexRepository.GetAllAsync(
             It.Is<Expression<Func<StreetcodeTagIndexEntity, bool>>>(exp => exp.Compile().Invoke(new StreetcodeTagIndexEntity { StreetcodeId = request.StreetcodeId })),
             It.IsAny<Func<IQueryable<StreetcodeTagIndexEntity>, IIncludableQueryable<StreetcodeTagIndexEntity, object>>>()), Times.Once);
-        _mapperMock.Verify(m => m.Map<IEnumerable<StreetcodeTagDTO>>(streetcodeTagIndexList), Times.Once);
+        _mapperMock.Verify(m => m.Map<IEnumerable<StreetcodeTagDto>>(streetcodeTagIndexList), Times.Once);
     }
     
     [Fact]

@@ -27,7 +27,7 @@ namespace Streetcode.XUnitTest.MediatRTests.EmailTests
         {
             // A(Arrange):
 
-            var emailCommand = new SendEmailCommand(new EmailDTO { From = "Me", Content = "email sending succsesfully test!" });
+            var emailCommand = new SendEmailCommand(new EmailDto { From = "Me", Content = "email sending succsesfully test!" });
             _emailServiceMock.Setup(s => s.SendEmailAsync(It.IsAny<Message>())).ReturnsAsync(true);
 
             // A(Act):
@@ -48,7 +48,7 @@ namespace Streetcode.XUnitTest.MediatRTests.EmailTests
         {
             // A(Arrange):
 
-            var emailCommand = new SendEmailCommand(new EmailDTO { From = "Me", Content = "email sending fail test!" });
+            var emailCommand = new SendEmailCommand(new EmailDto { From = "Me", Content = "email sending fail test!" });
             _emailServiceMock.Setup(s => s.SendEmailAsync(It.IsAny<Message>())).ReturnsAsync(false);
             _loggerServiceMock.Setup(l => l.LogError(It.IsAny<object>(), It.IsAny<string>()));
 

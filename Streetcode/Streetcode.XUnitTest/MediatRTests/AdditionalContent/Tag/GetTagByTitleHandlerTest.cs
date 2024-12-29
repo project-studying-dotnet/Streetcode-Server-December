@@ -24,14 +24,14 @@ public class GetTagByTitleHandlerTest : AdditionalContentTestWrapper
         const string tagTitle = "Tag test 1";
         var request = new GetTagByTitleQuery(tagTitle);
         var tag = new TagEntity { Id = 1, Title = "Tag test 1" };
-        var tagDto = new TagDTO { Id = 1, Title = "Tag test 1" };
+        var tagDto = new TagDto { Id = 1, Title = "Tag test 1" };
 
         _repositoryWrapperMock.Setup(rep => rep.TagRepository.GetFirstOrDefaultAsync(
                 It.Is<Expression<Func<TagEntity, bool>>>(exp => exp.Compile().Invoke(tag)),
                 It.IsAny<Func<IQueryable<TagEntity>, IIncludableQueryable<TagEntity, object>>>()))
             .ReturnsAsync(tag);
 
-        _mapperMock.Setup(m => m.Map<TagDTO>(tag))
+        _mapperMock.Setup(m => m.Map<TagDto>(tag))
             .Returns(tagDto);
 
         // Act
@@ -47,7 +47,7 @@ public class GetTagByTitleHandlerTest : AdditionalContentTestWrapper
                     exp => exp.Compile().Invoke(new TagEntity { Title = request.Title })),
                 It.IsAny<Func<IQueryable<TagEntity>, IIncludableQueryable<TagEntity, object>>>()), Times.Once);
 
-        _mapperMock.Verify(m => m.Map<TagDTO>(tag), Times.Once);
+        _mapperMock.Verify(m => m.Map<TagDto>(tag), Times.Once);
     }
 
     [Fact]

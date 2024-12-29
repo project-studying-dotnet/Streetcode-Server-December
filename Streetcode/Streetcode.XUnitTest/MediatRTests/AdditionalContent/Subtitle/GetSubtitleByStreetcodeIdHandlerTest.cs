@@ -34,7 +34,7 @@ public class GetSubtitleByStreetcodeIdHandlerTest : AdditionalContentTestWrapper
             SubtitleText = "Test subtitle 1",
             StreetcodeId = 1,
         };
-        var subtitleDto = new SubtitleDTO
+        var subtitleDto = new SubtitleDto
         {
             Id = 1,
             SubtitleText = "Test subtitle 1",
@@ -47,7 +47,7 @@ public class GetSubtitleByStreetcodeIdHandlerTest : AdditionalContentTestWrapper
                     It.IsAny<Func<IQueryable<SubtitleEntity>, IIncludableQueryable<SubtitleEntity, object>>>()))
             .ReturnsAsync(subtitle);
 
-        _mapperMock.Setup(m => m.Map<SubtitleDTO>(subtitle))
+        _mapperMock.Setup(m => m.Map<SubtitleDto>(subtitle))
             .Returns(subtitleDto);
 
         // Act
@@ -62,7 +62,7 @@ public class GetSubtitleByStreetcodeIdHandlerTest : AdditionalContentTestWrapper
             It.Is<Expression<Func<SubtitleEntity, bool>>>(
                 exp => exp.Compile().Invoke(new SubtitleEntity { StreetcodeId = request.StreetcodeId })),
             It.IsAny<Func<IQueryable<SubtitleEntity>, IIncludableQueryable<SubtitleEntity, object>>>()), Times.Once);
-        _mapperMock.Verify(m => m.Map<SubtitleDTO>(subtitle), Times.Once);
+        _mapperMock.Verify(m => m.Map<SubtitleDto>(subtitle), Times.Once);
     }
 
     // [Fact]

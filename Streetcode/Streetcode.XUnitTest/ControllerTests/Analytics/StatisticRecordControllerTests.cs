@@ -32,7 +32,7 @@ namespace Streetcode.XUnitTest.ControllerTests.Analytics
         [Fact]
         public async Task Create_ReturnsOkResult_WhenCommandIsSuccessful()
         {
-            var createDto = new CreateStatisticRecordDTO
+            var createDto = new CreateStatisticRecordDto
             {
                 QrId = 1,
                 Count = 2,
@@ -41,7 +41,7 @@ namespace Streetcode.XUnitTest.ControllerTests.Analytics
                 StreetcodeCoordinateId = 1,
             };
 
-            var responseDto = new StatisticRecordDTO
+            var responseDto = new StatisticRecordDto
             {
                 Id = 1,
                 QrId = createDto.QrId,
@@ -69,7 +69,7 @@ namespace Streetcode.XUnitTest.ControllerTests.Analytics
         [Fact]
         public async Task Create_ReturnsBadRequest_WhenCommandFails()
         {
-            var createDto = new CreateStatisticRecordDTO
+            var createDto = new CreateStatisticRecordDto
             {
                 QrId = 1,
                 Count = 2,

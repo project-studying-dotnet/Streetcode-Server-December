@@ -24,14 +24,14 @@ public class GetTagsByIdHandlerTest : AdditionalContentTestWrapper
         var tagId = 1;
         var request = new GetTagByIdQuery(tagId);
         var tag = new TagEntity { Id = 1, Title = "Test tag 1" };
-        var tagDto = new TagDTO { Id = 1, Title = "Tag test 1" };
+        var tagDto = new TagDto { Id = 1, Title = "Tag test 1" };
 
         _repositoryWrapperMock.Setup(rep => rep.TagRepository.GetFirstOrDefaultAsync(
                 It.Is<Expression<Func<TagEntity, bool>>>(exp => exp.Compile().Invoke(tag)),
                 It.IsAny<Func<IQueryable<TagEntity>, IIncludableQueryable<TagEntity, object>>>()))
             .ReturnsAsync(tag);
 
-        _mapperMock.Setup(m => m.Map<TagDTO>(tag))
+        _mapperMock.Setup(m => m.Map<TagDto>(tag))
             .Returns(tagDto);
 
         // Act
@@ -46,7 +46,7 @@ public class GetTagsByIdHandlerTest : AdditionalContentTestWrapper
             It.Is<Expression<Func<TagEntity, bool>>>(exp => exp.Compile().Invoke(new TagEntity { Id = request.Id })),
             It.IsAny<Func<IQueryable<TagEntity>, IIncludableQueryable<TagEntity, object>>>()), Times.Once);
 
-        _mapperMock.Verify(m => m.Map<TagDTO>(tag), Times.Once);
+        _mapperMock.Verify(m => m.Map<TagDto>(tag), Times.Once);
     }
 
     [Fact]

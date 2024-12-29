@@ -35,7 +35,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         public void Should_InvokeStatisticRecordCreateDTOValidatorForIncorrectStatisticRecord()
         {
             // Arrange
-            var statisticRecord = new CreateStatisticRecordDTO
+            var statisticRecord = new CreateStatisticRecordDto
             {
                 QrId = 3,
                 Address = "house123",
@@ -56,7 +56,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         public void Should_NotHaveErrorsForValidModel()
         {
             // Arrange
-            var statisticRecord = new CreateStatisticRecordDTO
+            var statisticRecord = new CreateStatisticRecordDto
             {
                 QrId = 3,
                 Address = "house123",

@@ -33,7 +33,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         public void Should_NotHaveErrorForValidPayment()
         {
             // Arrange
-            var validPayment = new PaymentDTO
+            var validPayment = new PaymentDto
             {
                 Amount = 100,
                 RedirectUrl = "https://example.com"
@@ -52,13 +52,13 @@ namespace Streetcode.XUnitTest.ValidatorTests
         public void Should_InvokePaymentDTOValidatorForIncorrectPayment()
         {
             // Arrange
-            var invalidPayment = new PaymentDTO
+            var invalidPayment = new PaymentDto
             {
                 Amount = -5,
                 RedirectUrl = "https://example.com"
             };
 
-            var command = new CreateInvoiceCommand(new PaymentDTO());
+            var command = new CreateInvoiceCommand(new PaymentDto());
 
             // Act
             var result = _validator.TestValidate(command);

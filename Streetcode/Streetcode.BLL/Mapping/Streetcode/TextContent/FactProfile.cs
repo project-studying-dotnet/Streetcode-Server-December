@@ -10,9 +10,9 @@ namespace Streetcode.BLL.Mapping.Streetcode.TextContent
         public FactProfile()
         {
             CreateMap<Fact, FactDto>().ReverseMap();
-            CreateMap<Fact, CreateFactDTO>().ReverseMap();
-            CreateMap<Image, CreateFactImageDTO>().ReverseMap();
-            CreateMap<ImageDetails, CreateFactImageDetailsDTO>().ReverseMap();
+            CreateMap<Fact, CreateFactDto>().ReverseMap();
+            CreateMap<Image, CreateFactImageDto>().ReverseMap();
+            CreateMap<ImageDetails, CreateFactImageDetailsDto>().ReverseMap();
             CreateMap<Fact, FactUpdateCreateDto>().ReverseMap();
         }
     }

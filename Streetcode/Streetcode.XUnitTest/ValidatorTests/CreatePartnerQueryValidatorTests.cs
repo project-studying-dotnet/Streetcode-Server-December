@@ -36,15 +36,15 @@ namespace Streetcode.XUnitTest.ValidatorTests
         public void Should_NotHaveErrorForValidPartner()
         {
             // Arrange
-            var validPartner = new CreatePartnerDTO
+            var validPartner = new CreatePartnerDto
             {
                 Id = 1,
                 Title = "Valid Partner",
                 Description = "A description for the valid partner.",
                 TargetUrl = "https://valid-url.com",
                 LogoId = 123,
-                PartnerSourceLinks = new List<CreatePartnerSourceLinkDTO>() { new CreatePartnerSourceLinkDTO() { Id = 3, LogoType = DAL.Enums.LogoType.Twitter, TargetUrl = "https://valid-url.com" } },
-                Streetcodes = new List<StreetcodeShortDTO>() { new StreetcodeShortDTO() { Id = 3, Title = "title" } }
+                PartnerSourceLinks = new List<CreatePartnerSourceLinkDto>() { new CreatePartnerSourceLinkDto() { Id = 3, LogoType = DAL.Enums.LogoType.Twitter, TargetUrl = "https://valid-url.com" } },
+                Streetcodes = new List<StreetcodeShortDto>() { new StreetcodeShortDto() { Id = 3, Title = "title" } }
             };
 
             var query = new CreatePartnerQuery(validPartner);
@@ -60,15 +60,15 @@ namespace Streetcode.XUnitTest.ValidatorTests
         public void Should_InvokePartnerDTOValidatorForIncorrectPartner()
         {
             // Arrange
-            var invalidPartner = new CreatePartnerDTO
+            var invalidPartner = new CreatePartnerDto
             {
                 Id = -2,
                 Title = "Valid Partner",
                 Description = "A description for the valid partner.",
                 TargetUrl = "https://valid-url.com",
                 LogoId = 123,
-                PartnerSourceLinks = new List<CreatePartnerSourceLinkDTO>() { new CreatePartnerSourceLinkDTO() { Id = 3, LogoType = DAL.Enums.LogoType.Twitter, TargetUrl = "https://valid-url.com" } },
-                Streetcodes = new List<StreetcodeShortDTO>() { new StreetcodeShortDTO() { Id = 3, Title = "title" } }
+                PartnerSourceLinks = new List<CreatePartnerSourceLinkDto>() { new CreatePartnerSourceLinkDto() { Id = 3, LogoType = DAL.Enums.LogoType.Twitter, TargetUrl = "https://valid-url.com" } },
+                Streetcodes = new List<StreetcodeShortDto>() { new StreetcodeShortDto() { Id = 3, Title = "title" } }
             };
 
             var invalidQuery = new CreatePartnerQuery(invalidPartner);
@@ -85,15 +85,15 @@ namespace Streetcode.XUnitTest.ValidatorTests
         public void Should_PartnerDTOValidatorForIncorrectPartner1()
         {
             // Arrange
-            var invalidPartner = new CreatePartnerDTO
+            var invalidPartner = new CreatePartnerDto
             {
                 Id = -2,
                 Title = "Valid Partner",
                 Description = "A description for the valid partner.",
                 TargetUrl = "no url",
                 LogoId = 123,
-                PartnerSourceLinks = new List<CreatePartnerSourceLinkDTO>(),
-                Streetcodes = new List<StreetcodeShortDTO>() { new StreetcodeShortDTO() { Id = 3, Title = "title" } }
+                PartnerSourceLinks = new List<CreatePartnerSourceLinkDto>(),
+                Streetcodes = new List<StreetcodeShortDto>() { new StreetcodeShortDto() { Id = 3, Title = "title" } }
             };
 
             var invalidQuery = new CreatePartnerQuery(invalidPartner);

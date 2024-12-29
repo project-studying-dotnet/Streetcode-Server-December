@@ -8,7 +8,7 @@ namespace Streetcode.BLL.Mapping.Streetcode.TextContent
     {
         public TermProfile()
         {
-            CreateMap<Term, TermDTO>().ReverseMap();
+            CreateMap<Term, TermDto>().ReverseMap();
         }
     }
 }

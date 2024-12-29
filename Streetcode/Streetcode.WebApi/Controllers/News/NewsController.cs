@@ -44,13 +44,13 @@ namespace Streetcode.WebApi.Controllers.News
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] NewsDTO news)
+        public async Task<IActionResult> Create([FromBody] NewsDto news)
         {
             return HandleResult(await Mediator.Send(new CreateNewsCommand(news)));
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] NewsDTO news)
+        public async Task<IActionResult> Update([FromBody] NewsDto news)
         {
             return HandleResult(await Mediator.Send(new UpdateNewsCommand(news)));
         }

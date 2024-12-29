@@ -33,7 +33,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
         {
             // A(Arrange):
 
-            var audioCreateDTO = new AudioFileBaseCreateDTO
+            var audioCreateDTO = new AudioFileBaseCreateDto
             {
                 Description = "description",
                 Title = "testCreation",
@@ -51,7 +51,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
                 Base64 = "base64"
             };
            
-            var audioDTO = new AudioDTO
+            var audioDTO = new AudioDto
             {
                 Id = audio.Id,
                 Description = audio.Title,
@@ -61,7 +61,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
             };
 
             _mockMapper.Setup(m => m.Map<Audio>(audioCreateDTO)).Returns(audio);
-            _mockMapper.Setup(m => m.Map<AudioDTO>(audio)).Returns(audioDTO);
+            _mockMapper.Setup(m => m.Map<AudioDto>(audio)).Returns(audioDTO);
 
             _mockRepositoryWrapper.Setup(r => r.AudioRepository.CreateAsync(audio));
             _mockRepositoryWrapper.Setup(r => r.SaveChangesAsync()).ReturnsAsync(1); 
@@ -85,7 +85,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
         {
             // A(Arrange):
 
-            var audioCreateDTO = new AudioFileBaseCreateDTO
+            var audioCreateDTO = new AudioFileBaseCreateDto
             {
                 Description = "description",
                 Title = "testCreation",

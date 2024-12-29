@@ -30,9 +30,9 @@ public class GetCoordinateByStreetcodeIdHandlerTest : AdditionalContentTestWrapp
         {
             new StreetcodeCoordinateEntity { Id = 1, StreetcodeId = 1 },
         };
-        IEnumerable<StreetcodeCoordinateDTO> streetcodeCoordinateDto = new[]
+        IEnumerable<StreetcodeCoordinateDto> streetcodeCoordinateDto = new[]
         {
-            new StreetcodeCoordinateDTO { Id = 1, StreetcodeId = 1 },
+            new StreetcodeCoordinateDto { Id = 1, StreetcodeId = 1 },
         };
 
         _repositoryWrapperMock.Setup(rep => rep.StreetcodeRepository.GetFirstOrDefaultAsync(
@@ -47,7 +47,7 @@ public class GetCoordinateByStreetcodeIdHandlerTest : AdditionalContentTestWrapp
                     IIncludableQueryable<StreetcodeCoordinateEntity, object>>>()))
             .ReturnsAsync(streetcodeCoordinateList);
 
-        _mapperMock.Setup(rep => rep.Map<IEnumerable<StreetcodeCoordinateDTO>>(streetcodeCoordinateList))
+        _mapperMock.Setup(rep => rep.Map<IEnumerable<StreetcodeCoordinateDto>>(streetcodeCoordinateList))
             .Returns(streetcodeCoordinateDto);
 
         // Act
@@ -69,7 +69,7 @@ public class GetCoordinateByStreetcodeIdHandlerTest : AdditionalContentTestWrapp
                     exp => exp.Compile().Invoke(new StreetcodeCoordinateEntity { StreetcodeId = request.StreetcodeId })),
                 It.IsAny<Func<IQueryable<StreetcodeCoordinateEntity>, IIncludableQueryable<StreetcodeCoordinateEntity, object>>>()), Times.Once);
 
-        _mapperMock.Verify(m => m.Map<IEnumerable<StreetcodeCoordinateDTO>>(streetcodeCoordinateList), Times.Once);
+        _mapperMock.Verify(m => m.Map<IEnumerable<StreetcodeCoordinateDto>>(streetcodeCoordinateList), Times.Once);
     }
     
     [Fact]

@@ -53,7 +53,7 @@ namespace Streetcode.WebApi.Controllers.Source
 
         [AuthorizeRoles(UserRole.Admin)]
         [HttpPut]
-        public async Task<IActionResult> UpdateCategories([FromBody] SourceLinkCategoryDTO sourceLinkCategory)
+        public async Task<IActionResult> UpdateCategories([FromBody] SourceLinkCategoryDto sourceLinkCategory)
         {
             return HandleResult(await Mediator.Send(new UpdateSourceLinkCategoryCommand(sourceLinkCategory)));
         }

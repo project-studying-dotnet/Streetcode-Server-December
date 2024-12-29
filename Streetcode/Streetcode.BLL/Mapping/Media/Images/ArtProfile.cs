@@ -8,8 +8,8 @@ namespace Streetcode.BLL.Mapping.Media.Images
     {
         public ArtProfile()
         {
-            CreateMap<Art, ArtDTO>().ReverseMap();
-            CreateMap<ArtCreateDTO, Art>();
+            CreateMap<Art, ArtDto>().ReverseMap();
+            CreateMap<ArtCreateDto, Art>();
         }
     }
 }

@@ -13,7 +13,7 @@ using Streetcode.DAL.Repositories.Realizations.Base;
 
 namespace Streetcode.BLL.MediatR.Media.Video.Create
 {
-    public class CreateVideoHandler : IRequestHandler<CreateVideoCommand, Result<VideoDTO>>
+    public class CreateVideoHandler : IRequestHandler<CreateVideoCommand, Result<VideoDto>>
     {
         private readonly IRepositoryWrapper _repoWrapper;
         private readonly IMapper _mapper;
@@ -26,7 +26,7 @@ namespace Streetcode.BLL.MediatR.Media.Video.Create
             _logger = logger;
         }
 
-        public async Task<Result<VideoDTO>> Handle(CreateVideoCommand request, CancellationToken cancellationToken)
+        public async Task<Result<VideoDto>> Handle(CreateVideoCommand request, CancellationToken cancellationToken)
         {
             var isStreetcodeExsit = await _repoWrapper.StreetcodeRepository.
                 GetFirstOrDefaultAsync(s => s.Id == request.Video.StreetcodeId);
@@ -46,7 +46,7 @@ namespace Streetcode.BLL.MediatR.Media.Video.Create
 
             var res = await _repoWrapper.SaveChangesAsync() > 0;
 
-            var videoDTO = _mapper.Map<VideoDTO>(videoEntity);
+            var videoDTO = _mapper.Map<VideoDto>(videoEntity);
 
             if (res)
             {

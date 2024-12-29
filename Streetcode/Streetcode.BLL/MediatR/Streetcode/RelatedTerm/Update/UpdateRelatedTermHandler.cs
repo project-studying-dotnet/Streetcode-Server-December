@@ -10,7 +10,7 @@ using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Update
 {
-    public class UpdateRelatedTermHandler : IRequestHandler<UpdateRelatedTermCommand, Result<RelatedTermDTO>>
+    public class UpdateRelatedTermHandler : IRequestHandler<UpdateRelatedTermCommand, Result<RelatedTermDto>>
     {
         private readonly IMapper _mapper;
         private readonly IRepositoryWrapper _repository;
@@ -23,7 +23,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Update
             _logger = logger;
         }
 
-        public async Task<Result<RelatedTermDTO>> Handle(UpdateRelatedTermCommand request, CancellationToken cancellationToken)
+        public async Task<Result<RelatedTermDto>> Handle(UpdateRelatedTermCommand request, CancellationToken cancellationToken)
         {
             var existingRelatedTerm = await _repository.RelatedTermRepository
                 .GetFirstOrDefaultBySpecAsync(new RelatedTermWithTermSpecification(request.RelatedTerm.Id));
@@ -48,7 +48,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Update
                 return Result.Fail(new Error(errorMsg));
             }
 
-            var updatedRelatedTermDTO = _mapper.Map<RelatedTermDTO>(existingRelatedTerm);
+            var updatedRelatedTermDTO = _mapper.Map<RelatedTermDto>(existingRelatedTerm);
 
             return Result.Ok(updatedRelatedTermDTO);
         }

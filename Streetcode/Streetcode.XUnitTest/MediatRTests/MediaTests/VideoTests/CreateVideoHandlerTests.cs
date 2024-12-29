@@ -32,7 +32,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.VideoTests
         {
             // A(Arrange):
 
-            var videoCreateDTO = new VideoCreateDTO
+            var videoCreateDTO = new VideoCreateDto
             {
                 Url = "https://example.com",
                 StreetcodeId = 1
@@ -47,7 +47,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.VideoTests
                 StreetcodeId = 1
             };
 
-            var videoDTO = new VideoDTO
+            var videoDTO = new VideoDto
             {
                 Id = 1,
                 Description = "Description",
@@ -61,7 +61,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.VideoTests
             };
 
             _mockMapper.Setup(m => m.Map<Video>(videoCreateDTO)).Returns(video);
-            _mockMapper.Setup(m => m.Map<VideoDTO>(video)).Returns(videoDTO);
+            _mockMapper.Setup(m => m.Map<VideoDto>(video)).Returns(videoDTO);
 
             _mockRepositoryWrapper.Setup(r => r.StreetcodeRepository.GetFirstOrDefaultAsync(
                 It.IsAny<Expression<Func<StreetcodeContent, bool>>>(), 
@@ -92,7 +92,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.VideoTests
         {
             // A(Arrange):
 
-            var videoCreateDTO = new VideoCreateDTO
+            var videoCreateDTO = new VideoCreateDto
             {
                 Url = "https://example.com",
                 StreetcodeId = 1

@@ -37,7 +37,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Partners.Update
 		public async Task Handler_WhenNoPartnerFound_ShouldReturnsFail()
 		{
 			// Arrange
-			var newPartnerDTO = new CreatePartnerDTO { Id = 1 };
+			var newPartnerDTO = new CreatePartnerDto { Id = 1 };
 			var request = new UpdatePartnerQuery(newPartnerDTO);
 
 			_mockRepositoryWrapper.Setup(repo => repo.PartnersRepository
@@ -56,8 +56,8 @@ namespace Streetcode.XUnitTest.MediatRTests.Partners.Update
 		public async Task Handle_WhenPartnerUpdated_ShouldReturnSuccess()
 		{
 			// Arrange
-			var updatePartnerDTO = new CreatePartnerDTO { Id = 1, Streetcodes = new List<StreetcodeShortDTO> { new StreetcodeShortDTO { Id = 1 } } }; // Використовуємо CreatePartnerDTO з правильними типами
-			var partnerDTO = new PartnerDTO { Id = 1 };
+			var updatePartnerDTO = new CreatePartnerDto { Id = 1, Streetcodes = new List<StreetcodeShortDto> { new StreetcodeShortDto { Id = 1 } } }; // Використовуємо CreatePartnerDto з правильними типами
+			var partnerDTO = new PartnerDto { Id = 1 };
 			var partner = new Partner { Id = 1, Streetcodes = new List<StreetcodeContent> { new StreetcodeContent { Id = 1 } } };
 
 			_mockMapper.Setup(m => m.Map<Partner>(updatePartnerDTO)).Returns(partner);
@@ -71,7 +71,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Partners.Update
 				.GetAllAsync(It.IsAny<Expression<Func<StreetcodePartner, bool>>>(), null))
 				.ReturnsAsync(new List<StreetcodePartner>());
 
-			_mockMapper.Setup(m => m.Map<PartnerDTO>(partner)).Returns(partnerDTO);
+			_mockMapper.Setup(m => m.Map<PartnerDto>(partner)).Returns(partnerDTO);
 
 			// Act
 			var result = await _handler.Handle(new UpdatePartnerQuery(updatePartnerDTO), CancellationToken.None);
@@ -85,7 +85,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Partners.Update
 		public async Task Handle_WhenExceptionThrown_ShouldReturnFail()
 		{
 			var errorMsg = "Saving updates";
-			var updatePartnerDTO = new CreatePartnerDTO { Id = 1, Streetcodes = new List<StreetcodeShortDTO> { new StreetcodeShortDTO { Id = 1 } } };
+			var updatePartnerDTO = new CreatePartnerDto { Id = 1, Streetcodes = new List<StreetcodeShortDto> { new StreetcodeShortDto { Id = 1 } } };
 			var partner = new Partner { Id = 1, Streetcodes = new List<StreetcodeContent> { new StreetcodeContent { Id = 1 } } };
 
 			// Arrange

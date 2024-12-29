@@ -10,11 +10,11 @@ namespace Streetcode.BLL.Mapping.Streetcode
     {
         public StreetcodeProfile()
         {
-            CreateMap<StreetcodeContent, StreetcodeDTO>()
+            CreateMap<StreetcodeContent, StreetcodeDto>()
                 .ForMember(x => x.StreetcodeType, conf => conf.MapFrom(s => GetStreetcodeType(s)))
                 .ReverseMap();
-            CreateMap<StreetcodeContent, StreetcodeShortDTO>().ReverseMap();
-            CreateMap<StreetcodeContent, StreetcodeMainPageDTO>()
+            CreateMap<StreetcodeContent, StreetcodeShortDto>().ReverseMap();
+            CreateMap<StreetcodeContent, StreetcodeMainPageDto>()
                  .ForPath(dto => dto.Text, conf => conf
                     .MapFrom(e => e.Text.Title))
                 .ForPath(dto => dto.ImageId, conf => conf

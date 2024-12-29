@@ -8,7 +8,7 @@ using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Team.Create
 {
-    public class CreatePositionHandler : IRequestHandler<CreatePositionCommand, Result<PositionDTO>>
+    public class CreatePositionHandler : IRequestHandler<CreatePositionCommand, Result<PositionDto>>
     {
         private readonly IMapper _mapper;
         private readonly IRepositoryWrapper _repository;
@@ -21,7 +21,7 @@ namespace Streetcode.BLL.MediatR.Team.Create
             _logger = logger;
         }
 
-        public async Task<Result<PositionDTO>> Handle(CreatePositionCommand request, CancellationToken cancellationToken)
+        public async Task<Result<PositionDto>> Handle(CreatePositionCommand request, CancellationToken cancellationToken)
         {
             var newPosition = await _repository.PositionRepository.CreateAsync(new Positions()
             {
@@ -38,7 +38,7 @@ namespace Streetcode.BLL.MediatR.Team.Create
                 return Result.Fail(ex.Message);
             }
 
-            return Result.Ok(_mapper.Map<PositionDTO>(newPosition));
+            return Result.Ok(_mapper.Map<PositionDto>(newPosition));
         }
     }
 }

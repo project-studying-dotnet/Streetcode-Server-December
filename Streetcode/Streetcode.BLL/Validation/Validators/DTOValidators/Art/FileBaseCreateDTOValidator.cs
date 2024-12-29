@@ -3,7 +3,7 @@ using Microsoft.VisualBasic.FileIO;
 using Streetcode.BLL.DTO.Media;
 namespace Streetcode.BLL.Validation.Validators.DTOValidators.Art
 {
-    public class FileBaseCreateDTOValidator : AbstractValidator<FileBaseCreateDTO>
+    public class FileBaseCreateDTOValidator : AbstractValidator<FileBaseCreateDto>
     {
         private static readonly HashSet<string> _imageMimeTypes = new()
         {

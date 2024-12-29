@@ -9,7 +9,7 @@ using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.GetByTransliterationUrl
 {
-  public class GetStreetcodeByTransliterationUrlHandler : IRequestHandler<GetStreetcodeByTransliterationUrlQuery, Result<StreetcodeDTO>>
+  public class GetStreetcodeByTransliterationUrlHandler : IRequestHandler<GetStreetcodeByTransliterationUrlQuery, Result<StreetcodeDto>>
     {
         private readonly IRepositoryWrapper _repository;
         private readonly IMapper _mapper;
@@ -22,7 +22,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.GetByTransliterationUrl
             _logger = logger;
         }
 
-        public async Task<Result<StreetcodeDTO>> Handle(GetStreetcodeByTransliterationUrlQuery request, CancellationToken cancellationToken)
+        public async Task<Result<StreetcodeDto>> Handle(GetStreetcodeByTransliterationUrlQuery request, CancellationToken cancellationToken)
         {
             var streetcode = await _repository.StreetcodeRepository
                 .GetFirstOrDefaultAsync(
@@ -40,7 +40,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.GetByTransliterationUrl
                                                 t => t.StreetcodeId == streetcode.Id,
                                                 include: q => q.Include(ti => ti.Tag));
 
-            var streetcodeDTO = _mapper.Map<StreetcodeDTO>(streetcode);
+            var streetcodeDTO = _mapper.Map<StreetcodeDto>(streetcode);
             streetcodeDTO.Tags = _mapper.Map<List<StreetcodeTagDTO>>(tagIndexed);
             return Result.Ok(streetcodeDTO);
         }

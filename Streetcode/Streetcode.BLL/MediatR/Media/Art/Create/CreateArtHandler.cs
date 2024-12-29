@@ -10,7 +10,7 @@ using Streetcode.BLL.Resources;
 
 namespace Streetcode.BLL.MediatR.Media.Art.Create
 {
-    public class CreateArtHandler : IRequestHandler<CreateArtCommand, Result<ArtDTO>>
+    public class CreateArtHandler : IRequestHandler<CreateArtCommand, Result<ArtDto>>
     {
         private readonly IMapper _mapper;
         private readonly IRepositoryWrapper _repositoryWrapper;
@@ -23,9 +23,9 @@ namespace Streetcode.BLL.MediatR.Media.Art.Create
             _logger = logger;
         }
 
-        public async Task<Result<ArtDTO>> Handle(CreateArtCommand command, CancellationToken cancellationToken)
+        public async Task<Result<ArtDto>> Handle(CreateArtCommand command, CancellationToken cancellationToken)
         {
-            // Mapping ArtCreateDTO -> ArtEntity
+            // Mapping ArtCreateDto -> ArtEntity
             var newArt = _mapper.Map<ArtEntity>(command.newArt);
             if (newArt == null)
             {
@@ -93,7 +93,7 @@ namespace Streetcode.BLL.MediatR.Media.Art.Create
                 }
             }
 
-            return Result.Ok(_mapper.Map<ArtDTO>(entity));
+            return Result.Ok(_mapper.Map<ArtDto>(entity));
         }
     }
 }

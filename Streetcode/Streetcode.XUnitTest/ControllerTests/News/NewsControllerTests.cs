@@ -42,7 +42,7 @@ namespace Streetcode.Tests.Controllers.News
         public async Task GetAll_ReturnsOkResultWithNewsList()
         {
             // Arrange
-            var newsList = new List<NewsDTO> { new NewsDTO { Id = 1, Title = "Test News" } };
+            var newsList = new List<NewsDto> { new NewsDto { Id = 1, Title = "Test News" } };
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetAllNewsQuery>(), default)).ReturnsAsync(newsList);
 
             // Act
@@ -57,7 +57,7 @@ namespace Streetcode.Tests.Controllers.News
         public async Task GetById_ReturnsOkResultWithNews()
         {
             // Arrange
-            var news = new NewsDTO { Id = 1, Title = "Test News" };
+            var news = new NewsDto { Id = 1, Title = "Test News" };
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetNewsByIdQuery>(), default)).ReturnsAsync(news);
 
             // Act
@@ -72,7 +72,7 @@ namespace Streetcode.Tests.Controllers.News
         public async Task GetByUrl_ReturnsOkResultWithNews()
         {
             // Arrange
-            var news = new NewsDTO { Id = 1, Title = "Test News", URL = "test-url" };
+            var news = new NewsDto { Id = 1, Title = "Test News", URL = "test-url" };
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetNewsByUrlQuery>(), default)).ReturnsAsync(news);
 
             // Act
@@ -87,7 +87,7 @@ namespace Streetcode.Tests.Controllers.News
         public async Task Create_ReturnsOkResult()
         {
             // Arrange
-            var news = new NewsDTO { Id = 1, Title = "Test News" };
+            var news = new NewsDto { Id = 1, Title = "Test News" };
             _mediatorMock.Setup(m => m.Send(It.IsAny<CreateNewsCommand>(), default)).ReturnsAsync(news);
 
             // Act
@@ -102,7 +102,7 @@ namespace Streetcode.Tests.Controllers.News
         public async Task Update_ReturnsOkResult()
         {
             // Arrange
-            var news = new NewsDTO { Id = 1, Title = "Updated News" };
+            var news = new NewsDto { Id = 1, Title = "Updated News" };
             _mediatorMock.Setup(m => m.Send(It.IsAny<UpdateNewsCommand>(), default)).ReturnsAsync(news);
 
             // Act

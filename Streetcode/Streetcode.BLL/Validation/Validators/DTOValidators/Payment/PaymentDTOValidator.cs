@@ -3,7 +3,7 @@ using Streetcode.BLL.DTO.Payment;
 
 namespace Streetcode.BLL.Validation.Validators.DTOValidators.Payment
 {
-    public class PaymentDTOValidator : AbstractValidator<PaymentDTO>
+    public class PaymentDTOValidator : AbstractValidator<PaymentDto>
     {
         public PaymentDTOValidator()
         {

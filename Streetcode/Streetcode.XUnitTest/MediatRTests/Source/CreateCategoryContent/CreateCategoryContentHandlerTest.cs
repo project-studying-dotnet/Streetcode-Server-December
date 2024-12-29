@@ -36,7 +36,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.CreateCategoryContent
 		public async Task Handle_WhenCreationFails_ShouldReturnFail()
 		{
 			// Arrange
-			var newContent = new CategoryContentCreateDTO
+			var newContent = new CategoryContentCreateDto
 			{
 				Text = "Sample Content",
 				SourceLinkCategoryId = 1,
@@ -77,7 +77,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.CreateCategoryContent
 		public async Task Handle_WhenCreationSucceeds_ShouldReturnSuccess()
 		{
 			// Arrange
-			var newContent = new CategoryContentCreateDTO
+			var newContent = new CategoryContentCreateDto
 			{
 				Text = "Sample Content",
 				SourceLinkCategoryId = 1,

@@ -166,7 +166,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Timeline.TimelineItems.Create
                 Date = DateTime.UtcNow,
                 Title = "Event 1",
                 Description = "Description 1",
-                HistoricalContexts = new List<HistoricalContextDTO>(),
+                HistoricalContexts = new List<HistoricalContextDto>(),
                 StreetcodeId = 1
             });
         }
@@ -181,7 +181,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Timeline.TimelineItems.Create
             {
                 StreetcodeId = 1,
                 Title = "Test title",
-                HistoricalContexts = new List<HistoricalContextDTO>
+                HistoricalContexts = new List<HistoricalContextDto>
                 {
                     new() { Id = 1, Title = "Context 1" },
                     new() { Id = 2, Title = "Context 2" }

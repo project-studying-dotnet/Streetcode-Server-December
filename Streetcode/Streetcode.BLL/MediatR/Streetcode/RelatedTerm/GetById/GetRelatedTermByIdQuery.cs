@@ -4,7 +4,7 @@ using Streetcode.BLL.DTO.Streetcode.TextContent;
 
 namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetById
 {
-    public record GetRelatedTermByIdQuery(int id) : IRequest<Result<RelatedTermDTO>>
+    public record GetRelatedTermByIdQuery(int id) : IRequest<Result<RelatedTermDto>>
     {
     }
 }

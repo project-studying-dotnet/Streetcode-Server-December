@@ -2,6 +2,7 @@ using System.Transactions;
 using Repositories.Interfaces;
 using Streetcode.DAL.Repositories.Interfaces.AdditionalContent;
 using Streetcode.DAL.Repositories.Interfaces.Analytics;
+using Streetcode.DAL.Repositories.Interfaces.Comment;
 using Streetcode.DAL.Repositories.Interfaces.Media.Images;
 using Streetcode.DAL.Repositories.Interfaces.Newss;
 using Streetcode.DAL.Repositories.Interfaces.Partners;
@@ -12,7 +13,6 @@ using Streetcode.DAL.Repositories.Interfaces.Team;
 using Streetcode.DAL.Repositories.Interfaces.Timeline;
 using Streetcode.DAL.Repositories.Interfaces.Toponyms;
 using Streetcode.DAL.Repositories.Interfaces.Transactions;
-using Streetcode.DAL.Repositories.Interfaces.Users;
 namespace Streetcode.DAL.Repositories.Interfaces.Base;
 
 public interface IRepositoryWrapper
@@ -44,7 +44,6 @@ public interface IRepositoryWrapper
     ITransactLinksRepository TransactLinksRepository { get; }
     IHistoricalContextRepository HistoricalContextRepository { get; }
     IPartnerSourceLinkRepository PartnerSourceLinkRepository { get; }
-    IUserRepository UserRepository { get; }
     IStreetcodeTagIndexRepository StreetcodeTagIndexRepository { get; }
     IPartnerStreetcodeRepository PartnerStreetcodeRepository { get;  }
     INewsRepository NewsRepository { get; }
@@ -52,6 +51,7 @@ public interface IRepositoryWrapper
     IHistoricalContextTimelineRepository HistoricalContextTimelineRepository { get; }
     IStreetcodeToponymRepository StreetcodeToponymRepository { get; }
     IStreetcodeImageRepository StreetcodeImageRepository { get; }
+    ICommentRepository CommentRepository { get; }
     public int SaveChanges();
     public Task<int> SaveChangesAsync();
     public TransactionScope BeginTransaction();

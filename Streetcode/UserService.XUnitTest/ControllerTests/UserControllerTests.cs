@@ -1,11 +1,18 @@
-﻿using Moq;
-using Xunit;
+﻿using FluentResults;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Moq;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using UserService.BLL.DTO.User;
 using UserService.BLL.Interfaces.User;
+using UserService.BLL.Services.Jwt;
 using UserService.WebApi.Controllers;
-using FluentResults;
-using Microsoft.AspNetCore.Http;
+using UserService.WebApi.Extensions;
+using Xunit;
 
 namespace UserService.XUnitTest.ControllerTests
 {
@@ -13,19 +20,25 @@ namespace UserService.XUnitTest.ControllerTests
     {
         private readonly Mock<ILoginService> _loginServiceMock;
         private readonly Mock<IUserService> _userServiceMock;
-        private readonly UserController _controller;
         private readonly Mock<HttpContext> _mockHttpContext;
+        private readonly Mock<IOptions<JwtConfiguration>> _jwtConfigurationMock;
+        private readonly JwtConfiguration _jwtConfiguration;
+        private readonly UserController _controller;
 
         public UserControllerTests()
         {
             _loginServiceMock = new Mock<ILoginService>();
             _userServiceMock = new Mock<IUserService>();
-
+            _jwtConfigurationMock = new Mock<IOptions<JwtConfiguration>>();
             _mockHttpContext = SetupMockHttpContext();
 
-            _controller = new UserController(_loginServiceMock.Object, _userServiceMock.Object)
+            _jwtConfiguration = new JwtConfiguration { AccessTokenLifetime = 1 }; // Set access token lifetime to 1 hour
+            _jwtConfigurationMock.Setup(x => x.Value).Returns(_jwtConfiguration);
+
+
+            _controller = new UserController(_loginServiceMock.Object, _userServiceMock.Object, _jwtConfigurationMock.Object)
             {
-                ControllerContext = new ControllerContext()
+                ControllerContext = new ControllerContext
                 {
                     HttpContext = _mockHttpContext.Object
                 }
@@ -33,23 +46,28 @@ namespace UserService.XUnitTest.ControllerTests
         }
 
         [Fact]
-        public async Task Login_Should_Return_BadRequest_When_Login_Fails()
+        public async Task Login_ShouldReturnBadRequest_WhenLoginFails()
         {
             // Arrange
-            _loginServiceMock.Setup(x => x.Login(It.IsAny<LoginDTO>())).ReturnsAsync(Result.Fail("Invalid credentials"));
+            var errorMessage = "Invalid credentials";
+            _loginServiceMock.Setup(x => x.Login(It.IsAny<LoginDTO>())).ReturnsAsync(Result.Fail(errorMessage));
 
             // Act
             var result = await _controller.Login(new LoginDTO());
 
             // Assert
-            Assert.IsType<BadRequestObjectResult>(result);
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+            var actualErrors = Assert.IsType<List<IError>>(badRequestResult.Value);
+            Assert.Contains(actualErrors, e => e.Message == errorMessage);
         }
 
         [Fact]
-        public async Task Login_Should_Return_Ok_When_Login_Succeeds()
+        public async Task Login_ShouldReturnOk_WhenLoginSucceeds()
         {
             // Arrange
             _loginServiceMock.Setup(x => x.Login(It.IsAny<LoginDTO>())).ReturnsAsync(Result.Ok("mockToken"));
+
+            var expirationTime = DateTime.UtcNow.AddHours(_jwtConfiguration.AccessTokenLifetime);
 
             // Act
             var result = await _controller.Login(new LoginDTO());

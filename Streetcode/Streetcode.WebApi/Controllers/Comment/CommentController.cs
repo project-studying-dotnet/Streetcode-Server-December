@@ -9,14 +9,22 @@ using Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetAllByTermId;
 using Streetcode.BLL.MediatR.Comment.GetCommentsByStreetcodeId;
 using Streetcode.BLL.MediatR.Comment.GetCommentsToReview;
 using Streetcode.BLL.MediatR.Comment.AdminDeleteComment;
+using Streetcode.BLL.MediatR.Comment.GetCommentByIdWithReplies;
 using Streetcode.BLL.MediatR.Comment.CreateComment;
 using Streetcode.BLL.MediatR.Comment.UserDeleteComment;
+
 
 namespace Streetcode.WebApi.Controllers.Comment
 {
     [Route("[action]")]
     public class CommentController : BaseApiController
     {
+        [HttpGet("{Id:int}")]
+        public async Task<IActionResult> GetById([FromRoute] int Id)
+        {
+            return HandleResult(await Mediator.Send(new GetCommentByIdWithRepliesQuery(Id)));
+        }
+
         [HttpGet("{streetcodeid:int}")]
         public async Task<IActionResult> GetByStreetcodeId([FromRoute] int streetcodeid)
         {

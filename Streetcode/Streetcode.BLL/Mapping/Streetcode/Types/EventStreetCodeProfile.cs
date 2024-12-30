@@ -12,6 +12,7 @@ namespace Streetcode.BLL.Mapping.Streetcode.Types
         {
             CreateMap<EventStreetcode, EventStreetcodeDto>()
                 .IncludeBase<StreetcodeContent, StreetcodeDto>().ReverseMap();
+            CreateMap<StreetcodeMainPageCreateDto, EventStreetcode>();
         }
     }
 }

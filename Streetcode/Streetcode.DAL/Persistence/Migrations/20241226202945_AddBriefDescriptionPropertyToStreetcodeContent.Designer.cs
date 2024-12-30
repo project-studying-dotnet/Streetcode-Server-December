@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Streetcode.DAL.Persistence;
 
@@ -11,9 +12,11 @@ using Streetcode.DAL.Persistence;
 namespace Streetcode.DAL.Persistence.Migrations
 {
     [DbContext(typeof(StreetcodeDbContext))]
-    partial class StreetcodeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241226202945_AddBriefDescriptionPropertyToStreetcodeContent")]
+    partial class AddBriefDescriptionPropertyToStreetcodeContent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -145,50 +148,6 @@ namespace Streetcode.DAL.Persistence.Migrations
                     b.HasIndex("StreetcodeId");
 
                     b.ToTable("qr_coordinates", "coordinates");
-                });
-
-            modelBuilder.Entity("Streetcode.DAL.Entities.Comment.Comment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DateModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StreetcodeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserFullName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ParentId");
-
-                    b.HasIndex("StreetcodeId");
-
-                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("Streetcode.DAL.Entities.Feedback.Response", b =>
@@ -1033,6 +992,46 @@ namespace Streetcode.DAL.Persistence.Migrations
                     b.ToTable("transaction_links", "transactions");
                 });
 
+            modelBuilder.Entity("Streetcode.DAL.Entities.Users.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Login")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users", "Users");
+                });
+
             modelBuilder.Entity("Streetcode.DAL.Entities.AdditionalContent.Coordinates.Types.StreetcodeCoordinate", b =>
                 {
                     b.HasBaseType("Streetcode.DAL.Entities.AdditionalContent.Coordinates.Coordinate");
@@ -1142,23 +1141,6 @@ namespace Streetcode.DAL.Persistence.Migrations
                     b.Navigation("Streetcode");
 
                     b.Navigation("StreetcodeCoordinate");
-                });
-
-            modelBuilder.Entity("Streetcode.DAL.Entities.Comment.Comment", b =>
-                {
-                    b.HasOne("Streetcode.DAL.Entities.Comment.Comment", "Parent")
-                        .WithMany("Children")
-                        .HasForeignKey("ParentId");
-
-                    b.HasOne("Streetcode.DAL.Entities.Streetcode.StreetcodeContent", "Streetcode")
-                        .WithMany("Comments")
-                        .HasForeignKey("StreetcodeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Parent");
-
-                    b.Navigation("Streetcode");
                 });
 
             modelBuilder.Entity("Streetcode.DAL.Entities.Media.Images.Art", b =>
@@ -1509,11 +1491,6 @@ namespace Streetcode.DAL.Persistence.Migrations
                     b.Navigation("StreetcodeTagIndices");
                 });
 
-            modelBuilder.Entity("Streetcode.DAL.Entities.Comment.Comment", b =>
-                {
-                    b.Navigation("Children");
-                });
-
             modelBuilder.Entity("Streetcode.DAL.Entities.Media.Audio", b =>
                 {
                     b.Navigation("Streetcode");
@@ -1553,8 +1530,6 @@ namespace Streetcode.DAL.Persistence.Migrations
 
             modelBuilder.Entity("Streetcode.DAL.Entities.Streetcode.StreetcodeContent", b =>
                 {
-                    b.Navigation("Comments");
-
                     b.Navigation("Coordinates");
 
                     b.Navigation("Facts");

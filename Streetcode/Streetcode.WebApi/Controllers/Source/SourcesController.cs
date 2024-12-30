@@ -68,7 +68,7 @@ namespace Streetcode.WebApi.Controllers.Source
 
         [AuthorizeRoles(UserRole.Admin)]
         [HttpPost]
-        public async Task<IActionResult> CreateCategory([FromBody] SourceLinkCategoryDTO sourceLinkCategory)
+        public async Task<IActionResult> CreateCategory([FromBody] SourceLinkCategoryDto sourceLinkCategory)
         {
             return HandleResult(await Mediator.Send(new CreateSourceLinkCategoryCommand(sourceLinkCategory)));
         }

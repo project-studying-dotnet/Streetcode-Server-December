@@ -16,7 +16,7 @@ using SourceCategory = Streetcode.DAL.Entities.Sources.SourceLinkCategory;
 
 namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.Create
 {
-	public class CreateSourceLinkCategoryHandler : IRequestHandler<CreateSourceLinkCategoryCommand, Result<SourceLinkCategoryDTO>>
+	public class CreateSourceLinkCategoryHandler : IRequestHandler<CreateSourceLinkCategoryCommand, Result<SourceLinkCategoryDto>>
 	{
 		private readonly IMapper _mapper;
 		private readonly IRepositoryWrapper _repositoryWrapper;
@@ -29,7 +29,7 @@ namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.Create
 			_logger = loggerService;
 		}
 
-		public async Task<Result<SourceLinkCategoryDTO>> Handle(CreateSourceLinkCategoryCommand command, CancellationToken cancellationToken)
+		public async Task<Result<SourceLinkCategoryDto>> Handle(CreateSourceLinkCategoryCommand command, CancellationToken cancellationToken)
 		{
 			var image = await _repositoryWrapper.ImageRepository
 				.GetFirstOrDefaultAsync(i => i.Id == command.SourceLinkCategory.ImageId);
@@ -55,10 +55,10 @@ namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.Create
 					return Result.Fail(new Error(errorMsg));
 				}
 
-				var resultDto = _mapper.Map<SourceLinkCategoryDTO>(newCategory);
+				var resultDto = _mapper.Map<SourceLinkCategoryDto>(newCategory);
 				if (image != null)
 				{
-					resultDto.Image = _mapper.Map<ImageDTO>(image);
+					resultDto.Image = _mapper.Map<ImageDto>(image);
 				}
 
 				return Result.Ok(resultDto);

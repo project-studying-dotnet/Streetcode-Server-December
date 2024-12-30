@@ -51,7 +51,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Fact.Create
         [Fact]
         public async Task Handle_FactIsNull_ReturnsResultFail()
         {
-
+            // Arrange
             var command = new CreateFactCommand(null!);
             string errorMsg = ErrorManager.GetCustomErrorText("FailCreateError", "fact");
 

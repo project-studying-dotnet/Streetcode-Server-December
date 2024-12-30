@@ -5,6 +5,7 @@ using Streetcode.BLL.MediatR.Sources.SourceLinkCategory.DeleteCategoryContent;
 using Microsoft.AspNetCore.Authorization;
 using UserService.BLL.Attributes;
 using UserService.DAL.Enums;
+using Streetcode.BLL.MediatR.Sources.SourceLinkCategory.UpdateCategoryContent;
 
 namespace Streetcode.WebApi.Controllers.Source
 {
@@ -22,6 +23,13 @@ namespace Streetcode.WebApi.Controllers.Source
 		public async Task<IActionResult> DeleteCategoryContent([FromRoute] int id)
 		{
 			return HandleResult(await Mediator.Send(new DeleteCategoryContentCommand(id)));
+		}
+
+		[AuthorizeRoles(UserRole.Admin)]
+		[HttpPut]
+		public async Task<IActionResult> UpdateCategoryContent([FromBody] CategoryContentCreateDTO categoryContent)
+		{
+			return HandleResult(await Mediator.Send(new UpdateCategoryContentCommand(categoryContent)));
 		}
 	}
 }

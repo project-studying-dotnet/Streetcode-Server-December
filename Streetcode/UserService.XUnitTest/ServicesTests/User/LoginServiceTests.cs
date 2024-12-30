@@ -14,6 +14,7 @@ using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using UserService.BLL.Services.Jwt;
+using UserService.BLL.DTO.Users;
 
 namespace UserService.XUnitTest.ServicesTests.User
 {

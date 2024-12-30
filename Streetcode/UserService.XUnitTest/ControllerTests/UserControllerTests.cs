@@ -11,6 +11,7 @@ using Streetcode.BLL.DTO.Users;
 using System.Collections.Generic;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
+using UserService.BLL.DTO.Users;
 
 namespace UserService.XUnitTest.ControllersTests;
 

@@ -14,6 +14,7 @@ using UserService.BLL.DTO.User;
 using UserService.BLL.Interfaces.Jwt;
 using UserService.BLL.Services.Jwt;
 using UserEntity = UserService.DAL.Entities.Users.User;
+using UserService.BLL.DTO.Users;
 namespace UserService.BLL.Services.User
 {
     public class LoginService : Interfaces.User.ILoginService

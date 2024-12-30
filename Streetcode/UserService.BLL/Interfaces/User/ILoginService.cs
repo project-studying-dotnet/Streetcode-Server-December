@@ -1,8 +1,9 @@
 ﻿using FluentResults;
-using Streetcode.BLL.DTO.Users;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using UserService.BLL.DTO.User;
+using UserService.BLL.DTO.Users;
+
 
 namespace UserService.BLL.Interfaces.User
 {

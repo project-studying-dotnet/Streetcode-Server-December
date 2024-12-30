@@ -168,7 +168,7 @@ namespace Streetcode.WebApi.Utils
 
 			var alreadyParsedRows = GetDistinctRows(allLinesFromDataCsv);
 
-			var alreadyParsedRowsToWrite = allLinesFromDataCsv.Distinct().ToList();
+			var alreadyParsedRowsToWrite = allLinesFromDataCsv.Distinct();
 
 			var remainsToParse = forParsingRows.Except(alreadyParsedRows)
 				.Select(x => x.Split(';').ToList()).ToList()

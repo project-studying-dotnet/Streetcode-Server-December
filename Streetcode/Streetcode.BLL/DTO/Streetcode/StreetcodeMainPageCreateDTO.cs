@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Streetcode.BLL.DTO.Streetcode
 {
-    public class StreetcodeMainPageCreateDTO
+    public class StreetcodeMainPageCreateDto
     {
         public int Index { get; set; }
         public StreetcodeType StreetcodeType { get; set; }

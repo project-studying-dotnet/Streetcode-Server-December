@@ -7,7 +7,7 @@ using Streetcode.BLL.Validation.Validators.DTOValidators.Art.Image;
 
 namespace Streetcode.BLL.Validation.Validators.DTOValidators.Streetcode
 {
-    public class StreetcodeMainPageCreateDTOValidator : AbstractValidator<StreetcodeMainPageCreateDTO>
+    public class StreetcodeMainPageCreateDTOValidator : AbstractValidator<StreetcodeMainPageCreateDto>
     {
         public StreetcodeMainPageCreateDTOValidator()
         {

@@ -25,7 +25,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         [Fact]
         public void Index_ShouldBeValid_WhenNotEmptyAndGreaterThanOrEqualToZero()
         {
-            var command = new CreateStreetcodeMainPageCommand(new StreetcodeMainPageCreateDTO
+            var command = new CreateStreetcodeMainPageCommand(new StreetcodeMainPageCreateDto
             {
                 Index = 1,
                 Images = imageListEmpty
@@ -39,7 +39,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         [Fact]
         public void Index_ShouldHaveValidationError_WhenEmptyOrNegative()
         {
-            var command = new CreateStreetcodeMainPageCommand(new StreetcodeMainPageCreateDTO
+            var command = new CreateStreetcodeMainPageCommand(new StreetcodeMainPageCreateDto
             {
                 Index = -1,
                 Images = imageListEmpty
@@ -54,7 +54,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         [Fact]
         public void Title_ShouldHaveValidationError_WhenExceedsMaxLength()
         {
-            var command = new CreateStreetcodeMainPageCommand(new StreetcodeMainPageCreateDTO
+            var command = new CreateStreetcodeMainPageCommand(new StreetcodeMainPageCreateDto
             {
                 Title = new string('a', 101),
                 Images = imageListEmpty
@@ -69,7 +69,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         [Fact]
         public void FirstName_ShouldHaveValidationError_WhenExceedsMaxLength()
         {
-            var command = new CreateStreetcodeMainPageCommand(new StreetcodeMainPageCreateDTO
+            var command = new CreateStreetcodeMainPageCommand(new StreetcodeMainPageCreateDto
             {
                 FirstName = new string('a', 51),
                 Images = imageListEmpty
@@ -84,7 +84,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         [Fact]
         public void LastName_ShouldHaveValidationError_WhenExceedsMaxLength()
         {
-            var command = new CreateStreetcodeMainPageCommand(new StreetcodeMainPageCreateDTO
+            var command = new CreateStreetcodeMainPageCommand(new StreetcodeMainPageCreateDto
             {
                 LastName = new string('a', 51),
                 Images = imageListEmpty
@@ -99,7 +99,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         [Fact]
         public void Teaser_ShouldHaveValidationError_WhenExceedsMaxLength()
         {
-            var command = new CreateStreetcodeMainPageCommand(new StreetcodeMainPageCreateDTO
+            var command = new CreateStreetcodeMainPageCommand(new StreetcodeMainPageCreateDto
             {
                 Teaser = new string('a', 451),
                 Images = imageListEmpty
@@ -114,7 +114,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         [Fact]
         public void EventStartOrPersonBirthDate_ShouldHaveValidationError_WhenEmpty()
         {
-            var command = new CreateStreetcodeMainPageCommand(new StreetcodeMainPageCreateDTO { Images = imageListEmpty });
+            var command = new CreateStreetcodeMainPageCommand(new StreetcodeMainPageCreateDto { Images = imageListEmpty });
 
             var result = _validator.TestValidate(command);
 
@@ -125,7 +125,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         [Fact]
         public void TransliterationUrl_ShouldHaveValidationError_WhenInvalid()
         {
-            var command = new CreateStreetcodeMainPageCommand(new StreetcodeMainPageCreateDTO
+            var command = new CreateStreetcodeMainPageCommand(new StreetcodeMainPageCreateDto
             {
                 TransliterationUrl = "Invalid_Url",
                 Images = imageListEmpty
@@ -140,7 +140,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         [Fact]
         public void TransliterationUrl_ShouldNotHaveValidationError_WhenValid()
         {
-            var command = new CreateStreetcodeMainPageCommand(new StreetcodeMainPageCreateDTO
+            var command = new CreateStreetcodeMainPageCommand(new StreetcodeMainPageCreateDto
             {
                 TransliterationUrl = "valid-url-123",
                 Images = imageListEmpty
@@ -154,7 +154,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         [Fact]
         public void BriefDescription_ShouldHaveValidationError_WhenExceedsMaxLength()
         {
-            var command = new CreateStreetcodeMainPageCommand(new StreetcodeMainPageCreateDTO
+            var command = new CreateStreetcodeMainPageCommand(new StreetcodeMainPageCreateDto
             {
                 BriefDescription = new string('a', 34),
                 Images = imageListEmpty
@@ -170,7 +170,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         public void Images_ShouldHaveValidationError_WhenMoreThanOneGif()
         {
             var command = new CreateStreetcodeMainPageCommand(
-                new StreetcodeMainPageCreateDTO
+                new StreetcodeMainPageCreateDto
                 {
                     Images = new List<ImageFileBaseCreateDto>
                     {
@@ -190,7 +190,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         public void Images_ShouldHaveValidationError_WhenMoreThanTwoImages()
         {
             var command = new CreateStreetcodeMainPageCommand(
-                new StreetcodeMainPageCreateDTO
+                new StreetcodeMainPageCreateDto
                 {
                     Images = new List<ImageFileBaseCreateDto>
                     {
@@ -211,7 +211,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         public void Images_ShouldNotHaveValidationError_WhenValidConditionsAreMet()
         {
             var command = new CreateStreetcodeMainPageCommand(
-                new StreetcodeMainPageCreateDTO
+                new StreetcodeMainPageCreateDto
                 {
                     Images = new List<ImageFileBaseCreateDto>
                     {
@@ -229,7 +229,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         [Fact]
         public void Title_ShouldBeValid_WhenLengthIsWithinLimit()
         {
-            var command = new CreateStreetcodeMainPageCommand(new StreetcodeMainPageCreateDTO
+            var command = new CreateStreetcodeMainPageCommand(new StreetcodeMainPageCreateDto
             {
                 Title = "Valid Title",
                 Images = imageListEmpty
@@ -243,7 +243,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         [Fact]
         public void FirstName_ShouldBeValid_WhenLengthIsWithinLimit()
         {
-            var command = new CreateStreetcodeMainPageCommand(new StreetcodeMainPageCreateDTO
+            var command = new CreateStreetcodeMainPageCommand(new StreetcodeMainPageCreateDto
             {
                 FirstName = "ValidFirstName"
             ,
@@ -258,7 +258,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         [Fact]
         public void LastName_ShouldBeValid_WhenLengthIsWithinLimit()
         {
-            var command = new CreateStreetcodeMainPageCommand(new StreetcodeMainPageCreateDTO
+            var command = new CreateStreetcodeMainPageCommand(new StreetcodeMainPageCreateDto
             {
                 LastName = "ValidLastName",
                 Images = imageListEmpty
@@ -272,7 +272,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         [Fact]
         public void Teaser_ShouldBeValid_WhenLengthIsWithinLimit()
         {
-            var command = new CreateStreetcodeMainPageCommand(new StreetcodeMainPageCreateDTO
+            var command = new CreateStreetcodeMainPageCommand(new StreetcodeMainPageCreateDto
             {
                 Teaser = "Valid teaser within 450 characters.",
                 Images = imageListEmpty
@@ -286,7 +286,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         [Fact]
         public void EventStartOrPersonBirthDate_ShouldBeValid_WhenNotEmpty()
         {
-            var command = new CreateStreetcodeMainPageCommand(new StreetcodeMainPageCreateDTO
+            var command = new CreateStreetcodeMainPageCommand(new StreetcodeMainPageCreateDto
             {
                 EventStartOrPersonBirthDate = DateTime.Now,
                 Images = imageListEmpty
@@ -300,7 +300,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         [Fact]
         public void BriefDescription_ShouldBeValid_WhenLengthIsWithinLimit()
         {
-            var command = new CreateStreetcodeMainPageCommand(new StreetcodeMainPageCreateDTO
+            var command = new CreateStreetcodeMainPageCommand(new StreetcodeMainPageCreateDto
             {
                 BriefDescription = "Brief description",
                 Images = imageListEmpty
@@ -314,7 +314,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         [Fact]
         public void Audio_ShouldBeValid_WhenProvidedWithValidAudio()
         {
-            var command = new CreateStreetcodeMainPageCommand(new StreetcodeMainPageCreateDTO
+            var command = new CreateStreetcodeMainPageCommand(new StreetcodeMainPageCreateDto
             {
                 Audio = new AudioFileBaseCreateDto { Title = "audio", MimeType = "mp3" },
                 Images = imageListEmpty

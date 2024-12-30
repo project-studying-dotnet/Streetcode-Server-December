@@ -4,7 +4,7 @@ using Streetcode.BLL.DTO.Streetcode;
 
 namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.CreateMainPage
 {
-    public record CreateStreetcodeMainPageCommand(StreetcodeMainPageCreateDTO StreetcodeMainPage) : IRequest<Result<StreetcodeDto>>
+    public record CreateStreetcodeMainPageCommand(StreetcodeMainPageCreateDto StreetcodeMainPage) : IRequest<Result<StreetcodeDto>>
     {
     }
 }

@@ -33,7 +33,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Streetcode.CreateMainPage
         private readonly IAudioService _audio;
         private readonly Mock<IBlobService> _mockBlob;
         private readonly CreateStreetcodeMainPageHandler _handler;
-        private readonly StreetcodeMainPageCreateDTO _streetcodeMainPageCreateDto = new()
+        private readonly StreetcodeMainPageCreateDto _streetcodeMainPageCreateDto = new()
         {
             Title = "New Title",
             StreetcodeType = StreetcodeType.Person,

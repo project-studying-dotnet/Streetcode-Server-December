@@ -71,7 +71,7 @@ namespace Streetcode.WebApi.Controllers.Streetcode
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] StreetcodeMainPageCreateDTO streetcodeMainPage)
+        public async Task<IActionResult> Create([FromBody] StreetcodeMainPageCreateDto streetcodeMainPage)
         {
             return HandleResult(await Mediator.Send(new CreateStreetcodeMainPageCommand(streetcodeMainPage)));
         }

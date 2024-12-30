@@ -28,13 +28,11 @@ namespace Streetcode.WebApi.Utils
 
 		private readonly IRepositoryWrapper _repository;
 		private readonly StreetcodeDbContext _streetcodeContext;
-		private readonly IRedisCacheService _redisCacheService;
 
 		public WebParsingUtils(StreetcodeDbContext streetcodeContext, IRedisCacheService redisCacheService)
         {
             _repository = new RepositoryWrapper(streetcodeContext, redisCacheService);
             _streetcodeContext = streetcodeContext;
-            _redisCacheService = redisCacheService;
         }
 
 		public static async Task DownloadAndExtractAsync(

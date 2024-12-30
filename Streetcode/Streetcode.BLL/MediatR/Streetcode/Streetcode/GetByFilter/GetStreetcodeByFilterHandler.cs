@@ -11,12 +11,10 @@ namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.GetByFilter
     public class GetStreetcodeByFilterHandler : IRequestHandler<GetStreetcodeByFilterQuery, Result<List<StreetcodeFilterResultDto>>>
     {
         private readonly IRepositoryWrapper _repositoryWrapper;
-        private readonly ILoggerService _logger;
 
-        public GetStreetcodeByFilterHandler(IRepositoryWrapper repositoryWrapper, ILoggerService logger)
+        public GetStreetcodeByFilterHandler(IRepositoryWrapper repositoryWrapper)
         {
             _repositoryWrapper = repositoryWrapper;
-            _logger = logger;
         }
 
         public async Task<Result<List<StreetcodeFilterResultDto>>> Handle(GetStreetcodeByFilterQuery request, CancellationToken cancellationToken)

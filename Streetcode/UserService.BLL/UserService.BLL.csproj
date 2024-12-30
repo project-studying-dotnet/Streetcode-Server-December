@@ -6,8 +6,6 @@
     <AssemblyTitle>UserService.BLL</AssemblyTitle>
     <Product>UserService.BLL</Product>
     <Copyright>Copyright ©  2024</Copyright>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />

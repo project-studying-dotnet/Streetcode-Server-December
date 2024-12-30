@@ -10,14 +10,12 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedFigure.Create
 {
     public class CreateRelatedFigureHandler : IRequestHandler<CreateRelatedFigureCommand, Result<Unit>>
     {
-        private readonly IMapper _mapper;
         private readonly IRepositoryWrapper _repositoryWrapper;
         private readonly ILoggerService _logger;
 
-        public CreateRelatedFigureHandler(IRepositoryWrapper repositoryWrapper, IMapper mapper, ILoggerService logger)
+        public CreateRelatedFigureHandler(IRepositoryWrapper repositoryWrapper, ILoggerService logger)
         {
             _repositoryWrapper = repositoryWrapper;
-            _mapper = mapper;
             _logger = logger;
         }
 

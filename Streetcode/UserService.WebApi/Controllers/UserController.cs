@@ -1,9 +1,15 @@
 using FluentResults;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using UserService.BLL.Attributes;
 using UserService.BLL.DTO.User;
 using UserService.BLL.Interfaces.User;
+using UserService.BLL.Services.Jwt;
 using UserService.BLL.Services.User;
 using UserService.DAL.Entities.Users;
+using UserService.DAL.Enums;
+using UserService.WebApi.Extensions;
 
 namespace UserService.WebApi.Controllers;
 
@@ -13,11 +19,13 @@ public class UserController : ControllerBase
 {
     private readonly ILoginService _loginService;
     private readonly IUserService _userService;
+    private IOptions<JwtConfiguration> _jwtConfiguration;
 
-    public UserController(ILoginService loginService, IUserService userService)
+    public UserController(ILoginService loginService, IUserService userService, IOptions<JwtConfiguration> jwtConfiguration)
     {
         _loginService = loginService;
         _userService = userService;
+        _jwtConfiguration = jwtConfiguration;
     }
 
     [HttpPost]
@@ -37,6 +45,8 @@ public class UserController : ControllerBase
         }
 
         var token = loginResult.Value;
+
+        HttpContext.AppendTokenToCookie(token, _jwtConfiguration);
 
         return Ok(new { token });
     }

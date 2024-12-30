@@ -10,6 +10,6 @@ public class CreateCommentDto
     public DateTime? DateModified { get; set; }
     public string Content { get; set; } = string.Empty;
     public int StreetcodeId { get; set; }
-    public int? ParentId { get; set; }
+    public int? ParentId { get; set; } = null;
 
 }

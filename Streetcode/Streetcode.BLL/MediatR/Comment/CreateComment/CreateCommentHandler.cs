@@ -26,16 +26,17 @@ public class CreateCommentHandler : IRequestHandler<CreateCommentCommand, Result
     {
         try
         {
-            await _repositoryWrapper.CommentRepository
-                .GetAllBySpecAsync(new CommentByStreetcodeIdSpecification(request.createCommentDto.StreetcodeId));
+            await _repositoryWrapper.StreetcodeRepository
+                .GetFirstOrDefaultAsync(s => s.Id == request.createCommentDto.StreetcodeId);
         }
         catch (Exception e)
         {
-            var errMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "streetcode", request.createCommentDto.StreetcodeId);
+            var errMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "streetcode",
+                request.createCommentDto.StreetcodeId);
             _logger.LogError(request, errMsg);
             return Result.Fail(errMsg);
         }
-        
+
         var newComment = _mapper.Map<DAL.Entities.Comment.Comment>(request.createCommentDto);
 
         if (newComment is null)

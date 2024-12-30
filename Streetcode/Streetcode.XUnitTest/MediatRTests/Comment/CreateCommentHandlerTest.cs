@@ -62,12 +62,6 @@ public class CreateCommentHandlerTest
         {
             Id = 1
         };
-        
-        var mockComments = new List<CommentEntity>
-        {
-            new CommentEntity { Id = 1, StreetcodeId = 1, Content = "Test Comment 1" },
-            new CommentEntity { Id = 2, StreetcodeId = 1, Content = "Test Comment 2" }
-        };
 
         var request = new CreateCommentCommand(createCommentDto);
 
@@ -89,10 +83,6 @@ public class CreateCommentHandlerTest
                     It.IsAny<Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>>>()))
             .ReturnsAsync(streetcode);
         
-        _repositoryMock
-            .Setup(repo => repo.CommentRepository.GetAllBySpecAsync(It.IsAny<CommentByStreetcodeIdSpecification>()))
-            .ReturnsAsync(mockComments);
-        
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);
         
@@ -105,12 +95,12 @@ public class CreateCommentHandlerTest
     public async Task Handle_ReturnOkResult_WhenStreetcodeAreNotFound()
     {
         // Arrange
-
         var createCommentDto = new CreateCommentDto
         {
             Content = "Test",
             StreetcodeId = 1
         };
+        
         var request = new CreateCommentCommand(createCommentDto);
 
         var errMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "streetcode", createCommentDto.StreetcodeId);
@@ -124,50 +114,6 @@ public class CreateCommentHandlerTest
     }
     
     [Fact]
-    public async Task Handle_ReturnOkResult_WhenStreetcodeNotExist()
-    {
-        // Arrange
-        var comment = new CommentEntity
-        {
-            Content = "Test",
-            StreetcodeId = 1
-        };
-
-        var createCommentDto = new CreateCommentDto
-        {
-            Content = "Test",
-            StreetcodeId = 1
-        };
-
-        var getCommentDto = new GetCommentDto
-        {
-            Content = "Test",
-            StreetcodeId = 1
-        };
-
-        var request = new CreateCommentCommand(createCommentDto);
-
-        _mapperMock.Setup(m => m.Map<CommentEntity>(createCommentDto))
-            .Returns(comment);
-
-        _repositoryMock.Setup(rep => rep.CommentRepository.CreateAsync(comment))
-            .ReturnsAsync(comment);
-
-        _repositoryMock.Setup(rep => rep.SaveChangesAsync())
-            .ReturnsAsync(1);
-
-        _mapperMock.Setup(m => m.Map<GetCommentDto>(comment))
-            .Returns(getCommentDto);
-        
-        // Act
-        var result = await _handler.Handle(request, CancellationToken.None);
-        
-        // Assert
-        Assert.True(result.IsSuccess);
-        Assert.Equal(getCommentDto, result.Value);
-    }
-    
-    [Fact]
     public async Task Handle_ReturnOkResult_WhenCommentAreNotMapped()
     {
         // Arrange
@@ -176,10 +122,21 @@ public class CreateCommentHandlerTest
             Content = "Test",
             StreetcodeId = 1
         };
+        
+        var streetcode = new StreetcodeContent
+        {
+            Id = 1
+        };
+        
         var request = new CreateCommentCommand(createCommentDto);
 
         var errMsg = ErrorManager.GetCustomErrorText("ConvertationError", "create comment dto", "CommentEntity");
 
+        _repositoryMock.Setup(rep => rep.StreetcodeRepository
+                .GetFirstOrDefaultAsync(
+                    It.Is<Expression<Func<StreetcodeContent, bool>>>(exp => exp.Compile().Invoke(streetcode)),
+                    It.IsAny<Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>>>()))
+            .ReturnsAsync(streetcode);
         
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);
@@ -204,6 +161,11 @@ public class CreateCommentHandlerTest
             Content = "Test",
             StreetcodeId = 1
         };
+        
+        var streetcode = new StreetcodeContent
+        {
+            Id = 1
+        };
 
         var request = new CreateCommentCommand(createCommentDto);
         var errMsg = ErrorManager.GetCustomErrorText("FailCreateError", "comment", request);
@@ -217,6 +179,12 @@ public class CreateCommentHandlerTest
 
         _repositoryMock.Setup(rep => rep.SaveChangesAsync())
             .ReturnsAsync(0);
+        
+        _repositoryMock.Setup(rep => rep.StreetcodeRepository
+                .GetFirstOrDefaultAsync(
+                    It.Is<Expression<Func<StreetcodeContent, bool>>>(exp => exp.Compile().Invoke(streetcode)),
+                    It.IsAny<Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>>>()))
+            .ReturnsAsync(streetcode);
         
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);

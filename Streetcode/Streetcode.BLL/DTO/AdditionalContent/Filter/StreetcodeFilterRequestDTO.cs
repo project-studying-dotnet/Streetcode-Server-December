@@ -1,6 +1,6 @@
 namespace Streetcode.BLL.DTO.AdditionalContent.Filter
 {
-    public class StreetcodeFilterRequestDto
+    public class StreetcodeFilterRequestDTO
     {
         public string SearchQuery { get; set; }
     }

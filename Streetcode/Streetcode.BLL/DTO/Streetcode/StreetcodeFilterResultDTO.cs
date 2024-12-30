@@ -1,6 +1,6 @@
 namespace Streetcode.BLL.DTO.Streetcode
 {
-    public class StreetcodeFilterResultDto
+    public class StreetcodeFilterResultDTO
     {
         public int StreetcodeId { get; set; }
         public string StreetcodeTransliterationUrl { get; set; }

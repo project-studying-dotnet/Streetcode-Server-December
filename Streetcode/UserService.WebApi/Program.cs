@@ -100,52 +100,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.MapPost("/register", async (IUserService userService, RegistrationDTO registrationDto) =>
-{
-    var result = await userService.Registration(registrationDto);
-    return result.IsSuccess ? Results.Ok(result.Value) : Results.BadRequest(result.Errors);
-});
-
-app.MapPost("/login", async (ILoginService loginService, IOptions<JwtConfiguration> jwtConfiguration, LoginDTO loginDto, HttpContext httpContext) =>
-{
-    var loginResult = await loginService.Login(loginDto);
-    if (loginResult.IsFailed)
-    {
-        return Results.BadRequest(loginResult.Errors);
-    }
-    var token = loginResult.Value;
-    httpContext.AppendTokenToCookie(token.AccessToken, jwtConfiguration); // Use jwtConfiguration.Value here
-    return Results.Ok(new { token });
-});
-
-app.MapPost("/logout", async (ILoginService loginService, HttpContext httpContext, ClaimsPrincipal user) =>
-{
-    var logoutResult = await loginService.Logout(user);
-    if (logoutResult.IsFailed)
-    {
-        return Results.BadRequest(logoutResult.Errors);
-    }
-    httpContext.DeleteAuthTokenCookie();
-    return Results.Ok("User successfully logged out.");
-});
-
-app.MapPost("/refresh-token", async (ILoginService loginService, IOptions<JwtConfiguration> jwtConfiguration, TokenRequestDTO tokenRequest, HttpContext httpContext) =>
-{
-    var refreshResult = await loginService.RefreshToken(tokenRequest.RefreshToken);
-    if (refreshResult.IsFailed)
-    {
-        return Results.BadRequest(refreshResult.Errors);
-    }
-    var token = refreshResult.Value;
-    httpContext.AppendTokenToCookie(token.AccessToken, jwtConfiguration);
-    return Results.Ok(token);
-});
-
-app.MapGet("/test-endpoint", [Authorize] () =>
-{
-    return Results.Ok("Hello from User Service");
-});
-
 app.MapControllers();
 
 app.UseHttpsRedirection();

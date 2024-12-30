@@ -27,7 +27,7 @@ public class UserProfile : Profile
             .ForMember(u => u.PhoneNumber, conf => conf.MapFrom(rd => rd.PhoneNumber))
             .ReverseMap();
 
-        CreateMap<(string accessToken, string refreshToken),LoginResultDTO>()
+        CreateMap<(string accessToken, string refreshToken),LoginResultDto>()
             .ForMember(lrd => lrd.AccessToken, conf => conf.MapFrom(t => t.accessToken))
             .ForMember(lrd => lrd.RefreshToken, conf => conf.MapFrom(t => t.refreshToken))
             .ReverseMap();

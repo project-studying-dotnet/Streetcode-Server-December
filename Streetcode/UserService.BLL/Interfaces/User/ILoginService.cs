@@ -8,8 +8,8 @@ namespace UserService.BLL.Interfaces.User
 {
     public interface ILoginService
     {
-        public Task<Result<LoginResultDTO>> Login(LoginDTO loginDto);
+        public Task<Result<LoginResultDto>> Login(LoginDto loginDto);
         public Task<Result> Logout(ClaimsPrincipal userPrincipal);
-        Task<Result<LoginResultDTO>> RefreshToken(string refreshToken);
+        public Task<Result<LoginResultDto>> RefreshToken(string refreshToken);
     }
 }

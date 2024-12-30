@@ -7,7 +7,7 @@ using UserService.BLL.Attributes;
 using UserService.DAL.Enums;
 using Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetAllByTermId;
 using Streetcode.BLL.MediatR.Comment.GetCommentsByStreetcodeId;
-using Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Delete;
+using Streetcode.BLL.MediatR.Comment.GetCommentsToReview;
 using Streetcode.BLL.MediatR.Comment.AdminDeleteComment;
 using Streetcode.BLL.MediatR.Comment.CreateComment;
 using Streetcode.BLL.MediatR.Comment.UserDeleteComment;
@@ -21,6 +21,12 @@ namespace Streetcode.WebApi.Controllers.Comment
         public async Task<IActionResult> GetByStreetcodeId([FromRoute] int streetcodeid)
         {
             return HandleResult(await Mediator.Send(new GetCommentsByStreetcodeIdQuery(streetcodeid)));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllToReview([FromQuery] List<string> restrictedWords)
+        {
+            return HandleResult(await Mediator.Send(new GetCommentsToReviewQuery(restrictedWords)));
         }
 
         [HttpPost]

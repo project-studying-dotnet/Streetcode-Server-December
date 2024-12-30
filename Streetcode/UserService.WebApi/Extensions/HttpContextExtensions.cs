@@ -19,7 +19,7 @@ namespace UserService.WebApi.Extensions
                 HttpOnly = true,
                 Secure = true,
                 SameSite = SameSiteMode.None,
-                Expires = DateTime.UtcNow.AddSeconds(_jwtConfiguration.AccessTokenLifetime)
+                Expires = DateTime.UtcNow.AddHours(_jwtConfiguration.AccessTokenLifetime)
             };
 
             context.Response.Cookies.Append("AuthToken", token, cookieOptions);

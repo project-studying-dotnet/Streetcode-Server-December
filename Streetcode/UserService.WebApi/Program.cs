@@ -10,11 +10,6 @@ using UserService.BLL.Services.Jwt;
 using UserService.BLL.Services.User;
 using UserService.BLL.Services;
 using UserService.WebApi.Extensions;
-using Microsoft.AspNetCore.Authorization;
-using Streetcode.BLL.DTO.Users;
-using System.Security.Claims;
-using UserService.BLL.DTO.User;
-using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,8 +34,10 @@ builder.Services.AddIdentityMongoDbProvider<User, Role>(identityOptions =>
 });
 
 
-// JWT Configuration
+// JWT Configuration for DI
 builder.Services.Configure<JwtConfiguration>(builder.Configuration.GetSection("Jwt"));
+
+// JWT Configuration for Program.cs
 var jwtConfiguration = builder.Configuration.GetSection("Jwt").Get<JwtConfiguration>();
 
 

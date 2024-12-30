@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver.Linq;
 using Moq;
-using Streetcode.BLL.DTO.Users;
+using UserService.BLL.DTO.Users;
 using UserService.BLL.DTO.User;
 using UserService.BLL.Services.User;
 

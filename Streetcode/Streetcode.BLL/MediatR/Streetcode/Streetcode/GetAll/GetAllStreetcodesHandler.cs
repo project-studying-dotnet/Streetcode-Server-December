@@ -24,8 +24,9 @@ namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.GetAll
         {
             var filterRequest = query.request;
 
-            var streetcodes = _repositoryWrapper.StreetcodeRepository
-                .FindAll();
+            var streetcodes = await _repositoryWrapper.StreetcodeRepository.GetAllAsync()
+                as IQueryable<StreetcodeContent>
+                ?? Enumerable.Empty<StreetcodeContent>().AsQueryable();
 
             if (filterRequest.Title is not null)
             {

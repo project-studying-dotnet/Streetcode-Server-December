@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Streetcode.BLL.DTO.Users
+namespace UserService.BLL.DTO.Users
 {
     public class LoginResultDto
     {

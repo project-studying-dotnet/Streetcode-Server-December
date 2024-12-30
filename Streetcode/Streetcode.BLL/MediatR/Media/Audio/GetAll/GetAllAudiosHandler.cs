@@ -10,7 +10,7 @@ using Streetcode.BLL.Resources;
 
 namespace Streetcode.BLL.MediatR.Media.Audio.GetAll
 {
-    public class GetAllAudiosHandler : IRequestHandler<GetAllAudiosQuery, Result<IEnumerable<AudioDTO>>>
+    public class GetAllAudiosHandler : IRequestHandler<GetAllAudiosQuery, Result<IEnumerable<AudioDto>>>
     {
         private readonly IMapper _mapper;
         private readonly IRepositoryWrapper _repositoryWrapper;
@@ -25,7 +25,7 @@ namespace Streetcode.BLL.MediatR.Media.Audio.GetAll
             _logger = logger;
         }
 
-        public async Task<Result<IEnumerable<AudioDTO>>> Handle(GetAllAudiosQuery request, CancellationToken cancellationToken)
+        public async Task<Result<IEnumerable<AudioDto>>> Handle(GetAllAudiosQuery request, CancellationToken cancellationToken)
         {
             var audios = await _repositoryWrapper.AudioRepository.GetAllAsync();
 
@@ -36,7 +36,7 @@ namespace Streetcode.BLL.MediatR.Media.Audio.GetAll
                 return Result.Fail(new Error(errorMsg));
             }
 
-            var audioDtos = _mapper.Map<IEnumerable<AudioDTO>>(audios);
+            var audioDtos = _mapper.Map<IEnumerable<AudioDto>>(audios);
             foreach (var audio in audioDtos)
             {
                 audio.Base64 = _blobService.FindFileInStorageAsBase64(audio.BlobName);

@@ -8,7 +8,7 @@ namespace Streetcode.BLL.Mapping.Team
     {
         public TeamLinkProfile()
         {
-            CreateMap<TeamMemberLink, TeamMemberLinkDTO>().ReverseMap();
+            CreateMap<TeamMemberLink, TeamMemberLinkDto>().ReverseMap();
         }
     }
 }

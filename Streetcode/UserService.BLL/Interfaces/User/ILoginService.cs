@@ -10,6 +10,6 @@ namespace UserService.BLL.Interfaces.User
 {
     public interface ILoginService
     {
-        public Task<Result<string>> Login(LoginDTO loginDto);
+        public Task<Result<string>> Login(LoginDto loginDto);
     }
 }

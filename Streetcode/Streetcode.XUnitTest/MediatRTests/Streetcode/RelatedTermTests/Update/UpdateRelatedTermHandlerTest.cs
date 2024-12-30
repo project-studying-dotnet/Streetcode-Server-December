@@ -44,7 +44,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.Update
         public async Task WhenUpdateRelatedTermCommandIsValid_ThenReturnsOkWithUpdatedDTO()
         {
             // Arrange
-            var command = new UpdateRelatedTermCommand(new RelatedTermDTO { Id = 1, Word = "UpdatedWord", TermId = 2 });
+            var command = new UpdateRelatedTermCommand(new RelatedTermDto { Id = 1, Word = "UpdatedWord", TermId = 2 });
             var existingEntity = new RelatedTerm { Id = 1, Word = "OldWord", TermId = 1 };
 
             this._mockRepositoryWrapper
@@ -67,7 +67,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.Update
         public async Task WhenRelatedTermNotFound_ThenReturnsFailResult()
         {
             // Arrange
-            var command = new UpdateRelatedTermCommand(new RelatedTermDTO { Id = 1, Word = "UpdatedWord", TermId = 2 });
+            var command = new UpdateRelatedTermCommand(new RelatedTermDto { Id = 1, Word = "UpdatedWord", TermId = 2 });
 
             this._mockRepositoryWrapper
                 .Setup(r => r.RelatedTermRepository.GetFirstOrDefaultBySpecAsync(It.IsAny<IBaseSpecification<RelatedTerm>>())).ReturnsAsync((RelatedTerm)null);
@@ -84,7 +84,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.Update
         public async Task WhenSaveChangesFails_ThenReturnsFailResult()
         {
             // Arrange
-            var command = new UpdateRelatedTermCommand(new RelatedTermDTO { Id = 1, Word = "UpdatedWord", TermId = 2 });
+            var command = new UpdateRelatedTermCommand(new RelatedTermDto { Id = 1, Word = "UpdatedWord", TermId = 2 });
             var existingEntity = new RelatedTerm { Id = 1, Word = "OldWord", TermId = 1 };
 
             this._mockRepositoryWrapper

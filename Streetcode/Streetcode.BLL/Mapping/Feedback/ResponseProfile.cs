@@ -8,7 +8,7 @@ namespace Streetcode.BLL.Mapping.Feedback
     {
         public ResponseProfile()
         {
-            CreateMap<Response, ResponseDTO>().ReverseMap();
+            CreateMap<Response, ResponseDto>().ReverseMap();
         }
     }
 }

@@ -9,7 +9,7 @@ using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Streetcode.RelatedFigure.GetByStreetcodeId
 {
-    public class GetRelatedFiguresByStreetcodeIdHandler : IRequestHandler<GetRelatedFigureByStreetcodeIdQuery, Result<IEnumerable<RelatedFigureDTO>>>
+    public class GetRelatedFiguresByStreetcodeIdHandler : IRequestHandler<GetRelatedFigureByStreetcodeIdQuery, Result<IEnumerable<RelatedFigureDto>>>
     {
         private readonly IMapper _mapper;
         private readonly IRepositoryWrapper _repositoryWrapper;
@@ -22,7 +22,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedFigure.GetByStreetcodeId
             _logger = logger;
         }
 
-        public async Task<Result<IEnumerable<RelatedFigureDTO>>> Handle(GetRelatedFigureByStreetcodeIdQuery request, CancellationToken cancellationToken)
+        public async Task<Result<IEnumerable<RelatedFigureDto>>> Handle(GetRelatedFigureByStreetcodeIdQuery request, CancellationToken cancellationToken)
         {
             var relatedFigureIds = GetRelatedFigureIdsByStreetcodeId(request.StreetcodeId);
 
@@ -53,7 +53,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedFigure.GetByStreetcodeId
                 }
             }
 
-            return Result.Ok(_mapper.Map<IEnumerable<RelatedFigureDTO>>(relatedFigures));
+            return Result.Ok(_mapper.Map<IEnumerable<RelatedFigureDto>>(relatedFigures));
         }
 
         private IQueryable<int> GetRelatedFigureIdsByStreetcodeId(int StreetcodeId)

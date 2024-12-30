@@ -34,7 +34,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         public void Should_NotHaveErrorForValidPosition()
         {
             // Arrange
-            var position = new PositionDTO
+            var position = new PositionDto
             {
                 Position = "Manager",
                 Id = 1
@@ -53,7 +53,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         public void Should_InvokePositionDTOValidatorForIncorrectPosition()
         {
             // Arrange
-            var position = new PositionDTO
+            var position = new PositionDto
             {
                 Position = "Manager",
                 Id = -67

@@ -4,5 +4,5 @@ using Streetcode.BLL.DTO.Streetcode.TextContent.Text;
 
 namespace Streetcode.BLL.MediatR.Streetcode.Text.GetAll
 {
-    public record GetAllTextsQuery : IRequest<Result<IEnumerable<TextDTO>>>;
+    public record GetAllTextsQuery : IRequest<Result<IEnumerable<TextDto>>>;
 }

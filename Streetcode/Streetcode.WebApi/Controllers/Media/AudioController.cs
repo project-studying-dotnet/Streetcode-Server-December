@@ -37,7 +37,7 @@ namespace Streetcode.WebApi.Controllers.Media
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] AudioFileBaseCreateDTO audio)
+        public async Task<IActionResult> Create([FromBody] AudioFileBaseCreateDto audio)
         {
             return HandleResult(await Mediator.Send(new CreateAudioCommand(audio)));
         }

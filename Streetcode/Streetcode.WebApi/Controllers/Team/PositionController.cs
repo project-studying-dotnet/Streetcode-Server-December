@@ -14,7 +14,7 @@ namespace Streetcode.WebApi.Controllers.Team
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] PositionDTO position)
+        public async Task<IActionResult> Create([FromBody] PositionDto position)
         {
             return HandleResult(await Mediator.Send(new CreatePositionCommand(position)));
         }

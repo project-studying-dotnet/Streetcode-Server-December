@@ -10,11 +10,13 @@ namespace Streetcode.BLL.Mapping.Streetcode
     {
         public StreetcodeProfile()
         {
-            CreateMap<StreetcodeContent, StreetcodeDTO>()
+            CreateMap<StreetcodeDto, StreetcodeContent>();
+            CreateMap<StreetcodeContent, StreetcodeDto>()
                 .ForMember(x => x.StreetcodeType, conf => conf.MapFrom(s => GetStreetcodeType(s)))
-                .ReverseMap();
-            CreateMap<StreetcodeContent, StreetcodeShortDTO>().ReverseMap();
-            CreateMap<StreetcodeContent, StreetcodeMainPageDTO>()
+                .ForMember(x => x.FirstName, conf => conf.MapFrom(s => GetFirstName(s)))
+                .ForMember(x => x.LastName, conf => conf.MapFrom(s => GetLastName(s)));
+            CreateMap<StreetcodeContent, StreetcodeShortDto>().ReverseMap();
+            CreateMap<StreetcodeContent, StreetcodeMainPageDto>()
                  .ForPath(dto => dto.Text, conf => conf
                     .MapFrom(e => e.Text.Title))
                 .ForPath(dto => dto.ImageId, conf => conf
@@ -29,6 +31,26 @@ namespace Streetcode.BLL.Mapping.Streetcode
             }
 
             return StreetcodeType.Person;
+        }
+
+        private string? GetFirstName(StreetcodeContent streetcode)
+        {
+            if (streetcode is PersonStreetcode)
+            {
+                return (streetcode as PersonStreetcode).FirstName;
+            }
+
+            return null;
+        }
+
+        private string? GetLastName(StreetcodeContent streetcode)
+        {
+            if (streetcode is PersonStreetcode)
+            {
+                return (streetcode as PersonStreetcode).LastName;
+            }
+
+            return null;
         }
     }
 }

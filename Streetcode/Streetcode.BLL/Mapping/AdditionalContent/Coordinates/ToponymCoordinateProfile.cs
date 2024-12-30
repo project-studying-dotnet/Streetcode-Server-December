@@ -8,7 +8,7 @@ namespace Streetcode.BLL.Mapping.AdditionalContent.Coordinates
     {
         public ToponymCoordinateProfile()
         {
-            CreateMap<ToponymCoordinate, ToponymCoordinateDTO>().ReverseMap();
+            CreateMap<ToponymCoordinate, ToponymCoordinateDto>().ReverseMap();
         }
     }
 }

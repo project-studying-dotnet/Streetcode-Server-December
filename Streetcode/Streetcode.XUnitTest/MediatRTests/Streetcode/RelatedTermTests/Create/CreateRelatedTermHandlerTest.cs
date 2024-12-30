@@ -43,7 +43,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.Create
         public async Task WhenCreateRelatedTermCommandIsValid_ThenReturnsOkWithDTO()
         {
             // Arrange
-            var command = new CreateRelatedTermCommand(new RelatedTermDTO { Word = "Test", TermId = 1 });
+            var command = new CreateRelatedTermCommand(new RelatedTermDto { Word = "Test", TermId = 1 });
             var entity = new RelatedTerm { Id = 1, Word = "Test", TermId = 1 };
 
             this._mockRepositoryWrapper.Setup(r => r.RelatedTermRepository.GetAllBySpecAsync(It.IsAny<IBaseSpecification<RelatedTerm>>())).ReturnsAsync(new List<RelatedTerm>());
@@ -64,7 +64,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.Create
         public async Task WhenRelatedTermAlreadyExists_ThenReturnsFailResult()
         {
             // Arrange
-            var command = new CreateRelatedTermCommand(new RelatedTermDTO { Word = "Test", TermId = 1 });
+            var command = new CreateRelatedTermCommand(new RelatedTermDto { Word = "Test", TermId = 1 });
             var existingEntity = new RelatedTerm { Id = 1, Word = "Test", TermId = 1 };
 
             this._mockRepositoryWrapper.Setup(r => r.RelatedTermRepository.GetAllBySpecAsync(It.IsAny<IBaseSpecification<RelatedTerm>>())).ReturnsAsync(new List<RelatedTerm> { existingEntity });
@@ -81,7 +81,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.Create
         public async Task WhenDatabaseSaveFails_ThenReturnsFailResult()
         {
             // Arrange
-            var command = new CreateRelatedTermCommand(new RelatedTermDTO { Word = "Test", TermId = 1 });
+            var command = new CreateRelatedTermCommand(new RelatedTermDto { Word = "Test", TermId = 1 });
             var entity = new RelatedTerm { Word = "Test", TermId = 1 };
 
             this._mockRepositoryWrapper.Setup(r => r.RelatedTermRepository.GetAllBySpecAsync(It.IsAny<IBaseSpecification<RelatedTerm>>())).ReturnsAsync(new List<RelatedTerm>());

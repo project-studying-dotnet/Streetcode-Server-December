@@ -50,15 +50,15 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
                 new Audio { Id = 3, Title = "Audio3", BlobName = "blob3" }
             };
 
-            var audioDTOs = new List<AudioDTO>
+            var audioDTOs = new List<AudioDto>
             {
-                new AudioDTO { Id = 1, Description = "Audio1", BlobName = "blob1" },
-                new AudioDTO { Id = 2, Description = "Audio2", BlobName = "blob2" },
-                new AudioDTO { Id = 3, Description = "Audio3", BlobName = "blob3" }
+                new AudioDto { Id = 1, Description = "Audio1", BlobName = "blob1" },
+                new AudioDto { Id = 2, Description = "Audio2", BlobName = "blob2" },
+                new AudioDto { Id = 3, Description = "Audio3", BlobName = "blob3" }
             };
 
             _mockRepository.Setup(r => r.AudioRepository.GetAllAsync(It.IsAny<Expression<Func<Audio, bool>>>(), It.IsAny<Func<IQueryable<Audio>, IIncludableQueryable<Audio, object>>>())).ReturnsAsync(audios);
-            _mockMapper.Setup(m => m.Map<IEnumerable<AudioDTO>>(audios)).Returns(audioDTOs);
+            _mockMapper.Setup(m => m.Map<IEnumerable<AudioDto>>(audios)).Returns(audioDTOs);
             _mockBlob.Setup(b => b.FindFileInStorageAsBase64(It.IsAny<string>())).Returns((string blobName) => Convert.ToBase64String(Encoding.UTF8.GetBytes(blobName)));
 
             // Act
@@ -68,7 +68,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
             Assert.True(result.IsSuccess);
             Assert.Equal(audioDTOs.Count, result.Value.Count());
             Assert.Collection(result.Value,
-            audios.Select(expected => (Action<AudioDTO>)(actual =>
+            audios.Select(expected => (Action<AudioDto>)(actual =>
             {
                     Assert.Equal(expected.Id, actual.Id);
                     Assert.Equal(expected.Title, actual.Description);
@@ -77,7 +77,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
             );
 
             _mockRepository.Verify(r => r.AudioRepository.GetAllAsync(It.IsAny<Expression<Func<Audio, bool>>>(), It.IsAny<Func<IQueryable<Audio>, IIncludableQueryable<Audio, object>>>()), Times.Once);
-            _mockMapper.Verify(m => m.Map<IEnumerable<AudioDTO>>(audios), Times.Once);
+            _mockMapper.Verify(m => m.Map<IEnumerable<AudioDto>>(audios), Times.Once);
             _mockBlob.Verify(b => b.FindFileInStorageAsBase64(It.IsAny<string>()), Times.Exactly(audioDTOs.Count));
         }
 

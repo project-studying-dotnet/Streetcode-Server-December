@@ -7,5 +7,5 @@ namespace UserService.BLL.Interfaces.User;
 
 public interface IUserService
 {
-    Task<Result<UserDTO>> Registration(RegistrationDTO registrationDto);
+    Task<Result<UserDto>> Registration(RegistrationDto registrationDto);
 }

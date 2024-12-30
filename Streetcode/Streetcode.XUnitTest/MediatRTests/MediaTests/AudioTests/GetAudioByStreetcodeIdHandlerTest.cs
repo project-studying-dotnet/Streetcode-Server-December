@@ -43,14 +43,14 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
 
             var audio = new Audio { Id = 1, BlobName = "audioBlob" };
             var streetcode = new StreetcodeContent { Id = 1, Index = 1, Audio = audio };
-            var audioDto = new AudioDTO { BlobName = "audioBlob", Base64 = "base64string" };
+            var audioDto = new AudioDto { BlobName = "audioBlob", Base64 = "base64string" };
 
             _mockRepository.Setup(r => r.StreetcodeRepository.GetFirstOrDefaultAsync(
                 It.IsAny<Expression<Func<StreetcodeContent, bool>>>(),
                 It.IsAny<Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>>>()))
                 .ReturnsAsync(streetcode);
 
-            _mockMapper.Setup(m => m.Map<AudioDTO>(audio)).Returns(audioDto);
+            _mockMapper.Setup(m => m.Map<AudioDto>(audio)).Returns(audioDto);
             _mockBlobService.Setup(b => b.FindFileInStorageAsBase64(audio.BlobName)).Returns("base64string");
 
             // Act
@@ -66,7 +66,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
                 It.IsAny<Expression<Func<StreetcodeContent, bool>>>(),
                 It.IsAny<Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>>>()), Times.Once);
 
-            _mockMapper.Verify(m => m.Map<AudioDTO>(audio), Times.Once);
+            _mockMapper.Verify(m => m.Map<AudioDto>(audio), Times.Once);
             _mockBlobService.Verify(b => b.FindFileInStorageAsBase64(audio.BlobName), Times.Once);
         }
 
@@ -100,14 +100,14 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
 
             var audio = new Audio { Id = 1, BlobName = "audioBlob" };
             var streetcode = new StreetcodeContent { Id = 1, Index = 1, Audio = audio };
-            var audioDto = new AudioDTO { BlobName = "audioBlob", Base64 = "base64string" };
+            var audioDto = new AudioDto { BlobName = "audioBlob", Base64 = "base64string" };
 
             _mockRepository.Setup(r => r.StreetcodeRepository.GetFirstOrDefaultAsync(
                 It.IsAny<Expression<Func<StreetcodeContent, bool>>>(),
                 It.IsAny<Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>>>()))
                 .ReturnsAsync(streetcode);
 
-            _mockMapper.Setup(m => m.Map<AudioDTO>(audio)).Returns(audioDto);
+            _mockMapper.Setup(m => m.Map<AudioDto>(audio)).Returns(audioDto);
             _mockBlobService.Setup(b => b.FindFileInStorageAsBase64(audio.BlobName)).Returns("base64string");
 
             // Act

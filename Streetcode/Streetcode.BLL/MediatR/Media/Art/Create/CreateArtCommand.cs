@@ -4,5 +4,5 @@ using FluentResults;
 
 namespace Streetcode.BLL.MediatR.Media.Art.Create
 {
-    public record CreateArtCommand(ArtCreateDTO newArt) : IRequest<Result<ArtDTO>>;
+    public record CreateArtCommand(ArtCreateDto newArt) : IRequest<Result<ArtDto>>;
 }

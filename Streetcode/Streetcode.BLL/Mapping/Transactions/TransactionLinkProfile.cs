@@ -8,7 +8,7 @@ namespace Streetcode.BLL.Mapping.Transactions
     {
         public TransactionLinkProfile()
         {
-            CreateMap<TransactionLink, TransactLinkDTO>()
+            CreateMap<TransactionLink, TransactLinkDto>()
                .ReverseMap();
         }
     }

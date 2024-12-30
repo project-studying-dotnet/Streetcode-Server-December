@@ -51,16 +51,16 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.ArtTests
                 new Art { Id = 4, Description = "None4", Title = "Art_3", ImageId = 14 }
             };
 
-            var allDtos = new List<ArtDTO>()
+            var allDtos = new List<ArtDto>()
             {
-                new ArtDTO { Id = 1, Description = "None1", Title = "Art_0", ImageId = 11 },
-                new ArtDTO { Id = 2, Description = "None2", Title = "Art_1", ImageId = 12 },
-                new ArtDTO { Id = 3, Description = "None3", Title = "Art_2", ImageId = 13 },
-                new ArtDTO { Id = 4, Description = "None4", Title = "Art_3", ImageId = 14 }
+                new ArtDto { Id = 1, Description = "None1", Title = "Art_0", ImageId = 11 },
+                new ArtDto { Id = 2, Description = "None2", Title = "Art_1", ImageId = 12 },
+                new ArtDto { Id = 3, Description = "None3", Title = "Art_2", ImageId = 13 },
+                new ArtDto { Id = 4, Description = "None4", Title = "Art_3", ImageId = 14 }
             };
 
             _repositoryMock.Setup(r => r.ArtRepository.GetAllAsync(It.IsAny<Expression<Func<Art, bool>>>(), It.IsAny<Func<IQueryable<Art>, IIncludableQueryable<Art, object>>>())).ReturnsAsync(allArts);
-            _mapperMock.Setup(m => m.Map<IEnumerable<ArtDTO>>(allArts)).Returns(allDtos);
+            _mapperMock.Setup(m => m.Map<IEnumerable<ArtDto>>(allArts)).Returns(allDtos);
 
             // A(Act):
 
@@ -79,7 +79,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.ArtTests
                 })).ToArray());
 
             _repositoryMock.Verify(r => r.ArtRepository.GetAllAsync(It.IsAny<Expression<Func<Art, bool>>?>(), It.IsAny<Func<IQueryable<Art>, IIncludableQueryable<Art, object>>?>()), Times.Once);
-            _mapperMock.Verify(m => m.Map<IEnumerable<ArtDTO>>(allArts), Times.Once);
+            _mapperMock.Verify(m => m.Map<IEnumerable<ArtDto>>(allArts), Times.Once);
             _loggerMock.VerifyNoOtherCalls();
         }
 

@@ -19,16 +19,14 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.DeleteCategoryContent
 	public class DeleteCategoryContentHandlerTest
 	{
 		private readonly Mock<IRepositoryWrapper> _mockRepositoryWrapper;
-		private readonly Mock<IMapper> _mockMapper;
 		private readonly Mock<ILoggerService> _mockLogger;
 		private readonly DeleteCategoryContentHandler _handler;
 
 		public DeleteCategoryContentHandlerTest()
 		{
 			_mockRepositoryWrapper = new Mock<IRepositoryWrapper>();
-			_mockMapper = new Mock<IMapper>();
 			_mockLogger = new Mock<ILoggerService>();
-			_handler = new DeleteCategoryContentHandler(_mockRepositoryWrapper.Object, _mockMapper.Object, _mockLogger.Object);
+			_handler = new DeleteCategoryContentHandler(_mockRepositoryWrapper.Object, _mockLogger.Object);
 		}
 
 		[Fact]

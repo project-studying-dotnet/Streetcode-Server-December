@@ -35,11 +35,11 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.ArtTests
 
             int artId = 3;
             var artById = new Art { Id = artId, Description = "None1", Title = "ArtById", ImageId = 11 };          
-            var artDtoById = new ArtDTO { Id = artId, Description = "None1", Title = "ArtById", ImageId = 11 };
+            var artDtoById = new ArtDto { Id = artId, Description = "None1", Title = "ArtById", ImageId = 11 };
             var query = new GetArtByIdQuery(artId);
 
             _repositoryMock.Setup(r => r.ArtRepository.GetFirstOrDefaultAsync(It.Is<Expression<Func<Art, bool>>>(predicate => predicate.Compile()(artById)), null)).ReturnsAsync(artById);
-            _mapperMock.Setup(m => m.Map<ArtDTO>(artById)).Returns(artDtoById);
+            _mapperMock.Setup(m => m.Map<ArtDto>(artById)).Returns(artDtoById);
 
             // A(Act):
 
@@ -51,7 +51,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.ArtTests
             Assert.Equal(artDtoById.Id, res.Value.Id);
            
             _repositoryMock.Verify(r => r.ArtRepository.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<Art, bool>>>(), null), Times.Once);
-            _mapperMock.Verify(m => m.Map<ArtDTO>(artById), Times.Once);
+            _mapperMock.Verify(m => m.Map<ArtDto>(artById), Times.Once);
             _loggerMock.VerifyNoOtherCalls();
         }
 

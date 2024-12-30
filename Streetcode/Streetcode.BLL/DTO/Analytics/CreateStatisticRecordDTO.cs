@@ -1,6 +1,6 @@
 ﻿namespace Streetcode.BLL.DTO.Analytics
 {
-    public class CreateStatisticRecordDTO
+    public class CreateStatisticRecordDto
     {
         public int QrId { get; set; }
         public int Count { get; set; }

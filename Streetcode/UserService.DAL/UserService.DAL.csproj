@@ -6,8 +6,6 @@
     <AssemblyTitle>UserService.DAL</AssemblyTitle>
     <Product>UserService.DAL</Product>
     <Copyright>Copyright ©  2024</Copyright>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AspNetCore.Identity.Mongo" Version="9.1.1" />

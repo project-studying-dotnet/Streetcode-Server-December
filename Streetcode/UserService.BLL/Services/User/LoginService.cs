@@ -21,11 +21,11 @@ namespace UserService.BLL.Services.User
             _logger = logger;
         }
 
-        public async Task<Result<string>> Login(LoginDTO loginDto)
+        public async Task<Result<string>> Login(LoginDto loginDto)
         {
             if (loginDto == null)
             {
-                _logger.LogError("Login attempt with null LoginDTO.");
+                _logger.LogError("Login attempt with null LoginDto.");
                 return Result.Fail("Invalid login request.");
             }
 

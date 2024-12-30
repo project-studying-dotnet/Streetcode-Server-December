@@ -3,7 +3,7 @@ using UserService.BLL.DTO.User;
 
 namespace UserService.BLL.Validation
 {
-    public class LoginDtoValidator : AbstractValidator<LoginDTO>
+    public class LoginDtoValidator : AbstractValidator<LoginDto>
     {
         public LoginDtoValidator()
         {

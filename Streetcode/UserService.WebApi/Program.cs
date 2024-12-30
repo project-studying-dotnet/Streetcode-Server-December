@@ -10,7 +10,6 @@ using UserService.BLL.Services.Jwt;
 using UserService.BLL.Services.User;
 using UserService.BLL.Services;
 using UserService.WebApi.Extensions;
-using UserService.WebApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,8 +34,10 @@ builder.Services.AddIdentityMongoDbProvider<User, Role>(identityOptions =>
 });
 
 
-// JWT Configuration
+// JWT Configuration for DI
 builder.Services.Configure<JwtConfiguration>(builder.Configuration.GetSection("Jwt"));
+
+// JWT Configuration for Program.cs
 var jwtConfiguration = builder.Configuration.GetSection("Jwt").Get<JwtConfiguration>();
 
 
@@ -57,24 +58,6 @@ builder.Services.AddAuthentication(options =>
         ValidAudience = jwtConfiguration.Audience,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfiguration.SecretKey))
     };
-
-    options.Events = new JwtBearerEvents
-    {
-        OnMessageReceived = context =>
-        {
-            if (context.Request.Headers.TryGetValue("Authorization", out var authorizationHeader))
-            {
-                context.Token = authorizationHeader.ToString().Split(" ").Last(); 
-            }
-
-            if (string.IsNullOrEmpty(context.Token) && context.Request.Cookies.TryGetValue("AuthToken", out var cookieToken))
-            {
-                context.Token = cookieToken;
-            }
-
-            return Task.CompletedTask;
-        }
-    };
 });
 
 builder.Services.AddScoped<IClaimsService, ClaimsService>();
@@ -86,7 +69,6 @@ builder.Services.AddScoped<IUserService, UserService.BLL.Services.User.UserServi
 var app = builder.Build();
 await app.SeedDataAsync();
 
-app.UseMiddleware<CookieMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 

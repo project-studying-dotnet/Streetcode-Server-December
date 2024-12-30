@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Streetcode.BLL.DTO.Analytics;
+using Streetcode.BLL.DTO.Comment;
 using Streetcode.BLL.MediatR.Analytics.Delete;
 using Streetcode.BLL.MediatR.Analytics;
+using Streetcode.BLL.MediatR.Comment.CreateComment;
 using UserService.BLL.Attributes;
 using UserService.DAL.Enums;
 using Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetAllByTermId;
@@ -11,6 +13,7 @@ using Streetcode.BLL.MediatR.Comment.AdminDeleteComment;
 
 namespace Streetcode.WebApi.Controllers.Comment
 {
+    [Route("[action]")]
     public class CommentController : BaseApiController
     {
         [HttpGet("{streetcodeid:int}")]
@@ -30,6 +33,12 @@ namespace Streetcode.WebApi.Controllers.Comment
         public async Task<IActionResult> AdminDeleteComment([FromRoute] int Id)
         {
             return HandleResult(await Mediator.Send(new AdminDeleteCommentCommand(Id)));
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<GetCommentDto>> Create([FromBody] CreateCommentDto createCommentDto)
+        {
+            return HandleResult(await Mediator.Send(new CreateCommentCommand(createCommentDto)));
         }
     }
 }

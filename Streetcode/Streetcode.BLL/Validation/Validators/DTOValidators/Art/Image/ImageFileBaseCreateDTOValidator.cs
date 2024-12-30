@@ -3,7 +3,7 @@ using Streetcode.BLL.DTO.Media.Images;
 
 namespace Streetcode.BLL.Validation.Validators.DTOValidators.Art.Image
 {
-    public class ImageFileBaseCreateDTOValidator : AbstractValidator<ImageFileBaseCreateDTO>
+    public class ImageFileBaseCreateDTOValidator : AbstractValidator<ImageFileBaseCreateDto>
     {
         public ImageFileBaseCreateDTOValidator()
         {

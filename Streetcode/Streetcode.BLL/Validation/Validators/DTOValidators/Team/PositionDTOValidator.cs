@@ -3,7 +3,7 @@ using Streetcode.BLL.DTO.Team;
 
 namespace Streetcode.BLL.Validation.Validators.DTOValidators.Team
 {
-    public class PositionDTOValidator : AbstractValidator<PositionDTO>
+    public class PositionDTOValidator : AbstractValidator<PositionDto>
     {
         public PositionDTOValidator()
         {

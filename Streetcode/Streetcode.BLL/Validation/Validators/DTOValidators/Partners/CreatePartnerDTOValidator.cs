@@ -3,7 +3,7 @@ using Streetcode.BLL.DTO.Partners;
 
 namespace Streetcode.BLL.Validation.Validators.DTOValidators.Partners
 {
-    public class CreatePartnerDTOValidator : AbstractValidator<CreatePartnerDTO>
+    public class CreatePartnerDTOValidator : AbstractValidator<CreatePartnerDto>
     {
         public CreatePartnerDTOValidator()
         {

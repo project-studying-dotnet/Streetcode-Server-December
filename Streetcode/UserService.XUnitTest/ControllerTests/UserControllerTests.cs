@@ -36,10 +36,10 @@ namespace UserService.XUnitTest.ControllerTests
         public async Task Login_Should_Return_BadRequest_When_Login_Fails()
         {
             // Arrange
-            _loginServiceMock.Setup(x => x.Login(It.IsAny<LoginDTO>())).ReturnsAsync(Result.Fail("Invalid credentials"));
+            _loginServiceMock.Setup(x => x.Login(It.IsAny<LoginDto>())).ReturnsAsync(Result.Fail("Invalid credentials"));
 
             // Act
-            var result = await _controller.Login(new LoginDTO());
+            var result = await _controller.Login(new LoginDto());
 
             // Assert
             Assert.IsType<BadRequestObjectResult>(result);
@@ -49,10 +49,10 @@ namespace UserService.XUnitTest.ControllerTests
         public async Task Login_Should_Return_Ok_When_Login_Succeeds()
         {
             // Arrange
-            _loginServiceMock.Setup(x => x.Login(It.IsAny<LoginDTO>())).ReturnsAsync(Result.Ok("mockToken"));
+            _loginServiceMock.Setup(x => x.Login(It.IsAny<LoginDto>())).ReturnsAsync(Result.Ok("mockToken"));
 
             // Act
-            var result = await _controller.Login(new LoginDTO());
+            var result = await _controller.Login(new LoginDto());
 
             // Assert
             Assert.IsType<OkObjectResult>(result);

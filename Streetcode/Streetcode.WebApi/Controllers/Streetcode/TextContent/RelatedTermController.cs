@@ -30,21 +30,21 @@ namespace Streetcode.WebApi.Controllers.Streetcode.TextContent
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] RelatedTermDTO relatedTerm)
+        public async Task<IActionResult> Create([FromBody] RelatedTermDto relatedTerm)
         {
             return HandleResult(await Mediator.Send(new CreateRelatedTermCommand(relatedTerm)));
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] RelatedTermDTO relatedTerm)
+        public async Task<IActionResult> Update([FromBody] RelatedTermDto relatedTerm)
         {
             return HandleResult(await Mediator.Send(new UpdateRelatedTermCommand(relatedTerm)));
         }
 
-        [HttpDelete("{word}")]
-        public async Task<IActionResult> Delete([FromRoute] string word)
+        [HttpDelete("{word}/{termId:int}")]
+        public async Task<IActionResult> Delete([FromRoute] string word, [FromRoute] int termId)
         {
-            return HandleResult(await Mediator.Send(new DeleteRelatedTermCommand(word)));
+            return HandleResult(await Mediator.Send(new DeleteRelatedTermCommand(word, termId)));
         }
     }
 }

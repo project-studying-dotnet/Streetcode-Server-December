@@ -8,9 +8,9 @@ namespace Streetcode.BLL.Mapping.Media
     {
         public VideoProfile()
         {
-            CreateMap<Video, VideoDTO>();
-            CreateMap<VideoCreateDTO, Video>();
-            CreateMap<VideoDTO, VideoCreateDTO>().ReverseMap();
+            CreateMap<Video, VideoDto>();
+            CreateMap<VideoCreateDto, Video>();
+            CreateMap<VideoDto, VideoCreateDto>().ReverseMap();
         }
     }
 }

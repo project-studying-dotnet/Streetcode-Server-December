@@ -20,7 +20,6 @@ namespace Streetcode.XUnitTest.MediatRTests.Toponyms.GetAll
     {
         private readonly IMapper _mapper;
         private readonly Mock<IRepositoryWrapper> _mockRepositoryWrapper;
-        private readonly Mock<ILoggerService> _mockLogger;
         private readonly GetAllToponymsHandler _handler;
 
         /// <summary>
@@ -29,7 +28,6 @@ namespace Streetcode.XUnitTest.MediatRTests.Toponyms.GetAll
         /// </summary>
         public GetAllToponymsHandlerTest()
         {
-            _mockLogger = new Mock<ILoggerService>();
             _mockRepositoryWrapper = new Mock<IRepositoryWrapper>();
 
             var mapperConfiguration = new MapperConfiguration(cfg =>
@@ -37,7 +35,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Toponyms.GetAll
                 cfg.AddProfile(typeof(ToponymProfile));
             });
             _mapper = mapperConfiguration.CreateMapper();
-            _handler = new GetAllToponymsHandler(_mockRepositoryWrapper.Object, _mapper, _mockLogger.Object);
+            _handler = new GetAllToponymsHandler(_mockRepositoryWrapper.Object, _mapper);
         }
 
         /// <summary>
@@ -49,7 +47,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Toponyms.GetAll
             ConfigureRepository();
 
             var query = new GetAllToponymsQuery(
-                new GetAllToponymsRequestDTO()
+                new GetAllToponymsRequestDto()
                 {
                     Title = null,
                     Amount = 10,
@@ -69,7 +67,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Toponyms.GetAll
         {
             ConfigureRepository();
             var query = new GetAllToponymsQuery(
-                new GetAllToponymsRequestDTO()
+                new GetAllToponymsRequestDto()
                 {
                     Title = "ak",
                     Amount = 10,
@@ -89,7 +87,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Toponyms.GetAll
         {
             ConfigureRepository();
             var query = new GetAllToponymsQuery(
-                new GetAllToponymsRequestDTO()
+                new GetAllToponymsRequestDto()
                 {
                     Title = "null",
                     Amount = 10,
@@ -109,7 +107,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Toponyms.GetAll
         {
             ConfigureRepository();
             var query = new GetAllToponymsQuery(
-                new GetAllToponymsRequestDTO()
+                new GetAllToponymsRequestDto()
                 {
                     Title = null,
                     Amount = 2,  // amount of toponyms that can be displayed on one page

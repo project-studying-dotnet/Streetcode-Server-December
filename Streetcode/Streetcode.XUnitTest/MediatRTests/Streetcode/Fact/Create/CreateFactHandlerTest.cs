@@ -24,14 +24,14 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Fact.Create
         private readonly IImageService _image;
         private readonly Mock<IBlobService> _mockBlob;
         private readonly CreateFactHandler _createFactHandler;
-        private readonly CreateFactDTO _createFactWithImageDto = new CreateFactDTO()
+        private readonly CreateFactDto _createFactWithImageDto = new CreateFactDto()
         {
             Title = "New Title",
             FactContent = "New Content",
-            Image = new CreateFactImageDTO()
+            Image = new CreateFactImageDto()
             {
                 Title = "Image",
-                ImageDetails = new CreateFactImageDetailsDTO()
+                ImageDetails = new CreateFactImageDetailsDto()
                 {
                     Title = "Image Description"
                 }
@@ -51,7 +51,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Fact.Create
         [Fact]
         public async Task Handle_FactIsNull_ReturnsResultFail()
         {
-
+            // Arrange
             var command = new CreateFactCommand(null!);
             string errorMsg = ErrorManager.GetCustomErrorText("FailCreateError", "fact");
 
@@ -67,7 +67,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Fact.Create
         public async Task Handle_FactImageIsNull_ReturnsResultFail()
         {
             // Arrange
-            var _createFactDto = new CreateFactDTO() { Title = "New Title", FactContent = "New Content" };
+            var _createFactDto = new CreateFactDto() { Title = "New Title", FactContent = "New Content" };
             SetupGetAll();
             var command = new CreateFactCommand(_createFactDto);
             const string errorMsg = "Cannot create an image!";

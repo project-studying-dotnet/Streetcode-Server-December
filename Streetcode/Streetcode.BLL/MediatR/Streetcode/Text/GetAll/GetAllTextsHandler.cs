@@ -10,7 +10,7 @@ using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Streetcode.Text.GetAll
 {
-    public class GetAllTextsHandler : IRequestHandler<GetAllTextsQuery, Result<IEnumerable<TextDTO>>>
+    public class GetAllTextsHandler : IRequestHandler<GetAllTextsQuery, Result<IEnumerable<TextDto>>>
     {
         private readonly IMapper _mapper;
         private readonly IRepositoryWrapper _repositoryWrapper;
@@ -23,7 +23,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.Text.GetAll
             _logger = logger;
         }
 
-        public async Task<Result<IEnumerable<TextDTO>>> Handle(GetAllTextsQuery request, CancellationToken cancellationToken)
+        public async Task<Result<IEnumerable<TextDto>>> Handle(GetAllTextsQuery request, CancellationToken cancellationToken)
         {
             var texts = await _repositoryWrapper.TextRepository.GetAllAsync();
 
@@ -34,7 +34,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.Text.GetAll
                 return Result.Fail(new Error(errorMsg));
             }
 
-            return Result.Ok(_mapper.Map<IEnumerable<TextDTO>>(texts));
+            return Result.Ok(_mapper.Map<IEnumerable<TextDto>>(texts));
         }
     }
 }

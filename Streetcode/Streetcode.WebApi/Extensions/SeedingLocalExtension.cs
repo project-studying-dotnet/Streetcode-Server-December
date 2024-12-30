@@ -269,22 +269,6 @@ namespace Streetcode.WebApi.Extensions
                         }
                     }
 
-                    if (!dbContext.Users.Any())
-                    {
-                        dbContext.Users.AddRange(
-                            new DAL.Entities.Users.User
-                            {
-                                Email = "admin",
-                                Role = UserRole.Administrator,
-                                Login = "admin",
-                                Name = "admin",
-                                Password = "admin",
-                                Surname = "admin",
-                            });
-
-                        await dbContext.SaveChangesAsync();
-                    }
-
                     if (!dbContext.News.Any())
                     {
                         dbContext.News.AddRange(
@@ -1428,6 +1412,39 @@ namespace Streetcode.WebApi.Extensions
                                             TagId = 10,
                                             StreetcodeId = 2,
                                             IsVisible = true,
+                                        });
+
+                                    await dbContext.SaveChangesAsync();
+                                }
+
+                                if (!dbContext.Comments.Any())
+                                {
+                                    await dbContext.Comments.AddRangeAsync(
+                                        new DAL.Entities.Comment.Comment
+                                        {
+                                            UserName = "user",
+                                            UserFullName = "user",
+                                            CreatedDate = DateTime.Now,
+                                            Content = "Хочу бути горошком",
+                                            StreetcodeId = 1
+                                        },
+                                        new DAL.Entities.Comment.Comment
+                                        {
+                                            UserName = "admin",
+                                            UserFullName = "admin",
+                                            CreatedDate = DateTime.Now,
+                                            Content = "Я теж",
+                                            StreetcodeId = 1,
+                                            ParentId = 1,
+                                        },
+                                        new DAL.Entities.Comment.Comment
+                                        {
+                                            UserName = "user",
+                                            UserFullName = "user",
+                                            CreatedDate = DateTime.Now,
+                                            Content = "Хорош",
+                                            StreetcodeId = 1,
+                                            ParentId = 2,
                                         });
 
                                     await dbContext.SaveChangesAsync();

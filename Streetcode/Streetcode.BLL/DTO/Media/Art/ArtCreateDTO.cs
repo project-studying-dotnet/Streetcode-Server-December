@@ -1,6 +1,6 @@
 ﻿namespace Streetcode.BLL.DTO.Media.Art
 {
-    public class ArtCreateDTO
+    public class ArtCreateDto
     {
         public string? Description { get; set; }
         public string? Title { get; set; }

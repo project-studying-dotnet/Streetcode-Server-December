@@ -33,7 +33,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         public void Should_InvokeAudioFileBaseCreateDTOValidatorForIncorrectAudio()
         {
             // Arrange
-            var audio = new AudioFileBaseCreateDTO
+            var audio = new AudioFileBaseCreateDto
             {
                 Description = "",
                 Title = "Valid Title",
@@ -54,7 +54,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         public void Should_NotHaveErrorsForValidModel()
         {
             // Arrange
-            var audio = new AudioFileBaseCreateDTO
+            var audio = new AudioFileBaseCreateDto
             {
                 Description = "Test Description",
                 Title = "Valid Title",

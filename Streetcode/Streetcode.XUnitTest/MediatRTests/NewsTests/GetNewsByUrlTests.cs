@@ -72,11 +72,11 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
                 URL = "test - url.com",
             };
 
-            var newsDTO = new NewsDTO
+            var newsDTO = new NewsDto
             {
                 Id = 1,
                 Title = "News 1",
-                Image = new ImageDTO { BlobName = "test_image.jpg" },
+                Image = new ImageDto { BlobName = "test_image.jpg" },
                 URL = "test - url.com",
             };
 
@@ -86,7 +86,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
                     It.IsAny<Func<IQueryable<News>, IIncludableQueryable<News, object>>>()))
                 .ReturnsAsync(news);
 
-            _mapperMock.Setup(m => m.Map<NewsDTO>(news)).Returns(newsDTO);
+            _mapperMock.Setup(m => m.Map<NewsDto>(news)).Returns(newsDTO);
 
             _blobServiceMock
                 .Setup(b => b.FindFileInStorageAsBase64("test_image.jpg"))
@@ -117,7 +117,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
                 URL = "test - url.com",
             };
 
-            var newsDTO = new NewsDTO
+            var newsDTO = new NewsDto
             {
                 Id = 1,
                 Title = "News 1",
@@ -132,7 +132,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
                 .ReturnsAsync(news);
 
             _mapperMock
-                .Setup(m => m.Map<NewsDTO>(news))
+                .Setup(m => m.Map<NewsDto>(news))
                 .Returns(newsDTO);
 
             var query = new GetNewsByUrlQuery("test-url.com");

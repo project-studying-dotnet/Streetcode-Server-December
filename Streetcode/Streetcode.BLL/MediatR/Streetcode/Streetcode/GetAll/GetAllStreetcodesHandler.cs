@@ -9,20 +9,18 @@ using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.GetAll
 {
-    public class GetAllStreetcodesHandler : IRequestHandler<GetAllStreetcodesQuery, Result<GetAllStreetcodesResponseDTO>>
+    public class GetAllStreetcodesHandler : IRequestHandler<GetAllStreetcodesQuery, Result<GetAllStreetcodesResponseDto>>
     {
         private readonly IMapper _mapper;
         private readonly IRepositoryWrapper _repositoryWrapper;
-        private readonly ILoggerService _logger;
 
-        public GetAllStreetcodesHandler(IRepositoryWrapper repositoryWrapper, IMapper mapper, ILoggerService logger)
+        public GetAllStreetcodesHandler(IRepositoryWrapper repositoryWrapper, IMapper mapper)
         {
             _repositoryWrapper = repositoryWrapper;
             _mapper = mapper;
-            _logger = logger;
         }
 
-        public async Task<Result<GetAllStreetcodesResponseDTO>> Handle(GetAllStreetcodesQuery query, CancellationToken cancellationToken)
+        public async Task<Result<GetAllStreetcodesResponseDto>> Handle(GetAllStreetcodesQuery query, CancellationToken cancellationToken)
         {
             var filterRequest = query.request;
 
@@ -46,9 +44,9 @@ namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.GetAll
 
             int pagesAmount = ApplyPagination(ref streetcodes, filterRequest.Amount, filterRequest.Page);
 
-            var streetcodeDtos = _mapper.Map<IEnumerable<StreetcodeDTO>>(streetcodes.AsEnumerable());
+            var streetcodeDtos = _mapper.Map<IEnumerable<StreetcodeDto>>(streetcodes.AsEnumerable());
 
-            var response = new GetAllStreetcodesResponseDTO
+            var response = new GetAllStreetcodesResponseDto
             {
                 Pages = pagesAmount,
                 Streetcodes = streetcodeDtos

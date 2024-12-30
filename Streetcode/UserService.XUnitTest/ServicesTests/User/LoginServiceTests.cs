@@ -41,7 +41,7 @@ namespace UserService.XUnitTest.ServicesTests.User
             // Arrange
             _userManagerMock.Setup(x => x.FindByNameAsync(It.IsAny<string>())).ReturnsAsync((UserEntity)null!);
 
-            var loginDto = new LoginDTO { UserName = "invalid", Password = "password" };
+            var loginDto = new LoginDto { UserName = "invalid", Password = "password" };
 
             // Act
             var result = await _loginService.Login(loginDto);
@@ -59,7 +59,7 @@ namespace UserService.XUnitTest.ServicesTests.User
             _userManagerMock.Setup(x => x.CheckPasswordAsync(user, It.IsAny<string>())).ReturnsAsync(true);
             _jwtServiceMock.Setup(x => x.GenerateTokenAsync(user)).ReturnsAsync("mockToken");
 
-            var loginDto = new LoginDTO { UserName = "validuser", Password = "password" };
+            var loginDto = new LoginDto { UserName = "validuser", Password = "password" };
             var result = await _loginService.Login(loginDto);
 
             Assert.True(result.IsSuccess);

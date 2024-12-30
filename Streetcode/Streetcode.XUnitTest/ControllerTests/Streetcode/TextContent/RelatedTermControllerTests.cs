@@ -43,10 +43,10 @@ namespace Streetcode.XUnitTest.ControllerTests.Streetcode.TextContent
         public async Task GetAll_ReturnsAllTerms()
         {
             // Arrange
-            var expectedTerms = new List<RelatedTermDTO>
+            var expectedTerms = new List<RelatedTermDto>
             {
-                new RelatedTermDTO { Id = 1, Word = "TestTerm1", TermId = 1 },
-                new RelatedTermDTO { Id = 2, Word = "TestTerm2", TermId = 1 },
+                new RelatedTermDto { Id = 1, Word = "TestTerm1", TermId = 1 },
+                new RelatedTermDto { Id = 2, Word = "TestTerm2", TermId = 1 },
             };
 
             this._mediatorMock.Setup(m => m.Send(It.IsAny<GetAllRelatedTermsQuery>(), default))
@@ -65,7 +65,7 @@ namespace Streetcode.XUnitTest.ControllerTests.Streetcode.TextContent
         {
             // Arrange
             var termId = 1;
-            var expectedTerm = new RelatedTermDTO { Id = termId, Word = "TestTerm1", TermId = 1 };
+            var expectedTerm = new RelatedTermDto { Id = termId, Word = "TestTerm1", TermId = 1 };
 
             this._mediatorMock.Setup(m => m.Send(It.IsAny<GetRelatedTermByIdQuery>(), default))
                               .ReturnsAsync(expectedTerm);
@@ -83,10 +83,10 @@ namespace Streetcode.XUnitTest.ControllerTests.Streetcode.TextContent
         {
             // Arrange
             var termId = 1;
-            var expectedTerms = new List<RelatedTermDTO>
+            var expectedTerms = new List<RelatedTermDto>
             {
-                new RelatedTermDTO { Id = 1, Word = "TestTerm1", TermId = termId },
-                new RelatedTermDTO { Id = 2, Word = "TestTerm2", TermId = termId },
+                new RelatedTermDto { Id = 1, Word = "TestTerm1", TermId = termId },
+                new RelatedTermDto { Id = 2, Word = "TestTerm2", TermId = termId },
             };
 
             this._mediatorMock.Setup(m => m.Send(It.IsAny<GetAllRelatedTermsByTermIdQuery>(), default))
@@ -104,7 +104,7 @@ namespace Streetcode.XUnitTest.ControllerTests.Streetcode.TextContent
         public async Task Create_ReturnsCreatedResult()
         {
             // Arrange
-            var newTerm = new RelatedTermDTO { Id = 3, Word = "NewTerm", TermId = 1 };
+            var newTerm = new RelatedTermDto { Id = 3, Word = "NewTerm", TermId = 1 };
             this._mediatorMock.Setup(m => m.Send(It.IsAny<CreateRelatedTermCommand>(), default))
                               .ReturnsAsync(newTerm);
 
@@ -120,7 +120,7 @@ namespace Streetcode.XUnitTest.ControllerTests.Streetcode.TextContent
         public async Task Update_ReturnsUpdatedResult()
         {
             // Arrange
-            var updatedTerm = new RelatedTermDTO { Id = 1, Word = "UpdatedTerm", TermId = 1 };
+            var updatedTerm = new RelatedTermDto { Id = 1, Word = "UpdatedTerm", TermId = 1 };
             this._mediatorMock.Setup(m => m.Send(It.IsAny<UpdateRelatedTermCommand>(), default))
                               .ReturnsAsync(updatedTerm);
 
@@ -137,16 +137,33 @@ namespace Streetcode.XUnitTest.ControllerTests.Streetcode.TextContent
         {
             // Arrange
             var wordToDelete = "TestTerm";
-            var relatedTerm = new RelatedTermDTO { Id = 1, Word = "TestTerm", TermId = 1 };
-            this._mediatorMock.Setup(m => m.Send(It.IsAny<DeleteRelatedTermCommand>(), default))
-                              .ReturnsAsync(relatedTerm);
+            int termIdToDelete = 1;
+            _mediatorMock.Setup(m => m.Send(It.IsAny<DeleteRelatedTermCommand>(), default))
+                .ReturnsAsync(Unit.Value);
 
             // Act
-            var result = await this._controller.Delete(wordToDelete);
+            var result = await _controller.Delete(wordToDelete, termIdToDelete);
 
             // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result);
-            Assert.Equal(relatedTerm, okResult.Value);
+            result.Should().BeOfType<OkObjectResult>();
+        }
+
+        [Fact]
+        public async Task Delete_WhenHandlerFails_ReturnsBadRequest()
+        {
+            // Arrange
+            var word = "nonexistentWord";
+            var termId = 1;
+            var command = new DeleteRelatedTermCommand(word, termId);
+
+            _mediatorMock.Setup(m => m.Send(command, default))
+                .ReturnsAsync(Result.Fail("Failed to delete related term"));
+
+            // Act
+            var result = await _controller.Delete(word, termId);
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>();
         }
     }
 }

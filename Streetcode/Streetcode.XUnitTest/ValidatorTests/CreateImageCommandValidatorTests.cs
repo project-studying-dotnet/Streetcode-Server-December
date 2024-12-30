@@ -35,7 +35,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         public void Should_InvokeImageFileBaseCreateDTOValidatorForIncorrectImage()
         {
             // Arrange
-            var image = new ImageFileBaseCreateDTO
+            var image = new ImageFileBaseCreateDto
             {
                 Alt = "Test Alt",
                 Title = "Valid Title",
@@ -56,7 +56,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         public void Should_NotHaveErrorForValidImage()
         {
             // Arrange
-            var image = new ImageFileBaseCreateDTO
+            var image = new ImageFileBaseCreateDto
             {
                 Alt = "Valid Alt Text",
                 Title = "Valid Title",

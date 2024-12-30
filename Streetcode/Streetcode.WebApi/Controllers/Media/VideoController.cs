@@ -31,7 +31,7 @@ namespace Streetcode.WebApi.Controllers.Media
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] VideoCreateDTO video)
+        public async Task<IActionResult> Create([FromBody] VideoCreateDto video)
         {
             return HandleResult(await Mediator.Send(new CreateVideoCommand(video)));
         }

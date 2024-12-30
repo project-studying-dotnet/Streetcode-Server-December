@@ -1,16 +1,22 @@
 ﻿using FluentValidation;
 using Streetcode.BLL.DTO.Streetcode;
 using Streetcode.BLL.Validation.Validators.DTOValidators.AdditionalContent.Tag;
-using Streetcode.BLL.Validation.Validators.DTOValidators.Art;
 using Streetcode.BLL.Validation.Validators.DTOValidators.Art.Audio;
 using Streetcode.BLL.Validation.Validators.DTOValidators.Art.Image;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Streetcode.BLL.Validation.Validators.DTOValidators.Streetcode
 {
-    public class StreetcodeMainPageCreateDTOValidator : AbstractValidator<StreetcodeMainPageCreateDto>
+    public class StreetcodeMainPageUpdateDtoValidator : AbstractValidator<StreetcodeMainPageUpdateDto>
     {
-        public StreetcodeMainPageCreateDTOValidator()
+        public StreetcodeMainPageUpdateDtoValidator()
         {
+            RuleFor(x => x.Id)
+                .NotEmpty().WithMessage("The '{PropertyName}' field is required");
             RuleFor(x => x.Index)
                 .NotEmpty().WithMessage("The '{PropertyName}' field is required")
                 .GreaterThanOrEqualTo(0).WithMessage("{PropertyName} must be greater than or equal to 0");

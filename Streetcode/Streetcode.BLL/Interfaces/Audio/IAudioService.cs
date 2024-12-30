@@ -4,6 +4,6 @@ namespace Streetcode.BLL.Interfaces.Audio
 {
     public interface IAudioService
     {
-        public DAL.Entities.Media.Audio ConfigureAudio(AudioFileBaseCreateDTO audioDTO);
+        public DAL.Entities.Media.Audio ConfigureAudio(AudioFileBaseCreateDto audioDTO);
     }
 }

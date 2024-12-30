@@ -37,18 +37,18 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Streetcode.CreateMainPage
         {
             Title = "New Title",
             StreetcodeType = StreetcodeType.Person,
-            Images = new List<ImageFileBaseCreateDTO>
+            Images = new List<ImageFileBaseCreateDto>
             {
-                new ImageFileBaseCreateDTO
+                new ImageFileBaseCreateDto
                 {
                     Title = "Animation",
                 },
-                new ImageFileBaseCreateDTO
+                new ImageFileBaseCreateDto
                 {
                     Title = "Picture",
                 }
             },
-            Audio = new AudioFileBaseCreateDTO
+            Audio = new AudioFileBaseCreateDto
             {
                 Title = "Audio Title",
                 Description = "Audio Description"

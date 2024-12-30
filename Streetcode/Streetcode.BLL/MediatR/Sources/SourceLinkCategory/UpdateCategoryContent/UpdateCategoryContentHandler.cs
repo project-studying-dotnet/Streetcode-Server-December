@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.UpdateCategoryContent
 {
-	public class UpdateCategoryContentHandler : IRequestHandler<UpdateCategoryContentCommand, Result<CategoryContentCreateDTO>>
+	public class UpdateCategoryContentHandler : IRequestHandler<UpdateCategoryContentCommand, Result<CategoryContentCreateDto>>
 	{
 		private readonly IMapper _mapper;
 		private readonly IRepositoryWrapper _repositoryWrapper;
@@ -26,7 +26,7 @@ namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.UpdateCategoryConten
 			_logger = loggerService;
 		}
 
-		public async Task<Result<CategoryContentCreateDTO>> Handle(UpdateCategoryContentCommand request, CancellationToken cancellationToken)
+		public async Task<Result<CategoryContentCreateDto>> Handle(UpdateCategoryContentCommand request, CancellationToken cancellationToken)
 		{
 			var source = _mapper.Map<StreetcodeCategoryContent>(request.CategoryContent);
 			if (source == null)
@@ -54,7 +54,7 @@ namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.UpdateCategoryConten
 
 			if (resultIsSuccess)
 			{
-				return Result.Ok(_mapper.Map<CategoryContentCreateDTO>(source));
+				return Result.Ok(_mapper.Map<CategoryContentCreateDto>(source));
 			}
 			else
 			{

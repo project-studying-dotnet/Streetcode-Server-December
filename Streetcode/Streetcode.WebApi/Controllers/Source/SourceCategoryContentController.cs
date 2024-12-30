@@ -27,7 +27,7 @@ namespace Streetcode.WebApi.Controllers.Source
 
 		[AuthorizeRoles(UserRole.Admin)]
 		[HttpPut]
-		public async Task<IActionResult> UpdateCategoryContent([FromBody] CategoryContentCreateDTO categoryContent)
+		public async Task<IActionResult> UpdateCategoryContent([FromBody] CategoryContentCreateDto categoryContent)
 		{
 			return HandleResult(await Mediator.Send(new UpdateCategoryContentCommand(categoryContent)));
 		}

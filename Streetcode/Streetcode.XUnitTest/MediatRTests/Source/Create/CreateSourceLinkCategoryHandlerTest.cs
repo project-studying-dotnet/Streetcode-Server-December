@@ -39,12 +39,12 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.Create
 		public async Task Handle_WhenCategoryIsCreatedSuccessfully_ShouldReturnSuccess()
 		{
 			// Arrange
-			var SourceCategory = new SourceLinkCategoryDTO { Title = "Test Category", ImageId = 1 };
+			var SourceCategory = new SourceLinkCategoryDto { Title = "Test Category", ImageId = 1 };
 			var command = new CreateSourceLinkCategoryCommand(SourceCategory);
 
 			var image = new Image { Id = 1, BlobName = "test-blob", MimeType = "image/jpeg" };
 			var category = new SourceCategory { Id = 1, Title = "Test Category" };
-			var categoryDto = new SourceLinkCategoryDTO { Title = "Test Category", Image = new ImageDTO { MimeType = "image/jpeg" } };
+			var categoryDto = new SourceLinkCategoryDto { Title = "Test Category", Image = new ImageDto { MimeType = "image/jpeg" } };
 
 			_mockRepositoryWrapper.Setup(repo => repo.ImageRepository.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<Image, bool>>>(), null))
 				.ReturnsAsync(image);
@@ -54,9 +54,9 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.Create
 
 			_mockMapper.Setup(mapper => mapper.Map<SourceCategory>(command.SourceLinkCategory))
 				.Returns(category);
-			_mockMapper.Setup(mapper => mapper.Map<SourceLinkCategoryDTO>(category))
+			_mockMapper.Setup(mapper => mapper.Map<SourceLinkCategoryDto>(category))
 				.Returns(categoryDto);
-			_mockMapper.Setup(mapper => mapper.Map<ImageDTO>(image))
+			_mockMapper.Setup(mapper => mapper.Map<ImageDto>(image))
 				.Returns(categoryDto.Image);
 
 			// Act
@@ -72,7 +72,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.Create
 		public async Task Handle_WhenImageNotFound_ShouldReturnFail()
 		{
 			// Arrange
-			var sourceCategory = new SourceLinkCategoryDTO { Title = "Test Category", ImageId = 1 };
+			var sourceCategory = new SourceLinkCategoryDto { Title = "Test Category", ImageId = 1 };
 			var command = new CreateSourceLinkCategoryCommand(sourceCategory);
 
 			_mockRepositoryWrapper.Setup(repo => repo.ImageRepository.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<Image, bool>>>(), null))
@@ -91,7 +91,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.Create
 		public async Task Handle_WhenSaveChangesFails_ShouldReturnFail()
 		{
 			// Arrange
-			var sourceCategory = new SourceLinkCategoryDTO { Title = "Test Category", ImageId = 1 };
+			var sourceCategory = new SourceLinkCategoryDto { Title = "Test Category", ImageId = 1 };
 			var command = new CreateSourceLinkCategoryCommand(sourceCategory);
 
 			var image = new Image { Id = 1, BlobName = "test-blob", MimeType = "image/jpeg" };

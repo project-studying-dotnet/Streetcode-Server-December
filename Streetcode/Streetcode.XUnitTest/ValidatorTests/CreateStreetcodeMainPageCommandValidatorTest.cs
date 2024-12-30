@@ -15,7 +15,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
     public class CreateStreetcodeMainPageCommandValidatorTest
     {
         private readonly CreateStreetcodeMainPageCommandValidator _validator;
-        private readonly List<ImageFileBaseCreateDTO> imageListEmpty = new List<ImageFileBaseCreateDTO> { };
+        private readonly List<ImageFileBaseCreateDto> imageListEmpty = new List<ImageFileBaseCreateDto> { };
 
         public CreateStreetcodeMainPageCommandValidatorTest()
         {
@@ -172,10 +172,10 @@ namespace Streetcode.XUnitTest.ValidatorTests
             var command = new CreateStreetcodeMainPageCommand(
                 new StreetcodeMainPageCreateDTO
                 {
-                    Images = new List<ImageFileBaseCreateDTO>
+                    Images = new List<ImageFileBaseCreateDto>
                     {
-                        new ImageFileBaseCreateDTO { MimeType = "gif" },
-                        new ImageFileBaseCreateDTO { MimeType = "gif" }
+                        new ImageFileBaseCreateDto { MimeType = "gif" },
+                        new ImageFileBaseCreateDto { MimeType = "gif" }
                     }
                 }
             );
@@ -192,11 +192,11 @@ namespace Streetcode.XUnitTest.ValidatorTests
             var command = new CreateStreetcodeMainPageCommand(
                 new StreetcodeMainPageCreateDTO
                 {
-                    Images = new List<ImageFileBaseCreateDTO>
+                    Images = new List<ImageFileBaseCreateDto>
                     {
-                        new ImageFileBaseCreateDTO { MimeType = "jpg" },
-                        new ImageFileBaseCreateDTO { MimeType = "png" },
-                        new ImageFileBaseCreateDTO { MimeType = "gif" }
+                        new ImageFileBaseCreateDto { MimeType = "jpg" },
+                        new ImageFileBaseCreateDto { MimeType = "png" },
+                        new ImageFileBaseCreateDto { MimeType = "gif" }
                     }
                 }
             );
@@ -213,10 +213,10 @@ namespace Streetcode.XUnitTest.ValidatorTests
             var command = new CreateStreetcodeMainPageCommand(
                 new StreetcodeMainPageCreateDTO
                 {
-                    Images = new List<ImageFileBaseCreateDTO>
+                    Images = new List<ImageFileBaseCreateDto>
                     {
-                        new ImageFileBaseCreateDTO { MimeType = "gif" },
-                        new ImageFileBaseCreateDTO { MimeType = "jpg" }
+                        new ImageFileBaseCreateDto { MimeType = "gif" },
+                        new ImageFileBaseCreateDto { MimeType = "jpg" }
                     }
                 }
             );
@@ -316,7 +316,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         {
             var command = new CreateStreetcodeMainPageCommand(new StreetcodeMainPageCreateDTO
             {
-                Audio = new AudioFileBaseCreateDTO { Title = "audio", MimeType = "mp3" },
+                Audio = new AudioFileBaseCreateDto { Title = "audio", MimeType = "mp3" },
                 Images = imageListEmpty
             });
 

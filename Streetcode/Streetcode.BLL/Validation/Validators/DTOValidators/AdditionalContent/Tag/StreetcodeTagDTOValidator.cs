@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Streetcode.BLL.Validation.Validators.DTOValidators.AdditionalContent.Tag
 {
-    public class StreetcodeTagDTOValidator : AbstractValidator<StreetcodeTagDTO>
+    public class StreetcodeTagDTOValidator : AbstractValidator<StreetcodeTagDto>
     {
         public StreetcodeTagDTOValidator()
         {

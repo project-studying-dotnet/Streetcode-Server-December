@@ -41,7 +41,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.UpdateCategoryContent
 				Text = "Test Description"
 			};
 
-			var categoryContentDto = new CategoryContentCreateDTO
+			var categoryContentDto = new CategoryContentCreateDto
 			{
 				Id = 1,
 				Title = "Test Content",
@@ -51,7 +51,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.UpdateCategoryContent
 			var command = new UpdateCategoryContentCommand(categoryContentDto);
 
 			_mockMapper.Setup(m => m.Map<StreetcodeCategoryContent>(categoryContentDto)).Returns(categoryContent);
-			_mockMapper.Setup(m => m.Map<CategoryContentCreateDTO>(categoryContent)).Returns(categoryContentDto);
+			_mockMapper.Setup(m => m.Map<CategoryContentCreateDto>(categoryContent)).Returns(categoryContentDto);
 
 			_mockRepositoryWrapper.Setup(rep => rep.StreetcodeCategoryContentRepository
 				.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<StreetcodeCategoryContent, bool>>>(), null))
@@ -89,7 +89,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.UpdateCategoryContent
 		public async Task Handle_WhenCategoryContentNotFoundInDb_ShouldReturnsFail()
 		{
 			// Arrange
-			var categoryContentDto = new CategoryContentCreateDTO
+			var categoryContentDto = new CategoryContentCreateDto
 			{
 				Id = 1,
 				Title = "Test Content",
@@ -127,7 +127,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.UpdateCategoryContent
 				Text = "Test Description"
 			};
 
-			var categoryContentDto = new CategoryContentCreateDTO
+			var categoryContentDto = new CategoryContentCreateDto
 			{
 				Id = 1,
 				Title = "Test Content",
@@ -138,7 +138,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.UpdateCategoryContent
 			const string errorMsg = "Failed to update category content";
 
 			_mockMapper.Setup(m => m.Map<StreetcodeCategoryContent>(categoryContentDto)).Returns(categoryContent);
-			_mockMapper.Setup(m => m.Map<CategoryContentCreateDTO>(categoryContent)).Returns(categoryContentDto);
+			_mockMapper.Setup(m => m.Map<CategoryContentCreateDto>(categoryContent)).Returns(categoryContentDto);
 
 			_mockRepositoryWrapper.Setup(rep => rep.StreetcodeCategoryContentRepository
 				.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<StreetcodeCategoryContent, bool>>>(), null))

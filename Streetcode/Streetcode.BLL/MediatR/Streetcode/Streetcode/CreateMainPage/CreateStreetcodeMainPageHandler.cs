@@ -12,7 +12,7 @@ using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.CreateMainPage
 {
-    public class CreateStreetcodeMainPageHandler : IRequestHandler<CreateStreetcodeMainPageCommand, Result<StreetcodeDTO>>
+    public class CreateStreetcodeMainPageHandler : IRequestHandler<CreateStreetcodeMainPageCommand, Result<StreetcodeDto>>
     {
         private readonly IRepositoryWrapper _repository;
         private readonly IMapper _mapper;
@@ -29,7 +29,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.CreateMainPage
             _audioService = audioService;
         }
 
-        public async Task<Result<StreetcodeDTO>> Handle(CreateStreetcodeMainPageCommand request, CancellationToken cancellationToken)
+        public async Task<Result<StreetcodeDto>> Handle(CreateStreetcodeMainPageCommand request, CancellationToken cancellationToken)
         {
             if (request.StreetcodeMainPage is null)
             {
@@ -84,7 +84,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.CreateMainPage
                 return Result.Fail(new Error(errorMsg));
             }
 
-            return Result.Ok(_mapper.Map<StreetcodeDTO>(createdMainPage));
+            return Result.Ok(_mapper.Map<StreetcodeDto>(createdMainPage));
         }
     }
 }

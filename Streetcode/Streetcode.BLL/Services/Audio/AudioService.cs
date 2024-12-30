@@ -16,7 +16,7 @@ namespace Streetcode.BLL.Services.Audio
             _blobService = blobService;
         }
 
-        public DAL.Entities.Media.Audio ConfigureAudio(AudioFileBaseCreateDTO audioDTO)
+        public DAL.Entities.Media.Audio ConfigureAudio(AudioFileBaseCreateDto audioDTO)
         {
             string hashBlobStorageName = _blobService.SaveFileInStorage(
                 audioDTO.BaseFormat,

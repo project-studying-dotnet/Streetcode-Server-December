@@ -20,10 +20,10 @@ namespace Streetcode.BLL.DTO.Streetcode
         public string? Teaser { get; set; }
         public DateTime EventStartOrPersonBirthDate { get; set; }
         public DateTime? EventEndOrPersonDeathDate { get; set; }
-        public IEnumerable<StreetcodeTagDTO> Tags { get; set; }
+        public IEnumerable<StreetcodeTagDto> Tags { get; set; }
         public string TransliterationUrl { get; set; }
         public string? BriefDescription { get; set; }
-        public List<ImageFileBaseCreateDTO> Images { get; set; }
-        public AudioFileBaseCreateDTO? Audio { get; set; }
+        public List<ImageFileBaseCreateDto> Images { get; set; }
+        public AudioFileBaseCreateDto? Audio { get; set; }
     }
 }

@@ -9,9 +9,9 @@ namespace Streetcode.BLL.Mapping.AdditionalContent
     {
         public TagProfile()
         {
-            CreateMap<Tag, TagDTO>().ForMember(x => x.Streetcodes, conf => conf.Ignore());
-            CreateMap<Tag, StreetcodeTagDTO>().ReverseMap();
-            CreateMap<StreetcodeTagIndex, StreetcodeTagDTO>()
+            CreateMap<Tag, TagDto>().ForMember(x => x.Streetcodes, conf => conf.Ignore());
+            CreateMap<Tag, StreetcodeTagDto>().ReverseMap();
+            CreateMap<StreetcodeTagIndex, StreetcodeTagDto>()
                 .ForMember(x => x.Id, conf => conf.MapFrom(ti => ti.TagId))
                 .ForMember(x => x.Title, conf => conf.MapFrom(ti => ti.Tag.Title ?? ""));
         }

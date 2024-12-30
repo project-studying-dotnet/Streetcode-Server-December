@@ -30,7 +30,7 @@ namespace Streetcode.WebApi.Controllers.Media.Images
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] ImageFileBaseCreateDTO image)
+        public async Task<IActionResult> Create([FromBody] ImageFileBaseCreateDto image)
         {
             return HandleResult(await Mediator.Send(new CreateImageCommand(image)));
         }

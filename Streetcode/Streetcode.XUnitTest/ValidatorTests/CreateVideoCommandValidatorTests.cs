@@ -41,7 +41,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         public void Should_InvokeVideoCreateDTOValidatorForIncorrectVideo()
         {
             // Arrange
-            var video = new VideoCreateDTO
+            var video = new VideoCreateDto
             {
                Url = "invalid-url"
             };
@@ -59,7 +59,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         public void Should_NotHaveErrorsForValidModel()
         {
             // Arrange
-            var video = new VideoCreateDTO
+            var video = new VideoCreateDto
             {
                 StreetcodeId = 1,
                 Url = "https://example.com"

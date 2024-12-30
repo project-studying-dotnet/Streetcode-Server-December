@@ -9,7 +9,7 @@ using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Team.GetAll
 {
-    public class GetAllMainTeamHandler : IRequestHandler<GetAllMainTeamQuery, Result<IEnumerable<TeamMemberDTO>>>
+    public class GetAllMainTeamHandler : IRequestHandler<GetAllMainTeamQuery, Result<IEnumerable<TeamMemberDto>>>
     {
         private readonly IMapper _mapper;
         private readonly IRepositoryWrapper _repositoryWrapper;
@@ -22,7 +22,7 @@ namespace Streetcode.BLL.MediatR.Team.GetAll
             _logger = logger;
         }
 
-        public async Task<Result<IEnumerable<TeamMemberDTO>>> Handle(GetAllMainTeamQuery request, CancellationToken cancellationToken)
+        public async Task<Result<IEnumerable<TeamMemberDto>>> Handle(GetAllMainTeamQuery request, CancellationToken cancellationToken)
         {
             var team = await _repositoryWrapper
                 .TeamRepository
@@ -35,7 +35,7 @@ namespace Streetcode.BLL.MediatR.Team.GetAll
                 return Result.Fail(new Error(errorMsg));
             }
 
-            return Result.Ok(_mapper.Map<IEnumerable<TeamMemberDTO>>(team));
+            return Result.Ok(_mapper.Map<IEnumerable<TeamMemberDto>>(team));
         }
     }
 }

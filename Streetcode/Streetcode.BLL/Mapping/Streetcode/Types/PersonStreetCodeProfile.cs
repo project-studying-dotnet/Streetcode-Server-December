@@ -10,8 +10,8 @@ namespace Streetcode.BLL.Mapping.Streetcode.Types
     {
         public PersonStreetcodeProfile()
         {
-            CreateMap<PersonStreetcode, PersonStreetcodeDTO>()
-                .IncludeBase<StreetcodeContent, StreetcodeDTO>().ReverseMap();
+            CreateMap<PersonStreetcode, PersonStreetcodeDto>()
+                .IncludeBase<StreetcodeContent, StreetcodeDto>().ReverseMap();
             CreateMap<StreetcodeMainPageCreateDTO, PersonStreetcode>();
         }
     }

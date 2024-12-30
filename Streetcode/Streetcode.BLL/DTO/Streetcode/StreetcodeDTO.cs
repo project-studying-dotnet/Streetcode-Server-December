@@ -3,7 +3,7 @@ using Streetcode.DAL.Enums;
 
 namespace Streetcode.BLL.DTO.Streetcode
 {
-    public class StreetcodeDTO
+    public class StreetcodeDto
     {
         public int Id { get; set; }
         public int Index { get; set; }
@@ -17,7 +17,7 @@ namespace Streetcode.BLL.DTO.Streetcode
         public int ViewCount { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-        public IEnumerable<StreetcodeTagDTO> Tags { get; set; }
+        public IEnumerable<StreetcodeTagDto> Tags { get; set; }
         public string Teaser { get; set; }
         public StreetcodeType StreetcodeType { get; set; }
         public string? FirstName { get; set; }

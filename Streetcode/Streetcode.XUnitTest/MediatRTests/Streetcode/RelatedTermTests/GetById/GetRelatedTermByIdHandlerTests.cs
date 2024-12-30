@@ -61,7 +61,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.GetById
             var result = await this._handler.Handle(new GetRelatedTermByIdQuery(1), CancellationToken.None);
             result.IsSuccess.Should().BeTrue();
             result.Value.Should().NotBeNull();
-            result.Value.Should().BeOfType<RelatedTermDTO>();
+            result.Value.Should().BeOfType<RelatedTermDto>();
             result.Value.Id.Should().Be(1);
             result.Value.Word.Should().Be("Hello");
         }
@@ -88,7 +88,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.GetById
             var result = await this._handler.Handle(new GetRelatedTermByIdQuery(1), CancellationToken.None);
             result.IsSuccess.Should().BeTrue();
             result.Value.Should().NotBeNull();
-            result.Value.Should().BeOfType<RelatedTermDTO>();
+            result.Value.Should().BeOfType<RelatedTermDto>();
             result.Value.Id.Should().Be(2);
             result.Value.Word.Should().Be("HelloelloH");
         }

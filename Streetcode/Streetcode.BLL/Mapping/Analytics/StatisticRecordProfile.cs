@@ -8,9 +8,9 @@ namespace Streetcode.BLL.Mapping.Analytics
     {
         public StatisticRecordProfile()
         {
-            CreateMap<StatisticRecord, StatisticRecordDTO>().ReverseMap();
+            CreateMap<StatisticRecord, StatisticRecordDto>().ReverseMap();
 
-            CreateMap<CreateStatisticRecordDTO, StatisticRecord>();
+            CreateMap<CreateStatisticRecordDto, StatisticRecord>();
         }
     }
 }

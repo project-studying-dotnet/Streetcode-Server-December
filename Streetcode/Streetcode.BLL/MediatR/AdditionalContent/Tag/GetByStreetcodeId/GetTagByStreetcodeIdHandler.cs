@@ -12,7 +12,7 @@ using Streetcode.DAL.Repositories.Interfaces.Base;
 namespace Streetcode.BLL.MediatR.AdditionalContent.Tag.GetByStreetcodeId
 {
 
-    public class GetTagByStreetcodeIdHandler : IRequestHandler<GetTagByStreetcodeIdQuery, Result<IEnumerable<StreetcodeTagDTO>>>
+    public class GetTagByStreetcodeIdHandler : IRequestHandler<GetTagByStreetcodeIdQuery, Result<IEnumerable<StreetcodeTagDto>>>
     {
         private readonly IMapper _mapper;
         private readonly IRepositoryWrapper _repositoryWrapper;
@@ -25,7 +25,7 @@ namespace Streetcode.BLL.MediatR.AdditionalContent.Tag.GetByStreetcodeId
             _logger = logger;
         }
 
-        public async Task<Result<IEnumerable<StreetcodeTagDTO>>> Handle(GetTagByStreetcodeIdQuery request, CancellationToken cancellationToken)
+        public async Task<Result<IEnumerable<StreetcodeTagDto>>> Handle(GetTagByStreetcodeIdQuery request, CancellationToken cancellationToken)
         {
             /*
             StreetcodeContent streetcode = await _repositoryWrapper.StreetcodeRepository.GetFirstOrDefaultAsync(s => s.Id == request.StreetcodeId);
@@ -46,7 +46,7 @@ namespace Streetcode.BLL.MediatR.AdditionalContent.Tag.GetByStreetcodeId
                 return Result.Fail(new Error(errorMsg));
             }
 
-            var res = Result.Ok(_mapper.Map<IEnumerable<StreetcodeTagDTO>>(tagIndexed.OrderBy(ti => ti.Index)));
+            var res = Result.Ok(_mapper.Map<IEnumerable<StreetcodeTagDto>>(tagIndexed.OrderBy(ti => ti.Index)));
             return res;
         }
     }

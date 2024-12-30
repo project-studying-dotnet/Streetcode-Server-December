@@ -30,13 +30,13 @@ namespace Streetcode.WebApi.Controllers.Streetcode.TextContent
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] RelatedTermDTO relatedTerm)
+        public async Task<IActionResult> Create([FromBody] RelatedTermDto relatedTerm)
         {
             return HandleResult(await Mediator.Send(new CreateRelatedTermCommand(relatedTerm)));
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] RelatedTermDTO relatedTerm)
+        public async Task<IActionResult> Update([FromBody] RelatedTermDto relatedTerm)
         {
             return HandleResult(await Mediator.Send(new UpdateRelatedTermCommand(relatedTerm)));
         }

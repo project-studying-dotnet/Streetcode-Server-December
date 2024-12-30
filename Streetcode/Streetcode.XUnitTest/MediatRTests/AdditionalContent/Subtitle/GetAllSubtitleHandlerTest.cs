@@ -40,13 +40,13 @@ public class GetAllSubtitleHandlerTest : AdditionalContentTestWrapper
             },
         };
 
-        var subtitleDto = new List<SubtitleDTO>
+        var subtitleDto = new List<SubtitleDto>
         {
-            new SubtitleDTO
+            new SubtitleDto
             {
                 Id = 1, SubtitleText = "Test Subtitle 1", StreetcodeId = 2,
             },
-            new SubtitleDTO
+            new SubtitleDto
             {
                 Id = 3, SubtitleText = "Test Subtitle 3", StreetcodeId = 4,
             },
@@ -59,7 +59,7 @@ public class GetAllSubtitleHandlerTest : AdditionalContentTestWrapper
                         IIncludableQueryable<SubtitleEntity, object>>>()))
             .ReturnsAsync(subtitle);
 
-        _mapperMock.Setup(m => m.Map<IEnumerable<SubtitleDTO>>(subtitle))
+        _mapperMock.Setup(m => m.Map<IEnumerable<SubtitleDto>>(subtitle))
             .Returns(subtitleDto);
 
         // Act

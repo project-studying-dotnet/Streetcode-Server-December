@@ -8,7 +8,7 @@ using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.AdditionalContent.Coordinate.GetByStreetcodeId
 {
-    public class GetCoordinatesByStreetcodeIdHandler : IRequestHandler<GetCoordinatesByStreetcodeIdQuery, Result<IEnumerable<StreetcodeCoordinateDTO>>>
+    public class GetCoordinatesByStreetcodeIdHandler : IRequestHandler<GetCoordinatesByStreetcodeIdQuery, Result<IEnumerable<StreetcodeCoordinateDto>>>
     {
         private readonly IMapper _mapper;
         private readonly IRepositoryWrapper _repositoryWrapper;
@@ -21,7 +21,7 @@ namespace Streetcode.BLL.MediatR.AdditionalContent.Coordinate.GetByStreetcodeId
             _logger = logger;
         }
 
-        public async Task<Result<IEnumerable<StreetcodeCoordinateDTO>>> Handle(GetCoordinatesByStreetcodeIdQuery request, CancellationToken cancellationToken)
+        public async Task<Result<IEnumerable<StreetcodeCoordinateDto>>> Handle(GetCoordinatesByStreetcodeIdQuery request, CancellationToken cancellationToken)
         {
             if ((await _repositoryWrapper.StreetcodeRepository.GetFirstOrDefaultAsync(s => s.Id == request.StreetcodeId)) is null)
             {
@@ -39,7 +39,7 @@ namespace Streetcode.BLL.MediatR.AdditionalContent.Coordinate.GetByStreetcodeId
                 return Result.Fail(new Error(msg));
             }
 
-            return Result.Ok(_mapper.Map<IEnumerable<StreetcodeCoordinateDTO>>(coordinates));
+            return Result.Ok(_mapper.Map<IEnumerable<StreetcodeCoordinateDto>>(coordinates));
         }
     }
 }

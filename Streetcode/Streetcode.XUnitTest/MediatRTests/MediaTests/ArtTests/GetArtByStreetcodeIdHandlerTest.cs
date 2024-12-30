@@ -78,44 +78,44 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.ArtTests
                 }
             };
 
-            var allDtosByStreetcodeId = new List<ArtDTO>()
+            var allDtosByStreetcodeId = new List<ArtDto>()
             {
-                new ArtDTO 
+                new ArtDto 
                 {
                     Id = 1,
                     Description = "None1",
                     Title = "Art_0",
                     ImageId = 11, 
-                    Image = new ImageDTO { Id = 11, BlobName = "blobNum1" }
+                    Image = new ImageDto { Id = 11, BlobName = "blobNum1" }
                 },
-                new ArtDTO 
+                new ArtDto 
                 {
                     Id = 2, 
                     Description = "None2", 
                     Title = "Art_1", 
                     ImageId = 12, 
-                    Image = new ImageDTO { Id = 12, BlobName = "blobNum2" }
+                    Image = new ImageDto { Id = 12, BlobName = "blobNum2" }
                 },
-                new ArtDTO 
+                new ArtDto 
                 {
                     Id = 3,
                     Description = "None3",
                     Title = "Art_2", 
                     ImageId = 13, 
-                    Image = new ImageDTO { Id = 13, BlobName = "blobNum3" } 
+                    Image = new ImageDto { Id = 13, BlobName = "blobNum3" } 
                 },
-                new ArtDTO 
+                new ArtDto 
                 {
                     Id = 4,
                     Description = "None4", 
                     Title = "Art_3", 
                     ImageId = 14, 
-                    Image = new ImageDTO { Id = 14, BlobName = "blobNum4" }
+                    Image = new ImageDto { Id = 14, BlobName = "blobNum4" }
                 }
             };
 
             _repositoryMock.Setup(r => r.ArtRepository.GetAllAsync(It.Is<Expression<Func<Art, bool>>>(predicate => predicate.Compile()(allArtsByStreetcodeId[0])), It.IsAny<Func<IQueryable<Art>, IIncludableQueryable<Art, object>>>())).ReturnsAsync(allArtsByStreetcodeId);
-            _mapperMock.Setup(m => m.Map<IEnumerable<ArtDTO>>(allArtsByStreetcodeId)).Returns(allDtosByStreetcodeId);
+            _mapperMock.Setup(m => m.Map<IEnumerable<ArtDto>>(allArtsByStreetcodeId)).Returns(allDtosByStreetcodeId);
             _blobMock.Setup(b => b.FindFileInStorageAsBase64("blobNum1")).Returns("base64_blobNum1");
             _blobMock.Setup(b => b.FindFileInStorageAsBase64("blobNum2")).Returns("base64_blobNum2");
             _blobMock.Setup(b => b.FindFileInStorageAsBase64("blobNum3")).Returns("base64_blobNum3");
@@ -136,7 +136,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.ArtTests
                artDto => Assert.Equal("base64_blobNum4", artDto.Image.Base64));
 
             _repositoryMock.Verify(r => r.ArtRepository.GetAllAsync(It.IsAny<Expression<Func<Art, bool>>>(), It.IsAny<Func<IQueryable<Art>, IIncludableQueryable<Art, object>>>()), Times.Once);
-            _mapperMock.Verify(m => m.Map<IEnumerable<ArtDTO>>(allArtsByStreetcodeId), Times.Once);
+            _mapperMock.Verify(m => m.Map<IEnumerable<ArtDto>>(allArtsByStreetcodeId), Times.Once);
             _blobMock.Verify(b => b.FindFileInStorageAsBase64(It.IsAny<string>()), Times.Exactly(allArtsByStreetcodeId.Count));
         }
 

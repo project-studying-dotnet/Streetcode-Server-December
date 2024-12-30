@@ -48,8 +48,8 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
         public async Task ShouldReturnFail_WhenNewsIsNull()
         {
             // Arrange
-            var command = new UpdateNewsCommand(new NewsDTO());
-            _mapperMock.Setup(m => m.Map<News>(It.IsAny<NewsDTO>())).Returns((News)null);
+            var command = new UpdateNewsCommand(new NewsDto());
+            _mapperMock.Setup(m => m.Map<News>(It.IsAny<NewsDto>())).Returns((News)null);
 
             // Act
             var result = await _handler.Handle(command, default);
@@ -69,23 +69,23 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
                 Image = new Image { BlobName = "test_image.jpg" },
             };
 
-            var newsDTO = new NewsDTO
+            var newsDTO = new NewsDto
             {
                 Id = 1,
                 Title = "News 1",
-                Image = new ImageDTO { BlobName = "test_image.jpg" },
+                Image = new ImageDto { BlobName = "test_image.jpg" },
             };
 
-            var updatedNews = new NewsDTO
+            var updatedNews = new NewsDto
             {
                 Id = 1,
                 Title = "News 1",
-                Image = new ImageDTO { BlobName = "base64string" },
+                Image = new ImageDto { BlobName = "base64string" },
             };
 
             var command = new UpdateNewsCommand(newsDTO);
             _mapperMock.Setup(m => m.Map<News>(newsDTO)).Returns(news);
-            _mapperMock.Setup(m => m.Map<NewsDTO>(news)).Returns(updatedNews);
+            _mapperMock.Setup(m => m.Map<NewsDto>(news)).Returns(updatedNews);
             _blobServiceMock
                 .Setup(b => b.FindFileInStorageAsBase64("test_image.jpg"))
                 .Returns("base64string");
@@ -108,11 +108,11 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
         {
             // Arrange
             var news = new News { Id = 1, Title = "News 1", Image = null, ImageId = 1 };
-            var newsDTO = new NewsDTO { Id = 1, Title = "News 1", Image = null, ImageId = 1 };
+            var newsDTO = new NewsDto { Id = 1, Title = "News 1", Image = null, ImageId = 1 };
 
             var command = new UpdateNewsCommand(newsDTO);
             _mapperMock.Setup(m => m.Map<News>(newsDTO)).Returns(news);
-            _mapperMock.Setup(m => m.Map<NewsDTO>(news)).Returns(newsDTO);
+            _mapperMock.Setup(m => m.Map<NewsDto>(news)).Returns(newsDTO);
             _repositoryWrapperMock
                 .Setup(r => r.ImageRepository.GetFirstOrDefaultAsync(
                     It.IsAny<Expression<Func<Image, bool>>>(),
@@ -135,11 +135,11 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
         {
             // Arrange
             var news = new News { Id = 1, Title = "News 1" };
-            var newsDTO = new NewsDTO { Id = 1, Title = "News 1" };
+            var newsDTO = new NewsDto { Id = 1, Title = "News 1" };
 
             var command = new UpdateNewsCommand(newsDTO);
             _mapperMock.Setup(m => m.Map<News>(newsDTO)).Returns(news);
-            _mapperMock.Setup(m => m.Map<NewsDTO>(news)).Returns(newsDTO);
+            _mapperMock.Setup(m => m.Map<NewsDto>(news)).Returns(newsDTO);
             _repositoryWrapperMock
                 .Setup(r => r.ImageRepository.GetFirstOrDefaultAsync(
                     It.IsAny<Expression<Func<Image, bool>>>(),

@@ -2,10 +2,10 @@
 
 namespace Streetcode.BLL.DTO.Team
 {
-    public class TeamMemberLinkDTO
+    public class TeamMemberLinkDto
     {
         public int Id { get; set; }
-        public LogoTypeDTO LogoType { get; set; }
+        public LogoTypeDto LogoType { get; set; }
         public string TargetUrl { get; set; }
         public int TeamMemberId { get; set; }
     }

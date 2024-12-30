@@ -18,7 +18,7 @@ namespace Streetcode.BLL.Specifications.Streetcode.RelatedTerm
             AddInclude(x => x.Term);
         }
 
-        public RelatedTermWithTermSpecification(RelatedTermDTO relatedTermDTO)
+        public RelatedTermWithTermSpecification(RelatedTermDto relatedTermDTO)
             : base(rt => rt.TermId == relatedTermDTO.TermId && rt.Word == relatedTermDTO.Word)
         {
             AddInclude(x => x.Term);

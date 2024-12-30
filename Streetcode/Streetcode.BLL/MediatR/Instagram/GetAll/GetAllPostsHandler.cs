@@ -20,6 +20,7 @@ namespace Streetcode.BLL.MediatR.Instagram.GetAll
         public async Task<Result<IEnumerable<InstagramPost>>> Handle(GetAllPostsQuery request, CancellationToken cancellationToken)
         {
             var result = await _instagramService.GetPostsAsync();
+            _logger.LogInformation("Obtained InstagramPosts from InstagramService.");
             return Result.Ok(result);
         }
     }

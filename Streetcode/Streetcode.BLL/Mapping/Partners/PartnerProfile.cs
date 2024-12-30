@@ -8,11 +8,11 @@ namespace Streetcode.BLL.Mapping.Partners
     {
         public PartnerProfile()
         {
-            CreateMap<Partner, PartnerDTO>()
+            CreateMap<Partner, PartnerDto>()
                 .ForPath(dto => dto.TargetUrl.Title, conf => conf.MapFrom(ol => ol.UrlTitle))
                 .ForPath(dto => dto.TargetUrl.Href, conf => conf.MapFrom(ol => ol.TargetUrl));
-            CreateMap<Partner, CreatePartnerDTO>().ReverseMap();
-            CreateMap<Partner, PartnerShortDTO>().ReverseMap();
+            CreateMap<Partner, CreatePartnerDto>().ReverseMap();
+            CreateMap<Partner, PartnerShortDto>().ReverseMap();
         }
     }
 }

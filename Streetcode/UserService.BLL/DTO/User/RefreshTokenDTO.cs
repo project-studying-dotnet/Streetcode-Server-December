@@ -1,6 +1,6 @@
 ﻿namespace Streetcode.BLL.DTO.Users
 {
-    public class RefreshTokenDTO
+    public class RefreshTokenDto
     {
         public string Token { get; set; }
     }

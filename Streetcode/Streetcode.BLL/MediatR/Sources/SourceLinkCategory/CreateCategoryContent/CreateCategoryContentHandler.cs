@@ -9,7 +9,7 @@ using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.CreateCategoryContent
 {
-	public class CreateCategoryContentHandler : IRequestHandler<CreateCategoryContentCommand, Result<CategoryContentCreateDTO>>
+	public class CreateCategoryContentHandler : IRequestHandler<CreateCategoryContentCommand, Result<CategoryContentCreateDto>>
 	{
 		private readonly IMapper _mapper;
 		private readonly IRepositoryWrapper _repositoryWrapper;
@@ -22,7 +22,7 @@ namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.CreateCategoryConten
 			_logger = logger;
 		}
 
-		public async Task<Result<CategoryContentCreateDTO>> Handle(CreateCategoryContentCommand request, CancellationToken cancellationToken)
+		public async Task<Result<CategoryContentCreateDto>> Handle(CreateCategoryContentCommand request, CancellationToken cancellationToken)
 		{
 			var newContent = _mapper.Map<StreetcodeCategoryContent>(request.newContent);
 
@@ -42,7 +42,7 @@ namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.CreateCategoryConten
 				return Result.Fail(new Error(errorMsg));
 			}
 
-			var resultDto = _mapper.Map<CategoryContentCreateDTO>(newContent);
+			var resultDto = _mapper.Map<CategoryContentCreateDto>(newContent);
 			return Result.Ok(resultDto);
 		}
 	}

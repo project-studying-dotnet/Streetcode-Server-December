@@ -35,12 +35,12 @@ namespace Streetcode.XUnitTest.ValidatorTests
         public void Should_NotHaveErrorForValidTeamMemberLink()
         {
             // Arrange
-            var validMember = new TeamMemberLinkDTO()
+            var validMember = new TeamMemberLinkDto()
             {
                 Id = 1,
                 TeamMemberId = 3,
                 TargetUrl = "https://valid-url.com",
-                LogoType = LogoTypeDTO.Facebook
+                LogoType = LogoTypeDto.Facebook
             };
 
             var validQuery = new CreateTeamLinkCommand(validMember);
@@ -56,12 +56,12 @@ namespace Streetcode.XUnitTest.ValidatorTests
         public void Should_InvokeTeamLinkMemberDTOValidatorForIncorrectTeamMember()
         {
             // Arrange
-            var invalidMember = new TeamMemberLinkDTO()
+            var invalidMember = new TeamMemberLinkDto()
             {
                 Id = -2,
                 TeamMemberId = -3,
                 TargetUrl = "invalidUrl",
-                LogoType = LogoTypeDTO.Facebook
+                LogoType = LogoTypeDto.Facebook
             };
 
             var invalidQuery = new CreateTeamLinkCommand(invalidMember);

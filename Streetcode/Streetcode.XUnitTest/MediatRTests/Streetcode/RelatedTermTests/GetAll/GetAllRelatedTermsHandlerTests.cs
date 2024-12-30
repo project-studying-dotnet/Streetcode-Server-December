@@ -46,7 +46,7 @@ public class GetAllRelatedTermsHandlerTests
         var result = await this._handler.Handle(new GetAllRelatedTermsQuery(), CancellationToken.None);
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().NotBeEmpty();
-        result.Value.Should().BeOfType<List<RelatedTermDTO>>();
+        result.Value.Should().BeOfType<List<RelatedTermDto>>();
         result.Value.Count().Should().Be(3);
     }
 
@@ -57,7 +57,7 @@ public class GetAllRelatedTermsHandlerTests
         var result = await this._handler.Handle(new GetAllRelatedTermsQuery(), CancellationToken.None);
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().BeEmpty();
-        result.Value.Should().BeOfType<List<RelatedTermDTO>>();
+        result.Value.Should().BeOfType<List<RelatedTermDto>>();
     }
 
     private void CreateRepository()
@@ -93,7 +93,7 @@ public class GetAllRelatedTermsHandlerTests
         var result = await this._handler.Handle(new GetAllRelatedTermsQuery(), CancellationToken.None);
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().NotBeEmpty();
-        result.Value.Should().BeOfType<List<RelatedTermDTO>>();
+        result.Value.Should().BeOfType<List<RelatedTermDto>>();
         result.Value.Count().Should().Be(3);
     }
 
@@ -104,6 +104,6 @@ public class GetAllRelatedTermsHandlerTests
         var result = await this._handler.Handle(new GetAllRelatedTermsQuery(), CancellationToken.None);
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().BeEmpty();
-        result.Value.Should().BeOfType<List<RelatedTermDTO>>();
+        result.Value.Should().BeOfType<List<RelatedTermDto>>();
     }
 }

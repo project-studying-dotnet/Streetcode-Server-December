@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Streetcode.BLL.Validation.Validators.DTOValidators.Art.Video
 {
-    public class VideoCreateDTOValidator : AbstractValidator<VideoCreateDTO>
+    public class VideoCreateDTOValidator : AbstractValidator<VideoCreateDto>
     {
         public VideoCreateDTOValidator()
         {

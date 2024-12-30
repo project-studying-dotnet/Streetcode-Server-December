@@ -68,17 +68,17 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.GetCategoriesByStreetcodeId
 				new() { Id = 2, Title = "Test Category 2", Image = new Image { BlobName = "image2.png" } }
 			};
 
-			var sourceCategoryDTOs = new List<SourceLinkCategoryDTO>
+			var sourceCategoryDTOs = new List<SourceLinkCategoryDto>
 			{
-				new() { Id = 1, Title = "Test Category 1", Image = new ImageDTO { BlobName = "image1.png" } },
-				new() { Id = 2, Title = "Test Category 2", Image = new ImageDTO { BlobName = "image2.png" } }
+				new() { Id = 1, Title = "Test Category 1", Image = new ImageDto { BlobName = "image1.png" } },
+				new() { Id = 2, Title = "Test Category 2", Image = new ImageDto { BlobName = "image2.png" } }
 			};
 
 			_mockRepositoryWrapper
 				.Setup(r => r.SourceCategoryRepository.GetAllAsync(It.IsAny<Expression<Func<SourceLinkCategory, bool>>>(), It.IsAny<Func<IQueryable<SourceLinkCategory>, IIncludableQueryable<SourceLinkCategory, object>>>()))
 				.ReturnsAsync(sourceCategories);
 
-			_mockMapper.Setup(m => m.Map<IEnumerable<SourceLinkCategoryDTO>>(sourceCategories)).Returns(sourceCategoryDTOs);
+			_mockMapper.Setup(m => m.Map<IEnumerable<SourceLinkCategoryDto>>(sourceCategories)).Returns(sourceCategoryDTOs);
 
 			_mockBlob.Setup(b => b.FindFileInStorageAsBase64(It.IsAny<string>()))
 					 .Returns<string>(blob => blob == "image1.png" ? "Base64Image1" : "Base64Image2");
@@ -88,10 +88,10 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.GetCategoriesByStreetcodeId
 
 			// Assert
 			result.IsSuccess.Should().BeTrue();
-			result.Value.Should().BeEquivalentTo(new List<SourceLinkCategoryDTO>
+			result.Value.Should().BeEquivalentTo(new List<SourceLinkCategoryDto>
 			{
-				new() { Id = 1, Title = "Test Category 1", Image = new ImageDTO { BlobName = "image1.png", Base64 = "Base64Image1" } },
-				new() { Id = 2, Title = "Test Category 2", Image = new ImageDTO { BlobName = "image2.png", Base64 = "Base64Image2" } }
+				new() { Id = 1, Title = "Test Category 1", Image = new ImageDto { BlobName = "image1.png", Base64 = "Base64Image1" } },
+				new() { Id = 2, Title = "Test Category 2", Image = new ImageDto { BlobName = "image2.png", Base64 = "Base64Image2" } }
 			});
 
 			_mockRepositoryWrapper.Verify(r => r.SourceCategoryRepository.GetAllAsync(

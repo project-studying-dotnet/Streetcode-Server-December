@@ -214,10 +214,10 @@ namespace Streetcode.XUnitTest.MediatRTests.Timeline.TimelineItems.Update
                 Description = "Updated Description",
                 Date = new DateTime(2004, 3, 13),
                 DateViewPattern = DateViewPattern.DateMonthYear,
-                HistoricalContexts = new List<HistoricalContextDTO>
+                HistoricalContexts = new List<HistoricalContextDto>
                 {
-                    new HistoricalContextDTO { Id = 1, Title = "Context 1" },
-                    new HistoricalContextDTO { Id = 5, Title = "Context 5" }
+                    new HistoricalContextDto { Id = 1, Title = "Context 1" },
+                    new HistoricalContextDto { Id = 5, Title = "Context 5" }
                 }
             };
         }

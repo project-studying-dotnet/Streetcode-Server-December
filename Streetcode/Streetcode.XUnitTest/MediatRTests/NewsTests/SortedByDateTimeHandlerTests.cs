@@ -99,9 +99,9 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
                 .ReturnsAsync(newsList);
 
             _mapperMock
-                .Setup(m => m.Map<IEnumerable<NewsDTO>>(newsList))
+                .Setup(m => m.Map<IEnumerable<NewsDto>>(newsList))
                 .Returns((IEnumerable<News> source) =>
-                source.Select(n => new NewsDTO { Id = n.Id, Title = n.Title, CreationDate = n.CreationDate }));
+                source.Select(n => new NewsDto { Id = n.Id, Title = n.Title, CreationDate = n.CreationDate }));
 
             var query = new SortedByDateTimeQuery();
 
@@ -144,13 +144,13 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
                 .ReturnsAsync(newsList);
 
             _mapperMock
-                .Setup(m => m.Map<IEnumerable<NewsDTO>>(newsList))
-                .Returns((IEnumerable<News> source) => source.Select(n => new NewsDTO
+                .Setup(m => m.Map<IEnumerable<NewsDto>>(newsList))
+                .Returns((IEnumerable<News> source) => source.Select(n => new NewsDto
                 {
                     Id = n.Id,
                     Title = n.Title,
                     CreationDate = n.CreationDate,
-                    Image = new ImageDTO { BlobName = n.Image.BlobName }
+                    Image = new ImageDto { BlobName = n.Image.BlobName }
                 }));
 
             _blobServiceMock

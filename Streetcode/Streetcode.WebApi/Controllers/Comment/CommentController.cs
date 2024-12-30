@@ -10,6 +10,7 @@ using Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetAllByTermId;
 using Streetcode.BLL.MediatR.Comment.GetCommentsByStreetcodeId;
 using Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Delete;
 using Streetcode.BLL.MediatR.Comment.AdminDeleteComment;
+using Streetcode.BLL.MediatR.Comment.UpdateComment;
 
 namespace Streetcode.WebApi.Controllers.Comment
 {
@@ -33,6 +34,12 @@ namespace Streetcode.WebApi.Controllers.Comment
         public async Task<ActionResult<GetCommentDto>> Create([FromBody] CreateCommentDto createCommentDto)
         {
             return HandleResult(await Mediator.Send(new CreateCommentCommand(createCommentDto)));
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<GetCommentDto>> Update([FromBody] UpdateCommentDto updateCommentDto)
+        {
+            return HandleResult(await Mediator.Send(new UpdateCommentCommand(updateCommentDto)));
         }
     }
 }

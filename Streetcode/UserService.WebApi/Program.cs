@@ -10,7 +10,11 @@ using UserService.BLL.Services.Jwt;
 using UserService.BLL.Services.User;
 using UserService.BLL.Services;
 using UserService.WebApi.Extensions;
-using UserService.WebApi.Middleware;
+using Microsoft.AspNetCore.Authorization;
+using Streetcode.BLL.DTO.Users;
+using System.Security.Claims;
+using UserService.BLL.DTO.User;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -63,7 +67,7 @@ builder.Services.AddAuthentication(options =>
         {
             if (context.Request.Headers.TryGetValue("Authorization", out var authorizationHeader))
             {
-                context.Token = authorizationHeader.ToString().Split(" ").Last(); 
+                context.Token = authorizationHeader.ToString().Split(" ").Last();
             }
 
             if (string.IsNullOrEmpty(context.Token) && context.Request.Cookies.TryGetValue("AuthToken", out var cookieToken))
@@ -88,7 +92,6 @@ builder.Services.AddAutoMapper(currentAssemblies);
 var app = builder.Build();
 await app.SeedDataAsync();
 
-app.UseMiddleware<CookieMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -97,6 +100,52 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.MapPost("/register", async (IUserService userService, RegistrationDTO registrationDto) =>
+{
+    var result = await userService.Registration(registrationDto);
+    return result.IsSuccess ? Results.Ok(result.Value) : Results.BadRequest(result.Errors);
+});
+
+app.MapPost("/login", async (ILoginService loginService, IOptions<JwtConfiguration> jwtConfiguration, LoginDTO loginDto, HttpContext httpContext) =>
+{
+    var loginResult = await loginService.Login(loginDto);
+    if (loginResult.IsFailed)
+    {
+        return Results.BadRequest(loginResult.Errors);
+    }
+    var token = loginResult.Value;
+    httpContext.AppendTokenToCookie(token.AccessToken, jwtConfiguration); // Use jwtConfiguration.Value here
+    return Results.Ok(new { token });
+});
+
+app.MapPost("/logout", async (ILoginService loginService, HttpContext httpContext, ClaimsPrincipal user) =>
+{
+    var logoutResult = await loginService.Logout(user);
+    if (logoutResult.IsFailed)
+    {
+        return Results.BadRequest(logoutResult.Errors);
+    }
+    httpContext.DeleteAuthTokenCookie();
+    return Results.Ok("User successfully logged out.");
+});
+
+app.MapPost("/refresh-token", async (ILoginService loginService, IOptions<JwtConfiguration> jwtConfiguration, TokenRequestDTO tokenRequest, HttpContext httpContext) =>
+{
+    var refreshResult = await loginService.RefreshToken(tokenRequest.RefreshToken);
+    if (refreshResult.IsFailed)
+    {
+        return Results.BadRequest(refreshResult.Errors);
+    }
+    var token = refreshResult.Value;
+    httpContext.AppendTokenToCookie(token.AccessToken, jwtConfiguration);
+    return Results.Ok(token);
+});
+
+app.MapGet("/test-endpoint", [Authorize] () =>
+{
+    return Results.Ok("Hello from User Service");
+});
+
 app.MapControllers();
 
 app.UseHttpsRedirection();

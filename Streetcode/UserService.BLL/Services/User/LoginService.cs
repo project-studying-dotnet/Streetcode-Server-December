@@ -26,7 +26,6 @@ namespace UserService.BLL.Services.User
         private readonly ILogger<LoginService> _logger;
         private readonly IMapper _mapper;
         private readonly JwtConfiguration _jwtConfiguration;
-        private readonly SignInManager<UserEntity> _signInManager;
         public LoginService(UserManager<UserEntity> userManager, IJwtService jwtService, ILogger<LoginService> logger, IMapper mapper, IOptions<JwtConfiguration> options)
         {
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
@@ -79,7 +78,19 @@ namespace UserService.BLL.Services.User
 
         public async Task<Result> Logout(ClaimsPrincipal userPrincipal)
         {
+            if (userPrincipal == null)
+            {
+                _logger.LogWarning("Logout attempt with null userPrincipal.");
+                return Result.Fail("User not authenticated.");
+            }
+
             var userName = userPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userName == null)
+            {
+                _logger.LogWarning("Logout attempt with missing NameIdentifier for user.");
+                return Result.Fail("User information not found.");
+            }
+
             var user = await _userManager.FindByNameAsync(userName);
             if (user == null)
             {
@@ -91,16 +102,15 @@ namespace UserService.BLL.Services.User
             user.RefreshTokenExpiryTime = DateTime.MinValue;
 
             var updateResult = await _userManager.UpdateAsync(user);
-
             if (!updateResult.Succeeded)
             {
                 _logger.LogError("Failed to update user {UserName} during logout.", userName);
                 return Result.Fail("Failed to logout user.");
             }
-            await _signInManager.SignOutAsync();
             _logger.LogInformation("User {UserName} successfully logged out.", userName);
             return Result.Ok();
         }
+
         public async Task<Result<LoginResultDTO>> RefreshToken(string refreshToken)
         {
             var user = await _userManager.Users.SingleOrDefaultAsync(u => u.RefreshToken == refreshToken && u.RefreshTokenExpiryTime > DateTime.UtcNow);

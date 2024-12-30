@@ -3,7 +3,7 @@ using AutoMapper;
 using FluentResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
-using Streetcode.BLL.DTO.Users;
+using UserService.BLL.DTO.Users;
 using UserService.BLL.DTO.User;
 using UserService.BLL.Interfaces.User;
 using UserEntity = UserService.DAL.Entities.Users.User;

@@ -13,7 +13,7 @@ namespace Streetcode.WebApi.Controllers.Source
 	{
 		[AuthorizeRoles(UserRole.Admin)]
 		[HttpPost]
-		public async Task<IActionResult> CreateCategoryContent([FromBody] CategoryContentCreateDTO newCategoryContent)
+		public async Task<IActionResult> CreateCategoryContent([FromBody] CategoryContentCreateDto newCategoryContent)
 		{
 			return HandleResult(await Mediator.Send(new CreateCategoryContentCommand(newCategoryContent)));
 		}

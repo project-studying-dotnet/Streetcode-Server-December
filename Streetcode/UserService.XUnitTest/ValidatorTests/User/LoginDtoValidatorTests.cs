@@ -22,7 +22,7 @@ namespace UserService.XUnitTest.ValidatorTests.User
         public void Should_Have_Error_When_UserName_Is_Empty()
         {
             // Arrange
-            var dto = new LoginDTO { UserName = "" };
+            var dto = new LoginDto { UserName = "" };
 
             // Act
             var result = _validator.TestValidate(dto);
@@ -36,7 +36,7 @@ namespace UserService.XUnitTest.ValidatorTests.User
         public void Should_Have_Error_When_UserName_Is_Short()
         {
             // Arrange
-            var dto = new LoginDTO { UserName = "ab" };
+            var dto = new LoginDto { UserName = "ab" };
 
             // Act
             var result = _validator.TestValidate(dto);
@@ -50,7 +50,7 @@ namespace UserService.XUnitTest.ValidatorTests.User
         public void Should_Not_Have_Error_When_Valid()
         {
             // Arrange
-            var dto = new LoginDTO
+            var dto = new LoginDto
             {
                 UserName = "ValidUser",
                 Password = "password123!"

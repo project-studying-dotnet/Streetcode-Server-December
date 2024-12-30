@@ -21,7 +21,7 @@ public class UpdateCoordinateHandlerTest : AdditionalContentTestWrapper
     public async Task Handle_ReturnOkResult_WhenCoordinateAreUpdate()
     {
         // Arrange
-        var streetcodeCoordinateDto = new StreetcodeCoordinateDTO { StreetcodeId = 1 };
+        var streetcodeCoordinateDto = new StreetcodeCoordinateDto { StreetcodeId = 1 };
         var streetcodeCoordinate = new StreetcodeCoordinateEntity { StreetcodeId = 1 };
         var request = new UpdateCoordinateCommand(streetcodeCoordinateDto);
 
@@ -47,7 +47,7 @@ public class UpdateCoordinateHandlerTest : AdditionalContentTestWrapper
     public async Task Handle_ReturnOkResult_WhenCoordinateAreNotUpdate()
     {
         // Arrange
-        var streetcodeCoordinateDto = new StreetcodeCoordinateDTO { StreetcodeId = 1 };
+        var streetcodeCoordinateDto = new StreetcodeCoordinateDto { StreetcodeId = 1 };
         var streetcodeCoordinate = new StreetcodeCoordinateEntity { StreetcodeId = 1 };
         var request = new UpdateCoordinateCommand(streetcodeCoordinateDto);
         const string errMsg = "Failed to update a streetcodeCoordinate";

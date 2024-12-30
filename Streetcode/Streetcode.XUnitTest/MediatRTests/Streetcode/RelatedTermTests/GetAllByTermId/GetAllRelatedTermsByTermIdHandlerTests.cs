@@ -51,10 +51,10 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.GetAllBy
             new RelatedTerm { Id = 3, Word = "TestWord3", TermId = 2 },
         };
 
-            var relatedTermDTOs = new List<RelatedTermDTO>
+            var relatedTermDTOs = new List<RelatedTermDto>
         {
-            new RelatedTermDTO { Id = 1, Word = "TestWord1", TermId = 1 },
-            new RelatedTermDTO { Id = 2, Word = "TestWord2", TermId = 1 },
+            new RelatedTermDto { Id = 1, Word = "TestWord1", TermId = 1 },
+            new RelatedTermDto { Id = 2, Word = "TestWord2", TermId = 1 },
         };
 
             this._mockRepositoryWrapper
@@ -83,9 +83,9 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.GetAllBy
             new RelatedTerm { Id = 3, Word = "TestWord3", TermId = 2 },
         };
 
-            var relatedTermDTOs = new List<RelatedTermDTO>
+            var relatedTermDTOs = new List<RelatedTermDto>
         {
-            new RelatedTermDTO { Id = 3, Word = "TestWord3", TermId = 2 },
+            new RelatedTermDto { Id = 3, Word = "TestWord3", TermId = 2 },
         };
 
             this._mockRepositoryWrapper

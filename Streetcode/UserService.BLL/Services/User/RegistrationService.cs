@@ -22,7 +22,7 @@ public class RegistrationService : IUserService
         _mapper = mapper;
         _logger = logger;
     }
-    public async Task<Result<UserDTO>> Registration(RegistrationDTO registrationDto)
+    public async Task<Result<UserDto>> Registration(RegistrationDto registrationDto)
     {
         
         if (registrationDto.Password != registrationDto.PasswordConfirm)
@@ -32,7 +32,7 @@ public class RegistrationService : IUserService
             return Result.Fail(errMsg);
         }
         
-        var user = _mapper.Map<RegistrationDTO, UserEntity>(registrationDto);
+        var user = _mapper.Map<RegistrationDto, UserEntity>(registrationDto);
 
         if (user is null)
         {
@@ -66,6 +66,6 @@ public class RegistrationService : IUserService
             return Result.Fail(errMsg);
         }
         
-        return Result.Ok(_mapper.Map<UserEntity, UserDTO>(user));
+        return Result.Ok(_mapper.Map<UserEntity, UserDto>(user));
     }
 }

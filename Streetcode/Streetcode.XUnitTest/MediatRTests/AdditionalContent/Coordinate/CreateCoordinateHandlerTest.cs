@@ -19,7 +19,7 @@ public class CreateCoordinateHandlerTest : AdditionalContentTestWrapper
     public async Task Handle_ReturnOkResult_WhenCoordinateAreCreate()
     {
         // Arrange
-        var streetcodeCoordinateDto = new StreetcodeCoordinateDTO { StreetcodeId = 1 };
+        var streetcodeCoordinateDto = new StreetcodeCoordinateDto { StreetcodeId = 1 };
         var streetcodeCoordinate = new StreetcodeCoordinateEntity { StreetcodeId = 1 };
         var request = new CreateCoordinateCommand(streetcodeCoordinateDto);
 
@@ -46,7 +46,7 @@ public class CreateCoordinateHandlerTest : AdditionalContentTestWrapper
     public async Task Handle_ReturnOkResult_WhenCoordinateAreNotCreate()
     {
         // Arrange
-        var streetcodeCoordinateDto = new StreetcodeCoordinateDTO { StreetcodeId = 1 };
+        var streetcodeCoordinateDto = new StreetcodeCoordinateDto { StreetcodeId = 1 };
         var streetcodeCoordinate = new StreetcodeCoordinateEntity { StreetcodeId = 1 };
         var request = new CreateCoordinateCommand(streetcodeCoordinateDto);
         const string errMsg = "Failed to create a streetcodeCoordinate";

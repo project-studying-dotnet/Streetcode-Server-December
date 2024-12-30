@@ -80,7 +80,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.GetCategoryContentByStreetcod
 				Text = "Sample content text"
 			};
 
-			var expectedDto = new StreetcodeCategoryContentDTO
+			var expectedDto = new StreetcodeCategoryContentDto
 			{
 				StreetcodeId = 1,
 				SourceLinkCategoryId = 1,
@@ -99,7 +99,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.GetCategoryContentByStreetcod
 					null))
 				.ReturnsAsync(streetcodeCategoryContent);
 
-			_mockMapper.Setup(mapper => mapper.Map<StreetcodeCategoryContentDTO>(streetcodeCategoryContent))
+			_mockMapper.Setup(mapper => mapper.Map<StreetcodeCategoryContentDto>(streetcodeCategoryContent))
 				.Returns(expectedDto);
 
 			// Act
@@ -120,7 +120,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.GetCategoryContentByStreetcod
 					It.IsAny<Expression<Func<StreetcodeCategoryContent, bool>>>(),
 					null), Times.Once);
 
-			_mockMapper.Verify(mapper => mapper.Map<StreetcodeCategoryContentDTO>(streetcodeCategoryContent), Times.Once);
+			_mockMapper.Verify(mapper => mapper.Map<StreetcodeCategoryContentDto>(streetcodeCategoryContent), Times.Once);
 		}
 
 	}

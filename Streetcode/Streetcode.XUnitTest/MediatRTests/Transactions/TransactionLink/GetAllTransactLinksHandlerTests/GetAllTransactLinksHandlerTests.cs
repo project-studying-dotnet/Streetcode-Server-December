@@ -79,11 +79,11 @@ namespace Streetcode.XUnitTest.MediatRTests.Transactions.TransactionLink.GetAllT
                 new TransactLinkEntity { Id = 2, Url = "URL2", UrlTitle = "Title2", StreetcodeId = 2 },
             };
 
-        private List<TransactLinkDTO> GetTransactLinkDTOs() =>
+        private List<TransactLinkDto> GetTransactLinkDTOs() =>
             new()
             {
-                new TransactLinkDTO { Id = 1, Url = "URL", QrCodeUrl = "QrCodeUrl", StreetcodeId = 1 },
-                new TransactLinkDTO { Id = 2, Url = "URL2", QrCodeUrl = "QrCodeUrl2", StreetcodeId = 2 },
+                new TransactLinkDto { Id = 1, Url = "URL", QrCodeUrl = "QrCodeUrl", StreetcodeId = 1 },
+                new TransactLinkDto { Id = 2, Url = "URL2", QrCodeUrl = "QrCodeUrl2", StreetcodeId = 2 },
             };
     }
 }

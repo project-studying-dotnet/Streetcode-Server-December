@@ -10,7 +10,7 @@ using Entity = Streetcode.DAL.Entities.Streetcode.TextContent.RelatedTerm;
 
 namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Create
 {
-    public class CreateRelatedTermHandler : IRequestHandler<CreateRelatedTermCommand, Result<RelatedTermDTO>>
+    public class CreateRelatedTermHandler : IRequestHandler<CreateRelatedTermCommand, Result<RelatedTermDto>>
     {
         private readonly IRepositoryWrapper _repository;
         private readonly IMapper _mapper;
@@ -23,7 +23,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Create
             _logger = logger;
         }
 
-        public async Task<Result<RelatedTermDTO>> Handle(CreateRelatedTermCommand request, CancellationToken cancellationToken)
+        public async Task<Result<RelatedTermDto>> Handle(CreateRelatedTermCommand request, CancellationToken cancellationToken)
         {
             var relatedTerm = _mapper.Map<Entity>(request.RelatedTerm);
 
@@ -55,7 +55,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Create
                 return Result.Fail(new Error(errorMsg));
             }
 
-            var createdRelatedTermDTO = _mapper.Map<RelatedTermDTO>(createdRelatedTerm);
+            var createdRelatedTermDTO = _mapper.Map<RelatedTermDto>(createdRelatedTerm);
 
             if(createdRelatedTermDTO != null)
             {

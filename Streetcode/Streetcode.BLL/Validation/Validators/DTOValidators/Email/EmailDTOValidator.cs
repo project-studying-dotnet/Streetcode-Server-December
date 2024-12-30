@@ -4,7 +4,7 @@ using Streetcode.BLL.MediatR.Email;
 
 namespace Streetcode.BLL.Validation.Validators.DTOValidators.Email
 {
-    public sealed class EmailDTOValidator : AbstractValidator<EmailDTO>
+    public sealed class EmailDTOValidator : AbstractValidator<EmailDto>
     {
         public EmailDTOValidator()
         {

@@ -59,7 +59,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Analytics.Create
         {
             // Arrange
             var command = new CreateStatisticRecordCommand(
-                new CreateStatisticRecordDTO
+                new CreateStatisticRecordDto
                 {
                     QrId = qrId,
                     Count = count,
@@ -85,7 +85,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Analytics.Create
             result
                 .Value.Should()
                 .BeEquivalentTo(
-                    new StatisticRecordDTO
+                    new StatisticRecordDto
                     {
                         QrId = qrId,
                         Count = count,
@@ -111,7 +111,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Analytics.Create
         {
             // Arrange
             var command = new CreateStatisticRecordCommand(
-                new CreateStatisticRecordDTO
+                new CreateStatisticRecordDto
                 {
                     QrId = 1,
                     Count = 1,

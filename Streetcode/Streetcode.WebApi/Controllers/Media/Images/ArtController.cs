@@ -37,7 +37,7 @@ namespace Streetcode.WebApi.Controllers.Media.Images
 
         [AuthorizeRoles(UserRole.Admin)]
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] ArtCreateDTO art)
+        public async Task<IActionResult> Create([FromBody] ArtCreateDto art)
         {
             return HandleResult(await Mediator.Send(new CreateArtCommand(art)));
         }

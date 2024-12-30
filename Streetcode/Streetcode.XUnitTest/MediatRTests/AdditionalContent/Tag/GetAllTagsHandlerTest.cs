@@ -30,10 +30,10 @@ public class GetAllTagsHandlerTest : AdditionalContentTestWrapper
             new TagEntity { Id = 2, Title = "Tag test 2" },
         };
 
-        var tagsDto = new List<TagDTO>
+        var tagsDto = new List<TagDto>
         {
-            new TagDTO { Id = 1, Title = "Tag test 1" },
-            new TagDTO { Id = 2, Title = "Tag test 2" },
+            new TagDto { Id = 1, Title = "Tag test 1" },
+            new TagDto { Id = 2, Title = "Tag test 2" },
         };
 
         _repositoryWrapperMock.Setup(rep => rep.TagRepository.GetAllAsync(
@@ -41,7 +41,7 @@ public class GetAllTagsHandlerTest : AdditionalContentTestWrapper
             It.IsAny<Func<IQueryable<TagEntity>, IIncludableQueryable<TagEntity, object>>>()))
             .ReturnsAsync(tags);
 
-        _mapperMock.Setup(map => map.Map<IEnumerable<TagDTO>>(tags))
+        _mapperMock.Setup(map => map.Map<IEnumerable<TagDto>>(tags))
             .Returns(tagsDto);
 
         // Act

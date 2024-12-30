@@ -41,7 +41,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.ArtTests
             // Arrange
             var command = GetCreateArtCommand();
 
-            _mapperMock.Setup(m => m.Map<Art>(It.IsAny<ArtCreateDTO>())).Returns((Art)null);
+            _mapperMock.Setup(m => m.Map<Art>(It.IsAny<ArtCreateDto>())).Returns((Art)null);
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
@@ -58,7 +58,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.ArtTests
             var command = GetCreateArtCommand();
             var existingArtEntity = GetArtEntity();
 
-            _mapperMock.Setup(m => m.Map<Art>(It.IsAny<ArtCreateDTO>())).Returns(existingArtEntity);
+            _mapperMock.Setup(m => m.Map<Art>(It.IsAny<ArtCreateDto>())).Returns(existingArtEntity);
 
             _repositoryWrapperMock
                 .Setup(r => r.ArtRepository.GetAllAsync(It.IsAny<Expression<Func<Art, bool>>>(), null))
@@ -80,7 +80,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.ArtTests
             var command = GetCreateArtCommand();
             var newArt = GetArtEntity();
 
-            _mapperMock.Setup(m => m.Map<Art>(It.IsAny<ArtCreateDTO>())).Returns(newArt);
+            _mapperMock.Setup(m => m.Map<Art>(It.IsAny<ArtCreateDto>())).Returns(newArt);
 
             _repositoryWrapperMock
                 .Setup(r => r.ArtRepository.GetAllAsync(It.IsAny<Expression<Func<Art, bool>>>(), null))
@@ -106,10 +106,10 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.ArtTests
 
             var newArt = GetArtEntity();
 
-            var newArtDTO = new ArtDTO { Id = 1, Title = "Test Art", ImageId = 1 };
+            var newArtDTO = new ArtDto { Id = 1, Title = "Test Art", ImageId = 1 };
 
-            _mapperMock.Setup(m => m.Map<Art>(It.IsAny<ArtCreateDTO>())).Returns(newArt);
-            _mapperMock.Setup(m => m.Map<ArtDTO>(It.IsAny<Art>())).Returns(newArtDTO);
+            _mapperMock.Setup(m => m.Map<Art>(It.IsAny<ArtCreateDto>())).Returns(newArt);
+            _mapperMock.Setup(m => m.Map<ArtDto>(It.IsAny<Art>())).Returns(newArtDTO);
 
             _repositoryWrapperMock
                 .Setup(r => r.ArtRepository.GetAllAsync(It.IsAny<Expression<Func<Art, bool>>>(), null))
@@ -155,7 +155,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.ArtTests
             var command = GetCreateArtCommand();
             var newArt = GetArtEntity();
 
-            _mapperMock.Setup(m => m.Map<Art>(It.IsAny<ArtCreateDTO>())).Returns(newArt);
+            _mapperMock.Setup(m => m.Map<Art>(It.IsAny<ArtCreateDto>())).Returns(newArt);
             _repositoryWrapperMock
                 .Setup(r => r.ArtRepository.GetAllAsync(It.IsAny<Expression<Func<Art, bool>>>(), null))
                 .ReturnsAsync(new List<Art>());
@@ -188,7 +188,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.ArtTests
 
             var newArt = GetArtEntity();
 
-            _mapperMock.Setup(m => m.Map<Art>(It.IsAny<ArtCreateDTO>())).Returns(newArt);
+            _mapperMock.Setup(m => m.Map<Art>(It.IsAny<ArtCreateDto>())).Returns(newArt);
 
             _repositoryWrapperMock
                 .Setup(r => r.ArtRepository.GetAllAsync(It.IsAny<Expression<Func<Art, bool>>>(), null))
@@ -228,7 +228,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.ArtTests
 
         private static CreateArtCommand GetCreateArtCommand()
         {
-            return new CreateArtCommand(new ArtCreateDTO
+            return new CreateArtCommand(new ArtCreateDto
             {
                 Title = "Test Art",
                 Description = "Description",

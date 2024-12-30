@@ -4,7 +4,7 @@ using Streetcode.BLL.DTO.Team;
 
 namespace Streetcode.BLL.Validation.Validators.DTOValidators.Team
 {
-    public class TeamMemberLinkDTOValidator : AbstractValidator<TeamMemberLinkDTO>
+    public class TeamMemberLinkDTOValidator : AbstractValidator<TeamMemberLinkDto>
     {
         public TeamMemberLinkDTOValidator()
         {
@@ -20,7 +20,7 @@ namespace Streetcode.BLL.Validation.Validators.DTOValidators.Team
                 .WithMessage("TargetUrl must be a valid URL");
 
             RuleFor(x => x.LogoType)
-                .Must(logoType => Enum.IsDefined(typeof(LogoTypeDTO), logoType))
+                .Must(logoType => Enum.IsDefined(typeof(LogoTypeDto), logoType))
                 .WithMessage("LogoType must be a valid enum value");
         }
     }

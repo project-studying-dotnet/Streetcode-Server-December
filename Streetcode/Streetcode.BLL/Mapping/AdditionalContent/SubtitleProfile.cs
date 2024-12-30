@@ -8,7 +8,7 @@ namespace Streetcode.BLL.Mapping.AdditionalContent
     {
         public SubtitleProfile()
         {
-            CreateMap<Subtitle, SubtitleDTO>().ReverseMap();
+            CreateMap<Subtitle, SubtitleDto>().ReverseMap();
         }
     }
 }

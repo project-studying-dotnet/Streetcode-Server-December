@@ -22,13 +22,13 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<UserDTO>> Register([FromBody] RegistrationDTO registrationDto)
+    public async Task<ActionResult<UserDto>> Register([FromBody] RegistrationDto registrationDto)
     {
         return (await _userService.Registration(registrationDto)).Value;
     }
 
     [HttpPost]
-    public async Task<ActionResult> Login([FromBody] LoginDTO loginDto)
+    public async Task<ActionResult> Login([FromBody] LoginDto loginDto)
     {
         var loginResult = await _loginService.Login(loginDto);
 

@@ -8,7 +8,7 @@ namespace Streetcode.BLL.Mapping.Payment
     {
         public PaymentProfile()
         {
-            CreateMap<InvoiceInfo, PaymentResponseDTO>().ReverseMap();
+            CreateMap<InvoiceInfo, PaymentResponseDto>().ReverseMap();
         }
     }
 }

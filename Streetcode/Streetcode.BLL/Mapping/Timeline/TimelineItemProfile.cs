@@ -10,12 +10,12 @@ namespace Streetcode.BLL.Mapping.Timeline
     {
         public TimelineItemProfile()
         {
-            CreateMap<TimelineItem, TimelineItemDTO>().ReverseMap();
+            CreateMap<TimelineItem, TimelineItemDto>().ReverseMap();
             CreateMap<TimelineItem, TimelineItemCreateDto>().ReverseMap();
             CreateMap<TimelineItem, TimelineItemUpdateDto>().ReverseMap();
-            CreateMap<TimelineItem, TimelineItemDTO>()
+            CreateMap<TimelineItem, TimelineItemDto>()
                 .ForMember(dest => dest.HistoricalContexts, opt => opt.MapFrom(x => x.HistoricalContextTimelines
-                    .Select(x => new HistoricalContextDTO
+                    .Select(x => new HistoricalContextDto
                     {
                         Id = x.HistoricalContextId,
                         Title = x.HistoricalContext.Title

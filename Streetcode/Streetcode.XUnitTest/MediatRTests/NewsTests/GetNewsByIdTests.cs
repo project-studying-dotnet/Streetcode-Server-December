@@ -65,7 +65,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
             // Arrange
             var news = new News { Id = 1, Title = "News 1", Image = new Image { BlobName = "test_image.jpg" } };
 
-            var newsDTO = new NewsDTO { Id = 1, Title = "News 1", Image = new ImageDTO { BlobName = "test_image.jpg" } };
+            var newsDTO = new NewsDto { Id = 1, Title = "News 1", Image = new ImageDto { BlobName = "test_image.jpg" } };
 
             _repositoryWrapperMock
                 .Setup(r => r.NewsRepository.GetFirstOrDefaultAsync(
@@ -74,7 +74,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
                 .ReturnsAsync(news);
 
             _mapperMock
-                .Setup(m => m.Map<NewsDTO>(news))
+                .Setup(m => m.Map<NewsDto>(news))
                 .Returns(newsDTO);
 
             _blobServiceMock
@@ -99,7 +99,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
             // Arrange
             var news = new News { Id = 1, Title = "News 1", Image = null };
 
-            var newsDTO = new NewsDTO { Id = 1, Title = "News 1", Image = null };
+            var newsDTO = new NewsDto { Id = 1, Title = "News 1", Image = null };
 
             _repositoryWrapperMock
                 .Setup(r => r.NewsRepository.GetFirstOrDefaultAsync(
@@ -108,7 +108,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
                 .ReturnsAsync(news);
 
             _mapperMock
-                .Setup(m => m.Map<NewsDTO>(news))
+                .Setup(m => m.Map<NewsDto>(news))
                 .Returns(newsDTO);
 
             var query = new GetNewsByIdQuery(1);

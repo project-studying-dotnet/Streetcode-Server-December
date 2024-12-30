@@ -29,14 +29,14 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
         public async Task ShouldReturnSuccess_WhenNewsCreatedSuccessfully()
         {
             // Arrange
-            var command = new CreateNewsCommand(new NewsDTO { Title = "Test News" });
+            var command = new CreateNewsCommand(new NewsDto { Title = "Test News" });
             var newsEntity = new News { Title = "Test News" };
-            var newsDto = new NewsDTO { Title = "Test News" };
+            var newsDto = new NewsDto { Title = "Test News" };
 
             _mapperMock.Setup(m => m.Map<News>(command.newNews)).Returns(newsEntity);
             _repositoryWrapperMock.Setup(r => r.NewsRepository.Create(newsEntity)).Returns(newsEntity);
             _repositoryWrapperMock.Setup(r => r.SaveChangesAsync()).ReturnsAsync(1);
-            _mapperMock.Setup(m => m.Map<NewsDTO>(newsEntity)).Returns(newsDto);
+            _mapperMock.Setup(m => m.Map<NewsDto>(newsEntity)).Returns(newsDto);
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
@@ -50,7 +50,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
         public async Task ShouldReturnFailure_WhenSaveChangesFails()
         {
             // Arrange
-            var command = new CreateNewsCommand(new NewsDTO { Title = "Test News" });
+            var command = new CreateNewsCommand(new NewsDto { Title = "Test News" });
             var newsEntity = new News { Title = "Test News" };
 
             _mapperMock.Setup(m => m.Map<News>(command.newNews)).Returns(newsEntity);
@@ -69,7 +69,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
         public async Task ShouldReturnFailure_WhenMappingReturnsNull()
         {
             // Arrange
-            var command = new CreateNewsCommand(new NewsDTO { Title = "Test News" });
+            var command = new CreateNewsCommand(new NewsDto { Title = "Test News" });
                 
             _mapperMock.Setup(m => m.Map<News>(command.newNews)).Returns((News)null);
 
@@ -86,14 +86,14 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
         public async Task ShouldSetImageIdToNull_WhenImageIdIsZero()
         {
             // Arrange
-            var command = new CreateNewsCommand(new NewsDTO { Title = "Test News", ImageId = 0 });
+            var command = new CreateNewsCommand(new NewsDto { Title = "Test News", ImageId = 0 });
             var newsEntity = new News { Title = "Test News", ImageId = 0 };
 
             _mapperMock.Setup(m => m.Map<News>(command.newNews)).Returns(newsEntity);
             _repositoryWrapperMock.Setup(r => r.NewsRepository.Create(It.IsAny<News>())).Returns(newsEntity);
             _repositoryWrapperMock.Setup(r => r.SaveChangesAsync()).ReturnsAsync(1);
-            _mapperMock.Setup(m => m.Map<NewsDTO>(newsEntity))
-                .Returns(new NewsDTO { Title = "Test News", ImageId = null });
+            _mapperMock.Setup(m => m.Map<NewsDto>(newsEntity))
+                .Returns(new NewsDto { Title = "Test News", ImageId = null });
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);

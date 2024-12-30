@@ -7,7 +7,7 @@ namespace Streetcode.WebApi.Controllers.Email
   public class EmailController : BaseApiController
   {
     [HttpPost]
-    public async Task<IActionResult> Send([FromBody] EmailDTO email)
+    public async Task<IActionResult> Send([FromBody] EmailDto email)
     {
       return HandleResult(await Mediator.Send(new SendEmailCommand(email)));
     }

@@ -49,7 +49,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Toponyms.GetAll
             ConfigureRepository();
 
             var query = new GetAllToponymsQuery(
-                new GetAllToponymsRequestDTO()
+                new GetAllToponymsRequestDto()
                 {
                     Title = null,
                     Amount = 10,
@@ -69,7 +69,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Toponyms.GetAll
         {
             ConfigureRepository();
             var query = new GetAllToponymsQuery(
-                new GetAllToponymsRequestDTO()
+                new GetAllToponymsRequestDto()
                 {
                     Title = "ak",
                     Amount = 10,
@@ -89,7 +89,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Toponyms.GetAll
         {
             ConfigureRepository();
             var query = new GetAllToponymsQuery(
-                new GetAllToponymsRequestDTO()
+                new GetAllToponymsRequestDto()
                 {
                     Title = "null",
                     Amount = 10,
@@ -109,7 +109,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Toponyms.GetAll
         {
             ConfigureRepository();
             var query = new GetAllToponymsQuery(
-                new GetAllToponymsRequestDTO()
+                new GetAllToponymsRequestDto()
                 {
                     Title = null,
                     Amount = 2,  // amount of toponyms that can be displayed on one page

@@ -12,7 +12,7 @@ namespace Streetcode.WebApi.Controllers.Analytics
     {
         [AuthorizeRoles(UserRole.Admin)]
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateStatisticRecordDTO record)
+        public async Task<IActionResult> Create([FromBody] CreateStatisticRecordDto record)
         {
             return HandleResult(await Mediator.Send(new CreateStatisticRecordCommand(record)));
         }

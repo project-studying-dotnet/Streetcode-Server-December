@@ -43,10 +43,10 @@ namespace Streetcode.XUnitTest.ControllerTests.Streetcode.TextContent
         public async Task GetAll_ReturnsAllTerms()
         {
             // Arrange
-            var expectedTerms = new List<RelatedTermDTO>
+            var expectedTerms = new List<RelatedTermDto>
             {
-                new RelatedTermDTO { Id = 1, Word = "TestTerm1", TermId = 1 },
-                new RelatedTermDTO { Id = 2, Word = "TestTerm2", TermId = 1 },
+                new RelatedTermDto { Id = 1, Word = "TestTerm1", TermId = 1 },
+                new RelatedTermDto { Id = 2, Word = "TestTerm2", TermId = 1 },
             };
 
             this._mediatorMock.Setup(m => m.Send(It.IsAny<GetAllRelatedTermsQuery>(), default))
@@ -65,7 +65,7 @@ namespace Streetcode.XUnitTest.ControllerTests.Streetcode.TextContent
         {
             // Arrange
             var termId = 1;
-            var expectedTerm = new RelatedTermDTO { Id = termId, Word = "TestTerm1", TermId = 1 };
+            var expectedTerm = new RelatedTermDto { Id = termId, Word = "TestTerm1", TermId = 1 };
 
             this._mediatorMock.Setup(m => m.Send(It.IsAny<GetRelatedTermByIdQuery>(), default))
                               .ReturnsAsync(expectedTerm);
@@ -83,10 +83,10 @@ namespace Streetcode.XUnitTest.ControllerTests.Streetcode.TextContent
         {
             // Arrange
             var termId = 1;
-            var expectedTerms = new List<RelatedTermDTO>
+            var expectedTerms = new List<RelatedTermDto>
             {
-                new RelatedTermDTO { Id = 1, Word = "TestTerm1", TermId = termId },
-                new RelatedTermDTO { Id = 2, Word = "TestTerm2", TermId = termId },
+                new RelatedTermDto { Id = 1, Word = "TestTerm1", TermId = termId },
+                new RelatedTermDto { Id = 2, Word = "TestTerm2", TermId = termId },
             };
 
             this._mediatorMock.Setup(m => m.Send(It.IsAny<GetAllRelatedTermsByTermIdQuery>(), default))
@@ -104,7 +104,7 @@ namespace Streetcode.XUnitTest.ControllerTests.Streetcode.TextContent
         public async Task Create_ReturnsCreatedResult()
         {
             // Arrange
-            var newTerm = new RelatedTermDTO { Id = 3, Word = "NewTerm", TermId = 1 };
+            var newTerm = new RelatedTermDto { Id = 3, Word = "NewTerm", TermId = 1 };
             this._mediatorMock.Setup(m => m.Send(It.IsAny<CreateRelatedTermCommand>(), default))
                               .ReturnsAsync(newTerm);
 
@@ -120,7 +120,7 @@ namespace Streetcode.XUnitTest.ControllerTests.Streetcode.TextContent
         public async Task Update_ReturnsUpdatedResult()
         {
             // Arrange
-            var updatedTerm = new RelatedTermDTO { Id = 1, Word = "UpdatedTerm", TermId = 1 };
+            var updatedTerm = new RelatedTermDto { Id = 1, Word = "UpdatedTerm", TermId = 1 };
             this._mediatorMock.Setup(m => m.Send(It.IsAny<UpdateRelatedTermCommand>(), default))
                               .ReturnsAsync(updatedTerm);
 

@@ -9,9 +9,9 @@ namespace Streetcode.BLL.Mapping.Partners
     {
         public PartnerSourceLinkProfile()
         {
-            CreateMap<PartnerSourceLink, PartnerSourceLinkDTO>()
+            CreateMap<PartnerSourceLink, PartnerSourceLinkDto>()
                 .ForPath(dto => dto.TargetUrl.Href, conf => conf.MapFrom(ol => ol.TargetUrl));
-            CreateMap<PartnerSourceLink, CreatePartnerSourceLinkDTO>().ReverseMap();
+            CreateMap<PartnerSourceLink, CreatePartnerSourceLinkDto>().ReverseMap();
         }
     }
 }

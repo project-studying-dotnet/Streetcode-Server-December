@@ -18,6 +18,9 @@ namespace Streetcode.BLL.Mapping.Comment
             // Map from Comment to GetCommentDto
             CreateMap<CommentEntity, GetCommentDto>()
                 .ForMember(dest => dest.Children, opt => opt.MapFrom(src => src.Children));
+            
+            CreateMap<CreateCommentDto, CommentEntity>();
+            CreateMap<CommentEntity, GetCommentsToReviewDto>();
         }
     }
 }

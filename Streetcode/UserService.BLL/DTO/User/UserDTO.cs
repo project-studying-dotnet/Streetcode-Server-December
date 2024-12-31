@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using MongoDB.Bson;
 using UserService.DAL.Entities.Roles;
 
-namespace Streetcode.BLL.DTO.Users
+namespace UserService.BLL.DTO.Users
 {
     public class UserDto
     {

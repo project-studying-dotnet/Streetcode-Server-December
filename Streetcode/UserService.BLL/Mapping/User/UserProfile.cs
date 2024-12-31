@@ -1,7 +1,7 @@
 using System;
 using AutoMapper;
 using MongoDB.Bson;
-using Streetcode.BLL.DTO.Users;
+using UserService.BLL.DTO.Users;
 using UserService.BLL.DTO.User;
 
 namespace UserService.BLL.Mapping.User;

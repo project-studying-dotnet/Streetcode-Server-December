@@ -17,6 +17,8 @@ namespace Streetcode.BLL.Mapping.Comment
             CreateMap<GetCommentDto, UpdateCommentDto>();
             CreateMap<UpdateCommentDto, CommentEntity>();
 
+            CreateMap<CommentEntity, GetCommentsToReviewDto>();
+
         }
     }
 }

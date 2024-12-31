@@ -29,5 +29,10 @@ namespace Streetcode.BLL.Services.Audio
 
             return audio;
         }
+
+        public void DeleteAudio(string blobName)
+        {
+            _blobService.DeleteFileInStorage(blobName);
+        }
     }
 }

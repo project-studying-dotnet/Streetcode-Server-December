@@ -11,5 +11,6 @@ namespace Streetcode.BLL.Interfaces.Image
     {
         public DAL.Entities.Media.Images.Image ConfigureImage(ImageFileBaseCreateDto imageDTO);
         public string? ImageBase64(ImageDto imageDTO);
+        public void DeleteImage(string blobName);
     }
 }

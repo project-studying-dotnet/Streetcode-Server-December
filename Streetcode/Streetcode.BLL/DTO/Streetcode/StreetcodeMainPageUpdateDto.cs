@@ -10,12 +10,13 @@ using System.Threading.Tasks;
 
 namespace Streetcode.BLL.DTO.Streetcode
 {
-    public class StreetcodeMainPageCreateDto
+    public class StreetcodeMainPageUpdateDto
     {
+        public int Id { get; set; }
         public int Index { get; set; }
         public StreetcodeType StreetcodeType { get; set; }
-        public string? Title { get; set; }
         public string? DateString { get; set; }
+        public string? Title { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? Teaser { get; set; }

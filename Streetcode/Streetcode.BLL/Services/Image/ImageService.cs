@@ -33,5 +33,10 @@ namespace Streetcode.BLL.Services.Image
         {
             return _blobService.FindFileInStorageAsBase64(imageDTO.BlobName);
         }
+
+        public void DeleteImage(string blobName)
+        {
+            _blobService.DeleteFileInStorage(blobName);
+        }
     }
 }

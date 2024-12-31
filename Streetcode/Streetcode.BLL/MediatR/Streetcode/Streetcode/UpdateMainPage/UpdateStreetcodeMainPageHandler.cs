@@ -5,14 +5,21 @@ using Streetcode.BLL.DTO.Streetcode;
 using Streetcode.BLL.Interfaces.Audio;
 using Streetcode.BLL.Interfaces.Image;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.MediatR.Streetcode.Streetcode.CreateMainPage;
 using Streetcode.BLL.Resources;
-using Streetcode.DAL.Entities.Streetcode;
 using Streetcode.DAL.Entities.Streetcode.Types;
+using Streetcode.DAL.Entities.Streetcode;
 using Streetcode.DAL.Repositories.Interfaces.Base;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Streetcode.BLL.Specifications.Streetcode;
 
-namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.CreateMainPage
+namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.UpdateMainPage
 {
-    public class CreateStreetcodeMainPageHandler : IRequestHandler<CreateStreetcodeMainPageCommand, Result<StreetcodeDto>>
+    public record UpdateStreetcodeMainPageHandler : IRequestHandler<UpdateStreetcodeMainPageCommand, Result<StreetcodeDto>>
     {
         private readonly IRepositoryWrapper _repository;
         private readonly IMapper _mapper;
@@ -20,7 +27,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.CreateMainPage
         private readonly IImageService _imageService;
         private readonly IAudioService _audioService;
 
-        public CreateStreetcodeMainPageHandler(IRepositoryWrapper repository, IMapper mapper, ILoggerService logger, IImageService imageService, IAudioService audioService)
+        public UpdateStreetcodeMainPageHandler(IRepositoryWrapper repository, IMapper mapper, ILoggerService logger, IImageService imageService, IAudioService audioService)
         {
             _repository = repository;
             _mapper = mapper;
@@ -29,16 +36,18 @@ namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.CreateMainPage
             _audioService = audioService;
         }
 
-        public async Task<Result<StreetcodeDto>> Handle(CreateStreetcodeMainPageCommand request, CancellationToken cancellationToken)
+        public async Task<Result<StreetcodeDto>> Handle(UpdateStreetcodeMainPageCommand request, CancellationToken cancellationToken)
         {
-            if (request.StreetcodeMainPage is null)
+            var mainPage = await _repository.StreetcodeRepository.GetFirstOrDefaultBySpecAsync(new StreetcodeMainPageSpecification(request.StreetcodeMainPage.Id));
+            if (mainPage == null)
             {
-                string errorMsg = ErrorManager.GetCustomErrorText("FailCreateError", "main page block");
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindError", "streetcodecontent");
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }
 
-            StreetcodeContent mainPage;
+            var images = mainPage.Images.Select(x => x.BlobName);
+            var audio = mainPage.Audio.BlobName;
 
             if (request.StreetcodeMainPage.StreetcodeType == DAL.Enums.StreetcodeType.Person)
             {
@@ -49,11 +58,9 @@ namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.CreateMainPage
                 mainPage = _mapper.Map<EventStreetcode>(request.StreetcodeMainPage);
             }
 
-            mainPage.CreatedAt = DateTime.Now;
-
             // Create Animation and Picture images
 
-            if (mainPage.Images is not null && mainPage.Images.Any())
+            if (mainPage.Images is not null && mainPage.Images.Count != 0)
             {
                 for (int i = 0; i < mainPage.Images.Count; i++)
                 {
@@ -68,25 +75,37 @@ namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.CreateMainPage
                 mainPage.Audio = _audioService.ConfigureAudio(request.StreetcodeMainPage.Audio);
             }
 
-            var createdMainPage = await _repository.StreetcodeRepository.CreateAsync(mainPage);
+            mainPage.UpdatedAt = DateTime.Now;
 
-            if (createdMainPage is null)
-            {
-                string errorMsg = ErrorManager.GetCustomErrorText("FailCreateError", "main page block");
-                _logger.LogError(request, errorMsg);
-                return Result.Fail(new Error(errorMsg));
-            }
+            _repository.StreetcodeRepository.Update(mainPage);
 
             var resultIsSuccess = await _repository.SaveChangesAsync() > 0;
 
             if (!resultIsSuccess)
             {
-                string errorMsg = ErrorManager.GetCustomErrorText("FailCreateError", "main page block");
+                string errorMsg = ErrorManager.GetCustomErrorText("FailUpdateError", "main page block");
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }
 
-            return Result.Ok(_mapper.Map<StreetcodeDto>(createdMainPage));
+            // Delete previous Animation and Picture images
+
+            if (images is not null && images.Any())
+            {
+                foreach (var image in images)
+                {
+                    _imageService.DeleteImage(image!);
+                }
+            }
+
+            // Delete previous Audio
+
+            if (audio is not null)
+            {
+                _audioService.DeleteAudio(audio);
+            }
+
+            return Result.Ok(_mapper.Map<StreetcodeDto>(mainPage));
         }
     }
 }

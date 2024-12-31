@@ -11,7 +11,7 @@ using RelatedTermEntity = Streetcode.DAL.Entities.Streetcode.TextContent.Related
 
 namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetAll
 {
-    public record GetAllRelatedTermsHandler : IRequestHandler<GetAllRelatedTermsQuery, Result<IEnumerable<RelatedTermDTO>>>
+    public record GetAllRelatedTermsHandler : IRequestHandler<GetAllRelatedTermsQuery, Result<IEnumerable<RelatedTermDto>>>
     {
         private readonly IMapper _mapper;
         private readonly IRepositoryWrapper _repository;
@@ -24,7 +24,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetAll
             _logger = logger;
         }
 
-        public async Task<Result<IEnumerable<RelatedTermDTO>>> Handle(GetAllRelatedTermsQuery request, CancellationToken cancellationToken)
+        public async Task<Result<IEnumerable<RelatedTermDto>>> Handle(GetAllRelatedTermsQuery request, CancellationToken cancellationToken)
         {
             var relatedTerms = await _repository.RelatedTermRepository
                 .GetAllBySpecAsync(new RelatedTermWithTermSpecification());
@@ -36,7 +36,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetAll
                 return new Error(errorMsg);
             }
 
-            var relatedTermsDTO = _mapper.Map<IEnumerable<RelatedTermDTO>>(relatedTerms);
+            var relatedTermsDTO = _mapper.Map<IEnumerable<RelatedTermDto>>(relatedTerms);
 
             if (relatedTermsDTO is null)
             {

@@ -10,7 +10,7 @@ using Streetcode.DAL.Repositories.Interfaces.Base;
 namespace Streetcode.BLL.MediatR.Analytics
 {
     public class CreateStatisticRecordHandler
-        : IRequestHandler<CreateStatisticRecordCommand, Result<StatisticRecordDTO>>
+        : IRequestHandler<CreateStatisticRecordCommand, Result<StatisticRecordDto>>
     {
         private readonly IMapper _mapper;
         private readonly IRepositoryWrapper _repositoryWrapper;
@@ -26,7 +26,7 @@ namespace Streetcode.BLL.MediatR.Analytics
             _logger = logger;
         }
 
-        public async Task<Result<StatisticRecordDTO>> Handle(
+        public async Task<Result<StatisticRecordDto>> Handle(
             CreateStatisticRecordCommand request,
             CancellationToken cancellationToken)
         {
@@ -47,10 +47,10 @@ namespace Streetcode.BLL.MediatR.Analytics
                 return LogAndFail(ErrorManager.GetCustomErrorText("FailCreateError", "StatisticRecord"), request);
             }
 
-            return Result.Ok(_mapper.Map<StatisticRecordDTO>(entity));
+            return Result.Ok(_mapper.Map<StatisticRecordDto>(entity));
         }
 
-        private Result<StatisticRecordDTO> LogAndFail(string errorMessage, object request = null)
+        private Result<StatisticRecordDto> LogAndFail(string errorMessage, object request = null)
         {
             _logger.LogError(request, errorMessage);
             return Result.Fail(errorMessage);

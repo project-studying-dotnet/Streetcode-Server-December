@@ -35,13 +35,13 @@ namespace Streetcode.WebApi.Controllers.Partners
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreatePartnerDTO partner)
+        public async Task<IActionResult> Create([FromBody] CreatePartnerDto partner)
         {
             return HandleResult(await Mediator.Send(new CreatePartnerQuery(partner)));
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] CreatePartnerDTO partner)
+        public async Task<IActionResult> Update([FromBody] CreatePartnerDto partner)
         {
             return HandleResult(await Mediator.Send(new BLL.MediatR.Partners.Update.UpdatePartnerQuery(partner)));
         }

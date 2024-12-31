@@ -3,7 +3,7 @@ using Microsoft.VisualBasic.FileIO;
 using Streetcode.BLL.DTO.Media;
 namespace Streetcode.BLL.Validation.Validators.DTOValidators.Art
 {
-    public class FileBaseCreateDTOValidator : AbstractValidator<FileBaseCreateDTO>
+    public class FileBaseCreateDTOValidator : AbstractValidator<FileBaseCreateDto>
     {
         private static readonly HashSet<string> _imageMimeTypes = new()
         {
@@ -62,7 +62,7 @@ namespace Streetcode.BLL.Validation.Validators.DTOValidators.Art
 
             RuleFor(x => x.BaseFormat)
                 .NotEmpty().WithMessage("BaseFormat cannot be empty.")
-                .Matches("^[A-Za-z0-9]+$").WithMessage("BaseFormat can only contain letters and numbers");
+                .Matches("^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$").WithMessage("BaseFormat must be a valid Base64 string.");
 
             RuleFor(x => x.MimeType)
                 .NotEmpty().WithMessage("MimeType cannot be empty.")

@@ -1,6 +1,6 @@
 namespace Streetcode.BLL.DTO.AdditionalContent.Tag
 {
-  public class CreateTagDTO
+  public class CreateTagDto
   {
     public string Title { get; set; }
   }

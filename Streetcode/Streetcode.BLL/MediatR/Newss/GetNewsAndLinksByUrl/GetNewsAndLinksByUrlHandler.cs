@@ -10,7 +10,7 @@ using Streetcode.BLL.Resources;
 
 namespace Streetcode.BLL.MediatR.Newss.GetNewsAndLinksByUrl
 {
-    public class GetNewsAndLinksByUrlHandler : IRequestHandler<GetNewsAndLinksByUrlQuery, Result<NewsDTOWithURLs>>
+    public class GetNewsAndLinksByUrlHandler : IRequestHandler<GetNewsAndLinksByUrlQuery, Result<NewsDtoWithURLs>>
     {
         private readonly IMapper _mapper;
         private readonly IRepositoryWrapper _repositoryWrapper;
@@ -24,10 +24,10 @@ namespace Streetcode.BLL.MediatR.Newss.GetNewsAndLinksByUrl
             _logger = logger;
         }
 
-        public async Task<Result<NewsDTOWithURLs>> Handle(GetNewsAndLinksByUrlQuery request, CancellationToken cancellationToken)
+        public async Task<Result<NewsDtoWithURLs>> Handle(GetNewsAndLinksByUrlQuery request, CancellationToken cancellationToken)
         {
             string url = request.url;
-            var newsDTO = _mapper.Map<NewsDTO>(await _repositoryWrapper.NewsRepository.GetFirstOrDefaultAsync(
+            var newsDTO = _mapper.Map<NewsDto>(await _repositoryWrapper.NewsRepository.GetFirstOrDefaultAsync(
                 predicate: sc => sc.URL == url,
                 include: scl => scl
                     .Include(sc => sc.Image)));
@@ -59,7 +59,7 @@ namespace Streetcode.BLL.MediatR.Newss.GetNewsAndLinksByUrl
                 nextNewsLink = news[newsIndex + 1].URL;
             }
 
-            var randomNewsTitleAndLink = new RandomNewsDTO();
+            var randomNewsTitleAndLink = new RandomNewsDto();
 
             var arrCount = news.Count;
             if (arrCount > 3)
@@ -81,7 +81,7 @@ namespace Streetcode.BLL.MediatR.Newss.GetNewsAndLinksByUrl
                 randomNewsTitleAndLink.Title = news[newsIndex].Title;
             }
 
-            var newsDTOWithUrls = new NewsDTOWithURLs();
+            var newsDTOWithUrls = new NewsDtoWithURLs();
             newsDTOWithUrls.RandomNews = randomNewsTitleAndLink;
             newsDTOWithUrls.News = newsDTO;
             newsDTOWithUrls.NextNewsUrl = nextNewsLink;

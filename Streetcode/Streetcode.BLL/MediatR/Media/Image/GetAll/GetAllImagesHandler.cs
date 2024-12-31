@@ -10,7 +10,7 @@ using Streetcode.DAL.Repositories.Interfaces.Base;
 namespace Streetcode.BLL.MediatR.Media.Image.GetAll
 {
 
-    public class GetAllImagesHandler : IRequestHandler<GetAllImagesQuery, Result<IEnumerable<ImageDTO>>>
+    public class GetAllImagesHandler : IRequestHandler<GetAllImagesQuery, Result<IEnumerable<ImageDto>>>
     {
         private readonly IMapper _mapper;
         private readonly IRepositoryWrapper _repositoryWrapper;
@@ -25,7 +25,7 @@ namespace Streetcode.BLL.MediatR.Media.Image.GetAll
             _logger = logger;
         }
 
-        public async Task<Result<IEnumerable<ImageDTO>>> Handle(GetAllImagesQuery request, CancellationToken cancellationToken)
+        public async Task<Result<IEnumerable<ImageDto>>> Handle(GetAllImagesQuery request, CancellationToken cancellationToken)
         {
             var images = await _repositoryWrapper.ImageRepository.GetAllAsync();
 
@@ -36,7 +36,7 @@ namespace Streetcode.BLL.MediatR.Media.Image.GetAll
                 return Result.Fail(new Error(errorMsg));
             }
 
-            var imageDtos = _mapper.Map<IEnumerable<ImageDTO>>(images);
+            var imageDtos = _mapper.Map<IEnumerable<ImageDto>>(images);
 
             foreach (var image in imageDtos)
             {

@@ -57,14 +57,14 @@ namespace Streetcode.XUnitTest.MediatRTests.Partners.GetById
 		{
 			// Arrange
 			var partner = new Partner { Id = 1 };
-			var partnerDto = new PartnerDTO { Id = 1 };
+			var partnerDto = new PartnerDto { Id = 1 };
 
 			_mockRepositoryWapper.Setup(x => x.PartnersRepository
 				.GetSingleOrDefaultAsync(It.IsAny<Expression<Func<Partner, bool>>>(), 
 					It.IsAny<Func<IQueryable<Partner>, IIncludableQueryable<Partner, object>>>()))
 				.ReturnsAsync(partner);
 
-			_mockMapper.Setup(x => x.Map<PartnerDTO>(partner)).Returns(partnerDto);
+			_mockMapper.Setup(x => x.Map<PartnerDto>(partner)).Returns(partnerDto);
 
 			// Act
 			var query = new GetPartnerByIdQuery(1);

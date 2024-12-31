@@ -66,11 +66,11 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.GetCategoryById
 				Image = new Image { BlobName = "image1.png" }
 			};
 
-			var categoryDto = new SourceLinkCategoryDTO
+			var categoryDto = new SourceLinkCategoryDto
 			{
 				Id = 1,
 				Title = "Test Category",
-				Image = new ImageDTO { BlobName = "image1.png", Base64 = "Base64Image1" }
+				Image = new ImageDto { BlobName = "image1.png", Base64 = "Base64Image1" }
 			};
 
 			_mockRepositoryWrapper
@@ -79,7 +79,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.GetCategoryById
 					It.IsAny<Func<IQueryable<SourceLinkCategory>, IIncludableQueryable<SourceLinkCategory, object>>>()))
 				.ReturnsAsync(sourceCategory);
 
-			_mockMapper.Setup(m => m.Map<SourceLinkCategoryDTO>(sourceCategory)).Returns(categoryDto);
+			_mockMapper.Setup(m => m.Map<SourceLinkCategoryDto>(sourceCategory)).Returns(categoryDto);
 			_mockBlob.Setup(service => service.FindFileInStorageAsBase64("image1.png")).Returns("Base64Image1");
 
 			// Act

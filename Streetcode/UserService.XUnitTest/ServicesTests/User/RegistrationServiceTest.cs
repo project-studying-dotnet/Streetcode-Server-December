@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver.Linq;
 using Moq;
-using Streetcode.BLL.DTO.Users;
+using UserService.BLL.DTO.Users;
 using UserService.BLL.DTO.User;
 using UserService.BLL.Services.User;
 
@@ -37,14 +37,14 @@ public class RegistrationServiceTest
             FullName = "Test FullName",
         };
 
-        var registrationDto = new RegistrationDTO
+        var registrationDto = new RegistrationDto
         {
             FullName = "Test FullName",
             Password = "qwertyA*",
             PasswordConfirm = "qwertyA*"
         };
 
-        var userDto = new UserDTO
+        var userDto = new UserDto
         {
             Id = user.Id.ToString(),
             FullName = user.FullName,
@@ -52,7 +52,7 @@ public class RegistrationServiceTest
         
 
         _mapperMock.Setup(m => m
-                .Map<RegistrationDTO, DAL.Entities.Users.User>(registrationDto))
+                .Map<RegistrationDto, DAL.Entities.Users.User>(registrationDto))
             .Returns(user);
 
         _userManagerMock.Setup(um => um
@@ -70,7 +70,7 @@ public class RegistrationServiceTest
             })
             .ReturnsAsync(IdentityResult.Success);
 
-        _mapperMock.Setup(m => m.Map<DAL.Entities.Users.User, UserDTO>(user))
+        _mapperMock.Setup(m => m.Map<DAL.Entities.Users.User, UserDto>(user))
             .Returns(userDto);
         
         // Act
@@ -88,7 +88,7 @@ public class RegistrationServiceTest
         // Arrange
         const string errMsg = "Password isn't equal";
 
-        var registrationDto = new RegistrationDTO
+        var registrationDto = new RegistrationDto
         {
             FullName = "Test FullName",
             Password = "qwertyA*",
@@ -110,7 +110,7 @@ public class RegistrationServiceTest
         // Arrange
         const string errMsg = "Cannot convert null to user";
         
-        var registrationDto = new RegistrationDTO
+        var registrationDto = new RegistrationDto
         {
             FullName = "Test FullName",
             Password = "qwertyA*",
@@ -139,7 +139,7 @@ public class RegistrationServiceTest
             FullName = "Test FullName",
         };
 
-        var registrationDto = new RegistrationDTO
+        var registrationDto = new RegistrationDto
         {
             FullName = "Test FullName",
             Password = "qwertyA*",
@@ -147,7 +147,7 @@ public class RegistrationServiceTest
         };
 
         _mapperMock.Setup(m => m
-                .Map<RegistrationDTO, DAL.Entities.Users.User>(registrationDto))
+                .Map<RegistrationDto, DAL.Entities.Users.User>(registrationDto))
             .Returns(user);
 
         _userManagerMock.Setup(um => um
@@ -176,7 +176,7 @@ public class RegistrationServiceTest
             FullName = "Test FullName",
         };
 
-        var registrationDto = new RegistrationDTO
+        var registrationDto = new RegistrationDto
         {
             FullName = "Test FullName",
             Password = "qwertyA*",
@@ -185,7 +185,7 @@ public class RegistrationServiceTest
         
 
         _mapperMock.Setup(m => m
-                .Map<RegistrationDTO, DAL.Entities.Users.User>(registrationDto))
+                .Map<RegistrationDto, DAL.Entities.Users.User>(registrationDto))
             .Returns(user);
 
         _userManagerMock.Setup(um => um
@@ -217,7 +217,7 @@ public class RegistrationServiceTest
             FullName = "Test FullName",
         };
 
-        var registrationDto = new RegistrationDTO
+        var registrationDto = new RegistrationDto
         {
             FullName = "Test FullName",
             Password = "qwertyA*",
@@ -227,7 +227,7 @@ public class RegistrationServiceTest
         
 
         _mapperMock.Setup(m => m
-                .Map<RegistrationDTO, DAL.Entities.Users.User>(registrationDto))
+                .Map<RegistrationDto, DAL.Entities.Users.User>(registrationDto))
             .Returns(user);
 
         _userManagerMock.Setup(um => um

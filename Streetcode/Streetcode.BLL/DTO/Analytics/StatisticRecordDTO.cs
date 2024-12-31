@@ -3,7 +3,7 @@ using Streetcode.DAL.Entities.Streetcode;
 
 namespace Streetcode.BLL.DTO.Analytics
 {
-    public class StatisticRecordDTO
+    public class StatisticRecordDto
     {
         public int Id { get; set; }
         public int QrId { get; set; }
@@ -13,6 +13,6 @@ namespace Streetcode.BLL.DTO.Analytics
         public int StreetcodeId { get; set; }
         public StreetcodeContent Streetcode { get; set; }
         public int StreetcodeCoordinateId { get; set; }
-        public StreetcodeCoordinateDTO StreetcodeCoordinate { get; set; }
+        public StreetcodeCoordinateDto StreetcodeCoordinate { get; set; }
     }
 }

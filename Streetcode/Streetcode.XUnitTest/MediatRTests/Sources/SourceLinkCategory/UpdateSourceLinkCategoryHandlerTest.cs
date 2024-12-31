@@ -43,12 +43,12 @@ public class UpdateSourceLinkCategoryHandlerTest
             Image = new Image { Id = 2 },
         };
 
-        var sourceLinkCategoryDto = new SourceLinkCategoryDTO
+        var sourceLinkCategoryDto = new SourceLinkCategoryDto
         {
             Id = 1,
             Title = "Test 1",
             ImageId = 2,
-            Image = new ImageDTO { Id = 2 },
+            Image = new ImageDto { Id = 2 },
         };
 
         var command = new UpdateSourceLinkCategoryCommand(sourceLinkCategoryDto);
@@ -58,7 +58,7 @@ public class UpdateSourceLinkCategoryHandlerTest
             .Returns(sourceLinkCategory);
         
         _mapperMock
-            .Setup(m => m.Map<SourceLinkCategoryDTO>(sourceLinkCategory))
+            .Setup(m => m.Map<SourceLinkCategoryDto>(sourceLinkCategory))
             .Returns(sourceLinkCategoryDto);
 
         _repositoryWrapperMock
@@ -100,12 +100,12 @@ public class UpdateSourceLinkCategoryHandlerTest
             Image = new Image { Id = 2 },
         };
 
-        var sourceLinkCategoryDto = new SourceLinkCategoryDTO
+        var sourceLinkCategoryDto = new SourceLinkCategoryDto
         {
             Id = 1,
             Title = "Test 1",
             ImageId = 2,
-            Image = new ImageDTO { Id = 2 },
+            Image = new ImageDto { Id = 2 },
         };
         var command = new UpdateSourceLinkCategoryCommand(sourceLinkCategoryDto);
         const string errorMsg = $"Cannot convert null to source link category";
@@ -129,12 +129,12 @@ public class UpdateSourceLinkCategoryHandlerTest
             Image = new Image { Id = 2 },
         };
 
-        var sourceLinkCategoryDto = new SourceLinkCategoryDTO
+        var sourceLinkCategoryDto = new SourceLinkCategoryDto
         {
             Id = 1,
             Title = "Test 1",
             ImageId = 2,
-            Image = new ImageDTO { Id = 2 },
+            Image = new ImageDto { Id = 2 },
         };
         var command = new UpdateSourceLinkCategoryCommand(sourceLinkCategoryDto);
         const string errorMsg = $"Cannot find any source link category";
@@ -162,12 +162,12 @@ public class UpdateSourceLinkCategoryHandlerTest
             Image = new Image { Id = 2 },
         };
 
-        var sourceLinkCategoryDto = new SourceLinkCategoryDTO
+        var sourceLinkCategoryDto = new SourceLinkCategoryDto
         {
             Id = 1,
             Title = "Test 1",
             ImageId = 2,
-            Image = new ImageDTO { Id = 2 },
+            Image = new ImageDto { Id = 2 },
         };
 
         var command = new UpdateSourceLinkCategoryCommand(sourceLinkCategoryDto);
@@ -178,7 +178,7 @@ public class UpdateSourceLinkCategoryHandlerTest
             .Returns(sourceLinkCategory);
         
         _mapperMock
-            .Setup(m => m.Map<SourceLinkCategoryDTO>(sourceLinkCategory))
+            .Setup(m => m.Map<SourceLinkCategoryDto>(sourceLinkCategory))
             .Returns(sourceLinkCategoryDto);
 
         _repositoryWrapperMock

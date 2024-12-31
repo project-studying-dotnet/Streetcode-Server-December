@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Streetcode.BLL.DTO.Streetcode.TextContent.Fact
 {
-    public class CreateFactImageDetailsDTO
+    public class CreateFactImageDetailsDto
     {
         public string? Title { get; set; }
     }

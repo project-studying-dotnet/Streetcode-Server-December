@@ -40,24 +40,24 @@ namespace Streetcode.XUnitTest.MediatRTests.Partners.Create
 		{
 			// Arrange
 			var newPartner = new Partner { Id = 1, Streetcodes = new List<StreetcodeContent>() };
-			var newPartnerDTO = new CreatePartnerDTO { Id = 1 };
+			var newPartnerDTO = new CreatePartnerDto { Id = 1 };
 			var request = new CreatePartnerQuery(newPartnerDTO);
 
 			var createdPartner = new Partner { Id = 1, Streetcodes = new List<StreetcodeContent>() };
 
-			_mockMapper.Setup(m => m.Map<Partner>(It.IsAny<CreatePartnerDTO>())).Returns(newPartner);
+			_mockMapper.Setup(m => m.Map<Partner>(It.IsAny<CreatePartnerDto>())).Returns(newPartner);
 			_mockRepositoryWrapper.Setup(repo => repo.PartnersRepository.CreateAsync(It.IsAny<Partner>())).ReturnsAsync(createdPartner);
 			_mockRepositoryWrapper.Setup(repo => repo.StreetcodeRepository.GetAllAsync(It.IsAny<Expression<Func<StreetcodeContent, bool>>>(), null))
 								  .ReturnsAsync(new List<StreetcodeContent>());
 
-			_mockMapper.Setup(m => m.Map<PartnerDTO>(It.IsAny<Partner>())).Returns(new PartnerDTO { Id = 1 });
+			_mockMapper.Setup(m => m.Map<PartnerDto>(It.IsAny<Partner>())).Returns(new PartnerDto { Id = 1 });
 
 			// Act
 			var result = await _handler.Handle(request, CancellationToken.None);
 
 			// Assert
 			result.IsSuccess.Should().BeTrue();
-			result.Value.Should().BeEquivalentTo(new PartnerDTO { Id = 1 });
+			result.Value.Should().BeEquivalentTo(new PartnerDto { Id = 1 });
 		}
 
 		[Fact]
@@ -65,10 +65,10 @@ namespace Streetcode.XUnitTest.MediatRTests.Partners.Create
 		{
 			// Arrange
 			var newPartner = new Partner { Id = 1, Streetcodes = new List<StreetcodeContent>() };
-			var newPartnerDTO = new CreatePartnerDTO { Id = 1 };
+			var newPartnerDTO = new CreatePartnerDto { Id = 1 };
 			var request = new CreatePartnerQuery(newPartnerDTO);
 
-			_mockMapper.Setup(m => m.Map<Partner>(It.IsAny<CreatePartnerDTO>())).Returns(newPartner);
+			_mockMapper.Setup(m => m.Map<Partner>(It.IsAny<CreatePartnerDto>())).Returns(newPartner);
 			_mockRepositoryWrapper.Setup(repo => repo.PartnersRepository
 				.CreateAsync(It.IsAny<Partner>())).ThrowsAsync(new Exception("Database error"));
 
@@ -76,7 +76,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Partners.Create
 				GetAllAsync(It.IsAny<Expression<Func<StreetcodeContent, bool>>>(), null))
 				.ReturnsAsync(new List<StreetcodeContent>());
 
-			_mockMapper.Setup(m => m.Map<PartnerDTO>(It.IsAny<Partner>())).Returns(new PartnerDTO { Id = 1 });
+			_mockMapper.Setup(m => m.Map<PartnerDto>(It.IsAny<Partner>())).Returns(new PartnerDto { Id = 1 });
 
 			// Act
 			var result = await _handler.Handle(request, CancellationToken.None);

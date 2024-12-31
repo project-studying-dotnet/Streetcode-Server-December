@@ -1,7 +1,7 @@
 using System;
 using AutoMapper;
 using MongoDB.Bson;
-using Streetcode.BLL.DTO.Users;
+using UserService.BLL.DTO.Users;
 using UserService.BLL.DTO.User;
 
 namespace UserService.BLL.Mapping.User;
@@ -10,7 +10,7 @@ public class UserProfile : Profile
 {
     public UserProfile()
     {
-        CreateMap<DAL.Entities.Users.User, UserDTO>()
+        CreateMap<DAL.Entities.Users.User, UserDto>()
             .ForMember(ud => ud.Id, conf => conf.MapFrom(u => u.Id.ToString()))
             .ForMember(ud => ud.FullName, conf => conf.MapFrom(u => u.FullName))
             .ForMember(ud => ud.UserName, conf => conf.MapFrom(u => u.UserName))
@@ -19,7 +19,7 @@ public class UserProfile : Profile
             .ForMember(ud => ud.Roles, conf => conf.MapFrom(u => u.Roles))
             .ReverseMap();
 
-        CreateMap<RegistrationDTO, DAL.Entities.Users.User>()
+        CreateMap<RegistrationDto, DAL.Entities.Users.User>()
             .ForMember(u => u.Id, conf => conf.MapFrom(u => ObjectId.GenerateNewId()))
             .ForMember(u => u.FullName, conf => conf.MapFrom(rd => rd.FullName))
             .ForMember(u => u.UserName, conf => conf.MapFrom(rd => rd.UserName))

@@ -10,7 +10,7 @@ using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.GetById;
 
-public class GetStreetcodeByIdHandler : IRequestHandler<GetStreetcodeByIdQuery, Result<StreetcodeDTO>>
+public class GetStreetcodeByIdHandler : IRequestHandler<GetStreetcodeByIdQuery, Result<StreetcodeDto>>
 {
     private readonly IMapper _mapper;
     private readonly IRepositoryWrapper _repositoryWrapper;
@@ -23,7 +23,7 @@ public class GetStreetcodeByIdHandler : IRequestHandler<GetStreetcodeByIdQuery, 
         _logger = logger;
     }
 
-    public async Task<Result<StreetcodeDTO>> Handle(GetStreetcodeByIdQuery request, CancellationToken cancellationToken)
+    public async Task<Result<StreetcodeDto>> Handle(GetStreetcodeByIdQuery request, CancellationToken cancellationToken)
     {
         var streetcode = await _repositoryWrapper.StreetcodeRepository.GetFirstOrDefaultAsync(
             predicate: st => st.Id == request.Id);
@@ -39,8 +39,8 @@ public class GetStreetcodeByIdHandler : IRequestHandler<GetStreetcodeByIdQuery, 
                                         .GetAllAsync(
                                             t => t.StreetcodeId == request.Id,
                                             include: q => q.Include(ti => ti.Tag));
-        var streetcodeDto = _mapper.Map<StreetcodeDTO>(streetcode);
-        streetcodeDto.Tags = _mapper.Map<List<StreetcodeTagDTO>>(tagIndexed);
+        var streetcodeDto = _mapper.Map<StreetcodeDto>(streetcode);
+        streetcodeDto.Tags = _mapper.Map<List<StreetcodeTagDto>>(tagIndexed);
 
         return Result.Ok(streetcodeDto);
     }

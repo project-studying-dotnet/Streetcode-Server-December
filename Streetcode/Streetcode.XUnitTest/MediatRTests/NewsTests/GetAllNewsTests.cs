@@ -71,10 +71,10 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
                 new News { Id = 2, Title = "News 2", Image = new Image { BlobName = "test_image.jpg" } },
             };
 
-            var newsDTOs = new List<NewsDTO>
+            var newsDTOs = new List<NewsDto>
             {
-                new NewsDTO { Id = 1, Title = "News 1", Image = new ImageDTO { BlobName = "test_image.jpg" } },
-                new NewsDTO { Id = 2, Title = "News 2", Image = new ImageDTO { BlobName = "test_image.jpg" } },
+                new NewsDto { Id = 1, Title = "News 1", Image = new ImageDto { BlobName = "test_image.jpg" } },
+                new NewsDto { Id = 2, Title = "News 2", Image = new ImageDto { BlobName = "test_image.jpg" } },
             };
 
             _repositoryWrapperMock
@@ -84,7 +84,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
                 .ReturnsAsync(news);
 
             _mapperMock
-                .Setup(m => m.Map<IEnumerable<NewsDTO>>(news))
+                .Setup(m => m.Map<IEnumerable<NewsDto>>(news))
                 .Returns(newsDTOs);
 
             _blobServiceMock
@@ -113,10 +113,10 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
                 new News { Id = 2, Title = "News 2", Image = null },
             };
 
-            var newsDTOs = new List<NewsDTO>
+            var newsDTOs = new List<NewsDto>
             {
-                new NewsDTO { Id = 1, Title = "News 1", Image = null },
-                new NewsDTO { Id = 2, Title = "News 2", Image = null },
+                new NewsDto { Id = 1, Title = "News 1", Image = null },
+                new NewsDto { Id = 2, Title = "News 2", Image = null },
             };
 
             _repositoryWrapperMock
@@ -126,7 +126,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
                 .ReturnsAsync(news);
 
             _mapperMock
-                .Setup(m => m.Map<IEnumerable<NewsDTO>>(news))
+                .Setup(m => m.Map<IEnumerable<NewsDto>>(news))
                 .Returns(newsDTOs);
 
             var query = new GetAllNewsQuery();

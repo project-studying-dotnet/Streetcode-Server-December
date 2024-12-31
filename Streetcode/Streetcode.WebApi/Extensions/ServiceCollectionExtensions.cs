@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.FeatureManagement;
 using Microsoft.OpenApi.Models;
+using Streetcode.BLL.Interfaces.Audio;
 using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Email;
 using Streetcode.BLL.Interfaces.Image;
@@ -11,6 +12,7 @@ using Streetcode.BLL.Interfaces.Instagram;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Interfaces.Payment;
 using Streetcode.BLL.Interfaces.Text;
+using Streetcode.BLL.Services.Audio;
 using Streetcode.BLL.Services.BlobStorageService;
 using Streetcode.BLL.Services.Email;
 using Streetcode.BLL.Services.Image;
@@ -50,6 +52,7 @@ namespace Streetcode.WebApi.Extensions
             services.AddScoped<ITextService, AddTermsToTextService>();
             services.AddScoped<IRedisCacheService, RedisCacheService>();
             services.AddScoped<IImageService, ImageService>();
+            services.AddScoped<IAudioService, AudioService>();
 
             services.AddValidatorsFromAssembly(typeof(ValidationError).Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));

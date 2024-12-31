@@ -10,7 +10,7 @@ using Streetcode.BLL.Resources;
 
 namespace Streetcode.BLL.MediatR.Timeline.TimelineItem.Create
 {
-    public class CreateTimelineItemHandler : IRequestHandler<CreateTimelineItemCommand, Result<TimelineItemDTO>>
+    public class CreateTimelineItemHandler : IRequestHandler<CreateTimelineItemCommand, Result<TimelineItemDto>>
     {
         private readonly IMapper _mapper;
         private readonly IRepositoryWrapper _repository;
@@ -22,7 +22,7 @@ namespace Streetcode.BLL.MediatR.Timeline.TimelineItem.Create
             _logger = logger;
         }
 
-        public async Task<Result<TimelineItemDTO>> Handle(CreateTimelineItemCommand request, CancellationToken cancellationToken)
+        public async Task<Result<TimelineItemDto>> Handle(CreateTimelineItemCommand request, CancellationToken cancellationToken)
         {
             var streetcodeExists = await _repository.StreetcodeRepository.GetFirstOrDefaultAsync(s => s.Id == request.timelineItemCreateDto.StreetcodeId);
             if (streetcodeExists == null)
@@ -46,7 +46,7 @@ namespace Streetcode.BLL.MediatR.Timeline.TimelineItem.Create
             {
                 var createResult = await _repository.TimelineRepository.CreateAsync(newTimelineItem);
                 var saveResult = await _repository.SaveChangesAsync();
-                return Result.Ok(_mapper.Map<TimelineItemDTO>(newTimelineItem));
+                return Result.Ok(_mapper.Map<TimelineItemDto>(newTimelineItem));
             }
 
             newTimelineItem.HistoricalContextTimelines.Clear();
@@ -70,7 +70,7 @@ namespace Streetcode.BLL.MediatR.Timeline.TimelineItem.Create
             newTimelineItem.HistoricalContextTimelines.AddRange(historicalContextTimelines);
             await _repository.SaveChangesAsync();
 
-            return Result.Ok(_mapper.Map<TimelineItemDTO>(newTimelineItem));
+            return Result.Ok(_mapper.Map<TimelineItemDto>(newTimelineItem));
         }
         }
     }

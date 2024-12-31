@@ -17,10 +17,10 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
         private readonly Mock<IRepositoryWrapper> _mockRepositoryWrapper;
         private readonly Mock<ILoggerService> _mockLogger;
         private readonly CreateTeamLinkHandler _createTeamLinkHandler;
-        private readonly TeamMemberLinkDTO _teamLinkDTO = new TeamMemberLinkDTO
+        private readonly TeamMemberLinkDto _teamLinkDTO = new TeamMemberLinkDto
         {
             Id = 1,
-            LogoType = LogoTypeDTO.YouTube,
+            LogoType = LogoTypeDto.YouTube,
         };
 
         public CreateTeamLinkHandlerTests()
@@ -109,8 +109,8 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
             SetupCreateTeamLink(_teamLinkDTO);
             SetupSaveChangesAsync(1);
 
-            _mockMapper.Setup(m => m.Map<TeamMemberLink>(It.IsAny<TeamMemberLinkDTO>())).Returns(teamMemberLink);
-            _mockMapper.Setup(m => m.Map<TeamMemberLinkDTO>(It.IsAny<TeamMemberLink>())).Returns((TeamMemberLinkDTO)null);
+            _mockMapper.Setup(m => m.Map<TeamMemberLink>(It.IsAny<TeamMemberLinkDto>())).Returns(teamMemberLink);
+            _mockMapper.Setup(m => m.Map<TeamMemberLinkDto>(It.IsAny<TeamMemberLink>())).Returns((TeamMemberLinkDto)null);
 
             var request = new CreateTeamLinkCommand(_teamLinkDTO);
             const string errorMsg = "Failed to map created team link";
@@ -123,7 +123,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
             Assert.Single(result.Reasons, s => s.Message == errorMsg);
         }
 
-        private void SetupCreateTeamLink(TeamMemberLinkDTO teamLinkDTO)
+        private void SetupCreateTeamLink(TeamMemberLinkDto teamLinkDTO)
         {
             var teamMemberLink = _mapper.Map<DAL.Entities.Team.TeamMemberLink>(teamLinkDTO);
 

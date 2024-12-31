@@ -74,7 +74,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
                 new News { Id = 3, URL = "news-3", Title = "News 3", Image = null },
             };
             var currentNews = newsList[1];
-            var newsDTO = new NewsDTO { Id = 2, Title = "News 2", Image = null };
+            var newsDTO = new NewsDto { Id = 2, Title = "News 2", Image = null };
 
             _repositoryWrapperMock
                 .Setup(r => r.NewsRepository.GetFirstOrDefaultAsync(
@@ -88,7 +88,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
                     It.IsAny<Func<IQueryable<News>, IIncludableQueryable<News, object>>>()))
                 .ReturnsAsync(newsList);
 
-            _mapperMock.Setup(m => m.Map<NewsDTO>(currentNews)).Returns(newsDTO);
+            _mapperMock.Setup(m => m.Map<NewsDto>(currentNews)).Returns(newsDTO);
 
             var query = new GetNewsAndLinksByUrlQuery("news-2");
 
@@ -113,7 +113,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
                 URL = "test - url.com",
             };
 
-            var newsDTO = new NewsDTO
+            var newsDTO = new NewsDto
             {
                 Id = 1,
                 Title = "News 1",
@@ -134,7 +134,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
                 .ReturnsAsync(new List<News> { news });
 
             _mapperMock
-                .Setup(m => m.Map<NewsDTO>(news))
+                .Setup(m => m.Map<NewsDto>(news))
                 .Returns(newsDTO);
 
             var query = new GetNewsAndLinksByUrlQuery("test-url.com");
@@ -165,11 +165,11 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
                 URL = "test - url.com"
             };
 
-            var newsDTO = new NewsDTO
+            var newsDTO = new NewsDto
             {
                 Id = 1,
                 Title = "News 1",
-                Image = new ImageDTO { BlobName = "test_image.jpg" },
+                Image = new ImageDto { BlobName = "test_image.jpg" },
                 URL = "test - url.com"
             };
 
@@ -185,7 +185,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
                     It.IsAny<Func<IQueryable<News>, IIncludableQueryable<News, object>>>()))
                 .ReturnsAsync(new List<News> { news });
 
-            _mapperMock.Setup(m => m.Map<NewsDTO>(news)).Returns(newsDTO);
+            _mapperMock.Setup(m => m.Map<NewsDto>(news)).Returns(newsDTO);
 
             _blobServiceMock
                 .Setup(b => b.FindFileInStorageAsBase64("test_image.jpg"))

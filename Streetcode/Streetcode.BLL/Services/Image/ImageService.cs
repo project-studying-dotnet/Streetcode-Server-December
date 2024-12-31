@@ -16,7 +16,7 @@ namespace Streetcode.BLL.Services.Image
             _blobService = blobService;
         }
 
-        public DAL.Entities.Media.Images.Image ConfigureImage(ImageFileBaseCreateDTO imageDTO)
+        public DAL.Entities.Media.Images.Image ConfigureImage(ImageFileBaseCreateDto imageDTO)
         {
             string hashBlobStorageName = _blobService.SaveFileInStorage(
                         imageDTO.BaseFormat,
@@ -29,9 +29,14 @@ namespace Streetcode.BLL.Services.Image
             return image;
         }
 
-        public string? ImageBase64(ImageDTO imageDTO)
+        public string? ImageBase64(ImageDto imageDTO)
         {
             return _blobService.FindFileInStorageAsBase64(imageDTO.BlobName);
+        }
+
+        public void DeleteImage(string blobName)
+        {
+            _blobService.DeleteFileInStorage(blobName);
         }
     }
 }

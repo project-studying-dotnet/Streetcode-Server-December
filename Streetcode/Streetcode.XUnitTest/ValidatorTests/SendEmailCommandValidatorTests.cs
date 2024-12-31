@@ -33,7 +33,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         public void Should_NotHaveErrorForValidEmail()
         {
             // Arrange
-            var validEmail = new EmailDTO
+            var validEmail = new EmailDto
             {
                 From = "test@example.com",
                 Content = "Valid content"
@@ -52,7 +52,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         public void Should_InvokeEmailDTOValidatorForIncorrectEmail()
         {
             // Arrange
-            var invalidEmail = new EmailDTO
+            var invalidEmail = new EmailDto
             {
                 From = "test@example.com",
                 Content = string.Empty

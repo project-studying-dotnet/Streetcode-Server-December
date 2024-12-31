@@ -77,12 +77,12 @@ namespace Streetcode.WebApi.Controllers.Streetcode
 		{
 			return HandleResult(await Mediator.Send(new CreateStreetcodeMainPageCommand(streetcodeMainPage)));
 		}
-    
-    [HttpPut]
-    public async Task<IActionResult> Update([FromBody] StreetcodeMainPageUpdateDto streetcodeMainPage)
-    {
-      return HandleResult(await Mediator.Send(new UpdateStreetcodeMainPageCommand(streetcodeMainPage)));
-    }
+
+		[HttpPut]
+		public async Task<IActionResult> Update([FromBody] StreetcodeMainPageUpdateDto streetcodeMainPage)
+		{
+			return HandleResult(await Mediator.Send(new UpdateStreetcodeMainPageCommand(streetcodeMainPage)));
+		}
 
 		[HttpDelete("{id:int}")]
 		public async Task<IActionResult> Delete([FromRoute] int id)

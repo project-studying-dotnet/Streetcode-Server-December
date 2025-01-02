@@ -48,7 +48,6 @@ namespace UserService.BLL.Services.User
             }
             try
             {
-                var newSessionId = Guid.NewGuid().ToString();
                 var accessToken = await _jwtService.GenerateTokenAsync(user, newSessionId);
                 var refreshToken = _jwtService.GenerateRefreshToken();
                 var currentSessionId = Guid.NewGuid().ToString();

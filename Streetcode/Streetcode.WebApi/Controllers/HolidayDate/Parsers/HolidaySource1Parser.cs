@@ -14,6 +14,11 @@ namespace Streetcode.WebApi.Controllers.HolidayDate.Parsers
 
         public async Task<List<string>> GetHolidaysAsync(int day, int month)
         {
+            if(day < HolidayDateDictionaries.MonthesBorders[month].Item1 || day > HolidayDateDictionaries.MonthesBorders[month].Item2)
+            {
+                throw new Exception($"Input day must be in borders from 1 to {HolidayDateDictionaries.MonthesBorders[month].Item2}");
+            }
+
             var url = $"https://daytoday.ua/{day}-{HolidayDateDictionaries.MonthesToParse[month]}";
             var response = await _httpClient.GetStringAsync(url);
 

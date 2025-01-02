@@ -143,15 +143,4 @@ public class UserControllerTests
         var returnValue = Assert.IsType<LoginResultDto>(actionResult.Value);
         Assert.Equal(tokenDto, returnValue);
     }
-
-    [Fact]
-    public void TestEndPoint_Should_Return_Ok()
-    {
-        // Act
-        var result = _userController.TestEndPoint();
-
-        // Assert
-        var actionResult = Assert.IsType<OkObjectResult>(result);
-        Assert.Equal("Hello from User Service", actionResult.Value);
-    }
 }

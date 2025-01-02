@@ -6,7 +6,7 @@ namespace UserService.BLL.Interfaces.Jwt
 {
     public interface IJwtService
     {
-        Task<string> GenerateTokenAsync(UserEntity user);
+        Task<string> GenerateTokenAsync(UserEntity user, string sessionId);
         string GenerateRefreshToken();
     }
 }

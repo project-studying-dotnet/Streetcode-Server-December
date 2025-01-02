@@ -15,6 +15,7 @@ using UserService.BLL.Interfaces.Jwt;
 using UserService.BLL.Services.Jwt;
 using UserEntity = UserService.DAL.Entities.Users.User;
 using UserService.BLL.DTO.Users;
+using System.Linq;
 namespace UserService.BLL.Services.User
 {
     public class LoginService : Interfaces.User.ILoginService
@@ -47,10 +48,18 @@ namespace UserService.BLL.Services.User
             }
             try
             {
-                var accessToken = await _jwtService.GenerateTokenAsync(user);
+                var newSessionId = Guid.NewGuid().ToString();
+                var accessToken = await _jwtService.GenerateTokenAsync(user, newSessionId);
                 var refreshToken = _jwtService.GenerateRefreshToken();
-                user.RefreshToken = refreshToken;
-                user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(_jwtConfiguration.RefreshTokenLifetime);
+                var currentSessionId = Guid.NewGuid().ToString();
+                var refreshTokenInfo  = new RefreshTokenInfo
+                {
+                    RefreshToken = refreshToken,
+                    RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(_jwtConfiguration.RefreshTokenLifetime),
+                    SessionId = currentSessionId
+                };
+                user.RefreshTokens.Add(refreshTokenInfo);
+                user.RefreshTokens = user.RefreshTokens.Where(t => t.RefreshTokenExpiryTime > DateTime.UtcNow).ToList();
                 var updateResult = await _userManager.UpdateAsync(user);
                 if (!updateResult.Succeeded)
                 {
@@ -77,9 +86,11 @@ namespace UserService.BLL.Services.User
             }
 
             var userName = userPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userName == null)
+            var sessionId = userPrincipal.FindFirstValue("SessionId");
+
+            if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(sessionId))
             {
-                _logger.LogWarning("Logout attempt with missing NameIdentifier for user.");
+                _logger.LogWarning("Logout attempt with missing Name or SessionId for user.");
                 return Result.Fail("User information not found.");
             }
 
@@ -89,9 +100,12 @@ namespace UserService.BLL.Services.User
                 _logger.LogWarning("Logout attempt for non-existing user: {UserName}", userName);
                 return Result.Fail("User not found.");
             }
-            user.RefreshToken = null;
-            user.RefreshTokenExpiryTime = DateTime.MinValue;
-
+            var sessionToRemove = user.RefreshTokens.SingleOrDefault(t => t.SessionId == sessionId);
+            if (sessionToRemove != null)
+            {
+                user.RefreshTokens.Remove(sessionToRemove);
+            }
+            user.RefreshTokens = user.RefreshTokens.Where(t => t.RefreshTokenExpiryTime > DateTime.UtcNow).ToList();
             var updateResult = await _userManager.UpdateAsync(user);
             if (!updateResult.Succeeded)
             {
@@ -104,20 +118,36 @@ namespace UserService.BLL.Services.User
 
         public async Task<Result<LoginResultDto>> RefreshToken(string refreshToken)
         {
-            var user = await _userManager.Users.SingleOrDefaultAsync(u => u.RefreshToken == refreshToken && u.RefreshTokenExpiryTime > DateTime.UtcNow);
+            var user = await _userManager.Users
+                .SingleOrDefaultAsync(u => u.RefreshTokens.Any(t => t.RefreshToken == refreshToken && t.RefreshTokenExpiryTime > DateTime.UtcNow));
+
             if (user == null)
             {
+                _logger.LogWarning("Invalid refresh token attempt.");
                 return Result.Fail("Invalid refresh token.");
             }
-            var newAccessToken = await _jwtService.GenerateTokenAsync(user);
+
+            var refreshTokenInfo = user.RefreshTokens.SingleOrDefault(t => t.RefreshToken == refreshToken);
+            if (refreshTokenInfo == null)
+            {
+                _logger.LogWarning("Refresh token not found for user {UserName}.", user.UserName);
+                return Result.Fail("Refresh token not found.");
+            }
+
+            var newAccessToken = await _jwtService.GenerateTokenAsync(user, refreshTokenInfo.SessionId);
             var newRefreshToken = _jwtService.GenerateRefreshToken();
-            user.RefreshToken = newRefreshToken;
-            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(_jwtConfiguration.RefreshTokenLifetime);
+
+            refreshTokenInfo.RefreshToken = newRefreshToken;
+            refreshTokenInfo.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(_jwtConfiguration.RefreshTokenLifetime);
+
             var updateResult = await _userManager.UpdateAsync(user);
             if (!updateResult.Succeeded)
             {
+                _logger.LogError("Failed to update refresh token for user {UserName}.", user.UserName);
                 return Result.Fail("Failed to update refresh token.");
             }
+
+            _logger.LogInformation("Successfully refreshed token for user {UserName}.", user.UserName);
             var result = _mapper.Map<LoginResultDto>((newAccessToken, newRefreshToken));
             return Result.Ok(result);
         }

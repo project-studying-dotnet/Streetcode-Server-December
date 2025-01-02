@@ -15,6 +15,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using UserService.BLL.Services.Jwt;
 using UserService.BLL.DTO.Users;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel.DataCollection;
 
 namespace UserService.XUnitTest.ServicesTests.User
 {
@@ -76,10 +77,12 @@ namespace UserService.XUnitTest.ServicesTests.User
         public async Task Login_Should_Return_Success_With_Tokens_When_Valid_Credentials()
         {
             // Arrange
+
+            var sessionId  = Guid.NewGuid().ToString();
             var user = new UserEntity { UserName = "validUser" };
             _userManagerMock.Setup(x => x.FindByNameAsync(It.IsAny<string>())).ReturnsAsync(user);
             _userManagerMock.Setup(x => x.CheckPasswordAsync(user, It.IsAny<string>())).ReturnsAsync(true);
-            _jwtServiceMock.Setup(x => x.GenerateTokenAsync(user)).ReturnsAsync("mockAccessToken");
+            _jwtServiceMock.Setup(x => x.GenerateTokenAsync(user, sessionId)).ReturnsAsync("mockAccessToken");
             _jwtServiceMock.Setup(x => x.GenerateRefreshToken()).Returns("mockRefreshToken");
             _userManagerMock.Setup(x => x.UpdateAsync(user)).ReturnsAsync(IdentityResult.Success);
 
@@ -99,11 +102,12 @@ namespace UserService.XUnitTest.ServicesTests.User
         [Fact]
         public async Task Login_Should_Return_Fail_When_RefreshToken_Not_Saved()
         {
+            var sessionId = Guid.NewGuid().ToString();
             // Arrange
             var user = new UserEntity { UserName = "validUser" };
             _userManagerMock.Setup(x => x.FindByNameAsync(It.IsAny<string>())).ReturnsAsync(user);
             _userManagerMock.Setup(x => x.CheckPasswordAsync(user, It.IsAny<string>())).ReturnsAsync(true);
-            _jwtServiceMock.Setup(x => x.GenerateTokenAsync(user)).ReturnsAsync("mockAccessToken");
+            _jwtServiceMock.Setup(x => x.GenerateTokenAsync(user, sessionId)).ReturnsAsync("mockAccessToken");
             _jwtServiceMock.Setup(x => x.GenerateRefreshToken()).Returns("mockRefreshToken");
             _userManagerMock.Setup(x => x.UpdateAsync(user)).ReturnsAsync(IdentityResult.Failed());
 

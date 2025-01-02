@@ -8,9 +8,9 @@ namespace Streetcode.BLL.Services.OpenAI
         private readonly HttpClient _httpClient;
         private readonly string _apiKey;
 
-        public OpenAIService(HttpClient httpClient, string apiKey)
+        public OpenAIService(IHttpClientFactory httpClientFactory, string apiKey)
         {
-            _httpClient = httpClient;
+            _httpClient = httpClientFactory.CreateClient("OpenAI_Client");
             _apiKey = apiKey;
         }
 

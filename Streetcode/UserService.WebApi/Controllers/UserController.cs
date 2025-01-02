@@ -75,11 +75,4 @@ public class UserController : ControllerBase
         HttpContext.AppendTokenToCookie(token.AccessToken, _jwtConfiguration);
         return Ok(refreshResult.Value);
     }
-
-    [HttpGet]
-    [Authorize]
-    public ActionResult TestEndPoint()
-    {
-        return Ok("Hello from User Service");
-    }
 }

@@ -25,7 +25,16 @@ namespace Streetcode.BLL.Services.HolidayFormatter
                 .GetString()
                 .Trim('"');
 
-            return JsonConvert.DeserializeObject<HolidayResponse>(formattedResponse);
+            var holidayResponse = JsonConvert.DeserializeObject<HolidayResponse>(formattedResponse);
+
+            if (holidayResponse == null)
+            {
+                throw new InvalidOperationException("Failed to deserialize the response into a HolidayResponse object.");
+            }
+            else
+            {
+                return holidayResponse;
+            }
         }
     }
 }

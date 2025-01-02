@@ -2,7 +2,6 @@
 using Streetcode.BLL.Services.OpenAI;
 using Streetcode.DAL.Entities.AdditionalContent.HolidayDate;
 
-
 namespace Streetcode.BLL.Services.HolidayDate
 {
     public class HolidayDateService

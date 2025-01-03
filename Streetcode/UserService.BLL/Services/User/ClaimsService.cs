@@ -21,19 +21,19 @@ namespace UserService.BLL.Services.User
             _logger = logger;
         }
 
-        public async Task<List<Claim>> CreateClaimsAsync(UserEntity user)
+        public async Task<List<Claim>> CreateClaimsAsync(UserEntity user, string sessionId)
         {
             if (user == null)
             {
                 _logger.LogError("User cannot be null.");
                 throw new ArgumentNullException(nameof(user), "User cannot be null.");
             }
-
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim("SessionId", sessionId)
             };
 
             try

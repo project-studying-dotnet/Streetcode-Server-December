@@ -2,11 +2,13 @@ using FluentValidation;
 using Hangfire;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.FeatureManagement;
 using Microsoft.OpenApi.Models;
 using Streetcode.BLL.Interfaces.Audio;
 using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Email;
+using Streetcode.BLL.Interfaces.HolidayFormatter;
 using Streetcode.BLL.Interfaces.Image;
 using Streetcode.BLL.Interfaces.Instagram;
 using Streetcode.BLL.Interfaces.Logging;
@@ -15,9 +17,12 @@ using Streetcode.BLL.Interfaces.Text;
 using Streetcode.BLL.Services.Audio;
 using Streetcode.BLL.Services.BlobStorageService;
 using Streetcode.BLL.Services.Email;
+using Streetcode.BLL.Services.HolidayDate;
+using Streetcode.BLL.Services.HolidayFormatter;
 using Streetcode.BLL.Services.Image;
 using Streetcode.BLL.Services.Instagram;
 using Streetcode.BLL.Services.Logging;
+using Streetcode.BLL.Services.OpenAI;
 using Streetcode.BLL.Services.Payment;
 using Streetcode.BLL.Services.Text;
 using Streetcode.BLL.Validators;
@@ -26,6 +31,7 @@ using Streetcode.DAL.Entities.AdditionalContent.Email;
 using Streetcode.DAL.Persistence;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using Streetcode.DAL.Repositories.Realizations.Base;
+using Streetcode.WebApi.Controllers.HolidayDate.Parsers;
 
 namespace Streetcode.WebApi.Extensions
 {
@@ -54,6 +60,14 @@ namespace Streetcode.WebApi.Extensions
             services.AddScoped<IImageService, ImageService>();
             services.AddScoped<IAudioService, AudioService>();
 
+            services.AddHttpClient("OpenAI_Client", client =>
+            {
+                client.Timeout = TimeSpan.FromSeconds(300);
+            });
+            services.AddScoped<IHolidayFormatter, HolidayFormatter>();
+            services.AddScoped<HolidayDateService>();
+            services.AddScoped<HolidaySource1Parser>();
+
             services.AddValidatorsFromAssembly(typeof(ValidationError).Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         }
@@ -77,6 +91,15 @@ namespace Streetcode.WebApi.Extensions
             {
                 config.UseSqlServerStorage(connectionString);
             });
+
+            //OpenAI
+            services.AddScoped<OpenAIService>(sp =>
+            {
+                var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
+                var apiKey = configuration["OpenAiApiKey"];
+                return new OpenAIService(httpClientFactory, apiKey);
+            });
+
 
             // Redis-Caching
             services.AddStackExchangeRedisCache(options =>

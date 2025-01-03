@@ -1,92 +1,146 @@
-﻿using FluentResults;
-using Microsoft.AspNetCore.Http;
+﻿using Moq;
+using Xunit;
+using FluentResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Moq;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using UserService.BLL.DTO.User;
-using UserService.BLL.Interfaces.User;
-using UserService.BLL.Services.Jwt;
 using UserService.WebApi.Controllers;
-using UserService.WebApi.Extensions;
-using Xunit;
+using UserService.BLL.DTO.User;
+using UserService.BLL.Services.Jwt;
+using UserService.BLL.Interfaces.User;
+using Streetcode.BLL.DTO.Users;
+using System.Collections.Generic;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
+using UserService.BLL.DTO.Users;
 
-namespace UserService.XUnitTest.ControllerTests
+namespace UserService.XUnitTest.ControllersTests;
+
+public class UserControllerTests
 {
-    public class UserControllerTests
+    private readonly Mock<ILoginService> _loginServiceMock;
+    private readonly Mock<IUserService> _userServiceMock;
+    private readonly Mock<IOptions<JwtConfiguration>> _jwtConfigurationMock;
+    private readonly UserController _userController;
+
+    public UserControllerTests()
     {
-        private readonly Mock<ILoginService> _loginServiceMock;
-        private readonly Mock<IUserService> _userServiceMock;
-        private readonly Mock<HttpContext> _mockHttpContext;
-        private readonly Mock<IOptions<JwtConfiguration>> _jwtConfigurationMock;
-        private readonly JwtConfiguration _jwtConfiguration;
-        private readonly UserController _controller;
+        _loginServiceMock = new Mock<ILoginService>();
+        _userServiceMock = new Mock<IUserService>();
+        _jwtConfigurationMock = new Mock<IOptions<JwtConfiguration>>();
+        _jwtConfigurationMock.Setup(x => x.Value).Returns(new JwtConfiguration { RefreshTokenLifetime = 7 });
 
-        public UserControllerTests()
+        _userController = new UserController(
+            _loginServiceMock.Object,
+            _userServiceMock.Object,
+            _jwtConfigurationMock.Object
+        );
+
+        _userController.ControllerContext = new ControllerContext
         {
-            _loginServiceMock = new Mock<ILoginService>();
-            _userServiceMock = new Mock<IUserService>();
-            _jwtConfigurationMock = new Mock<IOptions<JwtConfiguration>>();
-            _mockHttpContext = SetupMockHttpContext();
+            HttpContext = new DefaultHttpContext()
+        };
+    }
 
-            _jwtConfiguration = new JwtConfiguration { AccessTokenLifetime = 1 }; // Set access token lifetime to 1 hour
-            _jwtConfigurationMock.Setup(x => x.Value).Returns(_jwtConfiguration);
+    [Fact]
+    public async Task Register_Should_Return_UserDto_When_Successful()
+    {
+        // Arrange
+        var registrationDto = new RegistrationDto { FullName = "Test User", Password = "Password123!", PasswordConfirm = "Password123!" };
+        var userDto = new UserDto { Id = "123", FullName = "Test User" };
+
+        _userServiceMock.Setup(s => s.Registration(registrationDto)).ReturnsAsync(Result.Ok(userDto));
+
+        // Act
+        var result = await _userController.Register(registrationDto);
+
+        // Assert
+        var actionResult = Assert.IsType<ActionResult<UserDto>>(result);
+        var returnValue = Assert.IsType<UserDto>(actionResult.Value);
+        Assert.Equal(userDto, returnValue);
+    }
+
+    [Fact]
+    public async Task Login_Should_Return_BadRequest_When_Login_Fails()
+    {
+        // Arrange
+        var loginDto = new LoginDto { UserName = "TestUser", Password = "WrongPassword" };
+
+        _loginServiceMock.Setup(s => s.Login(loginDto)).ReturnsAsync(Result.Fail(new List<IError> { new Error("Invalid login") }));
+
+        // Act
+        var result = await _userController.Login(loginDto);
+
+        // Assert
+        var actionResult = Assert.IsType<BadRequestObjectResult>(result);
+        var errors = Assert.IsAssignableFrom<IEnumerable<IError>>(actionResult.Value);
+        Assert.Single(errors);
+        Assert.Equal("Invalid login", errors.First().Message);
+    }
 
 
-            _controller = new UserController(_loginServiceMock.Object, _userServiceMock.Object, _jwtConfigurationMock.Object)
-            {
-                ControllerContext = new ControllerContext
-                {
-                    HttpContext = _mockHttpContext.Object
-                }
-            };
-        }
+    [Fact]
+    public async Task Logout_Should_Return_BadRequest_When_Logout_Fails()
+    {
+        // Arrange
+        _loginServiceMock.Setup(s => s.Logout(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(Result.Fail(new List<IError> { new Error("Logout failed") }));
 
-        [Fact]
-        public async Task Login_ShouldReturnBadRequest_WhenLoginFails()
-        {
-            // Arrange
-            _loginServiceMock.Setup(x => x.Login(It.IsAny<LoginDto>())).ReturnsAsync(Result.Fail("Invalid credentials"));
+        // Act
+        var result = await _userController.Logout();
 
-            // Act
-            var result = await _controller.Login(new LoginDto());
+        // Assert
+        var actionResult = Assert.IsType<BadRequestObjectResult>(result);
+        var errors = Assert.IsAssignableFrom<IEnumerable<IError>>(actionResult.Value);
+        Assert.Single(errors);
+        Assert.Equal("Logout failed", errors.First().Message);
+    }
 
-            // Assert
-            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-            var actualErrors = Assert.IsType<List<IError>>(badRequestResult.Value);
-        }
+    [Fact]
+    public async Task Logout_Should_Return_Ok_When_Successful()
+    {
+        // Arrange
+        _loginServiceMock.Setup(s => s.Logout(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(Result.Ok());
 
-        [Fact]
-        public async Task Login_ShouldReturnOk_WhenLoginSucceeds()
-        {
-            // Arrange
-            _loginServiceMock.Setup(x => x.Login(It.IsAny<LoginDto>())).ReturnsAsync(Result.Ok("mockToken"));
+        // Act
+        var result = await _userController.Logout();
 
-            var expirationTime = DateTime.UtcNow.AddHours(_jwtConfiguration.AccessTokenLifetime);
+        // Assert
+        var actionResult = Assert.IsType<OkObjectResult>(result);
+        Assert.Equal("User successfully logged out.", actionResult.Value);
+    }
 
-            // Act
-            var result = await _controller.Login(new LoginDto());
+    [Fact]
+    public async Task RefreshToken_Should_Return_BadRequest_When_RefreshToken_Is_Invalid()
+    {
+        // Arrange
+        var tokenRequest = new TokenRequestDTO { RefreshToken = "invalid_token" };
 
-            // Assert
-            Assert.IsType<OkObjectResult>(result);
-        }
+        _loginServiceMock.Setup(s => s.RefreshToken(tokenRequest.RefreshToken)).ReturnsAsync(Result.Fail(new List<IError> { new Error("Invalid refresh token") }));
 
-        private Mock<HttpContext> SetupMockHttpContext()
-        {
-            var mockHttpContext = new Mock<HttpContext>();
-            var mockHttpResponse = new Mock<HttpResponse>();
-            var mockRequest = new Mock<HttpRequest>();
-            var mockCookies = new Mock<IResponseCookies>();
+        // Act
+        var result = await _userController.RefreshToken(tokenRequest);
 
-            mockRequest.Setup(r => r.IsHttps).Returns(true);
-            mockHttpContext.Setup(c => c.Request).Returns(mockRequest.Object);
-            mockHttpContext.Setup(c => c.Response).Returns(mockHttpResponse.Object);
-            mockHttpResponse.Setup(r => r.Cookies).Returns(mockCookies.Object);
+        // Assert
+        var actionResult = Assert.IsType<BadRequestObjectResult>(result);
+        var errors = Assert.IsAssignableFrom<IEnumerable<IError>>(actionResult.Value);
+        Assert.Single(errors);
+        Assert.Equal("Invalid refresh token", errors.First().Message);
+    }
 
-            return mockHttpContext;
-        }
+    [Fact]
+    public async Task RefreshToken_Should_Return_Token_When_Successful()
+    {
+        // Arrange
+        var tokenRequest = new TokenRequestDTO { RefreshToken = "valid_token" };
+        var tokenDto = new LoginResultDto { AccessToken = "new_access_token", RefreshToken = "new_refresh_token" };
+
+        _loginServiceMock.Setup(s => s.RefreshToken(tokenRequest.RefreshToken)).ReturnsAsync(Result.Ok(tokenDto));
+
+        // Act
+        var result = await _userController.RefreshToken(tokenRequest);
+
+        // Assert
+        var actionResult = Assert.IsType<OkObjectResult>(result);
+        var returnValue = Assert.IsType<LoginResultDto>(actionResult.Value);
+        Assert.Equal(tokenDto, returnValue);
     }
 }

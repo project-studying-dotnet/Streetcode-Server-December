@@ -24,5 +24,14 @@ namespace UserService.WebApi.Extensions
 
             context.Response.Cookies.Append("AuthToken", token, cookieOptions);
         }
+        public static void DeleteAuthTokenCookie(this HttpContext context)
+        {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            context.Response.Cookies.Delete("AuthToken");
+        }
     }
 }

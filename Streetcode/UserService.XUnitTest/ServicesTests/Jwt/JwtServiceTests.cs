@@ -43,23 +43,24 @@ namespace UserService.XUnitTest.ServicesTests.Jwt
         public async Task GenerateTokenAsync_Should_Throw_If_User_Is_Null()
         {
             // Act & Assert
-            await Assert.ThrowsAsync<ArgumentNullException>(() => _jwtService.GenerateTokenAsync(null));
+            await Assert.ThrowsAsync<ArgumentNullException>(() => _jwtService.GenerateTokenAsync(null,null));
         }
 
         [Fact]
         public async Task GenerateTokenAsync_Should_Return_Token_When_User_Valid()
         {
             // Arrange
+            var sessionId = Guid.NewGuid().ToString();
             var user = new UserEntity { UserName = "testuser", Email = "test@example.com", FullName = "Test User" };
 
-            _claimsServiceMock.Setup(x => x.CreateClaimsAsync(user)).ReturnsAsync(new List<Claim>
+            _claimsServiceMock.Setup(x => x.CreateClaimsAsync(user, sessionId)).ReturnsAsync(new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.UserName),
                 new Claim(ClaimTypes.Role, "User")
             });
 
             // Act
-            var token = await _jwtService.GenerateTokenAsync(user);
+            var token = await _jwtService.GenerateTokenAsync(user, sessionId);
 
             // Assert
             Assert.NotNull(token);

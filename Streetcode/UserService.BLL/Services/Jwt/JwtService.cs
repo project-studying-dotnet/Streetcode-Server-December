@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using UserEntity = UserService.DAL.Entities.Users.User;
 using UserService.BLL.Interfaces.User;
 using Microsoft.Extensions.Options;
+using System.Security.Cryptography;
 
 namespace UserService.BLL.Services.Jwt
 {
@@ -29,15 +30,14 @@ namespace UserService.BLL.Services.Jwt
             _logger = logger;
         }
 
-        public async Task<string> GenerateTokenAsync(UserEntity user)
+        public async Task<string> GenerateTokenAsync(UserEntity user, string sessionId)
         {
             if (user == null)
             {
                 _logger.LogError("User cannot be null.");
                 throw new ArgumentNullException(nameof(user), "User cannot be null.");
             }
-
-            var claims = await _claimsService.CreateClaimsAsync(user);
+            var claims = await _claimsService.CreateClaimsAsync(user, sessionId);
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfiguration.SecretKey));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -51,6 +51,16 @@ namespace UserService.BLL.Services.Jwt
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public string GenerateRefreshToken()
+        {
+            var randomNumber = new byte[64];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(randomNumber);
+            }
+            return Convert.ToBase64String(randomNumber);
         }
     }
 }

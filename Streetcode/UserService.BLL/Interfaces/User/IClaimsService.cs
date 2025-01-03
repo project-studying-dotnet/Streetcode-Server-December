@@ -10,6 +10,6 @@ namespace UserService.BLL.Interfaces.User
 {
     public interface IClaimsService
     {
-        Task<List<Claim>> CreateClaimsAsync(UserEntity user);
+        Task<List<Claim>> CreateClaimsAsync(UserEntity user,string sessionId);
     }
 }

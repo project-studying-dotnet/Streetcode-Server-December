@@ -1,7 +1,9 @@
 using EmailService.BLL.Interfaces;
 using EmailService.BLL.Services;
 using EmailService.DAL.Entities;
-using Microsoft.Extensions.DependencyInjection;
+using EmailService.BLL.Validators;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Serilog;
 
 namespace EmailService.WebApi
@@ -22,6 +24,9 @@ namespace EmailService.WebApi
 
 
             // Add services to the container.
+
+            builder.Services.AddFluentValidationAutoValidation(); 
+            builder.Services.AddValidatorsFromAssemblyContaining<EmailDtoValidator>();
 
             builder.Services.AddControllers();
             builder.Services.AddSwaggerGen();

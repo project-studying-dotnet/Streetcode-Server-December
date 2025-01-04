@@ -47,16 +47,16 @@ namespace EmailService.BLL.Services
             {
                 try
                 {
-                    await client.ConnectAsync(_emailConfig.SmtpServer, _emailConfig.Port, true);
+                    await client.ConnectAsync(_emailConfig.SmtpServer, _emailConfig.Port, false);
                     client.AuthenticationMechanisms.Remove("XOAUTH2");
                     await client.AuthenticateAsync(_emailConfig.UserName, _emailConfig.Password);
 
                     await client.SendAsync(mailMessage);
                     return true;
                 }
-                catch
+                catch(Exception ex)
                 {
-                    return false;
+                    throw new Exception(ex.Message);
                 }
                 finally
                 {

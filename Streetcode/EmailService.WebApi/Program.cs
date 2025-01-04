@@ -20,12 +20,14 @@ namespace EmailService.WebApi
 
             builder.Host.UseSerilog();
 
+
             // Add services to the container.
 
             builder.Services.AddControllers();
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddSingleton<Serilog.ILogger>(Log.Logger);
+
 
             var emailConfig = builder.Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
             builder.Services.AddSingleton(emailConfig);
@@ -45,9 +47,13 @@ namespace EmailService.WebApi
                 app.UseSwaggerUI();
             }
             
+
+          
+
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
+
 
             app.MapControllers();
 

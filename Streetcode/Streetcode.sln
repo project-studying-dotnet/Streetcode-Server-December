@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService.XUnitTest", "Us
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService.XIntegrationTest", "UserService.XIntegrationTest\UserService.XIntegrationTest.csproj", "{1DA9EB27-8987-4154-A831-61F2EEDE3385}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gateway", "Gateway\Gateway.csproj", "{28EB7530-7F28-4633-9A4D-0075FE40F4BF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{1DA9EB27-8987-4154-A831-61F2EEDE3385}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1DA9EB27-8987-4154-A831-61F2EEDE3385}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1DA9EB27-8987-4154-A831-61F2EEDE3385}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28EB7530-7F28-4633-9A4D-0075FE40F4BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28EB7530-7F28-4633-9A4D-0075FE40F4BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28EB7530-7F28-4633-9A4D-0075FE40F4BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28EB7530-7F28-4633-9A4D-0075FE40F4BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

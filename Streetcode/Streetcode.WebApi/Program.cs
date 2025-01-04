@@ -1,5 +1,6 @@
 using Hangfire;
 using Streetcode.BLL.Services.BlobStorageService;
+using Streetcode.BLL.Validators;
 using Streetcode.WebApi.Extensions;
 using Streetcode.WebApi.Utils;
 
@@ -15,7 +16,7 @@ builder.Services.ConfigureInstagram(builder);
 builder.Services.ConfigureSerilog(builder);
 var app = builder.Build();
 
-if (app.Environment.EnvironmentName == "Local")
+if (app.Environment.EnvironmentName == "Local" || app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPIv5 v1"));
@@ -27,9 +28,14 @@ else
 
 await app.ApplyMigrations();
 
-// await app.SeedDataAsync(); // uncomment for seeding data in local
+// func to seed data
+await app.SeedDataAsync();
 app.UseCors();
+
 app.UseHttpsRedirection();
+
+app.UseGlobalExceptionHandler();
+
 app.UseRouting();
 
 app.UseAuthentication();
@@ -41,10 +47,18 @@ if (app.Environment.EnvironmentName != "Local")
 {
     BackgroundJob.Schedule<WebParsingUtils>(
     wp => wp.ParseZipFileFromWebAsync(), TimeSpan.FromMinutes(1));
+
     RecurringJob.AddOrUpdate<WebParsingUtils>(
-        wp => wp.ParseZipFileFromWebAsync(), Cron.Monthly);
+        "ParseZipFileFromWeb_Monthly",
+        wp => wp.ParseZipFileFromWebAsync(),
+        Cron.Monthly,
+        new RecurringJobOptions { TimeZone = TimeZoneInfo.FindSystemTimeZoneById("FLE Standard Time") });
+
     RecurringJob.AddOrUpdate<BlobService>(
-        b => b.CleanBlobStorage(), Cron.Monthly);
+        "CleanBlobStorage_Monthly",
+        b => b.CleanBlobStorage(),
+        Cron.Monthly,
+        new RecurringJobOptions { TimeZone = TimeZoneInfo.FindSystemTimeZoneById("FLE Standard Time") });
 }
 
 app.MapControllers();

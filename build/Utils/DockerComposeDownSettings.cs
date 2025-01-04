@@ -1,15 +1,16 @@
 ﻿using System;
 using Nuke.Common.Tooling;
 
-namespace Utils;
-
-[Serializable]
-public class DockerComposeDownSettings : DockerComposeSettings
+namespace Utils
 {
-    protected override Arguments ConfigureProcessArguments(Arguments arguments)
+    [Serializable]
+    public class DockerComposeDownSettings : DockerComposeSettings
     {
-        arguments = base.ConfigureProcessArguments(arguments);
-        arguments.Add("down");
-        return arguments;
+        protected override Arguments ConfigureProcessArguments(Arguments arguments)
+        {
+            arguments = base.ConfigureProcessArguments(arguments);
+            arguments.Add("down");
+            return arguments;
+        }
     }
 }

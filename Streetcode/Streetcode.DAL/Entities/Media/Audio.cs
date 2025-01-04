@@ -2,28 +2,30 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Streetcode.DAL.Entities.Streetcode;
 
-namespace Streetcode.DAL.Entities.Media;
-
-[Table("audios", Schema = "media")]
-public class Audio
+namespace Streetcode.DAL.Entities.Media
 {
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
 
-    [MaxLength(100)]
-    public string? Title { get; set; }
+    [Table("audios", Schema = "media")]
+    public class Audio
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
 
-    [Required]
-    [MaxLength(100)]
-    public string? BlobName { get; set; }
+        [MaxLength(100)]
+        public string? Title { get; set; }
 
-    [Required]
-    [MaxLength(10)]
-    public string? MimeType { get; set; }
+        [Required]
+        [MaxLength(100)]
+        public string? BlobName { get; set; }
 
-    [NotMapped]
-    public string? Base64 { get; set; }
+        [Required]
+        [MaxLength(10)]
+        public string? MimeType { get; set; }
 
-    public StreetcodeContent? Streetcode { get; set; }
+        [NotMapped]
+        public string? Base64 { get; set; }
+
+        public StreetcodeContent? Streetcode { get; set; }
+    }
 }

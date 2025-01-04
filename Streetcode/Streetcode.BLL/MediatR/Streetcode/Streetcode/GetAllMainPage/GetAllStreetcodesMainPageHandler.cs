@@ -5,12 +5,13 @@ using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.DTO.Streetcode;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Streetcode.Streetcode.GetAllStreetcodesMainPage;
+using Streetcode.BLL.Resources;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.GetAllMainPage
 {
     public class GetAllStreetcodesMainPageHandler : IRequestHandler<GetAllStreetcodesMainPageQuery,
-        Result<IEnumerable<StreetcodeMainPageDTO>>>
+        Result<IEnumerable<StreetcodeMainPageDto>>>
     {
         private readonly IMapper _mapper;
         private readonly IRepositoryWrapper _repositoryWrapper;
@@ -23,7 +24,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.GetAllMainPage
             _logger = logger;
         }
 
-        public async Task<Result<IEnumerable<StreetcodeMainPageDTO>>> Handle(GetAllStreetcodesMainPageQuery request, CancellationToken cancellationToken)
+        public async Task<Result<IEnumerable<StreetcodeMainPageDto>>> Handle(GetAllStreetcodesMainPageQuery request, CancellationToken cancellationToken)
         {
             var streetcodes = await _repositoryWrapper.StreetcodeRepository.GetAllAsync(
                 predicate: sc => sc.Status == DAL.Enums.StreetcodeStatus.Published,
@@ -31,10 +32,10 @@ namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.GetAllMainPage
 
             if (streetcodes != null)
             {
-                return Result.Ok(_mapper.Map<IEnumerable<StreetcodeMainPageDTO>>(streetcodes));
+                return Result.Ok(_mapper.Map<IEnumerable<StreetcodeMainPageDto>>(streetcodes));
             }
 
-            const string errorMsg = "No streetcodes exist now";
+            string errorMsg = ErrorManager.GetCustomErrorText("CantFindError", "streetcode");
             _logger.LogError(request, errorMsg);
             return Result.Fail(errorMsg);
         }

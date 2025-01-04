@@ -1,38 +1,38 @@
 ﻿using AutoMapper;
 using FluentResults;
 using MediatR;
-using Streetcode.BLL.DTO.AdditionalContent.Subtitles;
-using Streetcode.BLL.DTO.Media.Images;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.DTO.Media.Art;
 using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.BLL.Resources;
 
-namespace Streetcode.BLL.MediatR.Media.Art.GetById;
-
-public class GetArtByIdHandler : IRequestHandler<GetArtByIdQuery, Result<ArtDTO>>
+namespace Streetcode.BLL.MediatR.Media.Art.GetById
 {
-    private readonly IMapper _mapper;
-    private readonly IRepositoryWrapper _repositoryWrapper;
-    private readonly ILoggerService _logger;
-
-    public GetArtByIdHandler(IRepositoryWrapper repositoryWrapper, IMapper mapper, ILoggerService logger)
+    public class GetArtByIdHandler : IRequestHandler<GetArtByIdQuery, Result<ArtDto>>
     {
-        _repositoryWrapper = repositoryWrapper;
-        _mapper = mapper;
-        _logger = logger;
-    }
+        private readonly IMapper _mapper;
+        private readonly IRepositoryWrapper _repositoryWrapper;
+        private readonly ILoggerService _logger;
 
-    public async Task<Result<ArtDTO>> Handle(GetArtByIdQuery request, CancellationToken cancellationToken)
-    {
-        var art = await _repositoryWrapper.ArtRepository.GetFirstOrDefaultAsync(f => f.Id == request.Id);
-
-        if (art is null)
+        public GetArtByIdHandler(IRepositoryWrapper repositoryWrapper, IMapper mapper, ILoggerService logger)
         {
-            string errorMsg = $"Cannot find an art with corresponding id: {request.Id}";
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
+            _repositoryWrapper = repositoryWrapper;
+            _mapper = mapper;
+            _logger = logger;
         }
 
-        return Result.Ok(_mapper.Map<ArtDTO>(art));
+        public async Task<Result<ArtDto>> Handle(GetArtByIdQuery request, CancellationToken cancellationToken)
+        {
+            var art = await _repositoryWrapper.ArtRepository.GetFirstOrDefaultAsync(f => f.Id == request.Id);
+
+            if (art is null)
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "art", request.Id);
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
+
+            return Result.Ok(_mapper.Map<ArtDto>(art));
+        }
     }
 }

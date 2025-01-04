@@ -3,13 +3,14 @@ using FluentResults;
 using MediatR;
 using Streetcode.BLL.DTO.Streetcode.TextContent;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Specifications.Streetcode.RelatedTerm;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
 using Entity = Streetcode.DAL.Entities.Streetcode.TextContent.RelatedTerm;
 
 namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Create
 {
-    public class CreateRelatedTermHandler : IRequestHandler<CreateRelatedTermCommand, Result<RelatedTermDTO>>
+    public class CreateRelatedTermHandler : IRequestHandler<CreateRelatedTermCommand, Result<RelatedTermDto>>
     {
         private readonly IRepositoryWrapper _repository;
         private readonly IMapper _mapper;
@@ -22,7 +23,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Create
             _logger = logger;
         }
 
-        public async Task<Result<RelatedTermDTO>> Handle(CreateRelatedTermCommand request, CancellationToken cancellationToken)
+        public async Task<Result<RelatedTermDto>> Handle(CreateRelatedTermCommand request, CancellationToken cancellationToken)
         {
             var relatedTerm = _mapper.Map<Entity>(request.RelatedTerm);
 
@@ -34,8 +35,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Create
             }
 
             var existingTerms = await _repository.RelatedTermRepository
-                .GetAllAsync(
-                predicate: rt => rt.TermId == request.RelatedTerm.TermId && rt.Word == request.RelatedTerm.Word);
+                .GetAllBySpecAsync(new RelatedTermWithTermSpecification(request.RelatedTerm));
 
             if (existingTerms is null || existingTerms.Any())
             {
@@ -55,7 +55,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Create
                 return Result.Fail(new Error(errorMsg));
             }
 
-            var createdRelatedTermDTO = _mapper.Map<RelatedTermDTO>(createdRelatedTerm);
+            var createdRelatedTermDTO = _mapper.Map<RelatedTermDto>(createdRelatedTerm);
 
             if(createdRelatedTermDTO != null)
             {

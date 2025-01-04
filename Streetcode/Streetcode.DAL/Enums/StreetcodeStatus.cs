@@ -1,8 +1,9 @@
-﻿namespace Streetcode.DAL.Enums;
-
-public enum StreetcodeStatus
+﻿namespace Streetcode.DAL.Enums
 {
-    Draft,
-    Published,
-    Deleted
+    public enum StreetcodeStatus
+    {
+        Draft,
+        Published,
+        Deleted
+    }
 }

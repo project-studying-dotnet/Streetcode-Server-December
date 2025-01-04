@@ -4,12 +4,11 @@ using MediatR;
 using Streetcode.BLL.DTO.AdditionalContent.Subtitles;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.ResultVariations;
-using Streetcode.DAL.Entities.Media;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.AdditionalContent.Subtitle.GetByStreetcodeId
 {
-    public class GetSubtitlesByStreetcodeIdHandler : IRequestHandler<GetSubtitlesByStreetcodeIdQuery, Result<SubtitleDTO>>
+    public class GetSubtitlesByStreetcodeIdHandler : IRequestHandler<GetSubtitlesByStreetcodeIdQuery, Result<SubtitleDto>>
     {
         private readonly IMapper _mapper;
         private readonly IRepositoryWrapper _repositoryWrapper;
@@ -22,14 +21,19 @@ namespace Streetcode.BLL.MediatR.AdditionalContent.Subtitle.GetByStreetcodeId
             _logger = logger;
         }
 
-        public async Task<Result<SubtitleDTO>> Handle(GetSubtitlesByStreetcodeIdQuery request, CancellationToken cancellationToken)
+        public async Task<Result<SubtitleDto>> Handle(GetSubtitlesByStreetcodeIdQuery request, CancellationToken cancellationToken)
         {
             var subtitle = await _repositoryWrapper.SubtitleRepository
                 .GetFirstOrDefaultAsync(Subtitle => Subtitle.StreetcodeId == request.StreetcodeId);
 
-            NullResult<SubtitleDTO> result = new NullResult<SubtitleDTO>();
-            result.WithValue(_mapper.Map<SubtitleDTO>(subtitle));
-            return result;
+            if(subtitle is null)
+            {
+                string errorMsg = $"Cannot find a subtitle with corresponding streetcodeId: {request.StreetcodeId}";
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
+
+            return Result.Ok(_mapper.Map<SubtitleDto>(subtitle));
         }
     }
 }

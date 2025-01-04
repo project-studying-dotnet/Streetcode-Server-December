@@ -1,11 +1,10 @@
-using Streetcode.BLL.DTO.AdditionalContent;
-
-namespace Streetcode.BLL.DTO.Transactions;
-
-public class TransactLinkDTO
+namespace Streetcode.BLL.DTO.Transactions
 {
-    public int Id { get; set; }
-    public string? Url { get; set; }
-    public string? QrCodeUrl { get; set; }
-    public int StreetcodeId { get; set; }
+    public class TransactLinkDto
+    {
+        public int Id { get; set; }
+        public string? Url { get; set; }
+        public string? QrCodeUrl { get; set; }
+        public int StreetcodeId { get; set; }
+    }
 }

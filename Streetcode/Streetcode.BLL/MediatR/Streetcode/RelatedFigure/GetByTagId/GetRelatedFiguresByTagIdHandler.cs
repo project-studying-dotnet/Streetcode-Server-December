@@ -2,16 +2,13 @@
 using FluentResults;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Streetcode.BLL.DTO.AdditionalContent.Subtitles;
 using Streetcode.BLL.DTO.Streetcode.RelatedFigure;
 using Streetcode.BLL.Interfaces.Logging;
-using Streetcode.BLL.MediatR.Streetcode.Streetcode.GetByIndex;
-using Streetcode.DAL.Entities.Streetcode.Types;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Streetcode.RelatedFigure.GetByTagId
 {
-  internal class GetRelatedFiguresByTagIdHandler : IRequestHandler<GetRelatedFiguresByTagIdQuery, Result<IEnumerable<RelatedFigureDTO>>>
+  internal class GetRelatedFiguresByTagIdHandler : IRequestHandler<GetRelatedFiguresByTagIdQuery, Result<IEnumerable<RelatedFigureDto>>>
     {
         private readonly IMapper _mapper;
         private readonly IRepositoryWrapper _repositoryWrapper;
@@ -24,7 +21,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedFigure.GetByTagId
             _logger = logger;
         }
 
-        public async Task<Result<IEnumerable<RelatedFigureDTO>>> Handle(GetRelatedFiguresByTagIdQuery request, CancellationToken cancellationToken)
+        public async Task<Result<IEnumerable<RelatedFigureDto>>> Handle(GetRelatedFiguresByTagIdQuery request, CancellationToken cancellationToken)
         {
             var streetcodes = await _repositoryWrapper.StreetcodeRepository
                 .GetAllAsync(
@@ -36,12 +33,12 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedFigure.GetByTagId
 
             if (streetcodes is null)
             {
-                string errorMsg = $"Cannot find any streetcode with corresponding tagid: {request.tagId}";
+                string errorMsg = $"Cannot find any streetcode with corresponding tagId: {request.tagId}";
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(new Error(errorMsg));
             }
 
-            return Result.Ok(_mapper.Map<IEnumerable<RelatedFigureDTO>>(streetcodes));
+            return Result.Ok(_mapper.Map<IEnumerable<RelatedFigureDto>>(streetcodes));
         }
     }
 }

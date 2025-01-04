@@ -5,40 +5,44 @@ using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.DTO.AdditionalContent.Subtitles;
 using Streetcode.BLL.DTO.Toponyms;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Resources;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
-namespace Streetcode.BLL.MediatR.Toponyms.GetByStreetcodeId;
-
-public class GetToponymsByStreetcodeIdHandler : IRequestHandler<GetToponymsByStreetcodeIdQuery, Result<IEnumerable<ToponymDTO>>>
+namespace Streetcode.BLL.MediatR.Toponyms.GetByStreetcodeId
 {
-    private readonly IMapper _mapper;
-    private readonly IRepositoryWrapper _repositoryWrapper;
-    private readonly ILoggerService _logger;
 
-    public GetToponymsByStreetcodeIdHandler(IRepositoryWrapper repositoryWrapper, IMapper mapper, ILoggerService logger)
+    public class GetToponymsByStreetcodeIdHandler : IRequestHandler<GetToponymsByStreetcodeIdQuery, Result<IEnumerable<ToponymDto>>>
     {
-        _repositoryWrapper = repositoryWrapper;
-        _mapper = mapper;
-        _logger = logger;
-    }
+        private readonly IMapper _mapper;
+        private readonly IRepositoryWrapper _repositoryWrapper;
+        private readonly ILoggerService _logger;
 
-    public async Task<Result<IEnumerable<ToponymDTO>>> Handle(GetToponymsByStreetcodeIdQuery request, CancellationToken cancellationToken)
-    {
-        var toponyms = await _repositoryWrapper
-            .ToponymRepository
-            .GetAllAsync(
-                predicate: sc => sc.Streetcodes.Any(s => s.Id == request.StreetcodeId),
-                include: scl => scl
-                    .Include(sc => sc.Coordinate));
-        toponyms.DistinctBy(x => x.StreetName);
-        if (toponyms is null)
+        public GetToponymsByStreetcodeIdHandler(IRepositoryWrapper repositoryWrapper, IMapper mapper, ILoggerService logger)
         {
-            string errorMsg = $"Cannot find any toponym by the streetcode id: {request.StreetcodeId}";
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
+            _repositoryWrapper = repositoryWrapper;
+            _mapper = mapper;
+            _logger = logger;
         }
 
-        var toponymDto = toponyms.GroupBy(x => x.StreetName).Select(group => group.First()).Select(x => _mapper.Map<ToponymDTO>(x));
-        return Result.Ok(toponymDto);
+        public async Task<Result<IEnumerable<ToponymDto>>> Handle(GetToponymsByStreetcodeIdQuery request, CancellationToken cancellationToken)
+        {
+            var toponyms = await _repositoryWrapper
+                .ToponymRepository
+                .GetAllAsync(
+                    predicate: sc => sc.Streetcodes.Any(s => s.Id == request.StreetcodeId),
+                    include: scl => scl
+                        .Include(sc => sc.Coordinate));
+
+            if (toponyms is null || !toponyms.Any())
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByStreetcodeIdError", "toponym", request.StreetcodeId);
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
+
+            var filteredToponyms = toponyms.DistinctBy(x => x.StreetName);
+            var toponymDto = filteredToponyms.GroupBy(x => x.StreetName).Select(group => group.First()).Select(x => _mapper.Map<ToponymDto>(x));
+            return Result.Ok(toponymDto);
+        }
     }
 }

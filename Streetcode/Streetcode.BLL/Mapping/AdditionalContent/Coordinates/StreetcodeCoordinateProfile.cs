@@ -2,12 +2,13 @@
 using Streetcode.BLL.DTO.AdditionalContent.Coordinates.Types;
 using Streetcode.DAL.Entities.AdditionalContent.Coordinates.Types;
 
-namespace Streetcode.BLL.Mapping.AdditionalContent.Coordinates;
-
-public class StreetcodeCoordinateProfile : Profile
+namespace Streetcode.BLL.Mapping.AdditionalContent.Coordinates
 {
-   public StreetcodeCoordinateProfile()
-   {
-        CreateMap<StreetcodeCoordinate, StreetcodeCoordinateDTO>().ReverseMap();
-   }
+    public class StreetcodeCoordinateProfile : Profile
+    {
+        public StreetcodeCoordinateProfile()
+        {
+            CreateMap<StreetcodeCoordinate, StreetcodeCoordinateDto>().ReverseMap();
+        }
+    }
 }

@@ -1,0 +1,59 @@
+version: "3.8"
+
+services:
+  mssql:
+    container_name: sql-server
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    restart: always
+    env_file:
+      - sqlserver.env
+    ports:
+      - 1433:1433
+    networks:
+      - streetcode
+
+  mongodb:
+    container_name: mongodb
+    image: mongo
+    ports:
+      - 18005:27017
+    networks:
+      - streetcode
+
+  streetcode.webapi:
+    image: ${DOCKER_REGISTRY-}streetcodewebapi
+    build:
+      context: .
+      dockerfile: Streetcode.WebApi/Dockerfile
+    ports:
+      - 8001:80
+    hostname: street-code-api
+    networks:
+      - streetcode
+
+  cache:
+    image: redis:6.2-alpine
+    container_name: redis-cache
+    restart: always
+    hostname: redis-cache
+    ports:
+      - '6379:6379'
+    env_file:
+      - cache.env
+    networks:
+      - streetcode
+
+  userservice.webapi:
+    image: ${DOCKER_REGISTRY-}userservicewebapi
+    build:
+      context: .
+      dockerfile: UserService.WebApi/Dockerfile
+    ports:
+      - 8002:80
+    hostname: streetcode-user-api
+    networks:
+      - streetcode
+
+networks:
+  streetcode:
+    driver: bridge

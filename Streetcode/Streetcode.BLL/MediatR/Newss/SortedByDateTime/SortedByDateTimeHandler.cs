@@ -7,10 +7,11 @@ using Microsoft.EntityFrameworkCore;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.DTO.AdditionalContent.Subtitles;
+using Streetcode.BLL.Resources;
 
 namespace Streetcode.BLL.MediatR.Newss.SortedByDateTime
 {
-    public class SortedByDateTimeHandler : IRequestHandler<SortedByDateTimeQuery, Result<List<NewsDTO>>>
+    public class SortedByDateTimeHandler : IRequestHandler<SortedByDateTimeQuery, Result<List<NewsDto>>>
     {
         private readonly IRepositoryWrapper _repositoryWrapper;
         private readonly IMapper _mapper;
@@ -25,18 +26,18 @@ namespace Streetcode.BLL.MediatR.Newss.SortedByDateTime
             _logger = logger;
         }
 
-        public async Task<Result<List<NewsDTO>>> Handle(SortedByDateTimeQuery request, CancellationToken cancellationToken)
+        public async Task<Result<List<NewsDto>>> Handle(SortedByDateTimeQuery request, CancellationToken cancellationToken)
         {
             var news = await _repositoryWrapper.NewsRepository.GetAllAsync(
                 include: cat => cat.Include(img => img.Image));
             if (news == null)
             {
-                const string errorMsg = "There are no news in the database";
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindError", "news");
                 _logger.LogError(request, errorMsg);
                 return Result.Fail(errorMsg);
             }
 
-            var newsDTOs = _mapper.Map<IEnumerable<NewsDTO>>(news).OrderByDescending(x => x.CreationDate).ToList();
+            var newsDTOs = _mapper.Map<IEnumerable<NewsDto>>(news).OrderByDescending(x => x.CreationDate).ToList();
 
             foreach (var dto in newsDTOs)
             {

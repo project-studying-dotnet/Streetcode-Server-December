@@ -1,10 +1,11 @@
 using Streetcode.BLL.DTO.Streetcode;
 
-namespace Streetcode.BLL.DTO.AdditionalContent;
-
-public class TagDTO
+namespace Streetcode.BLL.DTO.AdditionalContent
 {
-    public int Id { get; set; }
-    public string Title { get; set; }
-    public IEnumerable<StreetcodeDTO> Streetcodes { get; set; }
+    public class TagDto
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public IEnumerable<StreetcodeDto> Streetcodes { get; set; }
+    }
 }

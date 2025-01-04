@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Streetcode.BLL.Services.BlobStorageService;
+using Streetcode.DAL.Caching.RedisCache;
 using Streetcode.DAL.Entities.AdditionalContent;
 using Streetcode.DAL.Entities.AdditionalContent.Coordinates.Types;
 using Streetcode.DAL.Entities.Feedback;
@@ -29,12 +30,13 @@ namespace Streetcode.WebApi.Extensions
             {
                 Directory.CreateDirectory(app.Configuration.GetValue<string>("Blob:BlobStorePath"));
                 var dbContext = scope.ServiceProvider.GetRequiredService<StreetcodeDbContext>();
+                var redisCacheService = scope.ServiceProvider.GetRequiredService<IRedisCacheService>();
                 var blobOptions = app.Services.GetRequiredService<IOptions<BlobEnvironmentVariables>>();
                 string blobPath = app.Configuration.GetValue<string>("Blob:BlobStorePath");
-                var repo = new RepositoryWrapper(dbContext);
+                var repo = new RepositoryWrapper(dbContext, redisCacheService);
                 var blobService = new BlobService(blobOptions, repo);
-                string initialDataImagePath = "../Streetcode.DAL/InitialData/images.json";
-                string initialDataAudioPath = "../Streetcode.DAL/InitialData/audios.json";
+                string initialDataImagePath = "/src/Streetcode.DAL/InitialData/images.json";
+                string initialDataAudioPath = "/src/Streetcode.DAL/InitialData/audios.json";
                 if (!dbContext.Images.Any())
                 {
                     string imageJson = File.ReadAllText(initialDataImagePath, Encoding.UTF8);
@@ -265,22 +267,6 @@ namespace Streetcode.WebApi.Extensions
                                 await dbContext.SaveChangesAsync();
                             }
                         }
-                    }
-
-                    if (!dbContext.Users.Any())
-                    {
-                        dbContext.Users.AddRange(
-                            new DAL.Entities.Users.User
-                            {
-                                Email = "admin",
-                                Role = UserRole.MainAdministrator,
-                                Login = "admin",
-                                Name = "admin",
-                                Password = "admin",
-                                Surname = "admin",
-                            });
-
-                        await dbContext.SaveChangesAsync();
                     }
 
                     if (!dbContext.News.Any())
@@ -1080,6 +1066,7 @@ namespace Streetcode.WebApi.Extensions
                                         " а 7 травня Шевченкові видали відпускну.",
                                         ImageId = 6,
                                         StreetcodeId = 1,
+                                        Index = 1,
                                     },
                                     new Fact
                                     {
@@ -1088,104 +1075,119 @@ namespace Streetcode.WebApi.Extensions
                                             " Він порадився із Є. Гребінкою і запропонував Шевченку видати їх окремою книжкою, яку згодом назвали «Кобзарем».",
                                         ImageId = 5,
                                         StreetcodeId = 1,
+                                        Index = 2,
                                     },
                                     new Fact
                                     {
                                         Title = "Премія Романа Ратушного",
                                         FactContent = "Український журналіст, публіцист і письменник Вахтанг Кіпіані від імені «Історичної правди» ініціював заснування іменної премії Романа Ратушного для молодих авторів за публікації, що стосуються історії Києва. Гроші на започаткування премії дали батьки Романа.",
                                         ImageId = 16,
-                                        StreetcodeId = 2
+                                        StreetcodeId = 2,
+                                        Index = 1,
                                     },
                                     new Fact
                                     {
                                         Title = "Стипендія для активістів",
                                         FactContent = "На честь Романа в Інституті права Київського національного університету імені Тараса Шевченка заснували стипендіальну програму для громадських активістів, які здобувають юридичну освіту.",
                                         ImageId = 17,
-                                        StreetcodeId = 2
+                                        StreetcodeId = 2,
+                                        Index = 2,
                                     },
                                     new Fact
                                     {
                                         Title = "Премія Романа Ратушного",
                                         FactContent = "Український журналіст, публіцист і письменник Вахтанг Кіпіані від імені «Історичної правди» ініціював заснування іменної премії Романа Ратушного для молодих авторів за публікації, що стосуються історії Києва. Гроші на започаткування премії дали батьки Романа.",
                                         ImageId = 18,
-                                        StreetcodeId = 2
+                                        StreetcodeId = 2,
+                                        Index = 3,
                                     },
                                     new Fact
                                     {
                                         Title = "Карта мафіозних зв’язків",
                                         FactContent = "Романа можна вважати «хрещеним» Державного бюро розслідувань. У 2015 році він самостійно створив карту зв’язків російської та української мафій, засновану на відкритих даних. Підтримував розслідування злочинів. За його даними, таких взаємопов’язаних осіб було близько тисячі.",
                                         ImageId = 19,
-                                        StreetcodeId = 2
+                                        StreetcodeId = 2,
+                                        Index = 4,
                                     },
                                     new Fact
                                     {
                                         Title = "Стати громадянином",
                                         FactContent = "За словами мами Романа, Світлани Поваляєвої, маленький громадянин Ратушний почав ходити на мітинги та протести із семи років. Першою суспільно корисною активністю стала Помаранчева революція. «Участь у політичних і соціальних процесах своєї держави має бути атрибутом життя кожного громадянина», — наголошував Роман.",
                                         ImageId = 16,
-                                        StreetcodeId = 2
+                                        StreetcodeId = 2,
+                                        Index = 5,
                                     },
                                     new Fact
                                     {
                                         Title = "«У мене все добре»",
                                         FactContent = "Якось під час найзапеклішого протистояння на Євромайдані він подзвонив батькові та звично сказав: «У мене все добре, ми з друзями вже їдемо з Майдану додому, не хвилюйся і на добраніч». А через деякий час в той же вечір Роман вже коментував події у прямій телевізійній трансляції: «Ми зараз штурмуємо Український Дім, там засіли внутрішні війська, їх біля сотні, але ми їх зараз звідти викуримо…». Він завжди був там, де найгарячіше. Каску, в якій Роман був на Майдані, його мама Світлана Поваляєва згодом передала в Музей Революції Гідності.",
                                         ImageId = 17,
-                                        StreetcodeId = 2
+                                        StreetcodeId = 2,
+                                        Index = 6,
                                     },
                                     new Fact
                                     {
                                         Title = "Життєві плани",
                                         FactContent = "Після Революції гідності в 2014 році під час подорожі Європою тато Романа делікатно просував йому, юнакові, обпаленому Майданом, ідею навчання в одному з європейських університетів. А Роман делікатно відмовився. «На цей момент мій життєвий план такого не передбачає», — відповів.",
                                         ImageId = 18,
-                                        StreetcodeId = 2
+                                        StreetcodeId = 2,
+                                        Index = 7,
                                     },
                                     new Fact
                                     {
                                         Title = "Культура життя",
                                         FactContent = "Роман зростав у середовищі культурних діячів Києва. Це не могло не позначитися на його особистості, поглядах і смаках. Театри, вистави, виставки. Багато музики та читання. Цікавість до історії та права. Разом із братом Василем навчався грі на трубі в Джазовій академії. Відвідував концерти в Національній філармонії та Будинку органної і камерної музики. Друзі відзначали витончений смак Романа в одязі, але в цілому аскетичний підхід до матеріальних принад життя.",
                                         ImageId = 19,
-                                        StreetcodeId = 2
+                                        StreetcodeId = 2,
+                                        Index = 8,
                                     },
                                     new Fact
                                     {
                                         Title = "Громада понад усе",
                                         FactContent = "Всі знали Ратушного як щедру та безкорисливу людину. Так, компенсацію Європейського суду з прав людини, яку він отримав як потерпілий від побиття студентів «Беркутом», Роман фактично повністю витратив на громаду та боротьбу за Протасів Яр.",
                                         ImageId = 16,
-                                        StreetcodeId = 2
+                                        StreetcodeId = 2,
+                                        Index = 9,
                                     },
                                     new Fact
                                     {
                                         Title = "Сенека",
                                         FactContent = "На фронті Роман взяв собі позивний Сенека. Йому відгукувалися погляди давньоримського філософа на жертовність та героїзм заради суспільства. Сенека виклав їх у своїх «Листах». А Роман підтвердив свої переконання яскравим життям із героїчним запалом. Зі світоглядом Сенеки погляди Романа порівняв його батько в своєму тексті пам’яті про сина. Спецпідрозділ радіоелектронної розвідки і радіоелектронного штурму 93-ї окремої механізованої бригади ЗСУ «Холодний Яр», де служив Ратушний, назвали «Сенека». На його честь, бо він його і задумав.",
                                         ImageId = 17,
-                                        StreetcodeId = 2
+                                        StreetcodeId = 2,
+                                        Index = 10,
                                     },
                                     new Fact
                                     {
                                         Title = "Заповіт нам",
                                         FactContent = "20 травня 2022 року, незадовго до загибелі, Роман на своїй сторінці у фейсбуці опублікував пост — свого роду заповіт нам. «Допоки Збройні сили вбивають русню на фронті, ви нездатні вбити русню в собі. Просто запам’ятайте: чим більше росіян ми вб’ємо зараз, тим менше росіян доведеться вбивати нашим дітям. Ця війна триває більше трьох сотень років…».",
                                         ImageId = 18,
-                                        StreetcodeId = 2
+                                        StreetcodeId = 2,
+                                        Index = 11,
                                     },
                                     new Fact
                                     {
                                         Title = "«Загинув за Тебе»",
                                         FactContent = "Побратими стверджують, що Роман готувався до свого останнього бойового завдання. Дав вказівку зібрати свої речі та віддати їх братові у випадку загибелі. Написав заповіт з докладними інструкціями. Описав, як саме хотів провести свій похорон. А ще написав у заповіті кілька останніх слів про любов до свого Києва: «Загинув далеко від Тебе, Києве, але загинув за Тебе…».",
                                         ImageId = 19,
-                                        StreetcodeId = 2
+                                        StreetcodeId = 2,
+                                        Index = 12,
                                     },
                                     new Fact
                                     {
                                         Title = "Мріяв про вільну Україну",
                                         FactContent = "У липні 2022 року в Лугано президентка Єврокомісії Урсула фон дер Ляєн під час конференції з відбудови України розпочала свій виступ словами про Романа, активіста та журналіста, який мріяв про Україну, вільну від корупції, та поклав життя за її суверенітет.",
                                         ImageId = 16,
-                                        StreetcodeId = 2
+                                        StreetcodeId = 2,
+                                        Index = 13,
                                     },
                                     new Fact
                                     {
                                         Title = "Жива справа",
                                         FactContent = "За словами мами Романа Світлани Поваляєвої, він заповів фінансово підтримати музей Шевченка, Національну капелу бандуристів імені Майбороди, а також видання «Історична правда» та «Новинарня». А ще попросив донатити на добровольчий медичний батальйон «Госпітальєри» та інші волонтерські організації, що займаються екіпіруванням ЗСУ.",
                                         ImageId = 17,
-                                        StreetcodeId = 2
+                                        StreetcodeId = 2,
+                                        Index = 14,
                                     });
                                 await dbContext.SaveChangesAsync();
                                 dbContext.ImageDetailses.AddRange(new[]
@@ -1241,24 +1243,28 @@ namespace Streetcode.WebApi.Extensions
                                         {
                                             Text = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
                                             SourceLinkCategoryId = 1,
+                                            Title = "Random title 1",
                                             StreetcodeId = 2
                                         },
                                         new StreetcodeCategoryContent
                                         {
                                             Text = "Хроніки про Т. Г. Шевченко",
                                             SourceLinkCategoryId = 2,
+                                            Title = "Random title 2",
                                             StreetcodeId = 2
                                         },
                                         new StreetcodeCategoryContent
                                         {
                                             Text = "Цитати про Шевченка",
                                             SourceLinkCategoryId = 3,
+                                            Title = "Random title 3",
                                             StreetcodeId = 2
                                         },
                                         new StreetcodeCategoryContent
                                         {
                                             Text = "Пряма мова",
                                             SourceLinkCategoryId = 3,
+                                            Title = "Random title 4",
                                             StreetcodeId = 1
                                         });
 
@@ -1406,6 +1412,39 @@ namespace Streetcode.WebApi.Extensions
                                             TagId = 10,
                                             StreetcodeId = 2,
                                             IsVisible = true,
+                                        });
+
+                                    await dbContext.SaveChangesAsync();
+                                }
+
+                                if (!dbContext.Comments.Any())
+                                {
+                                    await dbContext.Comments.AddRangeAsync(
+                                        new DAL.Entities.Comment.Comment
+                                        {
+                                            UserName = "user",
+                                            UserFullName = "user",
+                                            CreatedDate = DateTime.Now,
+                                            Content = "Хочу бути горошком",
+                                            StreetcodeId = 1
+                                        },
+                                        new DAL.Entities.Comment.Comment
+                                        {
+                                            UserName = "admin",
+                                            UserFullName = "admin",
+                                            CreatedDate = DateTime.Now,
+                                            Content = "Я теж",
+                                            StreetcodeId = 1,
+                                            ParentId = 1,
+                                        },
+                                        new DAL.Entities.Comment.Comment
+                                        {
+                                            UserName = "user",
+                                            UserFullName = "user",
+                                            CreatedDate = DateTime.Now,
+                                            Content = "Хорош",
+                                            StreetcodeId = 1,
+                                            ParentId = 2,
                                         });
 
                                     await dbContext.SaveChangesAsync();

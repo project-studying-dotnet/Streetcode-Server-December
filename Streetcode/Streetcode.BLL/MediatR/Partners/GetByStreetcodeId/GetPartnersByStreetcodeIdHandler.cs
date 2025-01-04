@@ -2,50 +2,51 @@ using AutoMapper;
 using FluentResults;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Streetcode.BLL.DTO.AdditionalContent.Subtitles;
 using Streetcode.BLL.DTO.Partners;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Resources;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
-namespace Streetcode.BLL.MediatR.Partners.GetByStreetcodeId;
-
-public class GetPartnersByStreetcodeIdHandler : IRequestHandler<GetPartnersByStreetcodeIdQuery, Result<IEnumerable<PartnerDTO>>>
+namespace Streetcode.BLL.MediatR.Partners.GetByStreetcodeId
 {
-    private readonly IMapper _mapper;
-    private readonly IRepositoryWrapper _repositoryWrapper;
-    private readonly ILoggerService _logger;
-
-    public GetPartnersByStreetcodeIdHandler(IMapper mapper, IRepositoryWrapper repositoryWrapper, ILoggerService logger)
+    public class GetPartnersByStreetcodeIdHandler : IRequestHandler<GetPartnersByStreetcodeIdQuery, Result<IEnumerable<PartnerDto>>>
     {
-        _mapper = mapper;
-        _repositoryWrapper = repositoryWrapper;
-        _logger = logger;
-    }
+        private readonly IMapper _mapper;
+        private readonly IRepositoryWrapper _repositoryWrapper;
+        private readonly ILoggerService _logger;
 
-    public async Task<Result<IEnumerable<PartnerDTO>>> Handle(GetPartnersByStreetcodeIdQuery request, CancellationToken cancellationToken)
-    {
-        var streetcode = await _repositoryWrapper.StreetcodeRepository
-            .GetSingleOrDefaultAsync(st => st.Id == request.StreetcodeId);
-
-        if (streetcode is null)
+        public GetPartnersByStreetcodeIdHandler(IMapper mapper, IRepositoryWrapper repositoryWrapper, ILoggerService logger)
         {
-            string errorMsg = $"Cannot find any partners with corresponding streetcode id: {request.StreetcodeId}";
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
+            _mapper = mapper;
+            _repositoryWrapper = repositoryWrapper;
+            _logger = logger;
         }
 
-        var partners = await _repositoryWrapper.PartnersRepository
-            .GetAllAsync(
-                predicate: p => p.Streetcodes.Any(sc => sc.Id == streetcode.Id) || p.IsVisibleEverywhere,
-                include: p => p.Include(pl => pl.PartnerSourceLinks));
-
-        if (partners is null)
+        public async Task<Result<IEnumerable<PartnerDto>>> Handle(GetPartnersByStreetcodeIdQuery request, CancellationToken cancellationToken)
         {
-            string errorMsg = $"Cannot find a partners by a streetcode id: {request.StreetcodeId}";
-            _logger.LogError(request, errorMsg);
-            return Result.Fail(new Error(errorMsg));
-        }
+            var streetcode = await _repositoryWrapper.StreetcodeRepository
+                .GetSingleOrDefaultAsync(st => st.Id == request.StreetcodeId);
 
-        return Result.Ok(value: _mapper.Map<IEnumerable<PartnerDTO>>(partners));
+            if (streetcode is null)
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByStreetcodeIdError", "partner", request.StreetcodeId);
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
+
+            var partners = await _repositoryWrapper.PartnersRepository
+                    .GetAllAsync(
+                        predicate: p => p.Streetcodes.Any(sc => sc.Id == streetcode.Id) || p.IsVisibleEverywhere,
+                        include: p => p.Include(pl => pl.PartnerSourceLinks));
+
+            if (partners is null)
+            {
+                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByStreetcodeIdError", "partner", request.StreetcodeId);
+                _logger.LogError(request, errorMsg);
+                return Result.Fail(new Error(errorMsg));
+            }
+
+            return Result.Ok(value: _mapper.Map<IEnumerable<PartnerDto>>(partners));
+        }
     }
 }

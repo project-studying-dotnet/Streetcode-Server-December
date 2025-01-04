@@ -1,0 +1,61 @@
+name: Unit Testing
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main
+      - dev
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+jobs:
+  test-all:
+    name: Build and Test All Projects
+    runs-on: ubuntu-latest
+    env:
+      SOLUTION_PATH: 'Streetcode/Streetcode.sln'
+      BUILD_CONFIG: 'Release'
+      TEST_RESULTS_DIR: '.github/workflows/TestResults'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0'
+
+      - name: Restore Dependencies
+        run: dotnet restore ${{ env.SOLUTION_PATH }}
+
+      - name: Build
+        run: dotnet build ${{ env.SOLUTION_PATH }} --configuration ${{ env.BUILD_CONFIG }} --no-restore
+
+      - name: Run Tests
+        run: dotnet test ${{ env.SOLUTION_PATH }} 
+          --configuration ${{ env.BUILD_CONFIG }} 
+          --no-build 
+          --logger "trx;LogFileName=test-results.trx" 
+          --results-directory "${{ env.TEST_RESULTS_DIR }}"
+
+      - name: List Test Results
+        if: always()
+        run: |
+          echo "Contents of ${{ env.TEST_RESULTS_DIR }}:"
+          ls -la ${{ env.TEST_RESULTS_DIR }}
+
+      - name: Test Report
+        uses: phoenix-actions/test-reporting@v8
+        if: always()
+        with:
+          name: Test Results
+          path: "${{ env.TEST_RESULTS_DIR }}/test-results.trx"    
+          reporter: dotnet-trx
+          fail-on-error: true

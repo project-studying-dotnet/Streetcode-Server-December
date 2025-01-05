@@ -1,15 +1,18 @@
+using Gateway.Middleware;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Добавляем конфигурацию Ocelot
 builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
 
-// Добавляем Ocelot и Swagger для Ocelot
 builder.Services.AddControllers();
 builder.Services.AddOcelot();
 builder.Services.AddSwaggerForOcelot(builder.Configuration);
+
+builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();
+
 
 // CORS
 builder.Services.AddCors(options =>
@@ -25,14 +28,18 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+app.UseMiddleware<TokenExtractorMiddleware>();
+
 app.UseSwaggerForOcelotUI(opt =>
 {
     opt.PathToSwaggerGenerator = "/swagger/docs"; 
 });
 
-// Middleware
-app.UseCors();
-app.UseHttpsRedirection();
-app.UseSwaggerForOcelotUI();
-await app.UseOcelot();
-app.Run();
+app.UseHttpsRedirection();       
+app.UseRouting();                
+app.UseCors();                   
+app.UseAuthentication();         
+app.UseAuthorization();          
+app.UseSwaggerForOcelotUI();     
+await app.UseOcelot();           
+app.Run();                       

@@ -1,4 +1,7 @@
+using System.Text;
 using Hangfire;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Streetcode.BLL.Services.BlobStorageService;
 using Streetcode.BLL.Validators;
 using Streetcode.WebApi.Extensions;
@@ -14,6 +17,22 @@ builder.Services.ConfigureBlob(builder);
 builder.Services.ConfigurePayment(builder);
 builder.Services.ConfigureInstagram(builder);
 builder.Services.ConfigureSerilog(builder);
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer("Bearer", options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("4c7ba99b-e2d7-4c8b-8f8d-b9d8cdcb42f5")),
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = true
+        };
+    });
+
+builder.Services.AddAuthorization();
 var app = builder.Build();
 
 if (app.Environment.EnvironmentName == "Local" || app.Environment.IsDevelopment())

@@ -1,10 +1,10 @@
+﻿using EmailService.BLL.Interfaces;
+using EmailService.DAL.Entities;
 using FluentResults;
 using MediatR;
-using Streetcode.BLL.Interfaces.Email;
-using Streetcode.BLL.Interfaces.Logging;
-using Streetcode.DAL.Entities.AdditionalContent.Email;
+using Serilog;
 
-namespace Streetcode.BLL.MediatR.Email
+namespace EmailService.BLL.Mediatr.Email
 {
     public class SendEmailHandler : IRequestHandler<SendEmailCommand, Result<Unit>>
     {
@@ -19,10 +19,10 @@ namespace Streetcode.BLL.MediatR.Email
 
         public async Task<Result<Unit>> Handle(SendEmailCommand request, CancellationToken cancellationToken)
         {
-            var message = new Message(new string[] { "streetcodeua@gmail.com" }, request.Email.From, "FeedBack", request.Email.Content);
+            var message = new Message(/*new string[] { "andrejkornienko688@gmail.com" }*/ request.Email.ToEmail, request.Email.FromText, "FeedBack", request.Email.Content);
             bool isResultSuccess = await _emailService.SendEmailAsync(message);
 
-            if(isResultSuccess)
+            if (isResultSuccess)
             {
                 return Result.Ok(Unit.Value);
             }

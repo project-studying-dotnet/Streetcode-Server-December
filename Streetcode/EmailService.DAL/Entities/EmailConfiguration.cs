@@ -1,4 +1,4 @@
-namespace Streetcode.DAL.Entities.AdditionalContent.Email
+﻿namespace EmailService.DAL.Entities
 {
     public class EmailConfiguration
     {

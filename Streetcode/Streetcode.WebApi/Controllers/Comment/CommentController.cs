@@ -13,6 +13,8 @@ using Streetcode.BLL.MediatR.Comment.UpdateComment;
 using Streetcode.BLL.MediatR.Comment.GetCommentByIdWithReplies;
 using Streetcode.BLL.MediatR.Comment.CreateComment;
 using Streetcode.BLL.MediatR.Comment.UserDeleteComment;
+using Microsoft.AspNetCore.Authorization;
+using Streetcode.BLL.MediatR.Comment.CreateReply;
 
 namespace Streetcode.WebApi.Controllers.Comment
 {
@@ -60,6 +62,13 @@ namespace Streetcode.WebApi.Controllers.Comment
         public async Task<IActionResult> UserDeleteComment([FromBody] UserDeleteCommentDto userDeleteCommentDto)
         {
             return HandleResult(await Mediator.Send(new UserDeleteCommentCommand(userDeleteCommentDto)));
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<ActionResult<CreateReplyDto>> CreateReply([FromBody] CreateReplyDto createReplyDto)
+        {
+            return HandleResult(await Mediator.Send(new CreateReplyCommand(createReplyDto)));
         }
     }
 }

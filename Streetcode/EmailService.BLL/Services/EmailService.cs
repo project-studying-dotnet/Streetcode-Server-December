@@ -1,9 +1,9 @@
-using MailKit.Net.Smtp;
+﻿using EmailService.BLL.Interfaces;
+using EmailService.DAL.Entities;
 using MimeKit;
-using Streetcode.BLL.Interfaces.Email;
-using Streetcode.DAL.Entities.AdditionalContent.Email;
+using MailKit.Net.Smtp;
 
-namespace Streetcode.BLL.Services.Email
+namespace EmailService.BLL.Services
 {
     public class EmailService : IEmailService
     {
@@ -30,7 +30,7 @@ namespace Streetcode.BLL.Services.Email
 
             var bodyBuilder = new BodyBuilder
             {
-              HtmlBody =
+                HtmlBody =
                 "<h2 style='color:black;'>" +
                $"Від: {message.From} <br>" +
                $"Текст: {message.Content}" +
@@ -47,23 +47,22 @@ namespace Streetcode.BLL.Services.Email
             {
                 try
                 {
-                    await client.ConnectAsync(_emailConfig.SmtpServer, _emailConfig.Port, true);
+                    await client.ConnectAsync(_emailConfig.SmtpServer, _emailConfig.Port, false);
                     client.AuthenticationMechanisms.Remove("XOAUTH2");
                     await client.AuthenticateAsync(_emailConfig.UserName, _emailConfig.Password);
 
                     await client.SendAsync(mailMessage);
                     return true;
                 }
-                catch
+                catch(Exception ex)
                 {
-                    // Logger
-                    return false;
+                    throw new Exception(ex.Message);
                 }
                 finally
                 {
                     await client.DisconnectAsync(true);
                     client.Dispose();
-                 }
+                }
             }
         }
     }

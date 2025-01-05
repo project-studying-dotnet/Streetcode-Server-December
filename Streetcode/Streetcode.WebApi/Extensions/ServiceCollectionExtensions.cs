@@ -7,7 +7,6 @@ using Microsoft.FeatureManagement;
 using Microsoft.OpenApi.Models;
 using Streetcode.BLL.Interfaces.Audio;
 using Streetcode.BLL.Interfaces.BlobStorage;
-using Streetcode.BLL.Interfaces.Email;
 using Streetcode.BLL.Interfaces.HolidayFormatter;
 using Streetcode.BLL.Interfaces.Image;
 using Streetcode.BLL.Interfaces.Instagram;
@@ -15,8 +14,8 @@ using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Interfaces.Payment;
 using Streetcode.BLL.Interfaces.Text;
 using Streetcode.BLL.Services.Audio;
+using Streetcode.BLL.Services.Azure;
 using Streetcode.BLL.Services.BlobStorageService;
-using Streetcode.BLL.Services.Email;
 using Streetcode.BLL.Services.HolidayDate;
 using Streetcode.BLL.Services.HolidayFormatter;
 using Streetcode.BLL.Services.Image;
@@ -27,11 +26,13 @@ using Streetcode.BLL.Services.Payment;
 using Streetcode.BLL.Services.Text;
 using Streetcode.BLL.Validators;
 using Streetcode.DAL.Caching.RedisCache;
-using Streetcode.DAL.Entities.AdditionalContent.Email;
 using Streetcode.DAL.Persistence;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using Streetcode.DAL.Repositories.Realizations.Base;
 using Streetcode.WebApi.Controllers.HolidayDate.Parsers;
+using Streetcode.WebApi.Controllers.HolidayDate.Parsers;
+using IAzureServiceBus = Streetcode.BLL.Interfaces.Azure.IAzureServiceBus;
+
 
 namespace Streetcode.WebApi.Extensions
 {
@@ -52,7 +53,6 @@ namespace Streetcode.WebApi.Extensions
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(currentAssemblies));
             services.AddScoped<IBlobService, BlobService>();
             services.AddScoped<ILoggerService, LoggerService>();
-            services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<IInstagramService, InstagramService>();
             services.AddScoped<ITextService, AddTermsToTextService>();
@@ -76,8 +76,11 @@ namespace Streetcode.WebApi.Extensions
         {
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Local";
             var connectionString = configuration.GetValue<string>($"{environment}:ConnectionStrings:DefaultConnection");
-            var emailConfig = configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
-            services.AddSingleton(emailConfig);
+
+            var connStr = configuration.GetConnectionString("ServiceBusConn")!;
+            services.AddSingleton<IAzureServiceBus, AzureServiceBus>(sb =>
+                new AzureServiceBus(connStr));
+            services.AddHttpClient();
 
             services.AddDbContext<StreetcodeDbContext>(options =>
             {

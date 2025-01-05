@@ -1,21 +1,20 @@
-﻿using MediatR;
+﻿using EmailService.BLL.DTO;
+using EmailService.BLL.Interfaces;
+using EmailService.BLL.Mediatr.Email;
+using EmailService.DAL.Entities;
+using MediatR;
 using Moq;
-using Streetcode.BLL.DTO.Email;
-using Streetcode.BLL.Interfaces.Email;
-using Streetcode.BLL.Interfaces.Logging;
-using Streetcode.BLL.MediatR.Email;
-using Streetcode.DAL.Entities.AdditionalContent.Email;
 using Xunit;
 
-namespace Streetcode.XUnitTest.MediatRTests.EmailTests
+namespace EmailService.XUnitTest
 {
-    public class SendEmailHandlerTest
+    public class EmailTests
     {
         private Mock<IEmailService> _emailServiceMock;
         private Mock<ILoggerService> _loggerServiceMock;
         private SendEmailHandler _sendEmailHandler;
 
-        public SendEmailHandlerTest()
+        public EmailTests()
         {
             _emailServiceMock = new();
             _loggerServiceMock = new();
@@ -27,17 +26,17 @@ namespace Streetcode.XUnitTest.MediatRTests.EmailTests
         {
             // A(Arrange):
 
-            var emailCommand = new SendEmailCommand(new EmailDto { From = "Me", Content = "email sending succsesfully test!" });
+            var emailCommand = new SendEmailCommand(new EmailDto { ToEmail = new List<string> { "email1@gmail.com", "email_@gmail.com" }, FromText = "Me", Content = "email sending succsesfully test!" });
             _emailServiceMock.Setup(s => s.SendEmailAsync(It.IsAny<Message>())).ReturnsAsync(true);
 
             // A(Act):
 
-            var res = await _sendEmailHandler.Handle(emailCommand , CancellationToken.None);
+            var res = await _sendEmailHandler.Handle(emailCommand, CancellationToken.None);
 
             // A(Assert):
 
-            Assert.True(res.IsSuccess);
-            Assert.Equal(Unit.Value, res.Value);
+            Xunit.Assert.True(res.IsSuccess);
+            Xunit.Assert.Equal(Unit.Value, res.Value);
 
             _emailServiceMock.Verify(s => s.SendEmailAsync(It.IsAny<Message>()), Times.Once);
             _loggerServiceMock.VerifyNoOtherCalls();
@@ -48,7 +47,7 @@ namespace Streetcode.XUnitTest.MediatRTests.EmailTests
         {
             // A(Arrange):
 
-            var emailCommand = new SendEmailCommand(new EmailDto { From = "Me", Content = "email sending fail test!" });
+            var emailCommand = new SendEmailCommand(new EmailDto {ToEmail = new List<string> {"email1@gmail.com", "email2@gmail.com" } , FromText = "Me", Content = "email sending fail test!" });
             _emailServiceMock.Setup(s => s.SendEmailAsync(It.IsAny<Message>())).ReturnsAsync(false);
             _loggerServiceMock.Setup(l => l.LogError(It.IsAny<object>(), It.IsAny<string>()));
 
@@ -58,11 +57,13 @@ namespace Streetcode.XUnitTest.MediatRTests.EmailTests
 
             // A(Assert):
 
-            Assert.False(res.IsSuccess);
-            Assert.Equal("Failed to send email message", res.Errors[0].Message);
+            Xunit.Assert.False(res.IsSuccess);
+            Xunit.Assert.Equal("Failed to send email message", res.Errors[0].Message);
 
             _emailServiceMock.Verify(s => s.SendEmailAsync(It.IsAny<Message>()), Times.Once);
             _loggerServiceMock.Verify(l => l.LogError(emailCommand, "Failed to send email message"), Times.Once);
         }
+
+        //TO CONTINUE DUE TO NEW SCENARIOS
     }
 }

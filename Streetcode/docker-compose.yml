@@ -54,6 +54,17 @@ services:
     networks:
       - streetcode
 
+  emailservice.webapi:
+      image: ${DOCKER_REGISTRY-}emailservicewebapi
+      build:
+        context: .
+        dockerfile: EmailService.WebApi/Dockerfile
+      ports:
+        - 8003:80
+      hostname: streetcode-email-api
+      networks:
+        - streetcode
+ 
 networks:
   streetcode:
     driver: bridge

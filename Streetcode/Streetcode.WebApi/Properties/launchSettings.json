@@ -9,7 +9,7 @@
         "ASPNETCORE_ENVIRONMENT": "Local"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:5000;https://localhost:5001"
+      "applicationUrl": "http://localhost:5001;https://localhost:5004"
     },
 
     "Streetcode_Dev": {

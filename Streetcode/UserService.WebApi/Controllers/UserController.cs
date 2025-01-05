@@ -13,7 +13,7 @@ using UserService.WebApi.Extensions;
 namespace UserService.WebApi.Controllers;
 
 [ApiController]
-[Route("[action]")]
+[Route("api/[action]")]
 public class UserController : ControllerBase
 {
     private readonly ILoginService _loginService;
@@ -75,4 +75,5 @@ public class UserController : ControllerBase
         HttpContext.AppendTokenToCookie(token.AccessToken, _jwtConfiguration);
         return Ok(refreshResult.Value);
     }
+
 }

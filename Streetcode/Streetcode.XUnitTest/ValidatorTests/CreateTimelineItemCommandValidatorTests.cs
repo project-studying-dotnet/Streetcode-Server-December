@@ -45,7 +45,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
             var result = _validator.TestValidate(command);
 
             result.ShouldHaveValidationErrorFor(x => x.timelineItemCreateDto.Title)
-                   .WithErrorMessage("Title is required and must be no more than 26 characters.");
+                   .WithErrorMessage("Title cannot be empty.");
         }
 
         [Fact]

@@ -61,7 +61,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
 
             // Validation error expected on the nested CreateFactDto.Title property
             result.ShouldHaveValidationErrorFor(x => x.Fact.Title)
-                   .WithErrorMessage("Title is required and must be no more than 68 characters.");
+                   .WithErrorMessage("Title cannot be empty.");
         }
     }
 }

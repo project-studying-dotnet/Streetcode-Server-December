@@ -13,14 +13,14 @@ namespace Streetcode.BLL.Validation.Validators.DTOValidators.Fact
         public CreateFactDtoValidator()
         {
             RuleFor(dto => dto.Title)
-                .NotNull()
-                .NotEmpty()
+                .NotNull().WithMessage("Title is required.")
+                .NotEmpty().WithMessage("Title cannot be empty.")
                 .MaximumLength(68)
                 .WithMessage("Title is required and must be no more than 68 characters.");
 
             RuleFor(dto => dto.FactContent)
-                .NotNull()
-                .NotEmpty()
+                .NotNull().WithMessage("Fact content is required.")
+                .NotEmpty().WithMessage("Fact content cannot be empty.")
                 .MaximumLength(600)
                 .WithMessage("Fact content is required and must be no more than 600 characters.");
 

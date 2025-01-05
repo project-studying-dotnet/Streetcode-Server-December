@@ -35,7 +35,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> Login([FromBody] LoginDto loginDto)
+    public async Task<ActionResult> Login([FromQuery] LoginDto loginDto)
     {
         var loginResult = await _loginService.Login(loginDto);
 

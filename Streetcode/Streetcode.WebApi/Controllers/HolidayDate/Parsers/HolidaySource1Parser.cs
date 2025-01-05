@@ -30,7 +30,7 @@ namespace Streetcode.WebApi.Controllers.HolidayDate.Parsers
                 .Any(child => child.GetAttributeValue("class", "")
                 .Contains("dayto-v-spysku-novyy") && child.GetAttributeValue("id", "").StartsWith("dayto-")));
 
-            if (holidayNodes == null)
+            if (!holidayNodes.Any())
             {
                 return new List<string> { "Свят не знайдено." };
             }

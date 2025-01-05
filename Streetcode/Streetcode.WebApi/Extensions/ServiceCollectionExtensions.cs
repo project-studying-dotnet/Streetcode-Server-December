@@ -14,6 +14,7 @@ using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Interfaces.Payment;
 using Streetcode.BLL.Interfaces.Text;
 using Streetcode.BLL.Services.Audio;
+using Streetcode.BLL.Services.Azure;
 using Streetcode.BLL.Services.BlobStorageService;
 using Streetcode.BLL.Services.HolidayDate;
 using Streetcode.BLL.Services.HolidayFormatter;
@@ -29,6 +30,9 @@ using Streetcode.DAL.Persistence;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using Streetcode.DAL.Repositories.Realizations.Base;
 using Streetcode.WebApi.Controllers.HolidayDate.Parsers;
+using Streetcode.WebApi.Controllers.HolidayDate.Parsers;
+using IAzureServiceBus = Streetcode.BLL.Interfaces.Azure.IAzureServiceBus;
+
 
 namespace Streetcode.WebApi.Extensions
 {
@@ -72,6 +76,11 @@ namespace Streetcode.WebApi.Extensions
         {
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Local";
             var connectionString = configuration.GetValue<string>($"{environment}:ConnectionStrings:DefaultConnection");
+
+            var connStr = configuration.GetConnectionString("ServiceBusConn")!;
+            services.AddSingleton<IAzureServiceBus, AzureServiceBus>(sb =>
+                new AzureServiceBus(connStr));
+            services.AddHttpClient();
 
             services.AddDbContext<StreetcodeDbContext>(options =>
             {

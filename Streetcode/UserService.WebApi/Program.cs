@@ -8,7 +8,6 @@ using UserService.BLL.Interfaces.User;
 using System.Text;
 using UserService.BLL.Services.Jwt;
 using UserService.BLL.Services.User;
-using UserService.BLL.Services;
 using UserService.WebApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,9 +18,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
+builder.Services.AddHttpClient();
 
 // MongoDB Configuration
-string mongoConnectionString = builder.Configuration.GetConnectionString("MongoDb")!;
+var mongoConnectionString = builder.Configuration.GetConnectionString("MongoDb")!;
+var azureServiceBusConn = builder.Configuration.GetConnectionString("ServiceBusConn")!;
 
 builder.Services.AddIdentityMongoDbProvider<User, Role>(identityOptions =>
 {
@@ -80,7 +81,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddScoped<IClaimsService, ClaimsService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<ILoginService, LoginService>();
-builder.Services.AddScoped<IUserService, UserService.BLL.Services.User.RegistrationService>();
+builder.Services.AddScoped<IUserService, RegistrationService>();
 
 var currentAssemblies = AppDomain.CurrentDomain.GetAssemblies();
 builder.Services.AddAutoMapper(currentAssemblies);

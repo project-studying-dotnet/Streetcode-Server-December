@@ -4,7 +4,6 @@ using MediatR;
 using Streetcode.BLL.DTO.Comment;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Resources;
-using Streetcode.DAL.Entities.Comment;
 using Streetcode.DAL.Enums;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
@@ -12,11 +11,6 @@ namespace Streetcode.BLL.MediatR.Comment.CreateComment;
 
 public class CreateCommentHandler : IRequestHandler<CreateCommentCommand, Result<GetCommentDto>>
 {
-    private IEnumerable<string> prohibitedContent = new List<string>()
-    {
-        "abc", "123", "456" , "01"
-    };
-
     private readonly IMapper _mapper;
     private readonly IRepositoryWrapper _repositoryWrapper;
     private readonly ILoggerService _logger;
@@ -27,9 +21,20 @@ public class CreateCommentHandler : IRequestHandler<CreateCommentCommand, Result
         _repositoryWrapper = repositoryWrapper;
         _logger = logger;
     }
-    
+
+    private IEnumerable<string> LoadProhibitedWordsFromResource()
+    {
+        var resourceManager = Resources.ForbiddenWords.ResourceManager;
+        var resourceSet = resourceManager.GetResourceSet(System.Globalization.CultureInfo.CurrentCulture, true, true);
+
+        return resourceSet.Cast<System.Collections.DictionaryEntry>()
+                          .Where(entry => entry.Value is string)
+                          .Select(entry => entry.Value.ToString());
+    }
+
     public async Task<Result<GetCommentDto>> Handle(CreateCommentCommand request, CancellationToken cancellationToken)
     {
+        var prohibitedContent = LoadProhibitedWordsFromResource();
         CommentStatus status = CommentStatus.Send;
 
         try
@@ -67,7 +72,7 @@ public class CreateCommentHandler : IRequestHandler<CreateCommentCommand, Result
         }
 
         var result = await _repositoryWrapper.CommentRepository.CreateAsync(newComment);
-        
+
         var resultIsSucceed = await _repositoryWrapper.SaveChangesAsync() > 0;
 
         if (resultIsSucceed)

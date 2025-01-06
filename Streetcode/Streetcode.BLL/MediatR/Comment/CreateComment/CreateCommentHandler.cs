@@ -52,15 +52,15 @@ public class CreateCommentHandler : IRequestHandler<CreateCommentCommand, Result
 
         var newComment = _mapper.Map<DAL.Entities.Comment.Comment>(request.createCommentDto);
 
-        var words = newComment.Content.Split(new[] { ' ', '.', ',', ';', '!', '?' }, StringSplitOptions.RemoveEmptyEntries);
-        var checkProhibitedContent = words.Any(word => prohibitedContent.Any(prohibited => word.Contains(prohibited)));
-
         if (newComment is null)
         {
             var errMsg = ErrorManager.GetCustomErrorText("ConvertationError", "create comment dto", "CommentEntity");
             _logger.LogError(request, errMsg);
             return Result.Fail(errMsg);
         }
+
+        var words = newComment.Content.Split(new[] { ' ', '.', ',', ';', '!', '?' }, StringSplitOptions.RemoveEmptyEntries);
+        var checkProhibitedContent = words.Any(word => prohibitedContent.Any(prohibited => word.Contains(prohibited)));
 
         if (checkProhibitedContent)
         {

@@ -13,6 +13,8 @@ using Streetcode.BLL.MediatR.Comment.UpdateComment;
 using Streetcode.BLL.MediatR.Comment.GetCommentByIdWithReplies;
 using Streetcode.BLL.MediatR.Comment.CreateComment;
 using Streetcode.BLL.MediatR.Comment.UserDeleteComment;
+using Streetcode.DAL.Enums;
+using Streetcode.BLL.MediatR.Comment.GetCommentByStatus;
 
 namespace Streetcode.WebApi.Controllers.Comment
 {
@@ -49,7 +51,7 @@ namespace Streetcode.WebApi.Controllers.Comment
             return HandleResult(await Mediator.Send(new UpdateCommentCommand(updateCommentDto)));
         }
         
-        [AuthorizeRoles(UserRole.Admin)]
+        [AuthorizeRoles(UserService.DAL.Enums.UserRole.Admin)]
         [HttpDelete("{Id:int}")]
         public async Task<IActionResult> AdminDeleteComment([FromRoute] int Id)
         {
@@ -60,6 +62,14 @@ namespace Streetcode.WebApi.Controllers.Comment
         public async Task<IActionResult> UserDeleteComment([FromBody] UserDeleteCommentDto userDeleteCommentDto)
         {
             return HandleResult(await Mediator.Send(new UserDeleteCommentCommand(userDeleteCommentDto)));
+        }
+
+        // a
+
+        [HttpGet]
+        public async Task<ActionResult<List<GetCommentDto>>> GetByStatus([FromQuery] CommentStatus status)
+        {
+            return HandleResult(await Mediator.Send(new GetCommentByStatusCommand(status)));
         }
     }
 }

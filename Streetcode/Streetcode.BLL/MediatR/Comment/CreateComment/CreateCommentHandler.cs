@@ -4,13 +4,19 @@ using MediatR;
 using Streetcode.BLL.DTO.Comment;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Resources;
-using Streetcode.BLL.Specifications.Comment;
+using Streetcode.DAL.Entities.Comment;
+using Streetcode.DAL.Enums;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Comment.CreateComment;
 
 public class CreateCommentHandler : IRequestHandler<CreateCommentCommand, Result<GetCommentDto>>
 {
+    private IEnumerable<string> prohibitedContent = new List<string>()
+    {
+        "abc", "123", "456" , "01"
+    };
+
     private readonly IMapper _mapper;
     private readonly IRepositoryWrapper _repositoryWrapper;
     private readonly ILoggerService _logger;
@@ -24,6 +30,8 @@ public class CreateCommentHandler : IRequestHandler<CreateCommentCommand, Result
     
     public async Task<Result<GetCommentDto>> Handle(CreateCommentCommand request, CancellationToken cancellationToken)
     {
+        CommentStatus status = CommentStatus.Send;
+
         try
         {
             await _repositoryWrapper.StreetcodeRepository
@@ -39,11 +47,23 @@ public class CreateCommentHandler : IRequestHandler<CreateCommentCommand, Result
 
         var newComment = _mapper.Map<DAL.Entities.Comment.Comment>(request.createCommentDto);
 
+        var words = newComment.Content.Split(new[] { ' ', '.', ',', ';', '!', '?' }, StringSplitOptions.RemoveEmptyEntries);
+        var checkProhibitedContent = words.Any(word => prohibitedContent.Any(prohibited => word.Contains(prohibited)));
+
         if (newComment is null)
         {
             var errMsg = ErrorManager.GetCustomErrorText("ConvertationError", "create comment dto", "CommentEntity");
             _logger.LogError(request, errMsg);
             return Result.Fail(errMsg);
+        }
+
+        if (checkProhibitedContent)
+        {
+            var prohibitedWords = words.Where(word => prohibitedContent.Contains(word));
+
+            var errMsg = $"You have sensitive words in your message! [{string.Join(", ", prohibitedWords)}]. Your message will be checked by admin.";
+            _logger.LogError(request, errMsg);
+            newComment.Status = CommentStatus.InReview;
         }
 
         var result = await _repositoryWrapper.CommentRepository.CreateAsync(newComment);

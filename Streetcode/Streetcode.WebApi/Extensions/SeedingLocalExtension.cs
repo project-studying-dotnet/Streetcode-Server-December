@@ -1426,7 +1426,8 @@ namespace Streetcode.WebApi.Extensions
                                             UserFullName = "user",
                                             CreatedDate = DateTime.Now,
                                             Content = "Хочу бути горошком",
-                                            StreetcodeId = 1
+                                            StreetcodeId = 1,
+                                            Status = CommentStatus.Send
                                         },
                                         new DAL.Entities.Comment.Comment
                                         {
@@ -1436,15 +1437,26 @@ namespace Streetcode.WebApi.Extensions
                                             Content = "Я теж",
                                             StreetcodeId = 1,
                                             ParentId = 1,
+                                            Status = CommentStatus.Send
                                         },
                                         new DAL.Entities.Comment.Comment
                                         {
                                             UserName = "user",
                                             UserFullName = "user",
                                             CreatedDate = DateTime.Now,
-                                            Content = "Хорош",
+                                            Content = "Хорош 123",
                                             StreetcodeId = 1,
                                             ParentId = 2,
+                                            Status = CommentStatus.InReview
+                                        },
+                                        new DAL.Entities.Comment.Comment
+                                        {
+                                            UserName = "user",
+                                            UserFullName = "user",
+                                            CreatedDate = DateTime.Now,
+                                            Content = "MY NAME TARAS",
+                                            StreetcodeId = 1,
+                                            Status = CommentStatus.Send
                                         });
 
                                     await dbContext.SaveChangesAsync();

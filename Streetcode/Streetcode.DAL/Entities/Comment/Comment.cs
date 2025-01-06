@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Streetcode.DAL.Entities.Streetcode;
+using Streetcode.DAL.Enums;
 
 namespace Streetcode.DAL.Entities.Comment
 {
@@ -31,5 +27,6 @@ namespace Streetcode.DAL.Entities.Comment
         public int? ParentId { get; set; }
         public Comment? Parent { get; set; }
         public List<Comment>? Children { get; set; }
+        public CommentStatus Status { get; set; }
     }
 }

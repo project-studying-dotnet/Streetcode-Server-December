@@ -6,6 +6,8 @@ using UserService.DAL.Entities.Users;
 using UserService.BLL.Interfaces.Jwt;
 using UserService.BLL.Interfaces.User;
 using System.Text;
+using UserService.BLL.Interfaces.Azure;
+using UserService.BLL.Services.Azure;
 using UserService.BLL.Services.Jwt;
 using UserService.BLL.Services.User;
 using UserService.WebApi.Extensions;
@@ -85,6 +87,10 @@ builder.Services.AddScoped<IUserService, RegistrationService>();
 
 var currentAssemblies = AppDomain.CurrentDomain.GetAssemblies();
 builder.Services.AddAutoMapper(currentAssemblies);
+
+builder.Services.AddSingleton<IAzureServiceBus, AzureServiceBus>(sb =>
+    new AzureServiceBus(azureServiceBusConn));
+builder.Services.AddHttpClient();
 
 
 var app = builder.Build();

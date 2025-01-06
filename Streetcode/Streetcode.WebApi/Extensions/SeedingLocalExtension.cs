@@ -1457,6 +1457,24 @@ namespace Streetcode.WebApi.Extensions
                                             Content = "MY NAME TARAS",
                                             StreetcodeId = 1,
                                             Status = CommentStatus.Send
+                                        },
+                                        new DAL.Entities.Comment.Comment
+                                        {
+                                            UserName = "user",
+                                            UserFullName = "user",
+                                            CreatedDate = DateTime.Now,
+                                            Content = "MY NAME TARAS ABC 01",
+                                            StreetcodeId = 1,
+                                            Status = CommentStatus.InReview
+                                        },
+                                        new DAL.Entities.Comment.Comment
+                                        {
+                                            UserName = "user",
+                                            UserFullName = "user",
+                                            CreatedDate = DateTime.Now,
+                                            Content = "BadWord",
+                                            StreetcodeId = 1,
+                                            Status = CommentStatus.Prohibited
                                         });
 
                                     await dbContext.SaveChangesAsync();

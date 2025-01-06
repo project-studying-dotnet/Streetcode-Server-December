@@ -81,8 +81,6 @@ namespace Streetcode.WebApi.Controllers.Comment
             return HandleResult(await Mediator.Send(new AdminForbidCommentCommand(id)));
         }
         
-        // 
-        
         [Authorize]
         [HttpPost]
         public async Task<ActionResult<CreateReplyDto>> CreateReply([FromBody] CreateReplyDto createReplyDto)

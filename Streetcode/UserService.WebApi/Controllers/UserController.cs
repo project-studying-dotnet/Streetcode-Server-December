@@ -13,7 +13,7 @@ using UserService.WebApi.Extensions;
 namespace UserService.WebApi.Controllers;
 
 [ApiController]
-[Route("[action]")]
+[Route("api/[action]")]
 public class UserController : ControllerBase
 {
     private readonly ILoginService _loginService;
@@ -35,7 +35,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> Login([FromBody] LoginDto loginDto)
+    public async Task<ActionResult> Login([FromQuery] LoginDto loginDto)
     {
         var loginResult = await _loginService.Login(loginDto);
 
@@ -75,4 +75,5 @@ public class UserController : ControllerBase
         HttpContext.AppendTokenToCookie(token.AccessToken, _jwtConfiguration);
         return Ok(refreshResult.Value);
     }
+
 }

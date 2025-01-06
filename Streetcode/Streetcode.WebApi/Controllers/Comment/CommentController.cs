@@ -16,6 +16,8 @@ using Streetcode.BLL.MediatR.Comment.UserDeleteComment;
 using Streetcode.DAL.Enums;
 using Streetcode.BLL.MediatR.Comment.GetCommentByStatus;
 using Streetcode.BLL.MediatR.Comment.AdminForbidComment;
+using Microsoft.AspNetCore.Authorization;
+using Streetcode.BLL.MediatR.Comment.CreateReply;
 
 namespace Streetcode.WebApi.Controllers.Comment
 {
@@ -77,6 +79,13 @@ namespace Streetcode.WebApi.Controllers.Comment
         public async Task<ActionResult<string>> ForbidComment([FromQuery] int id)
         {
             return HandleResult(await Mediator.Send(new AdminForbidCommentCommand(id)));
+        }
+        
+        [Authorize]
+        [HttpPost]
+        public async Task<ActionResult<CreateReplyDto>> CreateReply([FromBody] CreateReplyDto createReplyDto)
+        {
+            return HandleResult(await Mediator.Send(new CreateReplyCommand(createReplyDto)));
         }
     }
 }

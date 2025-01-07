@@ -4,7 +4,7 @@ using MediatR;
 using Streetcode.BLL.DTO.Comment;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Resources;
-using Streetcode.BLL.Specifications.Comment;
+using Streetcode.DAL.Enums;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Comment.CreateComment;
@@ -21,9 +21,22 @@ public class CreateCommentHandler : IRequestHandler<CreateCommentCommand, Result
         _repositoryWrapper = repositoryWrapper;
         _logger = logger;
     }
-    
+
+    private IEnumerable<string> LoadProhibitedWordsFromResource()
+    {
+        var resourceManager = Resources.ForbiddenWords.ResourceManager;
+        var resourceSet = resourceManager.GetResourceSet(System.Globalization.CultureInfo.CurrentCulture, true, true);
+
+        return resourceSet.Cast<System.Collections.DictionaryEntry>()
+                          .Where(entry => entry.Value is string)
+                          .Select(entry => entry.Value.ToString());
+    }
+
     public async Task<Result<GetCommentDto>> Handle(CreateCommentCommand request, CancellationToken cancellationToken)
     {
+        var prohibitedContent = LoadProhibitedWordsFromResource();
+        CommentStatus status = CommentStatus.Send;
+
         try
         {
             await _repositoryWrapper.StreetcodeRepository
@@ -46,8 +59,20 @@ public class CreateCommentHandler : IRequestHandler<CreateCommentCommand, Result
             return Result.Fail(errMsg);
         }
 
+        var words = newComment.Content.Split(new[] { ' ', '.', ',', ';', '!', '?' }, StringSplitOptions.RemoveEmptyEntries);
+        var checkProhibitedContent = words.Any(word => prohibitedContent.Any(prohibited => word.Contains(prohibited)));
+
+        if (checkProhibitedContent)
+        {
+            var prohibitedWords = words.Where(word => prohibitedContent.Contains(word));
+
+            var errMsg = $"You have sensitive words in your message! [{string.Join(", ", prohibitedWords)}]. Your message will be checked by admin.";
+            _logger.LogError(request, errMsg);
+            newComment.Status = CommentStatus.InReview;
+        }
+
         var result = await _repositoryWrapper.CommentRepository.CreateAsync(newComment);
-        
+
         var resultIsSucceed = await _repositoryWrapper.SaveChangesAsync() > 0;
 
         if (resultIsSucceed)

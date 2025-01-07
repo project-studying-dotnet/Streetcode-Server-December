@@ -1422,6 +1422,7 @@ namespace Streetcode.WebApi.Extensions
                                     await dbContext.Comments.AddRangeAsync(
                                         new DAL.Entities.Comment.Comment
                                         {
+                                            UserId = "1",
                                             UserName = "user",
                                             UserFullName = "user",
                                             CreatedDate = DateTime.Now,
@@ -1431,6 +1432,7 @@ namespace Streetcode.WebApi.Extensions
                                         },
                                         new DAL.Entities.Comment.Comment
                                         {
+                                            UserId = "2",
                                             UserName = "admin",
                                             UserFullName = "admin",
                                             CreatedDate = DateTime.Now,
@@ -1441,6 +1443,7 @@ namespace Streetcode.WebApi.Extensions
                                         },
                                         new DAL.Entities.Comment.Comment
                                         {
+                                            UserId = "3",
                                             UserName = "user",
                                             UserFullName = "user",
                                             CreatedDate = DateTime.Now,
@@ -1451,6 +1454,7 @@ namespace Streetcode.WebApi.Extensions
                                         },
                                         new DAL.Entities.Comment.Comment
                                         {
+                                            UserId = "4",
                                             UserName = "user",
                                             UserFullName = "user",
                                             CreatedDate = DateTime.Now,
@@ -1460,6 +1464,7 @@ namespace Streetcode.WebApi.Extensions
                                         },
                                         new DAL.Entities.Comment.Comment
                                         {
+                                            UserId = "5",
                                             UserName = "user",
                                             UserFullName = "user",
                                             CreatedDate = DateTime.Now,
@@ -1469,6 +1474,7 @@ namespace Streetcode.WebApi.Extensions
                                         },
                                         new DAL.Entities.Comment.Comment
                                         {
+                                            UserId = "6",
                                             UserName = "user",
                                             UserFullName = "user",
                                             CreatedDate = DateTime.Now,

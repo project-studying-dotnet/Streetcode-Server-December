@@ -139,6 +139,6 @@ app.UseHangfireDashboard();
 RecurringJob.AddOrUpdate<TokenCleanupService>(
     "RemoveExpiredRefreshTokens",
     service => service.RemoveExpiredRefreshTokensAsync(),
-    Cron.Minutely); // Щоденний запуск завдання
+    Cron.Daily); // Щоденний запуск завдання
 
 app.Run();

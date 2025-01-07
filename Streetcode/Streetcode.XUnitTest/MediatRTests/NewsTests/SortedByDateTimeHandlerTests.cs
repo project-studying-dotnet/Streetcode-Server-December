@@ -155,7 +155,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
 
             _blobServiceMock
                 .Setup(b => b.FindFileInStorageAsBase64("test_image.jpg"))
-                .Returns("base64string");
+                .Returns(Task.FromResult("base64string"));
 
             var query = new SortedByDateTimeQuery();
 

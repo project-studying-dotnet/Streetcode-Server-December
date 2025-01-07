@@ -81,9 +81,10 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.GetCategoriesByStreetcodeId
 			_mockMapper.Setup(m => m.Map<IEnumerable<SourceLinkCategoryDto>>(sourceCategories)).Returns(sourceCategoryDTOs);
 
 			_mockBlob.Setup(b => b.FindFileInStorageAsBase64(It.IsAny<string>()))
-					 .Returns<string>(blob => blob == "image1.png" ? "Base64Image1" : "Base64Image2");
+				.Returns((string blob) =>
+				Task.FromResult(blob == "image1.png" ? "Base64Image1" : "Base64Image2"));
 
-			// Act
+            // Act
 			var result = await _handler.Handle(new GetCategoriesByStreetcodeIdQuery(1), CancellationToken.None);
 
 			// Assert

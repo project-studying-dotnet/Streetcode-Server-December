@@ -51,7 +51,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
                 .ReturnsAsync(streetcode);
 
             _mockMapper.Setup(m => m.Map<AudioDto>(audio)).Returns(audioDto);
-            _mockBlobService.Setup(b => b.FindFileInStorageAsBase64(audio.BlobName)).Returns("base64string");
+            _mockBlobService.Setup(b => b.FindFileInStorageAsBase64(audio.BlobName)).Returns(Task.FromResult("base64string"));
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
@@ -108,7 +108,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
                 .ReturnsAsync(streetcode);
 
             _mockMapper.Setup(m => m.Map<AudioDto>(audio)).Returns(audioDto);
-            _mockBlobService.Setup(b => b.FindFileInStorageAsBase64(audio.BlobName)).Returns("base64string");
+            _mockBlobService.Setup(b => b.FindFileInStorageAsBase64(audio.BlobName)).Returns(Task.FromResult("base64string"));
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);

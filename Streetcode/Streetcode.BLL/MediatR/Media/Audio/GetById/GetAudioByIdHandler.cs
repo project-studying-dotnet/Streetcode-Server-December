@@ -37,7 +37,7 @@ namespace Streetcode.BLL.MediatR.Media.Audio.GetById
 
             var audioDto = _mapper.Map<AudioDto>(audio);
 
-            audioDto.Base64 = _blobService.FindFileInStorageAsBase64(audioDto.BlobName);
+            audioDto.Base64 = await _blobService.FindFileInStorageAsBase64(audioDto.BlobName);
 
             return Result.Ok(audioDto);
         }

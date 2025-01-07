@@ -39,7 +39,7 @@ namespace Streetcode.BLL.MediatR.Media.Audio.GetAll
             var audioDtos = _mapper.Map<IEnumerable<AudioDto>>(audios);
             foreach (var audio in audioDtos)
             {
-                audio.Base64 = _blobService.FindFileInStorageAsBase64(audio.BlobName);
+                audio.Base64 = await _blobService.FindFileInStorageAsBase64(audio.BlobName);
             }
 
             return Result.Ok(audioDtos);

@@ -21,7 +21,7 @@ namespace Streetcode.BLL.Services.Image
             string hashBlobStorageName = _blobService.SaveFileInStorage(
                         imageDTO.BaseFormat,
                         imageDTO.Title,
-                        imageDTO.Extension);
+                        imageDTO.Extension).Result;
 
             var image = _mapper.Map<DAL.Entities.Media.Images.Image>(imageDTO);
 
@@ -31,7 +31,7 @@ namespace Streetcode.BLL.Services.Image
 
         public string? ImageBase64(ImageDto imageDTO)
         {
-            return _blobService.FindFileInStorageAsBase64(imageDTO.BlobName);
+            return _blobService.FindFileInStorageAsBase64(imageDTO.BlobName).Result;
         }
 
         public void DeleteImage(string blobName)

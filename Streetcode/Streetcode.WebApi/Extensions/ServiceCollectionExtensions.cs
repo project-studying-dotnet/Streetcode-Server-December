@@ -1,3 +1,4 @@
+using Azure.Storage.Blobs;
 using FluentValidation;
 using Hangfire;
 using MediatR;
@@ -76,6 +77,8 @@ namespace Streetcode.WebApi.Extensions
         {
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Local";
             var connectionString = configuration.GetValue<string>($"{environment}:ConnectionStrings:DefaultConnection");
+
+            services.AddSingleton(x => new BlobServiceClient(configuration.GetValue<string>("AzureBlobStorageConnStrings")));
 
             var connStr = configuration.GetConnectionString("ServiceBusConn")!;
             services.AddSingleton<IAzureServiceBus, AzureServiceBus>(sb =>

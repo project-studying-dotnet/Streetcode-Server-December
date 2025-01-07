@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Azure.Storage.Blobs;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Streetcode.BLL.Services.BlobStorageService;
@@ -32,9 +33,10 @@ namespace Streetcode.WebApi.Extensions
                 var dbContext = scope.ServiceProvider.GetRequiredService<StreetcodeDbContext>();
                 var redisCacheService = scope.ServiceProvider.GetRequiredService<IRedisCacheService>();
                 var blobOptions = app.Services.GetRequiredService<IOptions<BlobEnvironmentVariables>>();
-                string blobPath = app.Configuration.GetValue<string>("Blob:BlobStorePath");
+                var blobAzureClient = app.Services.GetRequiredService<BlobServiceClient>();
+                string blobPath = app.Configuration.GetValue<string>("Blob:BlobStorePath")!;
                 var repo = new RepositoryWrapper(dbContext, redisCacheService);
-                var blobService = new BlobService(blobOptions, repo);
+                var blobService = new BlobService(blobOptions, blobAzureClient , repo);
                 string initialDataImagePath = "/src/Streetcode.DAL/InitialData/images.json";
                 string initialDataAudioPath = "/src/Streetcode.DAL/InitialData/audios.json";
                 if (!dbContext.Images.Any())
@@ -47,18 +49,26 @@ namespace Streetcode.WebApi.Extensions
                     foreach (var img in imgfromJson)
                     {
                         string filePath = Path.Combine(blobPath, img.BlobName);
-                        if (!File.Exists(filePath))
+
+                        var containerClient = blobAzureClient.GetBlobContainerClient("streetcode");
+                        var blobClient = containerClient.GetBlobClient(filePath);
+
+                        if (!blobClient.Exists())
                         {
-                            blobService.SaveFileInStorageBase64(img.Base64, img.BlobName.Split('.')[0], img.BlobName.Split('.')[1]);
+                            await blobService.SaveFileInStorageBase64(img.Base64, img.BlobName.Split('.')[0], img.BlobName.Split('.')[1]);
                         }
                     }
 
                     foreach (var audio in audiosfromJson)
                     {
                         string filePath = Path.Combine(blobPath, audio.BlobName);
-                        if (!File.Exists(filePath))
+
+                        var containerClient = blobAzureClient.GetBlobContainerClient("streetcode");
+                        var blobClient = containerClient.GetBlobClient(filePath);
+
+                        if (!blobClient.Exists())
                         {
-                            blobService.SaveFileInStorageBase64(audio.Base64, audio.BlobName.Split('.')[0], audio.BlobName.Split('.')[1]);
+                            await blobService.SaveFileInStorageBase64(audio.Base64, audio.BlobName.Split('.')[0], audio.BlobName.Split('.')[1]);
                         }
                     }
 

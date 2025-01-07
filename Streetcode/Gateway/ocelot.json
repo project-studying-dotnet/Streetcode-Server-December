@@ -14,6 +14,19 @@
       "SwaggerKey": "streetcode"
     },
     {
+      "DownstreamPathTemplate": "/api/{controller}/{action}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/emailService/{controller}/{action}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      "SwaggerKey": "emailService"
+    },
+    {
       "DownstreamPathTemplate": "/api/{action}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
@@ -35,6 +48,16 @@
           "Name": "Streetcode API",
           "Version": "v1",
           "Url": "https://localhost:5001/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "emailService",
+      "Config": [
+        {
+          "Name": "Email Service API",
+          "Version": "v1",
+          "Url": "https://localhost:5003/swagger/v1/swagger.json"
         }
       ]
     },

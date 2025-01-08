@@ -55,6 +55,8 @@ app.UseHttpsRedirection();
 
 app.UseGlobalExceptionHandler();
 
+app.UseSession();
+
 app.UseRouting();
 
 app.UseAuthentication();

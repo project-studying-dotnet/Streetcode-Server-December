@@ -112,7 +112,7 @@ namespace Streetcode.WebApi.Extensions
 			// Session Favorite-Streetcode
             services.AddSession(options =>
 			{
-				options.IdleTimeout = TimeSpan.FromDays(3);
+				options.IdleTimeout = TimeSpan.FromDays(356);
 				options.Cookie.HttpOnly = true;
 				options.Cookie.IsEssential = true;
 			});

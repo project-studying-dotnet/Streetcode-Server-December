@@ -14,6 +14,7 @@ using System.Security.Claims;
 using Xunit;
 using UserRole = Streetcode.DAL.Enums.UserRole;
 using CommentEntity = Streetcode.DAL.Entities.Comment.Comment;
+using System.IdentityModel.Tokens.Jwt;
 
 public class AuthorizeRoleOrOwnerAttributeTests
 {
@@ -85,7 +86,7 @@ public class AuthorizeRoleOrOwnerAttributeTests
     public async Task OnActionExecutionAsync_MissingRepository_ThrowsException()
     {
         // Arrange
-        var user = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, "123") }, "mock"));
+        var user = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(JwtRegisteredClaimNames.Sub, "123") }, "mock"));
         var context = CreateContext(user, routeId: 1, serviceProvider: CreateServiceProvider());
 
         var attribute = new AuthorizeRoleOrOwnerAttribute(UserRole.User);
@@ -98,14 +99,14 @@ public class AuthorizeRoleOrOwnerAttributeTests
     public async Task OnActionExecutionAsync_UserIsOwner_ContinuesToNext()
     {
         // Arrange
-        var userId = "123";
-        var user = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, userId) }, "mock"));
+        var userName = "testUser";
+        var user = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(JwtRegisteredClaimNames.Sub, userName) }, "mock"));
         var commentId = 1;
 
         _repositoryMock.Setup(repo => repo.CommentRepository.GetFirstOrDefaultAsync(
             It.IsAny<Expression<Func<CommentEntity, bool>>>(),
             It.IsAny<Func<IQueryable<CommentEntity>, IIncludableQueryable<CommentEntity, object>>>()))
-            .ReturnsAsync(new Comment { Id = commentId, UserId = userId });
+            .ReturnsAsync(new Comment { Id = commentId, UserName = userName });
 
         var context = CreateContext(
             user,
@@ -126,7 +127,7 @@ public class AuthorizeRoleOrOwnerAttributeTests
     public async Task OnActionExecutionAsync_InvalidCommentId_ReturnsBadRequest()
     {
         // Arrange
-        var user = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, "123") }, "mock"));
+        var user = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(JwtRegisteredClaimNames.Sub, "testUser") }, "mock"));
         var context = CreateContext(user, routeId: null);
 
         var attribute = new AuthorizeRoleOrOwnerAttribute(UserRole.User);
@@ -142,14 +143,14 @@ public class AuthorizeRoleOrOwnerAttributeTests
     public async Task OnActionExecutionAsync_UserNotOwner_ReturnsForbidden()
     {
         // Arrange
-        var userId = "123";
-        var otherUserId = "456";
-        var user = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, userId) }, "mock"));
+        var userName = "testUser";
+        var otherUserName = "otherUser";
+        var user = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(JwtRegisteredClaimNames.Sub, userName) }, "mock"));
         var commentId = 1;
 
         _repositoryMock.Setup(repo => repo.CommentRepository.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<CommentEntity, bool>>>(),
                 It.IsAny<Func<IQueryable<CommentEntity>, IIncludableQueryable<CommentEntity, object>>>()))
-            .ReturnsAsync(new Comment { Id = commentId, UserId = otherUserId });
+            .ReturnsAsync(new Comment { Id = commentId, UserName = otherUserName });
 
         var context = CreateContext(
             user,

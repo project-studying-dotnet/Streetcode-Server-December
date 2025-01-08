@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Streetcode.DAL.Repositories.Interfaces.Base;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using UserRole = Streetcode.DAL.Enums.UserRole;
 
@@ -37,7 +38,7 @@ namespace Streetcode.WebApi.Attributes
                 return;
             }
 
-            if (!TryGetUserId(user, out var userId))
+            if (!TryGetUserName(user, out var userName))
             {
                 context.Result = new ForbidResult();
                 return;
@@ -50,7 +51,7 @@ namespace Streetcode.WebApi.Attributes
                 throw new InvalidOperationException("IRepositoryWrapper is not configured.");
             }
 
-            if (!await IsUserOwner(repository, commentId, userId))
+            if (!await IsUserOwner(repository, commentId, userName))
             {
                 context.Result = new ForbidResult();
                 return;
@@ -71,18 +72,18 @@ namespace Streetcode.WebApi.Attributes
             return context.ActionArguments.TryGetValue("id", out var value) && value is int id && (commentId = id) > 0;
         }
 
-        private static bool TryGetUserId(ClaimsPrincipal user, out string userId)
+        private static bool TryGetUserName(ClaimsPrincipal user, out string userName)
         {
-            userId = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            return !string.IsNullOrEmpty(userId);
+            userName = user?.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+            return !string.IsNullOrEmpty(userName);
         }
 
-        private static async Task<bool> IsUserOwner(IRepositoryWrapper repository, int commentId, string userId)
+        private static async Task<bool> IsUserOwner(IRepositoryWrapper repository, int commentId, string userName)
         {
             var comment = await repository.CommentRepository
                 .GetFirstOrDefaultAsync(c => c.Id == commentId);
 
-            return comment != null && comment.UserId == userId;
+            return comment != null && comment.UserName == userName;
         }
     }
 }

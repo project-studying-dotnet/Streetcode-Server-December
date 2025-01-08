@@ -31,7 +31,7 @@ namespace Streetcode.BLL.MediatR.Media.Image.GetBaseImage
                 return Result.Fail(new Error(errorMsg));
             }
 
-            return _blobStorage.FindFileInStorageAsMemoryStream(image.BlobName);
+            return await _blobStorage.FindFileInStorageAsMemoryStream(image.BlobName);
         }
     }
 }

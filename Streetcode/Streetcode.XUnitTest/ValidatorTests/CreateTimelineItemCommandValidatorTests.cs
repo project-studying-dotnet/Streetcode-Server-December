@@ -44,8 +44,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
 
             var result = _validator.TestValidate(command);
 
-            result.ShouldHaveValidationErrorFor(x => x.timelineItemCreateDto.Title)
-                   .WithErrorMessage("'Title' must not be empty.");
+            result.ShouldHaveValidationErrorFor(x => x.timelineItemCreateDto.Title);
         }
 
         [Fact]

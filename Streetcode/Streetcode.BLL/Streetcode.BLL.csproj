@@ -33,6 +33,8 @@
     <ProjectReference Include="..\Streetcode.DAL\Streetcode.DAL.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="DTO\AdditionalContent\NewFolder\" />
+    <Folder Include="DTO\NewFolder\" />
     <Folder Include="Mapping\Analytics\" />
     <Folder Include="MediatR\AdditionalContent\Tag\" />
     <Folder Include="DTO\Instagram\" />

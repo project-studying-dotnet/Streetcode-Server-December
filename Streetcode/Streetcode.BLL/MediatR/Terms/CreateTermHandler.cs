@@ -32,9 +32,16 @@ namespace Streetcode.BLL.MediatR.Terms
             var term = _mapper.Map<Term>(request.TermCreateDTO);
 
             _termRepository.Create(term);
-            await _repositoryWrapper.SaveChangesAsync(); 
+
+            var saveResult = await _repositoryWrapper.SaveChangesAsync();
+
+            if (saveResult == 0)
+            {
+                return Result.Fail<TermDto>("Failed to save the term.");
+            }
 
             var termDTO = _mapper.Map<TermDto>(term);
+
             return Result.Ok(termDTO);
         }
     }

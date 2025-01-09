@@ -64,6 +64,21 @@ services:
       hostname: streetcode-email-api
       networks:
         - streetcode
+
+  ocelot.apigateway:
+    image: ${DOCKER_REGISTRY-}gateway
+    build:
+      context: .
+      dockerfile: Gateway/Dockerfile
+    ports:
+      - 8000:80
+    hostname: streetcode-ocelot
+    networks:
+      - streetcode
+    depends_on:
+      - streetcode.webapi
+      - userservice.webapi
+      - emailservice.webapi
  
 networks:
   streetcode:

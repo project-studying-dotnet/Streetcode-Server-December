@@ -5,8 +5,8 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5001
+          "Host": "streetcode-webapi",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/gateway/streetcode/{controller}/{action}",
@@ -18,8 +18,8 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5003
+          "Host": "emailservice-webapi",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/gateway/emailService/{controller}/{action}",
@@ -31,8 +31,8 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5002
+          "Host": "userservice-webapi",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/gateway/userService/{action}",
@@ -57,7 +57,7 @@
         {
           "Name": "Email Service API",
           "Version": "v1",
-          "Url": "https://localhost:5003/swagger/v1/swagger.json"
+          "Url": "https://emailservice-webapi:80/swagger/v1/swagger.json"
         }
       ]
     },
@@ -67,12 +67,12 @@
         {
           "Name": "User Service API",
           "Version": "v1",
-          "Url": "https://localhost:5002/swagger/v1/swagger.json"
+          "Url": "https://userservice-webapi:80/swagger/v1/swagger.json"
         }
       ]
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "https://localhost:5000"
+    "BaseUrl": "https://ocelot-apigateway:80"
   }
 }

@@ -2,11 +2,11 @@
   "Routes": [
     {
       "DownstreamPathTemplate": "/api/{controller}/{action}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5001
+          "Host": "streetcode.webapi",
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/gateway/streetcode/{controller}/{action}",
@@ -15,11 +15,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/{controller}/{action}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5003
+          "Host": "emailservice.webapi",
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/gateway/emailService/{controller}/{action}",
@@ -27,12 +27,12 @@
       "SwaggerKey": "emailService"
     },
     {
-      "DownstreamPathTemplate": "/api/{action}",
-      "DownstreamScheme": "https",
+      "DownstreamPathTemplate": "/{action}",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5002
+          "Host": "userservice.webapi",
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/gateway/userService/{action}",
@@ -47,7 +47,7 @@
         {
           "Name": "Streetcode API",
           "Version": "v1",
-          "Url": "https://localhost:5001/swagger/v1/swagger.json"
+          "Url": "http://localhost:8001/swagger/v1/swagger.json"
         }
       ]
     },
@@ -57,7 +57,7 @@
         {
           "Name": "Email Service API",
           "Version": "v1",
-          "Url": "https://localhost:5003/swagger/v1/swagger.json"
+          "Url": "http://localhost:8003/swagger/v1/swagger.json"
         }
       ]
     },
@@ -67,12 +67,12 @@
         {
           "Name": "User Service API",
           "Version": "v1",
-          "Url": "https://localhost:5002/swagger/v1/swagger.json"
+          "Url": "http://localhost:8002/swagger/v1/swagger.json"
         }
       ]
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "https://localhost:5000"
+    "BaseUrl": "http://localhost:8000"
   }
 }

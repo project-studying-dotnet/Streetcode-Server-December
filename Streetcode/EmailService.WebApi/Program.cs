@@ -7,6 +7,7 @@ using EmailService.BLL.Validators;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Serilog;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +21,6 @@ builder.Host.UseSerilog();
 
 
 // Add services to the container.
-
 builder.Services.AddFluentValidationAutoValidation(); 
 builder.Services.AddValidatorsFromAssemblyContaining<EmailDtoValidator>();
 
@@ -29,21 +29,26 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton(Log.Logger);
 
-var azureServiceBusConn = builder.Configuration.GetConnectionString("ServiceBusConn")!;
-
-
-var emailConfig = builder.Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
-builder.Services.AddSingleton(emailConfig);
-
-var currentAssemblies = AppDomain.CurrentDomain.GetAssemblies();
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(currentAssemblies));
-
 builder.Services.AddScoped<IEmailService, EmailService.BLL.Services.EmailService>();
 builder.Services.AddScoped<ILoggerService, LoggerService>();
 
-builder.Services.AddSingleton<IAzureServiceBus, AzureServiceBus>(sb =>
-    new AzureServiceBus(azureServiceBusConn));
+// Setup email sending
+var emailConfig = builder.Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
+builder.Services.AddSingleton(emailConfig);
+
+// Setup MediatR
+var currentAssemblies = AppDomain.CurrentDomain.GetAssemblies();
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(currentAssemblies));
+
+// Setup Azure service bus
+var azureServiceBusConn = builder.Configuration.GetConnectionString("ServiceBusConn")!;
+builder.Services.AddSingleton<IAzureServiceBus, AzureServiceBus>(sb => new AzureServiceBus(azureServiceBusConn));
 builder.Services.AddHttpClient();
+
+// Setup Redis
+string redisConnectionString = builder.Configuration.GetValue<string>("RedisConnectionString");
+builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConnectionString));
+builder.Services.AddSingleton<ICacheService, RedisCacheService>();
 
 var app = builder.Build();
 

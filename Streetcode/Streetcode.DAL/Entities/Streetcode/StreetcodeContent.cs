@@ -46,7 +46,7 @@ namespace Streetcode.DAL.Entities.Streetcode
         public string? Title { get; set; }
         [Required]
         [MaxLength(150)]
-        public string TransliterationUrl { get; set; }
+        public string TransliterationUrl { get; set; } = string.Empty;
 
         public int ViewCount { get; set; }
 

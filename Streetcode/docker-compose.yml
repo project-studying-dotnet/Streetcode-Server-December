@@ -64,6 +64,18 @@ services:
       hostname: streetcode-email-api
       networks:
         - streetcode
+
+  cacheEmail:
+        image: redis:6.2-alpine
+        container_name: redis-cache-email
+        restart: always
+        hostname: redis-cache-email
+        ports:
+          - '6381:6381'
+        env_file:
+          - cacheEmail.env
+        networks:
+          - streetcode
  
 networks:
   streetcode:

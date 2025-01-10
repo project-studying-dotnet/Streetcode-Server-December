@@ -1,4 +1,5 @@
 ﻿using EmailService.BLL.Interfaces;
+using Microsoft.Extensions.Caching.Distributed;
 using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
@@ -10,32 +11,29 @@ namespace EmailService.BLL.Services
 {
     public class RedisCacheService : ICacheService
     {
-        private readonly IConnectionMultiplexer _redisConnection;
+        private readonly IDistributedCache _cache;
 
-        public RedisCacheService(IConnectionMultiplexer redisConnection)
+        public RedisCacheService(IDistributedCache cache)
         {
-            _redisConnection = redisConnection;
+            _cache = cache;
         }
 
-        // == create
         public async Task SetAsync(string key, string value, TimeSpan expiration)
         {
-            var db = _redisConnection.GetDatabase();
-            await db.StringSetAsync(key, value, expiration);
+            await _cache.SetStringAsync(key, value, new DistributedCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = expiration
+            });
         }
 
-        // == select
         public async Task<string> GetAsync(string key)
         {
-            var db = _redisConnection.GetDatabase();
-            return await db.StringGetAsync(key); 
+            return await _cache.GetStringAsync(key);
         }
 
-        // == delete
         public async Task RemoveAsync(string key)
         {
-            var db = _redisConnection.GetDatabase();
-            await db.KeyDeleteAsync(key);
+            await _cache.RemoveAsync(key);
         }
     }
 }

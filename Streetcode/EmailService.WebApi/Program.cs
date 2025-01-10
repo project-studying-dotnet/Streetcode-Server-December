@@ -46,9 +46,13 @@ builder.Services.AddSingleton<IAzureServiceBus, AzureServiceBus>(sb => new Azure
 builder.Services.AddHttpClient();
 
 // Setup Redis
-string redisConnectionString = builder.Configuration.GetValue<string>("RedisConnectionString");
-builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConnectionString));
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration["RedisCache:Configuration"];
+});
 builder.Services.AddSingleton<ICacheService, RedisCacheService>();
+
 
 var app = builder.Build();
 

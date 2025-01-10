@@ -11,5 +11,19 @@ namespace EmailService.WebApi.Controllers
         {
             return HandleResult(await Mediator.Send(new SendEmailCommand(email)));
         }
+
+        [HttpPost("send-with-verification")]
+        public async Task<IActionResult> SendWithVerification([FromBody] string email)
+        {
+
+            return HandleResult(await Mediator.Send(new SendEmailWithVerificationCommand(email)));
+        }
+
+        [HttpGet("confirm")]
+        public async Task<IActionResult> ConfirmEmail([FromQuery] string email, [FromQuery] string token)
+        {
+            return HandleResult(await Mediator.Send(new ConfirmEmailCommand(email, token)));
+
+        }
     }
 }

@@ -65,5 +65,23 @@ namespace EmailService.BLL.Services
                 }
             }
         }
+
+        public async Task<bool> SendConfirmationEmailAsync(string email, string confirmationLink)
+        {
+            using (var client = new SmtpClient())
+            {
+
+                var message = new Message(new List<string> { email },
+                    _emailConfig.From,
+                    "Please confirm your email address",
+                    $"Please confirm your email by clicking this link: <a href='{confirmationLink}'>Confirm Email</a>");           
+
+                var mailMessage = CreateEmailMessage(message);
+
+                await client.SendAsync(mailMessage);
+                return true;
+            }
+        }
+
     }
 }

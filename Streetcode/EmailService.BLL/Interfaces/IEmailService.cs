@@ -5,5 +5,6 @@ namespace EmailService.BLL.Interfaces
     public interface IEmailService
     {
         Task<bool> SendEmailAsync(Message message);
+        Task<bool> SendConfirmationEmailAsync(string email, string confirmationLink);
     }
 }

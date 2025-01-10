@@ -7,6 +7,7 @@ using EmailService.BLL.Validators;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Serilog;
+using EmailService.BLL.Consumers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,6 +44,9 @@ builder.Services.AddScoped<ILoggerService, LoggerService>();
 
 builder.Services.AddSingleton<IAzureServiceBus, AzureServiceBus>(sb =>
     new AzureServiceBus(azureServiceBusConn));
+
+builder.Services.AddHostedService<EmailMessageConsumer>();
+
 builder.Services.AddHttpClient();
 
 var app = builder.Build();

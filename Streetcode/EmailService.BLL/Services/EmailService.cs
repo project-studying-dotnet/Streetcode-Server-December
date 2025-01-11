@@ -2,6 +2,7 @@
 using EmailService.DAL.Entities;
 using MimeKit;
 using MailKit.Net.Smtp;
+using System.Net.Mail;
 
 namespace EmailService.BLL.Services
 {
@@ -43,7 +44,7 @@ namespace EmailService.BLL.Services
 
         private async Task<bool> SendAsync(MimeMessage mailMessage)
         {
-            using (var client = new SmtpClient())
+            using (var client = new MailKit.Net.Smtp.SmtpClient())
             {
                 try
                 {
@@ -68,18 +69,33 @@ namespace EmailService.BLL.Services
 
         public async Task<bool> SendConfirmationEmailAsync(string email, string confirmationLink)
         {
-            using (var client = new SmtpClient())
+            using (var client = new MailKit.Net.Smtp.SmtpClient())
             {
+                try
+                {
+                    await client.ConnectAsync(_emailConfig.SmtpServer, _emailConfig.Port, false);
+                    client.AuthenticationMechanisms.Remove("XOAUTH2");
+                    await client.AuthenticateAsync(_emailConfig.UserName, _emailConfig.Password);
 
-                var message = new Message(new List<string> { email },
+                    var message = new Message(new List<string> { email },
                     _emailConfig.From,
                     "Please confirm your email address",
-                    $"Please confirm your email by clicking this link: <a href='{confirmationLink}'>Confirm Email</a>");           
+                    $"Please confirm your email by clicking this link: <a href='{confirmationLink}'>Confirm Email</a>");
 
-                var mailMessage = CreateEmailMessage(message);
+                    var mailMessage = CreateEmailMessage(message);
 
-                await client.SendAsync(mailMessage);
-                return true;
+                    await client.SendAsync(mailMessage);
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+                finally
+                {
+                    await client.DisconnectAsync(true);
+                    client.Dispose();
+                }
             }
         }
 

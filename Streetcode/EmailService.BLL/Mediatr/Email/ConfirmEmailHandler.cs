@@ -10,20 +10,18 @@ using System.Threading.Tasks;
 
 namespace EmailService.BLL.Mediatr.Email
 {
-    public class ConfirmEmailHandler : IRequestHandler<ConfirmEmailCommand, Result<Unit>>
+    public class ConfirmEmailHandler : IRequestHandler<ConfirmEmailCommand, Result<string>>
     {
         private readonly ILoggerService _logger;
         private readonly ICacheService _cacheService;
-        //private readonly IUserMicroserviceClient _userMicroserviceClient;
 
-        public ConfirmEmailHandler(ICacheService cacheService, /*IUserMicroserviceClient userMicroserviceClient*/ ILoggerService logger)
+        public ConfirmEmailHandler(ICacheService cacheService, ILoggerService logger)
         {
             _cacheService = cacheService;
-            //_userMicroserviceClient = userMicroserviceClient;
             _logger = logger;
         }
 
-        public async Task<Result<Unit>> Handle(ConfirmEmailCommand request, CancellationToken cancellationToken)
+        public async Task<Result<string>> Handle(ConfirmEmailCommand request, CancellationToken cancellationToken)
         {
             var storedToken = await _cacheService.GetAsync(request.Email);
 
@@ -34,10 +32,7 @@ namespace EmailService.BLL.Mediatr.Email
                 return Result.Fail(new Error(errorMsg));
             }
 
-            // confirem email in other microservice
-            //await _userMicroserviceClient.ConfirmUserEmailAsync(request.Email);
-
-            return Result.Ok(Unit.Value);
+            return Result.Ok("Email confirmed");
         }
     }
 }

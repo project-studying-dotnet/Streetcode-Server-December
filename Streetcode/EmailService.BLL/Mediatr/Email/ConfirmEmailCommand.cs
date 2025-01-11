@@ -8,5 +8,5 @@ using System.Threading.Tasks;
 
 namespace EmailService.BLL.Mediatr.Email
 {
-    public record ConfirmEmailCommand(string Email , string Token) : IRequest<Result<Unit>>;
+    public record ConfirmEmailCommand(string Email , string Token) : IRequest<Result<string>>;
 }

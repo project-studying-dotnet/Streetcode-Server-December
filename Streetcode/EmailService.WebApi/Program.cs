@@ -8,6 +8,7 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Serilog;
 using StackExchange.Redis;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,7 @@ builder.Services.AddValidatorsFromAssemblyContaining<EmailDtoValidator>();
 
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddSingleton(Log.Logger);
 
@@ -46,7 +48,6 @@ builder.Services.AddSingleton<IAzureServiceBus, AzureServiceBus>(sb => new Azure
 builder.Services.AddHttpClient();
 
 // Setup Redis
-
 builder.Services.AddStackExchangeRedisCache(options =>
 {
     options.Configuration = builder.Configuration["RedisCache:Configuration"];

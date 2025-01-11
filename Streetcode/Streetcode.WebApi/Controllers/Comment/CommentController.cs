@@ -23,7 +23,6 @@ using AuthorizeRoles = Streetcode.WebApi.Attributes.AuthorizeRoles;
 
 namespace Streetcode.WebApi.Controllers.Comment
 {
-    [Route("[action]")]
     public class CommentController : BaseApiController
     {
         [HttpGet("{Id:int}")]

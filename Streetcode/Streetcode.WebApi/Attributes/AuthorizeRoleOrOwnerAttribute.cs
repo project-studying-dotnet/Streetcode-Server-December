@@ -3,55 +3,55 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Streetcode.BLL.DTO.Comment;
 using UserRole = Streetcode.DAL.Enums.UserRole;
 
 namespace Streetcode.WebApi.Attributes
 {
     public class AuthorizeRoleOrOwnerAttribute : Attribute, IAsyncActionFilter
     {
-        private readonly UserRole _role;
+        private readonly UserRole _requiredRole;
 
         public AuthorizeRoleOrOwnerAttribute(UserRole role)
         {
-            _role = role;
+            _requiredRole = role;
         }
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             var user = context.HttpContext.User;
 
+            // Check if the user is authenticated
             if (!IsUserAuthenticated(user))
             {
                 context.Result = new UnauthorizedResult();
                 return;
             }
 
-            if (IsUserInRole(user, _role))
+            // Check if the user has the required role
+            if (IsUserInRole(user, _requiredRole))
             {
                 await next();
                 return;
             }
 
-            if (!TryGetCommentId(context, out var commentId))
+            // Get the repository
+            var repository = context.HttpContext.RequestServices.GetService<IRepositoryWrapper>();
+
+            if (repository == null)
             {
-                context.Result = new BadRequestObjectResult("Invalid comment ID");
-                return;
+                throw new InvalidOperationException("Repository not found.");
             }
 
-            if (!TryGetUserName(user, out var userName))
+            // Get the user's name from the token
+            if (!TryGetUserName(user, out var userNameFromToken))
             {
                 context.Result = new ForbidResult();
                 return;
             }
 
-            var repository = context.HttpContext.RequestServices.GetService<IRepositoryWrapper>();
-
-            if (repository == null)
-            {
-                throw new InvalidOperationException("IRepositoryWrapper is not configured.");
-            }
-
-            if (!await IsUserOwner(repository, commentId, userName))
+            // Check if the user is the owner of the object
+            if (!await IsUserOwnerAsync(context, repository, userNameFromToken))
             {
                 context.Result = new ForbidResult();
                 return;
@@ -66,24 +66,35 @@ namespace Streetcode.WebApi.Attributes
         private static bool IsUserInRole(ClaimsPrincipal user, UserRole role) =>
             user?.IsInRole(role.ToString()) == true;
 
-        private static bool TryGetCommentId(ActionExecutingContext context, out int commentId)
+        private static bool TryGetUserName(ClaimsPrincipal user, out string userNameFromToken)
         {
-            commentId = 0;
-            return context.ActionArguments.TryGetValue("id", out var value) && value is int id && (commentId = id) > 0;
+            userNameFromToken = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return !string.IsNullOrEmpty(userNameFromToken);
         }
 
-        private static bool TryGetUserName(ClaimsPrincipal user, out string userName)
+        private static async Task<bool> IsUserOwnerAsync(ActionExecutingContext context, IRepositoryWrapper repository, string userNameFromToken)
         {
-            userName = user?.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
-            return !string.IsNullOrEmpty(userName);
-        }
+            if (!context.ActionArguments.TryGetValue("updateCommentDto", out var updateCommentDtoObj) || updateCommentDtoObj == null)
+            {
+                context.Result = new BadRequestObjectResult("Invalid input data");
+                return false;
+            }
 
-        private static async Task<bool> IsUserOwner(IRepositoryWrapper repository, int commentId, string userName)
-        {
+            var updateCommentDto = updateCommentDtoObj as UpdateCommentDto;
+            if (updateCommentDto == null)
+            {
+                return false;
+            }
+
+            var createdDate = updateCommentDto.CreatedDate;
+
+            var userName = updateCommentDto.UserFullName;
+
+            // Check if a comment exists with the given created date and username
             var comment = await repository.CommentRepository
-                .GetFirstOrDefaultAsync(c => c.Id == commentId);
+                .GetFirstOrDefaultAsync(c => c.CreatedDate == createdDate && userName == userNameFromToken);
 
-            return comment != null && comment.UserName == userName;
+            return comment != null;
         }
     }
 }

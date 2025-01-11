@@ -19,6 +19,7 @@ using Microsoft.Extensions.Options;
 using Streetcode.BLL.DTO.Users;
 using UserService.BLL.DTO.User;
 using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -199,6 +200,21 @@ app.MapPost("/reset-password", async (PassResetDto passResetDto, IUserPasswordSe
 
     return Results.Ok();
 });
+
+app.MapPost("/change-password", async (PassChangeDto passChangeDto, IUserPasswordService userPasswordService, HttpContext httpContext, IOptions<JwtConfiguration> jwtConfig) =>
+{
+    if (!httpContext.User.Identity?.IsAuthenticated ?? false)
+    {
+        return Results.Unauthorized();
+    }
+    var userName = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+    var result = await userPasswordService.ChangePassword(passChangeDto, userName);
+    if (result.IsFailed)
+        return Results.BadRequest(result.Errors);
+    
+    return Results.Ok();
+}).RequireAuthorization();
 
 RecurringJob.AddOrUpdate<TokenCleanupService>(
     "RemoveExpiredRefreshTokens",

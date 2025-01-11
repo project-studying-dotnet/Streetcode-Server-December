@@ -12,5 +12,6 @@ namespace UserService.BLL.Interfaces.User
     {
         public Task<Result> ResetPassword(PassResetDto passResetDto);
         public Task<Result> ForgotPassword(string email);
+        public Task<Result> ChangePassword(PassChangeDto passChangeDto, string username);
     }
 }

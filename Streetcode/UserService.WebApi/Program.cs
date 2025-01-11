@@ -19,6 +19,8 @@ using Microsoft.Extensions.Options;
 using Streetcode.BLL.DTO.Users;
 using UserService.BLL.DTO.User;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,11 +41,21 @@ builder.Services.AddIdentityMongoDbProvider<User, Role>(identityOptions =>
     identityOptions.Password.RequireDigit = false;
     identityOptions.Password.RequiredLength = 6;
     identityOptions.Password.RequireUppercase = false;
+
+    // Configure token lifespan for email confirmation
+    identityOptions.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultProvider;
 }, mongoIdentityOptions =>
 {
     mongoIdentityOptions.ConnectionString = mongoConnectionString;
 });
 
+// Configure the token lifespan for the default token provider
+var emailConfirmationTokenLifeSpan = 2;
+
+builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
+{
+    options.TokenLifespan = TimeSpan.FromMinutes(emailConfirmationTokenLifeSpan); // Set token lifespan to 2 minutes
+});
 
 // JWT Configuration for DI
 builder.Services.Configure<JwtConfiguration>(builder.Configuration.GetSection("Jwt"));
@@ -89,6 +101,7 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddScoped<IClaimsService, ClaimsService>();
+builder.Services.AddScoped<IEmailConfirmationService, EmailConfirmationService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<IUserService, RegistrationService>();
@@ -198,6 +211,20 @@ app.MapPost("/reset-password", async (PassResetDto passResetDto, IUserPasswordSe
         return Results.BadRequest(result.Errors);
 
     return Results.Ok();
+});
+
+app.MapGet("/api/email-confirmation", async (HttpContext httpContext, string userId, string token, IEmailConfirmationService emailConfirmationService, IOptions<JwtConfiguration> jwtConfig) =>
+{
+    var result = await emailConfirmationService.ConfirmEmailAsync(userId, token);
+    if (result.IsSuccess)
+    {
+        httpContext.AppendTokenToCookie(token, jwtConfig);
+        return Results.Ok(new { Token = result.Value });
+    }
+    else
+    {
+        return Results.BadRequest(result.Errors);
+    }
 });
 
 RecurringJob.AddOrUpdate<TokenCleanupService>(

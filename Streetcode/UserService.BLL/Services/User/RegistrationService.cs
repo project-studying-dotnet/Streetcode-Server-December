@@ -7,6 +7,11 @@ using UserService.BLL.DTO.Users;
 using UserService.BLL.DTO.User;
 using UserService.BLL.Interfaces.User;
 using UserEntity = UserService.DAL.Entities.Users.User;
+using UserService.BLL.Interfaces.Azure;
+using MongoDB.Bson.IO;
+using System;
+using UserService.BLL.DTO.PublishDtos;
+using Newtonsoft.Json;
 
 namespace UserService.BLL.Services.User;
 
@@ -15,12 +20,14 @@ public class RegistrationService : IUserService
     private readonly UserManager<UserEntity> _userManager;
     private readonly IMapper _mapper;
     private readonly ILogger<RegistrationService> _logger;
+    private readonly IAzureServiceBus _bus;
 
-    public RegistrationService(UserManager<UserEntity> userManager, IMapper mapper, ILogger<RegistrationService> logger)
+    public RegistrationService(UserManager<UserEntity> userManager, IMapper mapper, ILogger<RegistrationService> logger, IAzureServiceBus bus)
     {
         _userManager = userManager;
         _mapper = mapper;
         _logger = logger;
+        _bus = bus;
     }
     public async Task<Result<UserDto>> Registration(RegistrationDto registrationDto)
     {
@@ -65,7 +72,24 @@ public class RegistrationService : IUserService
             _logger.LogWarning(errMsg);
             return Result.Fail(errMsg);
         }
-        
+
+        // Generate a unique confirmation token
+        var emailToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+        // Sending a message to Service Bus for email
+        var emailMessage = new EmailMessagePublishDto
+        {
+            To = registrationDto.Email,
+            From = "noreply@yourdomain.com",
+            Subject = "Confirm your email",
+            Content = $"Please confirm your email by clicking the link: " +
+                      $"https://yourdomain.com/confirm-email?userId={user.Id}&token={Uri.EscapeDataString(emailToken)}"
+        };
+
+        var message = Newtonsoft.Json.JsonConvert.SerializeObject(emailMessage);
+        await _bus.SendMessage("emailQueue", message);
+
+        _logger.LogInformation("Confirmation email sent to {Email}", registrationDto.Email);
         return Result.Ok(_mapper.Map<UserEntity, UserDto>(user));
     }
 }

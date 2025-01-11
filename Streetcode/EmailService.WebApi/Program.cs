@@ -51,6 +51,7 @@ builder.Services.AddHttpClient();
 builder.Services.AddStackExchangeRedisCache(options =>
 {
     options.Configuration = builder.Configuration["RedisCache:Configuration"];
+    options.Configuration = builder.Configuration["RedisCache:InstanceName"];
 });
 builder.Services.AddSingleton<ICacheService, RedisCacheService>();
 

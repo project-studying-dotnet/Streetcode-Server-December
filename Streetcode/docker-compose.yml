@@ -66,17 +66,19 @@ services:
         - streetcode
 
   cacheEmail:
-        image: redis:6.2-alpine
-        container_name: redis-cache-email
-        restart: always
-        hostname: redis-cache-email
-        ports:
-          - '6381:6381'
-        env_file:
-          - cacheEmail.env
-        networks:
-          - streetcode
+    image: redis:6.2-alpine
+    container_name: redis-cache-email
+    restart: always
+    hostname: redis-cache-email
+    ports:
+      - '6381:6381'
+    env_file:
+      - cacheEmail.env
+    networks:
+      - email
  
 networks:
   streetcode:
+    driver: bridge
+  email:
     driver: bridge

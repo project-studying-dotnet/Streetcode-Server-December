@@ -40,7 +40,14 @@ jobs:
         run: dotnet build ./Streetcode/Streetcode.sln --configuration Release --no-restore
 
       - name: Test and Code Coverage
-        run: dotnet-coverage collect "dotnet test ./Streetcode/Streetcode.XUnitTest/Streetcode.XUnitTest.csproj ./Streetcode/UserService.XUnitTest/UserService.XUnitTest.csproj ./Streetcode/EmailService.XUnitTest/EmailService.XUnitTest.csproj --configuration Release --results-directory ./coverage --logger trx" -f xml -o coverage.xml
+        run: |
+          dotnet-coverage collect "dotnet test ./Streetcode/Streetcode.XUnitTest/Streetcode.XUnitTest.csproj --configuration Release --results-directory ./coverage/Streetcode --logger trx" -f xml -o coverage-Streetcode.xml
+          dotnet-coverage collect "dotnet test ./Streetcode/UserService.XUnitTest/UserService.XUnitTest.csproj --configuration Release --results-directory ./coverage/UserService --logger trx" -f xml -o coverage-UserService.xml
+          dotnet-coverage collect "dotnet test ./Streetcode/EmailService.XUnitTest/EmailService.XUnitTest.csproj --configuration Release --results-directory ./coverage/EmailService --logger trx" -f xml -o coverage-EmailService.xml
+
+      - name: Merge Coverage Reports
+        run: |
+          reportgenerator -reports:coverage-*.xml -targetdir:coverage-merged -reporttypes:Html
     
       - name: SonarScanner Analysis
         id: sonar

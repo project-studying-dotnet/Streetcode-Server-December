@@ -18,6 +18,7 @@ using Hangfire.Mongo.Migration.Strategies.Backup;
 using Microsoft.Extensions.Options;
 using Streetcode.BLL.DTO.Users;
 using UserService.BLL.DTO.User;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -92,6 +93,7 @@ builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<IUserService, RegistrationService>();
 builder.Services.AddScoped<ITokenCleanupService, TokenCleanupService>();
+builder.Services.AddScoped<IUserPasswordService, UserPasswordService>();
 
 var currentAssemblies = AppDomain.CurrentDomain.GetAssemblies();
 builder.Services.AddAutoMapper(currentAssemblies);
@@ -178,6 +180,24 @@ app.MapPost("/refresh-token", async (TokenRequestDTO tokenRequest, ILoginService
     var token = refreshResult.Value;
     httpContext.AppendTokenToCookie(token.AccessToken, jwtConfig);
     return Results.Ok(refreshResult.Value);
+});
+
+app.MapPost("/forgot-password", async (string email, IUserPasswordService userPasswordService, HttpContext httpContext, IOptions<JwtConfiguration> jwtConfig) =>
+{
+    var result = await userPasswordService.ForgotPassword(email);
+    if (result.IsFailed)
+        return Results.BadRequest(result.Errors);
+
+    return Results.Ok();
+});
+
+app.MapPost("/reset-password", async (PassResetDto passResetDto, IUserPasswordService userPasswordService, HttpContext httpContext, IOptions<JwtConfiguration> jwtConfig) =>
+{
+    var result = await userPasswordService.ResetPassword(passResetDto);
+    if (result.IsFailed)
+        return Results.BadRequest(result.Errors);
+
+    return Results.Ok();
 });
 
 RecurringJob.AddOrUpdate<TokenCleanupService>(

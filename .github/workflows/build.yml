@@ -40,12 +40,12 @@ jobs:
         run: dotnet build ./Streetcode/Streetcode.sln --configuration Release --no-restore
 
       - name: Test and Code Coverage
-        run: dotnet-coverage collect "dotnet test ./Streetcode/Streetcode.XUnitTest/Streetcode.XUnitTest.csproj --configuration Release --results-directory ./coverage --logger trx" -f xml -o coverage.xml
+        run: dotnet-coverage collect "dotnet test ./Streetcode/Streetcode.XUnitTest/Streetcode.XUnitTest.csproj ./Streetcode/UserService.XUnitTest/UserService.XUnitTest.csproj ./Streetcode/EmailService.XUnitTest/EmailService.XUnitTest.csproj --configuration Release --results-directory ./coverage --logger trx" -f xml -o coverage.xml
     
       - name: SonarScanner Analysis
         id: sonar
         run: |
           dotnet sonarscanner begin /k:"project-studying-dotnet_Streetcode-Server-December" /o:"project-studying-dotnet" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths="**/coverage.xml"
           dotnet build ./Streetcode/Streetcode.sln --configuration Release
-          dotnet test ./Streetcode/Streetcode.XUnitTest/Streetcode.XUnitTest.csproj --configuration Release --no-build --verbosity normal
+          dotnet test ./Streetcode/Streetcode.XUnitTest/Streetcode.XUnitTest.csproj ./Streetcode/UserService.XUnitTest/UserService.XUnitTest.csproj ./Streetcode/EmailService.XUnitTest/EmailService.XUnitTest.csproj --configuration Release --no-build --verbosity normal
           dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"

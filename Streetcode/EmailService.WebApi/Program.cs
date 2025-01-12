@@ -50,8 +50,8 @@ builder.Services.AddHttpClient();
 // Setup Redis
 builder.Services.AddStackExchangeRedisCache(options =>
 {
-    options.Configuration = builder.Configuration["RedisCache:Configuration"];
-    options.Configuration = builder.Configuration["RedisCache:InstanceName"];
+    options.Configuration = builder.Configuration["RedisCacheEmail:Configuration"];
+    options.Configuration = builder.Configuration["RedisCacheEmail:InstanceName"];
 });
 builder.Services.AddSingleton<ICacheService, RedisCacheService>();
 

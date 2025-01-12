@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using FluentAssertions;
+using Microsoft.AspNetCore.Identity;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UserService.BLL.DTO.User;
 using UserService.BLL.Interfaces.Azure;
+using UserService.BLL.Interfaces.User;
 using UserService.BLL.Services.User;
 using UserEntity = UserService.DAL.Entities.Users.User;
 
@@ -23,6 +25,131 @@ namespace UserService.XUnitTest.ServicesTests.User
             _mockUserManager = MockUserManager();
             _mockBus = new Mock<IAzureServiceBus>();
             _service = new UserPasswordService(_mockUserManager.Object, _mockBus.Object);
+        }
+
+        [Fact]
+        public async Task ChangePassword_UserDoesNotExist_ShouldReturnFail()
+        {
+            // Arrange
+            string username = "nonexistentUser";
+            _mockUserManager.Setup(m => m.FindByNameAsync(username)).ReturnsAsync((UserEntity)null);
+
+            var passChangeDto = new PassChangeDto
+            {
+                Password = "newPassword",
+                PasswordConfirm = "newPassword",
+                OldPassword = "oldPassword"
+            };
+
+            // Act
+            var result = await _service.ChangePassword(passChangeDto, username);
+
+            // Assert
+            result.IsSuccess.Should().BeFalse();
+            result.Errors.Should().Contain(e => e.Message == "User does not exist!");
+        }
+
+        [Fact]
+        public async Task ChangePassword_PasswordsDoNotMatch_ShouldReturnFail()
+        {
+            // Arrange
+            string username = "testUser";
+            var user = new UserEntity { UserName = username };
+            _mockUserManager.Setup(m => m.FindByNameAsync(username)).ReturnsAsync(user);
+
+            var passChangeDto = new PassChangeDto
+            {
+                Password = "newPassword",
+                PasswordConfirm = "differentPassword",
+                OldPassword = "oldPassword"
+            };
+
+            // Act
+            var result = await _service.ChangePassword(passChangeDto, username);
+
+            // Assert
+            result.IsSuccess.Should().BeFalse();
+            result.Errors.Should().Contain(e => e.Message == "Password and Confirm Password fields do not match.");
+        }
+
+        [Fact]
+        public async Task ChangePassword_InvalidOldPassword_ShouldReturnFail()
+        {
+            // Arrange
+            string username = "testUser";
+            var user = new UserEntity { UserName = username };
+            _mockUserManager.Setup(m => m.FindByNameAsync(username)).ReturnsAsync(user);
+            _mockUserManager.Setup(m => m.CheckPasswordAsync(user, "oldPassword")).ReturnsAsync(false);
+
+            var passChangeDto = new PassChangeDto
+            {
+                Password = "newPassword",
+                PasswordConfirm = "newPassword",
+                OldPassword = "oldPassword"
+            };
+
+            // Act
+            var result = await _service.ChangePassword(passChangeDto, username);
+
+            // Assert
+            result.IsSuccess.Should().BeFalse();
+            result.Errors.Should().Contain(e => e.Message == "Invalid Old Password credential.");
+        }
+
+        [Fact]
+        public async Task ChangePassword_FailedToChangePassword_ShouldReturnFail()
+        {
+            // Arrange
+            string username = "testUser";
+            var user = new UserEntity { UserName = username };
+            _mockUserManager.Setup(m => m.FindByNameAsync(username)).ReturnsAsync(user);
+            _mockUserManager.Setup(m => m.CheckPasswordAsync(user, "oldPassword")).ReturnsAsync(true);
+            _mockUserManager.Setup(m => m.ChangePasswordAsync(user, "oldPassword", "newPassword"))
+                .ReturnsAsync(IdentityResult.Failed());
+
+            var passChangeDto = new PassChangeDto
+            {
+                Password = "newPassword",
+                PasswordConfirm = "newPassword",
+                OldPassword = "oldPassword"
+            };
+
+            // Act
+            var result = await _service.ChangePassword(passChangeDto, username);
+
+            // Assert
+            result.IsSuccess.Should().BeFalse();
+            result.Errors.Should().Contain(e => e.Message == "Cannot change password for user");
+        }
+
+        [Fact]
+        public async Task ChangePassword_Success_ShouldSendEmailAndReturnOk()
+        {
+            // Arrange
+            string username = "testUser";
+            var user = new UserEntity { UserName = username, Email = "test@example.com" };
+            _mockUserManager.Setup(m => m.FindByNameAsync(username)).ReturnsAsync(user);
+            _mockUserManager    .Setup(m => m.CheckPasswordAsync(user, "oldPassword")).ReturnsAsync(true);
+            _mockUserManager.Setup(m => m.ChangePasswordAsync(user, "oldPassword", "newPassword"))
+                .ReturnsAsync(IdentityResult.Success);
+
+            var passChangeDto = new PassChangeDto
+            {
+                Password = "newPassword",
+                PasswordConfirm = "newPassword",
+                OldPassword = "oldPassword"
+            };
+
+            // Act
+            var result = await _service.ChangePassword(passChangeDto, username);
+
+            // Assert
+            Assert.True(result.IsSuccess);
+
+            _mockBus.Verify(bus => bus.SendMessage(
+                "emailQueue",
+                It.Is<string>(s => s.Contains("test@example.com") && s.Contains("succesfully changed your password"))
+            ), Times.Once);
         }
 
         [Fact]

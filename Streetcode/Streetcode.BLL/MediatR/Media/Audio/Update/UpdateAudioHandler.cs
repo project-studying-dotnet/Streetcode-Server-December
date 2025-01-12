@@ -5,6 +5,7 @@ using Streetcode.BLL.DTO.Media.Audio;
 using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Resources;
+using Streetcode.BLL.Specifications.Media.Audio;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Media.Audio.Update
@@ -29,7 +30,7 @@ namespace Streetcode.BLL.MediatR.Media.Audio.Update
             try
             {
                 var existingAudio = await _repositoryWrapper.AudioRepository
-                    .GetFirstOrDefaultAsync(a => a.Id == request.Audio.Id);
+                 .GetFirstOrDefaultBySpecAsync(new GetAudioByIdSpecification(request.Audio.Id));
 
                 if (existingAudio is null)
                 {

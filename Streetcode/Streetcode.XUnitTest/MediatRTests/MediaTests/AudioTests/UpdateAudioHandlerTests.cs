@@ -7,6 +7,7 @@ using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Media.Audio.Update;
 using Streetcode.BLL.Resources;
+using Streetcode.BLL.Specifications.Media.Audio;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using System.Linq.Expressions;
 using Xunit;
@@ -144,7 +145,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
             var testAudio = GetAudio();
             var testAudioDTO = GetAudioDTO();
 
-            SetupUpdateRepository(1, testAudio);
+            SetupUpdateRepositoryWithSpec(1, testAudio);
             SetupBlobService();
             SetupMapper(testAudio, testAudioDTO);
 
@@ -156,7 +157,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
             var testUpdateAudioDTO = GetUpdateAudioDTO();
 
             _mockRepository.Setup(repo => repo.AudioRepository
-                .GetFirstOrDefaultAsync(It.IsAny<Expression<Func<AudioEntity, bool>>>(), null))
+                .GetFirstOrDefaultBySpecAsync(It.IsAny<GetAudioByIdSpecification>()))
                 .ReturnsAsync((AudioEntity)null!);
 
             return new UpdateAudioCommand(testUpdateAudioDTO);
@@ -167,7 +168,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
             var testUpdateAudioDTO = GetUpdateAudioDTO();
             var testAudio = GetAudio();
 
-            SetupUpdateRepository(1, testAudio);
+            SetupUpdateRepositoryWithSpec(1, testAudio);
 
             _mockBlobService.Setup(service => service.UpdateFileInStorage(
                 It.IsAny<string>(),
@@ -184,7 +185,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
             var testUpdateAudioDTO = GetUpdateAudioDTO();
             var testAudio = GetAudio();
 
-            SetupUpdateRepository(0, testAudio);
+            SetupUpdateRepositoryWithSpec(0, testAudio);
             SetupBlobService();
             SetupMapper(testAudio, GetAudioDTO());
 
@@ -216,12 +217,13 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
             MimeType = "string",
         };
 
-        private void SetupUpdateRepository(int returnNumber, AudioEntity audioEntity)
+        private void SetupUpdateRepositoryWithSpec(int returnNumber, AudioEntity audioEntity)
         {
-            _mockRepository.Setup(x => x.AudioRepository.Update(It.IsAny<AudioEntity>()));
             _mockRepository.Setup(repo => repo.AudioRepository
-                .GetFirstOrDefaultAsync(It.IsAny<Expression<Func<AudioEntity, bool>>>(), It.IsAny<Func<IQueryable<AudioEntity>, IIncludableQueryable<AudioEntity, object>>>()))
+                .GetFirstOrDefaultBySpecAsync(It.IsAny<GetAudioByIdSpecification>()))
                 .ReturnsAsync(audioEntity);
+
+            _mockRepository.Setup(x => x.AudioRepository.Update(It.IsAny<AudioEntity>()));
             _mockRepository.Setup(x => x.SaveChangesAsync()).ReturnsAsync(returnNumber);
         }
 

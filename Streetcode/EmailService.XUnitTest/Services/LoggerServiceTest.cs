@@ -24,6 +24,27 @@ namespace EmailService.XUnitTest.Services
 		}
 
 		[Fact]
+		public void Log_CallsWriteWithCorrectParameters()
+		{
+			// Arrange
+			var level = LogEventLevel.Information;
+			var message = "Test log message";
+			var values = new object[] { "value1", "value2" };
+
+			// Act
+			_loggerService.GetType().GetMethod("Log", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+				.Invoke(_loggerService, new object[] { level, message, values });
+
+			// Assert
+			_loggerMock.Verify(logger => logger.Write(
+				level,
+				message,
+				It.Is<object[]>(args => args.Length == 2 && args[0].ToString() == "value1" && args[1].ToString() == "value2")),
+				Times.Once);
+		}
+
+
+		[Fact]
 		public void LogInformation_CallsInformationWithCorrectMessage()
 		{
 			// Arrange

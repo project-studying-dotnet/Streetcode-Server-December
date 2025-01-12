@@ -1,4 +1,4 @@
-﻿using Moq;
+using Moq;
 using FluentAssertions;
 using MediatR;
 using Streetcode.BLL.DTO.Streetcode.TextContent;

@@ -85,12 +85,13 @@ public class RegistrationService : IUserService
         var emailToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
         // Sending a message to Service Bus for email
+        var senderEmail = _config["Email:From"];
         var confirmationUrl = $"{_config["Email:ConfirmationUrl"]}?userId={user.Id}&token={Uri.EscapeDataString(emailToken)}";
 
         var emailMessage = new EmailMessagePublishDto
         {
             To = registrationDto.Email,
-            From = "noreply@yourdomain.com",
+            From = senderEmail,
             Subject = "Confirm your email",
             Content = $"Please confirm your email by clicking the link: " + $"{confirmationUrl}"
         };

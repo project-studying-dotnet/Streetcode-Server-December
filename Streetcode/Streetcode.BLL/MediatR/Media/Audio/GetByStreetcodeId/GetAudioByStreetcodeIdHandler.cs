@@ -8,6 +8,8 @@ using Streetcode.BLL.MediatR.ResultVariations;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
+using Streetcode.BLL.Specifications.Media.Audio;
+using Streetcode.BLL.Specifications.Streetcode.Streetcode;
 
 namespace Streetcode.BLL.MediatR.Media.Audio.GetByStreetcodeId
 {
@@ -29,9 +31,7 @@ namespace Streetcode.BLL.MediatR.Media.Audio.GetByStreetcodeId
 
         public async Task<Result<AudioDto>> Handle(GetAudioByStreetcodeIdQuery request, CancellationToken cancellationToken)
         {
-            var streetcode = await _repositoryWrapper.StreetcodeRepository.GetFirstOrDefaultAsync(
-                s => s.Id == request.StreetcodeId,
-                include: q => q.Include(s => s.Audio)!);
+            var streetcode = await _repositoryWrapper.StreetcodeRepository.GetFirstOrDefaultBySpecAsync(new GetStreetcodeWithAudioSpecification(request.StreetcodeId));
 
             if (streetcode == null)
             {

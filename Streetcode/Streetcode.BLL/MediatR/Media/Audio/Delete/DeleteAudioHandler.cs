@@ -3,6 +3,7 @@ using MediatR;
 using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Resources;
+using Streetcode.BLL.Specifications.Media.Audio;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Media.Audio.Delete
@@ -22,7 +23,7 @@ namespace Streetcode.BLL.MediatR.Media.Audio.Delete
 
         public async Task<Result<Unit>> Handle(DeleteAudioCommand request, CancellationToken cancellationToken)
         {
-            var audio = await _repositoryWrapper.AudioRepository.GetFirstOrDefaultAsync(a => a.Id == request.Id);
+            var audio = await _repositoryWrapper.AudioRepository.GetFirstOrDefaultBySpecAsync(new GetAudioByIdSpecification(request.Id));
 
             if (audio is null)
             {

@@ -4,7 +4,7 @@ using Streetcode.BLL.DTO.Comment;
 
 namespace Streetcode.BLL.MediatR.Comment.CreateReply
 {
-    public record CreateReplyCommand(CreateReplyDto createReplyDto) : IRequest<Result<CreateReplyDto>>
+    public record CreateReplyCommand(CreateReplyDto createReplyDto, string UserName) : IRequest<Result<CreateReplyDto>>
     {
     }
 }

@@ -1,4 +1,4 @@
-﻿using AspNetCore.Identity.Mongo;
+using AspNetCore.Identity.Mongo;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using UserService.DAL.Entities.Roles;
@@ -21,6 +21,7 @@ using UserService.BLL.DTO.User;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -115,7 +116,6 @@ builder.Services.AddSingleton<IAzureServiceBus, AzureServiceBus>(sb =>
     new AzureServiceBus(azureServiceBusConn));
 builder.Services.AddHttpClient();
 
-
 // Configure Hangfire MongoStorage with Migration
 var migrationOptions = new MongoMigrationOptions
 {
@@ -129,7 +129,6 @@ var storageOptions = new MongoStorageOptions
     CheckQueuedJobsStrategy = CheckQueuedJobsStrategy.TailNotificationsCollection
 };
 
-
 builder.Services.AddHangfire(configuration => configuration
     .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
     .UseSimpleAssemblyNameTypeSerializer()
@@ -140,8 +139,6 @@ builder.Services.AddHangfireServer();
 
 var app = builder.Build();
 await app.SeedDataAsync();
-
-
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -226,6 +223,21 @@ app.MapGet("/confirm-email", async (HttpContext httpContext, string userId, stri
         return Results.BadRequest(result.Errors);
     }
 });
+
+app.MapPost("/change-password", async (PassChangeDto passChangeDto, IUserPasswordService userPasswordService, HttpContext httpContext, IOptions<JwtConfiguration> jwtConfig) =>
+{
+    if (!httpContext.User.Identity?.IsAuthenticated ?? false)
+    {
+        return Results.Unauthorized();
+    }
+    var userName = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+    var result = await userPasswordService.ChangePassword(passChangeDto, userName);
+    if (result.IsFailed)
+        return Results.BadRequest(result.Errors);
+    
+    return Results.Ok();
+}).RequireAuthorization();
 
 RecurringJob.AddOrUpdate<TokenCleanupService>(
     "RemoveExpiredRefreshTokens",

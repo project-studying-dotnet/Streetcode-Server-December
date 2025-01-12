@@ -28,6 +28,44 @@ namespace UserService.BLL.Services.User
             _bus = bus;
         }
 
+        public async Task<Result> ChangePassword(PassChangeDto passChangeDto, string username)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null)
+                return Result.Fail("User does not exist!");
+
+            if (passChangeDto.Password != passChangeDto.PasswordConfirm)
+            {
+                return Result.Fail("Password and Confirm Password fields do not match.");
+            }
+
+            if (!await _userManager.CheckPasswordAsync(user, passChangeDto.OldPassword))
+            {
+                return Result.Fail("Invalid Old Password credential.");
+            }
+
+            var changePassword = await _userManager.ChangePasswordAsync(user, passChangeDto.OldPassword, passChangeDto.Password);
+
+            if (!changePassword.Succeeded)
+            {
+                return Result.Fail("Cannot change password for user");
+            }
+
+            var messagePublishDto = new EmailMessagePublishDto
+            {
+                From = "Streetcode",
+                To = user.Email,
+                Content = "You succesfully changed your password. If that was not you, than contact our administration:{FrontEnd link to Contacting Administration}",
+                Subject = "ChangePassword"
+            };
+
+            var objAsText = JsonConvert.SerializeObject(messagePublishDto);
+
+            await _bus.SendMessage("emailQueue", objAsText);
+
+            return Result.Ok();
+        }
+
         public async Task<Result> ForgotPassword(string email)
         {
             try

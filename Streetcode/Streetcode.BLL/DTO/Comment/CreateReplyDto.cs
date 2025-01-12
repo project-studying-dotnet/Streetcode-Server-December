@@ -8,7 +8,6 @@ namespace Streetcode.BLL.DTO.Comment
 {
     public class CreateReplyDto
     {
-        public string UserName { get; set; } = string.Empty;
         public string UserFullName { get; set; } = string.Empty;
         public DateTime CreatedDate { get; set; }
         public DateTime? DateModified { get; set; }

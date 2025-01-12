@@ -213,12 +213,12 @@ app.MapPost("/reset-password", async (PassResetDto passResetDto, IUserPasswordSe
     return Results.Ok();
 });
 
-app.MapGet("/api/email-confirmation", async (HttpContext httpContext, string userId, string token, IEmailConfirmationService emailConfirmationService, IOptions<JwtConfiguration> jwtConfig) =>
+app.MapGet("/confirm-email", async (HttpContext httpContext, string userId, string token, IEmailConfirmationService emailConfirmationService, IOptions<JwtConfiguration> jwtConfig) =>
 {
     var result = await emailConfirmationService.ConfirmEmailAsync(userId, token);
     if (result.IsSuccess)
     {
-        httpContext.AppendTokenToCookie(token, jwtConfig);
+        httpContext.AppendTokenToCookie(result.Value, jwtConfig);
         return Results.Ok(new { Token = result.Value });
     }
     else

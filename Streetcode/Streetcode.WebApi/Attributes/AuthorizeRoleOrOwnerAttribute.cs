@@ -88,11 +88,9 @@ namespace Streetcode.WebApi.Attributes
 
             var createdDate = updateCommentDto.CreatedDate;
 
-            var userName = updateCommentDto.UserFullName;
-
             // Check if a comment exists with the given created date and username
             var comment = await repository.CommentRepository
-                .GetFirstOrDefaultAsync(c => c.CreatedDate == createdDate && userName == userNameFromToken);
+                .GetFirstOrDefaultAsync(c => c.CreatedDate == createdDate && c.UserName == userNameFromToken);
 
             return comment != null;
         }

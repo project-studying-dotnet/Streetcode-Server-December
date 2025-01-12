@@ -319,6 +319,8 @@ namespace UserService.XUnitTest.ServicesTests.User
 
             _configMock.Setup(c => c["Email:ConfirmationUrl"])
                 .Returns("https://example.com/confirm");
+            _configMock.Setup(c => c["Email:From"])
+                .Returns("noreply@yourdomain.com");
 
             _busMock.Setup(bus => bus.SendMessage(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(Task.CompletedTask);

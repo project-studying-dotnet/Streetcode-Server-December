@@ -7,10 +7,6 @@ namespace Streetcode.BLL.Validation.Validators.DTOValidators.Comment
     {
         public CreateReplyDtoValidator()
         {
-            RuleFor(x => x.UserName)
-                .NotEmpty().WithMessage("UserName is required.")
-                .MaximumLength(50).WithMessage("UserName must not exceed 50 characters.");
-
             RuleFor(x => x.UserFullName)
                 .NotEmpty().WithMessage("UserFullName is required.")
                 .MaximumLength(100).WithMessage("UserFullName must not exceed 100 characters.");

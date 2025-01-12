@@ -16,34 +16,6 @@ namespace Streetcode.Tests.Validation.Validators
         }
 
         [Fact]
-        public void Should_HaveError_When_UserNameIsEmpty()
-        {
-            // Arrange
-            var model = new CreateReplyDto { UserName = "" };
-
-            // Act
-            var result = _validator.TestValidate(model);
-
-            // Assert
-            result.ShouldHaveValidationErrorFor(x => x.UserName)
-                  .WithErrorMessage("UserName is required.");
-        }
-
-        [Fact]
-        public void Should_HaveError_When_UserNameExceedsMaxLength()
-        {
-            // Arrange
-            var model = new CreateReplyDto { UserName = new string('a', 51) };
-
-            // Act
-            var result = _validator.TestValidate(model);
-
-            // Assert
-            result.ShouldHaveValidationErrorFor(x => x.UserName)
-                  .WithErrorMessage("UserName must not exceed 50 characters.");
-        }
-
-        [Fact]
         public void Should_HaveError_When_UserFullNameIsEmpty()
         {
             // Arrange
@@ -163,7 +135,6 @@ namespace Streetcode.Tests.Validation.Validators
             // Arrange
             var model = new CreateReplyDto
             {
-                UserName = "ValidUser",
                 UserFullName = "Valid Full Name",
                 CreatedDate = now,
                 Content = "Valid content",

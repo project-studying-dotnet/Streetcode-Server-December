@@ -20,6 +20,7 @@ using Streetcode.WebApi.Attributes;
 using Streetcode.DAL.Enums;
 using UserRole = Streetcode.DAL.Enums.UserRole;
 using AuthorizeRoles = Streetcode.WebApi.Attributes.AuthorizeRoles;
+using System.Security.Claims;
 
 namespace Streetcode.WebApi.Controllers.Comment
 {
@@ -46,7 +47,8 @@ namespace Streetcode.WebApi.Controllers.Comment
         [HttpPost]
         public async Task<ActionResult<GetCommentDto>> Create([FromBody] CreateCommentDto createCommentDto)
         {
-            return HandleResult(await Mediator.Send(new CreateCommentCommand(createCommentDto)));
+            var userName = GetUserName();
+            return HandleResult(await Mediator.Send(new CreateCommentCommand(createCommentDto, userName)));
         }
 
         [HttpPut]
@@ -88,7 +90,13 @@ namespace Streetcode.WebApi.Controllers.Comment
         [HttpPost]
         public async Task<ActionResult<CreateReplyDto>> CreateReply([FromBody] CreateReplyDto createReplyDto)
         {
-            return HandleResult(await Mediator.Send(new CreateReplyCommand(createReplyDto)));
+            var userName = GetUserName();
+            return HandleResult(await Mediator.Send(new CreateReplyCommand(createReplyDto, userName)));
+        }
+
+        private string GetUserName()
+        {
+            return User?.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
         }
     }
 }

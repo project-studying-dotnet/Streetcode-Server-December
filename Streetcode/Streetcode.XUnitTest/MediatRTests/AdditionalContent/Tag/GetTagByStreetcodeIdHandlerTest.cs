@@ -8,7 +8,7 @@ using Streetcode.BLL.DTO.Streetcode;
 using Streetcode.BLL.MediatR.AdditionalContent.Tag.GetByStreetcodeId;
 using Streetcode.DAL.Entities.Streetcode;
 using Xunit;
-using StreetcodeTagIndexEntity = Streetcode.DAL.Entities.AdditionalContent.StreetcodeTagIndex;
+using StreetcodeTagIndexEntity = Streetcode.Domain.Entities.AdditionalContent.StreetcodeTagIndex;
 
 namespace Streetcode.XUnitTest.MediatRTests.AdditionalContent.Tag;
 

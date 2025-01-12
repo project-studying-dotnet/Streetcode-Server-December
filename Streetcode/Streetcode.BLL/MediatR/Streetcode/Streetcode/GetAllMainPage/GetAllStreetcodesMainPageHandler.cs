@@ -5,8 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.DTO.Streetcode;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Streetcode.Streetcode.GetAllStreetcodesMainPage;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.GetAllMainPage
 {
@@ -27,7 +27,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.GetAllMainPage
         public async Task<Result<IEnumerable<StreetcodeMainPageDto>>> Handle(GetAllStreetcodesMainPageQuery request, CancellationToken cancellationToken)
         {
             var streetcodes = await _repositoryWrapper.StreetcodeRepository.GetAllAsync(
-                predicate: sc => sc.Status == DAL.Enums.StreetcodeStatus.Published,
+                predicate: sc => sc.Status == Streetcode.Domain.Enums.StreetcodeStatus.Published,
                 include: src => src.Include(item => item.Text).Include(item => item.Images));
 
             if (streetcodes != null)

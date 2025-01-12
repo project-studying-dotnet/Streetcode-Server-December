@@ -16,14 +16,14 @@ namespace Streetcode.BLL.Services.Audio
             _blobService = blobService;
         }
 
-        public DAL.Entities.Media.Audio ConfigureAudio(AudioFileBaseCreateDto audioDTO)
+        public Domain.Entities.Media.Audio ConfigureAudio(AudioFileBaseCreateDto audioDTO)
         {
             string hashBlobStorageName = _blobService.SaveFileInStorage(
                 audioDTO.BaseFormat,
                 audioDTO.Title,
                 audioDTO.Extension).Result;
 
-            var audio = _mapper.Map<DAL.Entities.Media.Audio>(audioDTO);
+            var audio = _mapper.Map<Domain.Entities.Media.Audio>(audioDTO);
 
             audio.BlobName = $"{hashBlobStorageName}.{audioDTO.Extension}";
 

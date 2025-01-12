@@ -1,4 +1,4 @@
-﻿using Streetcode.DAL.Entities.Payment;
+﻿using Streetcode.Domain.Entities.Payment;
 
 namespace Streetcode.BLL.Interfaces.Payment
 {

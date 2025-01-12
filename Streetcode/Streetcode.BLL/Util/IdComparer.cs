@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Streetcode.DAL.Entities.Partners;
+using Streetcode.Domain.Entities.Partners;
 
 namespace Streetcode.BLL.Util
 {

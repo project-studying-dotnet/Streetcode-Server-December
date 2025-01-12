@@ -1,6 +1,6 @@
 using AutoMapper;
 using Streetcode.BLL.DTO.Media.Video;
-using Streetcode.DAL.Entities.Media;
+using Streetcode.Domain.Entities.Media;
 
 namespace Streetcode.BLL.Mapping.Media
 {

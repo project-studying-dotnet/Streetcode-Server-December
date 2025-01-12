@@ -3,10 +3,10 @@ using FluentResults;
 using Streetcode.BLL.DTO.Media.Art;
 using AutoMapper;
 using Streetcode.BLL.Interfaces.Logging;
-using ArtEntity = Streetcode.DAL.Entities.Media.Images.Art;
-using StreetcodeArtEntity = Streetcode.DAL.Entities.Streetcode.StreetcodeArt;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using ArtEntity = Streetcode.Domain.Entities.Media.Images.Art;
+using StreetcodeArtEntity = Streetcode.Domain.Entities.Streetcode.StreetcodeArt;
 using Streetcode.BLL.Resources;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Media.Art.Create
 {

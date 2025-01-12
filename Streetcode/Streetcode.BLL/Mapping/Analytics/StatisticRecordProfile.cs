@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Streetcode.BLL.DTO.Analytics;
-using Streetcode.DAL.Entities.Analytics;
+using Streetcode.Domain.Entities.Analytics;
 
 namespace Streetcode.BLL.Mapping.Analytics
 {

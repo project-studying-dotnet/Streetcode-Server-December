@@ -3,9 +3,9 @@ using Moq;
 using AutoMapper;
 using Streetcode.BLL.DTO.News;
 using Streetcode.BLL.Interfaces.Logging;
-using Streetcode.DAL.Entities.News;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 using Streetcode.BLL.MediatR.Newss.Create;
+using Streetcode.Domain.Entities.News;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 
 namespace Streetcode.XUnitTest.MediatRTests.NewsTests
 {

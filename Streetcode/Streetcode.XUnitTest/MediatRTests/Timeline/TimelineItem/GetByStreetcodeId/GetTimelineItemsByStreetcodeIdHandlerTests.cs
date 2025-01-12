@@ -9,8 +9,8 @@ using Moq;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Mapping.Timeline;
 using Streetcode.BLL.MediatR.Timeline.TimelineItem.GetByStreetcodeId;
-using Streetcode.DAL.Entities.Timeline;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.BLL.Repositories.Interfaces.Base;
+using Streetcode.Domain.Entities.Timeline;
 using Xunit;
 
 namespace Streetcode.XUnitTest.MediatRTests.Timeline.TimelineItems.GetByStreetcodeId;

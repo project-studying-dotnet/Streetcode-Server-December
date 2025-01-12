@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Streetcode.DAL.Entities.Timeline;
+using Streetcode.Domain.Entities.Timeline;
 
 namespace Streetcode.DAL.Persistence.Configurations.Timeline
 {

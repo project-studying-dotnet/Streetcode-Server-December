@@ -3,8 +3,8 @@ using FluentResults;
 using MediatR;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Streetcode.Streetcode.GetAllShort;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.GetCount
 {

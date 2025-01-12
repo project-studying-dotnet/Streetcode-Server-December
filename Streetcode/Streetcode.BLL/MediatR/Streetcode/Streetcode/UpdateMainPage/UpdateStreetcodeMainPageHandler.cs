@@ -7,15 +7,15 @@ using Streetcode.BLL.Interfaces.Image;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Streetcode.Streetcode.CreateMainPage;
 using Streetcode.BLL.Resources;
-using Streetcode.DAL.Entities.Streetcode.Types;
 using Streetcode.DAL.Entities.Streetcode;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Streetcode.BLL.Specifications.Streetcode;
+using Streetcode.Domain.Entities.Streetcode.Types;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.UpdateMainPage
 {
@@ -49,7 +49,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.UpdateMainPage
             var images = mainPage.Images.Select(x => x.BlobName);
             var audio = mainPage.Audio.BlobName;
 
-            if (request.StreetcodeMainPage.StreetcodeType == DAL.Enums.StreetcodeType.Person)
+            if (request.StreetcodeMainPage.StreetcodeType == Streetcode.Domain.Enums.StreetcodeType.Person)
             {
                 mainPage = _mapper.Map<PersonStreetcode>(request.StreetcodeMainPage);
             }

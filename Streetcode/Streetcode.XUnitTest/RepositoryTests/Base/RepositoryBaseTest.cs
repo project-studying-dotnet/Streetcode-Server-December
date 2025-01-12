@@ -6,13 +6,14 @@ using Streetcode.DAL.Persistence;
 using Streetcode.DAL.Repositories.Realizations.Base;
 using Streetcode.DAL.Repositories.Realizations.Streetcode.TextContent;
 using Streetcode.DAL.Specification;
+using Streetcode.Domain.Entities.Streetcode.TextContent;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using TestEntity = Streetcode.DAL.Entities.Streetcode.TextContent.RelatedTerm;
+using TestEntity = Streetcode.Domain.Entities.Streetcode.TextContent.RelatedTerm;
 
 namespace Streetcode.XUnitTest.RepositoryTests.Base
 {

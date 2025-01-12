@@ -3,9 +3,9 @@ using FluentResults;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.DTO.Streetcode.RelatedFigure;
-using Streetcode.DAL.Entities.Streetcode;
 using Streetcode.BLL.Interfaces.Logging;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.BLL.Repositories.Interfaces.Base;
+using Streetcode.Domain.Entities.Streetcode;
 
 namespace Streetcode.BLL.MediatR.Streetcode.RelatedFigure.GetByStreetcodeId
 {
@@ -34,7 +34,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedFigure.GetByStreetcodeId
             }
 
             var relatedFigures = await _repositoryWrapper.StreetcodeRepository.GetAllAsync(
-              predicate: sc => relatedFigureIds.Any(id => id == sc.Id) && sc.Status == DAL.Enums.StreetcodeStatus.Published,
+              predicate: sc => relatedFigureIds.Any(id => id == sc.Id) && sc.Status == Streetcode.Domain.Enums.StreetcodeStatus.Published,
               include: scl => scl.Include(sc => sc.Images).ThenInclude(img => img.ImageDetails)
                                  .Include(sc => sc.Tags));
 

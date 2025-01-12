@@ -14,9 +14,9 @@ using Streetcode.BLL.Mapping.Analytics;
 using Streetcode.BLL.Mapping.Timeline;
 using Streetcode.BLL.MediatR.Analytics;
 using Streetcode.BLL.MediatR.Timeline.TimelineItem.Create;
-using Streetcode.DAL.Entities.Analytics;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.DAL.Entities.Timeline;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.Domain.Entities.Analytics;
 using Xunit;
 
 namespace Streetcode.XUnitTest.MediatRTests.Analytics.Create

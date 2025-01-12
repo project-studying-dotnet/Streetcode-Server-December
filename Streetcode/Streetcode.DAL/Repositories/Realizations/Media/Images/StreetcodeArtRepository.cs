@@ -1,7 +1,7 @@
-﻿using Streetcode.DAL.Entities.Streetcode;
+﻿using Streetcode.BLL.Repositories.Interfaces.Media.Images;
 using Streetcode.DAL.Persistence;
-using Streetcode.DAL.Repositories.Interfaces.Media.Images;
 using Streetcode.DAL.Repositories.Realizations.Base;
+using Streetcode.Domain.Entities.Streetcode;
 
 namespace Streetcode.DAL.Repositories.Realizations.Media.Images
 {

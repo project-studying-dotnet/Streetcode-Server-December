@@ -4,11 +4,11 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.DTO.Streetcode.RelatedFigure;
 using Streetcode.BLL.Interfaces.Logging;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Streetcode.RelatedFigure.GetByTagId
 {
-  internal class GetRelatedFiguresByTagIdHandler : IRequestHandler<GetRelatedFiguresByTagIdQuery, Result<IEnumerable<RelatedFigureDto>>>
+    internal class GetRelatedFiguresByTagIdHandler : IRequestHandler<GetRelatedFiguresByTagIdQuery, Result<IEnumerable<RelatedFigureDto>>>
     {
         private readonly IMapper _mapper;
         private readonly IRepositoryWrapper _repositoryWrapper;
@@ -25,7 +25,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedFigure.GetByTagId
         {
             var streetcodes = await _repositoryWrapper.StreetcodeRepository
                 .GetAllAsync(
-                predicate: sc => sc.Status == DAL.Enums.StreetcodeStatus.Published &&
+                predicate: sc => sc.Status == Streetcode.Domain.Enums.StreetcodeStatus.Published &&
                   sc.Tags.Select(t => t.Id).Any(tag => tag == request.tagId),
                 include: scl => scl
                     .Include(sc => sc.Images)

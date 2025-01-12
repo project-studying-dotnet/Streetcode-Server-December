@@ -1,8 +1,8 @@
-﻿using Streetcode.DAL.Enums;
+﻿using Streetcode.Domain.Enums;
 
 namespace Streetcode.BLL.DTO.Partners.Create
 {
-  public class CreatePartnerSourceLinkDto
+    public class CreatePartnerSourceLinkDto
   {
     public int Id { get; set; }
 

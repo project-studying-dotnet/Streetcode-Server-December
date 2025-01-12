@@ -4,7 +4,7 @@ using MediatR;
 using Streetcode.BLL.DTO.AdditionalContent;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.AdditionalContent.Tag.GetByStreetcodeId;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.AdditionalContent.Tag.GetTagByTitle
 {

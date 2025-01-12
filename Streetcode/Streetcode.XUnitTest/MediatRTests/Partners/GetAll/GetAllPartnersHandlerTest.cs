@@ -5,8 +5,8 @@ using Moq;
 using Streetcode.BLL.DTO.Partners;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Partners.GetAll;
-using Streetcode.DAL.Entities.Partners;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.BLL.Repositories.Interfaces.Base;
+using Streetcode.Domain.Entities.Partners;
 using Xunit;
 
 namespace Streetcode.XUnitTest.MediatRTests.Partners.GetAllTest;

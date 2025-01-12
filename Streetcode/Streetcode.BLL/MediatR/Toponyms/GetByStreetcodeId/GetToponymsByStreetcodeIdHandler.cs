@@ -5,8 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.DTO.AdditionalContent.Subtitles;
 using Streetcode.BLL.DTO.Toponyms;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Toponyms.GetByStreetcodeId
 {

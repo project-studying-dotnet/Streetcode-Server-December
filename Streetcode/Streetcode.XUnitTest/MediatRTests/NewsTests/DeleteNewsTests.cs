@@ -1,11 +1,11 @@
 ﻿using Xunit;
 using Moq;
 using Streetcode.BLL.Interfaces.Logging;
-using Streetcode.DAL.Entities.News;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 using Streetcode.BLL.MediatR.Newss.Delete;
-using Streetcode.DAL.Entities.Media.Images;
 using System.Linq.Expressions;
+using Streetcode.Domain.Entities.Media.Images;
+using Streetcode.Domain.Entities.News;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 
 namespace Streetcode.XUnitTest.MediatRTests.NewsTests
 {

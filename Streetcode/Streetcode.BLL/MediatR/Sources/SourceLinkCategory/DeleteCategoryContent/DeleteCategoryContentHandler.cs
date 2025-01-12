@@ -2,12 +2,12 @@
 using FluentResults;
 using MediatR;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.DeleteCategoryContent
 {
-	public class DeleteCategoryContentHandler : IRequestHandler<DeleteCategoryContentCommand, Result<Unit>>
+    public class DeleteCategoryContentHandler : IRequestHandler<DeleteCategoryContentCommand, Result<Unit>>
 	{
 		private readonly IRepositoryWrapper _repositoryWrapper;
 		private readonly ILoggerService _logger;

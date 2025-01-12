@@ -3,7 +3,7 @@ using Streetcode.BLL.DTO.AdditionalContent;
 using Streetcode.BLL.DTO.AdditionalContent.Tag;
 using Streetcode.BLL.MediatR.AdditionalContent.Tag.Create;
 using Xunit;
-using TagEntity = Streetcode.DAL.Entities.AdditionalContent.Tag;
+using TagEntity = Streetcode.Domain.Entities.AdditionalContent.Tag;
 
 namespace Streetcode.XUnitTest.MediatRTests.AdditionalContent.Tag;
 

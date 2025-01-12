@@ -3,9 +3,6 @@ using Moq;
 using Streetcode.BLL.DTO.Sources;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Sources.SourceLinkCategory.CreateCategoryContent;
-using Streetcode.DAL.Entities.Sources;
-using Streetcode.DAL.Entities.Streetcode;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 using System.Linq.Expressions;
 using System;
 using System.Collections.Generic;
@@ -13,11 +10,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using SourceEntity = Streetcode.DAL.Entities.Sources.SourceLinkCategory;
+using SourceEntity = Streetcode.Domain.Entities.Sources.SourceLinkCategory;
+using Streetcode.Domain.Entities.Streetcode;
+using Streetcode.Domain.Entities.Sources;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 
 namespace Streetcode.XUnitTest.MediatRTests.Source.CreateCategoryContent
 {
-	public class CreateCategoryContentHandlerTest
+    public class CreateCategoryContentHandlerTest
 	{
 		private readonly Mock<IRepositoryWrapper> _mockRepositoryWrapper;
 		private readonly Mock<IMapper> _mockMapper;

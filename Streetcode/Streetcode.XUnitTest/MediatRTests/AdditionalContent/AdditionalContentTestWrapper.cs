@@ -2,7 +2,7 @@ using AutoMapper;
 using Moq;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.AdditionalContent.Tag.GetAll;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 
 namespace Streetcode.XUnitTest.MediatRTests.AdditionalContent;
 

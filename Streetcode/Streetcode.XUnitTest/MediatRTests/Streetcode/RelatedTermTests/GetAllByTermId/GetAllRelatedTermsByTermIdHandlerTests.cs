@@ -5,8 +5,6 @@ using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Mapping.Streetcode.TextContent;
 using Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetAllByTermId;
 using Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetById;
-using Streetcode.DAL.Entities.Streetcode.TextContent;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 using Microsoft.EntityFrameworkCore.Query;
 using Moq;
 using System;
@@ -18,6 +16,8 @@ using System.Threading.Tasks;
 using Xunit;
 using Streetcode.DAL.Specification;
 using Microsoft.EntityFrameworkCore;
+using Streetcode.Domain.Entities.Streetcode.TextContent;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 
 namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.GetAllByTermId
 {

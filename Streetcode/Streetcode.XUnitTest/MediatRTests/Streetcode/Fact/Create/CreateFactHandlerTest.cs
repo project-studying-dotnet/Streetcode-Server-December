@@ -7,12 +7,12 @@ using Streetcode.BLL.Interfaces.Image;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Mapping.Streetcode.TextContent;
 using Streetcode.BLL.MediatR.Streetcode.Fact.Create;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
 using Streetcode.BLL.Services.Image;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 using System.Linq.Expressions;
 using Xunit;
-using FactEntity = Streetcode.DAL.Entities.Streetcode.TextContent.Fact;
+using FactEntity = Streetcode.Domain.Entities.Streetcode.TextContent.Fact;
 
 namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Fact.Create
 {

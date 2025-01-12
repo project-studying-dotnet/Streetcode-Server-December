@@ -6,8 +6,8 @@ using Streetcode.BLL.DTO.Transactions;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Interfaces.Text;
 using Streetcode.BLL.MediatR.ResultVariations;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Streetcode.Text.GetByStreetcodeId
 {

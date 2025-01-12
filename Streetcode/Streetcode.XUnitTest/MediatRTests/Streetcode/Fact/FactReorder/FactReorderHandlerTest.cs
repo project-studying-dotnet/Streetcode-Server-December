@@ -6,8 +6,6 @@ using Streetcode.BLL.Mapping.Streetcode.TextContent;
 using Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Create;
 using Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetById;
 using Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Update;
-using Streetcode.DAL.Entities.Streetcode.TextContent;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 using Microsoft.EntityFrameworkCore.Query;
 using Moq;
 using System;
@@ -21,9 +19,10 @@ using Streetcode.BLL.MediatR.Streetcode.Fact.FactReorder;
 using Streetcode.DAL.Entities.Media.Images;
 using Streetcode.DAL.Entities.AdditionalContent;
 using Streetcode.BLL.DTO.Streetcode.TextContent.Fact;
-using FactEntity = Streetcode.DAL.Entities.Streetcode.TextContent.Fact;
+using FactEntity = Streetcode.Domain.Entities.Streetcode.TextContent.Fact;
 using Streetcode.DAL.Specification;
 using Streetcode.BLL.Exceptions;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 
 namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Fact.FactReorder
 {

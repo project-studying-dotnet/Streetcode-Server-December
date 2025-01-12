@@ -4,8 +4,8 @@ using MediatR;
 using Streetcode.BLL.DTO.Media.Audio;
 using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Media.Audio.Create
 {
@@ -35,7 +35,7 @@ namespace Streetcode.BLL.MediatR.Media.Audio.Create
                 request.Audio.Title,
                 request.Audio.Extension);
 
-            var audio = _mapper.Map<DAL.Entities.Media.Audio>(request.Audio);
+            var audio = _mapper.Map<Streetcode.Domain.Entities.Media.Audio>(request.Audio);
 
             audio.BlobName = $"{hashBlobStorageName}.{request.Audio.Extension}";
 

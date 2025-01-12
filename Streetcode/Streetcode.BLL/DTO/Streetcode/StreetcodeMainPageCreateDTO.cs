@@ -1,7 +1,7 @@
 ﻿using Streetcode.BLL.DTO.AdditionalContent.Tag;
 using Streetcode.BLL.DTO.Media.Audio;
 using Streetcode.BLL.DTO.Media.Images;
-using Streetcode.DAL.Enums;
+using Streetcode.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,4 +1,4 @@
-﻿using Streetcode.DAL.Entities.AdditionalContent.HolidayDate;
+﻿using Streetcode.Domain.Entities.AdditionalContent.HolidayDate;
 
 namespace Streetcode.BLL.Interfaces.HolidayFormatter
 {

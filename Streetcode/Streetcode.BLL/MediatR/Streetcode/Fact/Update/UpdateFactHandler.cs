@@ -2,12 +2,12 @@
 using FluentResults;
 using MediatR;
 using Streetcode.BLL.Interfaces.Logging;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 using Streetcode.BLL.DTO.Streetcode.TextContent.Fact;
 using Streetcode.DAL.Entities.News;
 using Streetcode.BLL.DTO.Media.Art;
-using FactEntity = Streetcode.DAL.Entities.Streetcode.TextContent.Fact;
+using FactEntity = Streetcode.Domain.Entities.Streetcode.TextContent.Fact;
 using Streetcode.BLL.Resources;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Streetcode.Fact.Update
 {

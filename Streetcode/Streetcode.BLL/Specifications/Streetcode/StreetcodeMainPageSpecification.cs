@@ -1,5 +1,5 @@
-﻿using Streetcode.DAL.Entities.Streetcode;
-using Streetcode.DAL.Specification;
+﻿using Streetcode.DAL.Specification;
+using Streetcode.Domain.Entities.Streetcode;
 using System;
 using System.Collections.Generic;
 using System.Linq;

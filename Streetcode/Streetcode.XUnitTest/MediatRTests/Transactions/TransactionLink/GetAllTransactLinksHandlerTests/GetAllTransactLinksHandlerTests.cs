@@ -6,10 +6,10 @@ using Streetcode.BLL.DTO.Transactions;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Mapping.Transactions;
 using Streetcode.BLL.MediatR.Transactions.TransactionLink.GetAll;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 using System.Linq.Expressions;
 using Xunit;
-using TransactLinkEntity = Streetcode.DAL.Entities.Transactions.TransactionLink;
+using TransactLinkEntity = Streetcode.Domain.Entities.Transactions.TransactionLink;
 
 namespace Streetcode.XUnitTest.MediatRTests.Transactions.TransactionLink.GetAllTransactLinksHandlerTests
 {

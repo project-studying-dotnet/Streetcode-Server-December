@@ -3,9 +3,9 @@ using FluentResults;
 using MediatR;
 using Streetcode.BLL.DTO.News;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
-using Streetcode.DAL.Entities.News;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.Domain.Entities.News;
 
 namespace Streetcode.BLL.MediatR.Newss.Create
 {

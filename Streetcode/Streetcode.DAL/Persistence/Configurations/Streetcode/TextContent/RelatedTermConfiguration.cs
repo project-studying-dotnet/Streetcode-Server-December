@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Streetcode.DAL.Entities.Streetcode.TextContent;
+using Streetcode.Domain.Entities.Streetcode.TextContent;
 
 namespace Streetcode.DAL.Persistence.Configurations.Streetcode.TextContent
 {

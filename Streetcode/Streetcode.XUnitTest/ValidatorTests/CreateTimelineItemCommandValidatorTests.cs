@@ -2,7 +2,7 @@
 using Streetcode.BLL.DTO.Timeline.Create;
 using Streetcode.BLL.MediatR.Timeline.TimelineItem.Create;
 using Streetcode.BLL.Validation.Validators.CommandsAndQuerysValidators;
-using Streetcode.DAL.Enums;
+using Streetcode.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;

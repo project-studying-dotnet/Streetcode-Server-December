@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Streetcode.BLL.DTO.Media.Images;
 using Streetcode.BLL.DTO.Sources;
-using Streetcode.DAL.Entities.Sources;
+using Streetcode.Domain.Entities.Sources;
 
 namespace Streetcode.BLL.Mapping.Sources
 {

@@ -7,7 +7,7 @@ using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.AdditionalContent.Tag.GetAll;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using Xunit;
-using TagEntity = Streetcode.DAL.Entities.AdditionalContent.Tag;
+using TagEntity = Streetcode.Domain.Entities.AdditionalContent.Tag;
 
 namespace Streetcode.XUnitTest.MediatRTests.AdditionalContent.Tag;
 

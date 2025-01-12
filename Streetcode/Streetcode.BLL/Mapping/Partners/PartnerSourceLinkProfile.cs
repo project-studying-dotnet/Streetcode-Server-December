@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Streetcode.BLL.DTO.Partners;
 using Streetcode.BLL.DTO.Partners.Create;
-using Streetcode.DAL.Entities.Partners;
+using Streetcode.Domain.Entities.Partners;
 
 namespace Streetcode.BLL.Mapping.Partners
 {

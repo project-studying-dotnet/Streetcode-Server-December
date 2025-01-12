@@ -8,8 +8,8 @@ using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Newss.Update;
 using Streetcode.BLL.MediatR.Sources.SourceLinkCategory.Update;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.DAL.Entities.Media.Images;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 using Xunit;
 
 namespace Streetcode.XUnitTest.MediatRTests.Sources.SourceLinkCategory;
@@ -54,7 +54,7 @@ public class UpdateSourceLinkCategoryHandlerTest
         var command = new UpdateSourceLinkCategoryCommand(sourceLinkCategoryDto);
         
         _mapperMock
-            .Setup(m => m.Map<DAL.Entities.Sources.SourceLinkCategory>(sourceLinkCategoryDto))
+            .Setup(m => m.Map<Streetcode.Domain.Entities.Sources.SourceLinkCategory>(sourceLinkCategoryDto))
             .Returns(sourceLinkCategory);
         
         _mapperMock
@@ -67,8 +67,8 @@ public class UpdateSourceLinkCategoryHandlerTest
         
         _repositoryWrapperMock.Setup(rep => rep.SourceCategoryRepository
                 .GetFirstOrDefaultAsync(
-                    It.Is<Expression<Func<DAL.Entities.Sources.SourceLinkCategory, bool>>>(exp => exp.Compile().Invoke(sourceLinkCategory)),
-                    It.IsAny<Func<IQueryable<DAL.Entities.Sources.SourceLinkCategory>, IIncludableQueryable<DAL.Entities.Sources.SourceLinkCategory, object>>>()))
+                    It.Is<Expression<Func<Streetcode.Domain.Entities.Sources.SourceLinkCategory, bool>>>(exp => exp.Compile().Invoke(sourceLinkCategory)),
+                    It.IsAny<Func<IQueryable<Streetcode.Domain.Entities.Sources.SourceLinkCategory>, IIncludableQueryable<Streetcode.Domain.Entities.Sources.SourceLinkCategory, object>>>()))
             .ReturnsAsync(sourceLinkCategory);
         
         _repositoryWrapperMock
@@ -84,7 +84,7 @@ public class UpdateSourceLinkCategoryHandlerTest
         Assert.Equal(sourceLinkCategoryDto, result.Value);
 
         _repositoryWrapperMock.Verify(rep => rep.SourceCategoryRepository.Update(sourceLinkCategory), Times.Once);
-        _mapperMock.Verify(m => m.Map<DAL.Entities.Sources.SourceLinkCategory>(sourceLinkCategoryDto), Times.Once);
+        _mapperMock.Verify(m => m.Map<Streetcode.Domain.Entities.Sources.SourceLinkCategory>(sourceLinkCategoryDto), Times.Once);
         _repositoryWrapperMock.Verify(rep => rep.SaveChangesAsync(), Times.Once());
     }
 
@@ -140,7 +140,7 @@ public class UpdateSourceLinkCategoryHandlerTest
         const string errorMsg = $"Cannot find any source link category";
         
         _mapperMock
-            .Setup(m => m.Map<DAL.Entities.Sources.SourceLinkCategory>(sourceLinkCategoryDto))
+            .Setup(m => m.Map<Streetcode.Domain.Entities.Sources.SourceLinkCategory>(sourceLinkCategoryDto))
             .Returns(sourceLinkCategory);
         
         // Act
@@ -174,7 +174,7 @@ public class UpdateSourceLinkCategoryHandlerTest
         const string errorMsg = $"Failed to update a source link";
         
         _mapperMock
-            .Setup(m => m.Map<DAL.Entities.Sources.SourceLinkCategory>(sourceLinkCategoryDto))
+            .Setup(m => m.Map<Streetcode.Domain.Entities.Sources.SourceLinkCategory>(sourceLinkCategoryDto))
             .Returns(sourceLinkCategory);
         
         _mapperMock
@@ -187,8 +187,8 @@ public class UpdateSourceLinkCategoryHandlerTest
         
         _repositoryWrapperMock.Setup(rep => rep.SourceCategoryRepository
                 .GetFirstOrDefaultAsync(
-                    It.Is<Expression<Func<DAL.Entities.Sources.SourceLinkCategory, bool>>>(exp => exp.Compile().Invoke(sourceLinkCategory)),
-                    It.IsAny<Func<IQueryable<DAL.Entities.Sources.SourceLinkCategory>, IIncludableQueryable<DAL.Entities.Sources.SourceLinkCategory, object>>>()))
+                    It.Is<Expression<Func<Streetcode.Domain.Entities.Sources.SourceLinkCategory, bool>>>(exp => exp.Compile().Invoke(sourceLinkCategory)),
+                    It.IsAny<Func<IQueryable<Streetcode.Domain.Entities.Sources.SourceLinkCategory>, IIncludableQueryable<Streetcode.Domain.Entities.Sources.SourceLinkCategory, object>>>()))
             .ReturnsAsync(sourceLinkCategory);
         
         _repositoryWrapperMock

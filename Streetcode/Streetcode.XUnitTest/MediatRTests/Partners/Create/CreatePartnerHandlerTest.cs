@@ -6,9 +6,9 @@ using Streetcode.BLL.DTO.Partners;
 using Streetcode.BLL.DTO.Streetcode;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Partners.Create;
-using Streetcode.DAL.Entities.Partners;
-using Streetcode.DAL.Entities.Streetcode;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.BLL.Repositories.Interfaces.Base;
+using Streetcode.Domain.Entities.Partners;
+using Streetcode.Domain.Entities.Streetcode;
 using Streetcode.XUnitTest.MediatRTests.Partners.GetPartnersByStreetcodeId;
 using System;
 using System.Collections.Generic;
@@ -20,7 +20,7 @@ using Xunit;
 
 namespace Streetcode.XUnitTest.MediatRTests.Partners.Create
 {
-	public class CreatePartnerHandlerTest
+    public class CreatePartnerHandlerTest
 	{
 		private readonly Mock<IRepositoryWrapper> _mockRepositoryWrapper;
 		private readonly Mock<IMapper> _mockMapper;

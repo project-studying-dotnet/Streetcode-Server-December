@@ -5,10 +5,10 @@ using Streetcode.BLL.DTO.Streetcode;
 using Streetcode.BLL.Interfaces.Audio;
 using Streetcode.BLL.Interfaces.Image;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
-using Streetcode.DAL.Entities.Streetcode;
-using Streetcode.DAL.Entities.Streetcode.Types;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.Domain.Entities.Streetcode;
+using Streetcode.Domain.Entities.Streetcode.Types;
 
 namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.CreateMainPage
 {
@@ -40,7 +40,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.CreateMainPage
 
             StreetcodeContent mainPage;
 
-            if (request.StreetcodeMainPage.StreetcodeType == DAL.Enums.StreetcodeType.Person)
+            if (request.StreetcodeMainPage.StreetcodeType == Streetcode.Domain.Enums.StreetcodeType.Person)
             {
                 mainPage = _mapper.Map<PersonStreetcode>(request.StreetcodeMainPage);
             }

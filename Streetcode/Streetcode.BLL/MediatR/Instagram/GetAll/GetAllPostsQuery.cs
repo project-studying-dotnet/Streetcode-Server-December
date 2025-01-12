@@ -1,6 +1,6 @@
 ﻿using FluentResults;
 using MediatR;
-using Streetcode.DAL.Entities.Instagram;
+using Streetcode.Domain.Entities.Instagram;
 
 namespace Streetcode.BLL.MediatR.Instagram.GetAll
 {

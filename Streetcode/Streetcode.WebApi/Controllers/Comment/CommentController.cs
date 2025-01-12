@@ -13,11 +13,11 @@ using Streetcode.BLL.MediatR.Comment.UpdateComment;
 using Streetcode.BLL.MediatR.Comment.GetCommentByIdWithReplies;
 using Streetcode.BLL.MediatR.Comment.CreateComment;
 using Streetcode.BLL.MediatR.Comment.UserDeleteComment;
-using Streetcode.DAL.Enums;
 using Streetcode.BLL.MediatR.Comment.GetCommentByStatus;
 using Streetcode.BLL.MediatR.Comment.AdminForbidComment;
 using Microsoft.AspNetCore.Authorization;
 using Streetcode.BLL.MediatR.Comment.CreateReply;
+using Streetcode.Domain.Enums;
 
 namespace Streetcode.WebApi.Controllers.Comment
 {

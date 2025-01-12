@@ -2,15 +2,15 @@
 using FluentResults;
 using MediatR;
 using Streetcode.BLL.Interfaces.BlobStorage;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.DTO.Media.Art;
 using Streetcode.BLL.Resources;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Media.Art.GetByStreetcodeId
 {
-  public class GetArtsByStreetcodeIdHandler : IRequestHandler<GetArtsByStreetcodeIdQuery, Result<IEnumerable<ArtDto>>>
+    public class GetArtsByStreetcodeIdHandler : IRequestHandler<GetArtsByStreetcodeIdQuery, Result<IEnumerable<ArtDto>>>
     {
         private readonly IBlobService _blobService;
         private readonly IMapper _mapper;

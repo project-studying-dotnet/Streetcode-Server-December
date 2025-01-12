@@ -2,7 +2,7 @@ using AutoMapper;
 using Streetcode.BLL.DTO.Timeline;
 using Streetcode.BLL.DTO.Timeline.Create;
 using Streetcode.BLL.DTO.Timeline.Update;
-using Streetcode.DAL.Entities.Timeline;
+using Streetcode.Domain.Entities.Timeline;
 
 namespace Streetcode.BLL.Mapping.Timeline
 {

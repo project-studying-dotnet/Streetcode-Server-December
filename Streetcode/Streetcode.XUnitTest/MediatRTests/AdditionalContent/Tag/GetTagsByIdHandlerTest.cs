@@ -4,7 +4,7 @@ using Moq;
 using Streetcode.BLL.DTO.AdditionalContent;
 using Streetcode.BLL.MediatR.AdditionalContent.Tag.GetById;
 using Xunit;
-using TagEntity = Streetcode.DAL.Entities.AdditionalContent.Tag;
+using TagEntity = Streetcode.Domain.Entities.AdditionalContent.Tag;
 
 namespace Streetcode.XUnitTest.MediatRTests.AdditionalContent.Tag;
 

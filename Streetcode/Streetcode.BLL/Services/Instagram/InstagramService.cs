@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using Microsoft.Extensions.Options;
 using Streetcode.BLL.Interfaces.Instagram;
-using Streetcode.DAL.Entities.Instagram;
+using Streetcode.Domain.Entities.Instagram;
 
 namespace Streetcode.BLL.Services.Instagram
 {

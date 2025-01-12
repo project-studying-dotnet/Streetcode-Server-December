@@ -31,7 +31,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Streetcode.DAL\Streetcode.DAL.csproj" />
+    <ProjectReference Include="..\..\Streetcode.Domain\Streetcode.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Mapping\Analytics\" />

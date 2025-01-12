@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Streetcode.BLL.DTO.News;
-using Streetcode.DAL.Entities.News;
+using Streetcode.Domain.Entities.News;
 
 namespace Streetcode.BLL.Mapping.Newss
 {

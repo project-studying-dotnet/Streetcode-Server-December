@@ -3,7 +3,6 @@ using Moq;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Streetcode.Fact.Delete;
 using Streetcode.DAL.Entities.Partners;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +11,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using FluentAssertions;
-using FactEntity = Streetcode.DAL.Entities.Streetcode.TextContent.Fact;
+using FactEntity = Streetcode.Domain.Entities.Streetcode.TextContent.Fact;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 
 namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Fact.Delete
 {
-	public class DeleteFactHandlerTest
+    public class DeleteFactHandlerTest
 	{
 		private readonly Mock<IRepositoryWrapper> _mockRepositoryWrapper;
 		private readonly Mock<IMapper> _mockMapper;

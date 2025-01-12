@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Streetcode.BLL.DTO.Feedback;
-using Streetcode.DAL.Entities.Feedback;
+using Streetcode.Domain.Entities.Feedback;
 
 namespace Streetcode.BLL.Mapping.Feedback
 {

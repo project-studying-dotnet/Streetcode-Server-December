@@ -2,20 +2,20 @@
 using Azure.Storage.Blobs;
 using Moq;
 using Streetcode.BLL.Services.BlobStorageService;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using Streetcode.DAL.Entities.Media;
 using Azure;
 using Microsoft.Extensions.Options;
-using Streetcode.DAL.Entities.Media.Images;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore.Query;
 using Dasync.Collections;
+using Streetcode.Domain.Entities.Media;
+using Streetcode.Domain.Entities.Media.Images;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 
 namespace Streetcode.XUnitTest.ServicesTests.BlobStorageService
 {

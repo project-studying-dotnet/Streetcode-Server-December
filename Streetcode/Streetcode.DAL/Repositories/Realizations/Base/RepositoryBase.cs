@@ -2,14 +2,11 @@ using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Query;
-using MimeKit;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.DAL.Caching.RedisCache;
-using Streetcode.DAL.Entities.Streetcode.TextContent;
 using Streetcode.DAL.Persistence;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 using Streetcode.DAL.Specification;
 using Streetcode.DAL.Specification.Evaluator;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Streetcode.DAL.Repositories.Realizations.Base
 {

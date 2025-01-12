@@ -2,10 +2,10 @@
 using MediatR;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Comment.AdminDeleteComment;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
 using Streetcode.BLL.Specifications.Comment;
-using Streetcode.DAL.Enums;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -3,12 +3,12 @@ using FluentResults;
 using MediatR;
 using Streetcode.BLL.DTO.Streetcode.TextContent.Fact;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Streetcode.Fact.Delete
 {
-	public class DeleteFactHandler : IRequestHandler<DeleteFactCommand, Result<FactDto>>
+    public class DeleteFactHandler : IRequestHandler<DeleteFactCommand, Result<FactDto>>
 	{
 		private readonly IRepositoryWrapper _repositoryWrapper;
 		private readonly IMapper _mapper;

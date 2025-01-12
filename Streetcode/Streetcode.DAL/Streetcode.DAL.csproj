@@ -47,4 +47,8 @@
     <Folder Include="Persistence\Migrations\" />
     <Folder Include="Persistence\ScriptsMigration\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Streetcode.Domain\Streetcode.Domain.csproj" />
+    <ProjectReference Include="..\Streetcode.BLL\Streetcode.BLL.csproj" />
+  </ItemGroup>
 </Project>

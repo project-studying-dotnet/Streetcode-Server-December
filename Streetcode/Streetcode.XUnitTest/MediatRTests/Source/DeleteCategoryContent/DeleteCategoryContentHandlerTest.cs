@@ -4,8 +4,8 @@ using MediatR;
 using Moq;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Sources.SourceLinkCategory.DeleteCategoryContent;
-using Streetcode.DAL.Entities.Sources;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.BLL.Repositories.Interfaces.Base;
+using Streetcode.Domain.Entities.Sources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +16,7 @@ using Xunit;
 
 namespace Streetcode.XUnitTest.MediatRTests.Source.DeleteCategoryContent
 {
-	public class DeleteCategoryContentHandlerTest
+    public class DeleteCategoryContentHandlerTest
 	{
 		private readonly Mock<IRepositoryWrapper> _mockRepositoryWrapper;
 		private readonly Mock<ILoggerService> _mockLogger;

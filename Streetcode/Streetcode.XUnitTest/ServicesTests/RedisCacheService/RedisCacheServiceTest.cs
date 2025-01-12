@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
 using Moq;
 using Newtonsoft.Json;
-using Streetcode.DAL.Entities.Streetcode.TextContent;
+using Streetcode.Domain.Entities.Streetcode.TextContent;
 using System;
 using System.Collections.Generic;
 using System.Linq;

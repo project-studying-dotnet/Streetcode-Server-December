@@ -1,4 +1,4 @@
-﻿using Streetcode.DAL.Enums;
+﻿using Streetcode.Domain.Enums;
 
 namespace Streetcode.BLL.DTO.Timeline.Update
 {

@@ -3,13 +3,13 @@ using FluentResults;
 using MediatR;
 using Streetcode.BLL.DTO.Sources;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
-using Streetcode.DAL.Entities.Sources;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.Domain.Entities.Sources;
 
 namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.CreateCategoryContent
 {
-	public class CreateCategoryContentHandler : IRequestHandler<CreateCategoryContentCommand, Result<CategoryContentCreateDto>>
+    public class CreateCategoryContentHandler : IRequestHandler<CreateCategoryContentCommand, Result<CategoryContentCreateDto>>
 	{
 		private readonly IMapper _mapper;
 		private readonly IRepositoryWrapper _repositoryWrapper;

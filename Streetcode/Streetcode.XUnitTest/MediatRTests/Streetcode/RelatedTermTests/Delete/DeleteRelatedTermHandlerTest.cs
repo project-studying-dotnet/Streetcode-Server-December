@@ -1,12 +1,12 @@
 ﻿using FluentAssertions;
 using FluentResults;
 using Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Delete;
-using Streetcode.DAL.Entities.Streetcode.TextContent;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 using Moq;
 using Xunit;
 using Streetcode.DAL.Specification;
 using MediatR;
+using Streetcode.Domain.Entities.Streetcode.TextContent;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 
 namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.Delete
 {

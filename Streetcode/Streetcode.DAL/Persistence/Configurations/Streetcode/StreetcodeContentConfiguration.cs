@@ -1,15 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Streetcode.DAL.Entities.Media.Images;
-using Streetcode.DAL.Entities.Partners;
-using Streetcode.DAL.Entities.Sources;
-using Streetcode.DAL.Entities.Streetcode;
-using Streetcode.DAL.Entities.Streetcode.TextContent;
-using Streetcode.DAL.Entities.Streetcode.Types;
-using Streetcode.DAL.Entities.Toponyms;
-using Streetcode.DAL.Entities.Transactions;
-using Streetcode.DAL.Enums;
+using Streetcode.Domain.Entities.Media.Images;
+using Streetcode.Domain.Entities.Partners;
+using Streetcode.Domain.Entities.Sources;
+using Streetcode.Domain.Entities.Streetcode;
+using Streetcode.Domain.Entities.Streetcode.TextContent;
+using Streetcode.Domain.Entities.Streetcode.Types;
+using Streetcode.Domain.Entities.Toponyms;
+using Streetcode.Domain.Entities.Transactions;
+using Streetcode.Domain.Enums;
 
 namespace Streetcode.DAL.Persistence.Configurations.Streetcode
 {

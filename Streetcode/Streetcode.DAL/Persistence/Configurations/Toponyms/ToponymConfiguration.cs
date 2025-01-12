@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Streetcode.DAL.Entities.Toponyms;
+using Streetcode.Domain.Entities.Toponyms;
 
 namespace Streetcode.DAL.Persistence.Configurations.Toponyms
 {

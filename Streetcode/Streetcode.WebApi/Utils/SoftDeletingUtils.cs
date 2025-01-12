@@ -1,6 +1,6 @@
-﻿using Streetcode.DAL.Enums;
-using Streetcode.DAL.Repositories.Interfaces.Base;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Streetcode.Domain.Enums;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 
 namespace Streetcode.WebApi.Utils
 {

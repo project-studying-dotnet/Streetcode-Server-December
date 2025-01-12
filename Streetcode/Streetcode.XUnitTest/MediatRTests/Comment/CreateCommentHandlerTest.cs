@@ -6,14 +6,13 @@ using Streetcode.BLL.DTO.Comment;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Comment.CreateComment;
 using Streetcode.BLL.MediatR.Comment.GetCommentsByStreetcodeId;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
 using Streetcode.BLL.Specifications.Comment;
 using Streetcode.DAL.Entities.AdditionalContent.Coordinates.Types;
-using Streetcode.DAL.Entities.Comment;
-using Streetcode.DAL.Entities.Streetcode;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.Domain.Entities.Streetcode;
 using Xunit;
-using CommentEntity = Streetcode.DAL.Entities.Comment.Comment;
+using CommentEntity = Streetcode.Domain.Entities.Comment.Comment;
 
 namespace Streetcode.XUnitTest.MediatRTests.Comment;
 

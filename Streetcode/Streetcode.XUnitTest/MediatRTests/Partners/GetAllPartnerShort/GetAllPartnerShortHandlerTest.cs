@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Moq;
 using Streetcode.BLL.Interfaces.Logging;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 using Streetcode.BLL.MediatR.Partners.GetAllPartnerShort;
 using System;
 using System.Collections.Generic;
@@ -9,13 +8,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using Streetcode.DAL.Entities.Partners;
 using Microsoft.EntityFrameworkCore.Query;
 using FluentAssertions;
+using Streetcode.Domain.Entities.Partners;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 
 namespace Streetcode.XUnitTest.MediatRTests.Partners.GetAllPartnerShort
 {
-	public class GetAllPartnerShortHandlerTest
+    public class GetAllPartnerShortHandlerTest
 	{
 		private readonly Mock<IRepositoryWrapper> _mockRepositoryWapper;
 		private readonly Mock<IMapper> _mockMapper;

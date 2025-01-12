@@ -7,7 +7,6 @@ using Streetcode.DAL.Caching.RedisCache;
 using Streetcode.DAL.Entities.AdditionalContent;
 using Streetcode.DAL.Entities.AdditionalContent.Coordinates.Types;
 using Streetcode.DAL.Entities.Feedback;
-using Streetcode.DAL.Entities.Media;
 using Streetcode.DAL.Entities.Media.Images;
 using Streetcode.DAL.Entities.Partners;
 using Streetcode.DAL.Entities.Sources;
@@ -17,9 +16,11 @@ using Streetcode.DAL.Entities.Streetcode.Types;
 using Streetcode.DAL.Entities.Team;
 using Streetcode.DAL.Entities.Timeline;
 using Streetcode.DAL.Entities.Transactions;
-using Streetcode.DAL.Enums;
 using Streetcode.DAL.Persistence;
 using Streetcode.DAL.Repositories.Realizations.Base;
+using Streetcode.Domain.Entities.Media;
+using Streetcode.Domain.Entities.Media.Images;
+using Streetcode.Domain.Enums;
 
 namespace Streetcode.WebApi.Extensions
 {

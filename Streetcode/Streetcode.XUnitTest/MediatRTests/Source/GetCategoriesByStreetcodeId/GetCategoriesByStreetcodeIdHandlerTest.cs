@@ -8,9 +8,9 @@ using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Sources.SourceLink.GetCategoriesByStreetcodeId;
 using Streetcode.BLL.MediatR.Sources.SourceLinkCategory.GetAll;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.DAL.Entities.Media.Images;
-using Streetcode.DAL.Entities.Sources;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.Domain.Entities.Sources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +21,7 @@ using Xunit;
 
 namespace Streetcode.XUnitTest.MediatRTests.Source.GetCategoriesByStreetcodeId
 {
-	public class GetCategoriesByStreetcodeIdHandlerTest
+    public class GetCategoriesByStreetcodeIdHandlerTest
 	{
 		private readonly Mock<IRepositoryWrapper> _mockRepositoryWrapper;
 		private readonly Mock<IMapper> _mockMapper;

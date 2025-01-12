@@ -4,8 +4,8 @@ using Streetcode.BLL.DTO.Media.Audio;
 using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Media.Audio.Create;
-using Streetcode.DAL.Entities.Media;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.BLL.Repositories.Interfaces.Base;
+using Streetcode.Domain.Entities.Media;
 using Xunit;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 

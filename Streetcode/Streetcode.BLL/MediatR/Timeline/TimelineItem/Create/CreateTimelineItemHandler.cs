@@ -2,11 +2,11 @@
 using AutoMapper;
 using FluentResults;
 using Streetcode.BLL.DTO.Timeline;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Interfaces.Logging;
-using TimelineEntity = Streetcode.DAL.Entities.Timeline.TimelineItem;
-using Streetcode.DAL.Entities.Timeline;
+using TimelineEntity = Streetcode.Domain.Entities.Timeline.TimelineItem;
 using Streetcode.BLL.Resources;
+using Streetcode.Domain.Entities.Timeline;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Timeline.TimelineItem.Create
 {

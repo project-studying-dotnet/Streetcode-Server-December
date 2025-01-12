@@ -1,6 +1,6 @@
 ﻿using Streetcode.BLL.Interfaces.HolidayFormatter;
 using Streetcode.BLL.Services.OpenAI;
-using Streetcode.DAL.Entities.AdditionalContent.HolidayDate;
+using Streetcode.Domain.Entities.AdditionalContent.HolidayDate;
 
 namespace Streetcode.BLL.Services.HolidayDate
 {

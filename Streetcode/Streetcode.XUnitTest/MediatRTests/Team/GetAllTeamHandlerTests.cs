@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Query;
 using Moq;
 using Streetcode.BLL.Interfaces.Logging;
-using Streetcode.DAL.Entities.Team;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 using System.Linq.Expressions;
 using Xunit;
 using Streetcode.BLL.DTO.Team;
@@ -10,6 +8,8 @@ using Streetcode.BLL.MediatR.Team.GetAll;
 using AutoMapper;
 using Streetcode.DAL.Entities.Streetcode.TextContent;
 using Streetcode.BLL.Mapping.Team;
+using Streetcode.Domain.Entities.Team;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 
 namespace Streetcode.XUnitTest.MediatRTests.Team
 {

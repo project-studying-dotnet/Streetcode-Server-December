@@ -1,7 +1,7 @@
-using Streetcode.DAL.Entities.Transactions;
+using Streetcode.BLL.Repositories.Interfaces.Transactions;
 using Streetcode.DAL.Persistence;
-using Streetcode.DAL.Repositories.Interfaces.Transactions;
 using Streetcode.DAL.Repositories.Realizations.Base;
+using Streetcode.Domain.Entities.Transactions;
 
 namespace Streetcode.DAL.Repositories.Realizations.Transactions
 {

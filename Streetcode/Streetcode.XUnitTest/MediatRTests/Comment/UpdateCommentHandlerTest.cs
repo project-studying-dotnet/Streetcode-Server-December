@@ -3,13 +3,13 @@ using Moq;
 using Streetcode.BLL.DTO.Comment;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Comment.UpdateComment;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 using Xunit;
-using Streetcode.DAL.Entities.Streetcode;
 using Streetcode.BLL.Resources;
-using CommentEntity = Streetcode.DAL.Entities.Comment.Comment;
+using CommentEntity = Streetcode.Domain.Entities.Comment.Comment;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore.Query;
+using Streetcode.Domain.Entities.Streetcode;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 
 namespace Streetcode.XUnitTest.MediatRTests.Comment
 {

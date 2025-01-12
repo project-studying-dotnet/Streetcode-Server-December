@@ -1,7 +1,7 @@
 ﻿using FluentResults;
 using MediatR;
 using Streetcode.BLL.DTO.Comment;
-using Streetcode.DAL.Enums;
+using Streetcode.Domain.Enums;
 
 namespace Streetcode.BLL.MediatR.Comment.GetCommentByStatus
 {

@@ -7,8 +7,8 @@ using Org.BouncyCastle.Bcpg;
 using Streetcode.BLL.DTO.Partners;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Partners.GetById;
-using Streetcode.DAL.Entities.Partners;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.BLL.Repositories.Interfaces.Base;
+using Streetcode.Domain.Entities.Partners;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -20,7 +20,7 @@ using Xunit;
 
 namespace Streetcode.XUnitTest.MediatRTests.Partners.GetById
 {
-	public class GetPartnerByIdHandlerTest
+    public class GetPartnerByIdHandlerTest
 	{
 		private readonly Mock<IRepositoryWrapper> _mockRepositoryWapper;
 		private readonly Mock<IMapper> _mockMapper;

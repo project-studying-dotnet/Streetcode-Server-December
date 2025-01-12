@@ -1,5 +1,5 @@
 using Streetcode.BLL.DTO.AdditionalContent.Tag;
-using Streetcode.DAL.Enums;
+using Streetcode.Domain.Enums;
 
 namespace Streetcode.BLL.DTO.Streetcode
 {

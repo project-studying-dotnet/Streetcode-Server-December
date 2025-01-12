@@ -5,6 +5,7 @@ using Streetcode.BLL.DTO.Streetcode;
 using Streetcode.BLL.MediatR.Media.Audio.Create;
 using Streetcode.BLL.MediatR.Partners.Create;
 using Streetcode.BLL.Validation.Validators.CommandsAndQuerysValidators;
+using Streetcode.Domain.Enums;
 using Xunit;
 
 namespace Streetcode.XUnitTest.ValidatorTests
@@ -43,7 +44,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
                 Description = "A description for the valid partner.",
                 TargetUrl = "https://valid-url.com",
                 LogoId = 123,
-                PartnerSourceLinks = new List<CreatePartnerSourceLinkDto>() { new CreatePartnerSourceLinkDto() { Id = 3, LogoType = DAL.Enums.LogoType.Twitter, TargetUrl = "https://valid-url.com" } },
+                PartnerSourceLinks = new List<CreatePartnerSourceLinkDto>() { new CreatePartnerSourceLinkDto() { Id = 3, LogoType = LogoType.Twitter, TargetUrl = "https://valid-url.com" } },
                 Streetcodes = new List<StreetcodeShortDto>() { new StreetcodeShortDto() { Id = 3, Title = "title" } }
             };
 
@@ -67,7 +68,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
                 Description = "A description for the valid partner.",
                 TargetUrl = "https://valid-url.com",
                 LogoId = 123,
-                PartnerSourceLinks = new List<CreatePartnerSourceLinkDto>() { new CreatePartnerSourceLinkDto() { Id = 3, LogoType = DAL.Enums.LogoType.Twitter, TargetUrl = "https://valid-url.com" } },
+                PartnerSourceLinks = new List<CreatePartnerSourceLinkDto>() { new CreatePartnerSourceLinkDto() { Id = 3, LogoType = LogoType.Twitter, TargetUrl = "https://valid-url.com" } },
                 Streetcodes = new List<StreetcodeShortDto>() { new StreetcodeShortDto() { Id = 3, Title = "title" } }
             };
 

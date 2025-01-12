@@ -1,8 +1,8 @@
 ﻿using FluentResults;
 using MediatR;
 using Streetcode.BLL.Resources;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Specifications.Streetcode.RelatedTerm;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Delete
 {

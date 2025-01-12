@@ -1,7 +1,7 @@
 ﻿using Repositories.Interfaces;
-using Streetcode.DAL.Entities.Media;
 using Streetcode.DAL.Persistence;
 using Streetcode.DAL.Repositories.Realizations.Base;
+using Streetcode.Domain.Entities.Media;
 
 namespace Streetcode.DAL.Repositories.Realizations.Media
 {

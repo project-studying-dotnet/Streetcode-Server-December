@@ -1,5 +1,5 @@
 ﻿using HtmlAgilityPack;
-using Streetcode.DAL.Entities.AdditionalContent.HolidayDate.Dictionaries;
+using Streetcode.Domain.Entities.AdditionalContent.HolidayDate.Dictionaries;
 using System.Net.Http;
 
 namespace Streetcode.WebApi.Controllers.HolidayDate.Parsers

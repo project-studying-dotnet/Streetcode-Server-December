@@ -3,8 +3,8 @@ using Microsoft.EntityFrameworkCore.Query;
 using Moq;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Media.Art.Delete;
-using Streetcode.DAL.Entities.Media.Images;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.BLL.Repositories.Interfaces.Base;
+using Streetcode.Domain.Entities.Media.Images;
 using System.Linq.Expressions;
 using Xunit;
 

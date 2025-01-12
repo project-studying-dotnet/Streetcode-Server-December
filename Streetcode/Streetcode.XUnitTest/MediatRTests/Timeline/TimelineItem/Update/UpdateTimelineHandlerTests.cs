@@ -7,9 +7,9 @@ using Streetcode.BLL.DTO.Timeline.Update;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Mapping.Timeline;
 using Streetcode.BLL.MediatR.Timeline.TimelineItem.Update;
-using Streetcode.DAL.Entities.Timeline;
-using Streetcode.DAL.Enums;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.BLL.Repositories.Interfaces.Base;
+using Streetcode.Domain.Entities.Timeline;
+using Streetcode.Domain.Enums;
 using System.Linq.Expressions;
 using Xunit;
 

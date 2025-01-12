@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Streetcode.DAL.Entities.Analytics;
+using Streetcode.Domain.Entities.Analytics;
 
 namespace Streetcode.DAL.Persistence.Configurations.Analytics
 {

@@ -1,4 +1,4 @@
-﻿using Streetcode.DAL.Entities.Instagram;
+﻿using Streetcode.Domain.Entities.Instagram;
 
 namespace Streetcode.BLL.Interfaces.Instagram
 {

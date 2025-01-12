@@ -4,8 +4,8 @@ using FluentResults;
 using MediatR;
 using Streetcode.BLL.DTO.Streetcode;
 using Streetcode.BLL.Interfaces.Logging;
-using Streetcode.DAL.Entities.Streetcode;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.BLL.Repositories.Interfaces.Base;
+using Streetcode.Domain.Entities.Streetcode;
 
 namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.GetAll
 {

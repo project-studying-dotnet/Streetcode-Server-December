@@ -4,9 +4,9 @@ using MediatR;
 using Streetcode.BLL.DTO.Media.Video;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.ResultVariations;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
-using Streetcode.DAL.Entities.Streetcode;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.Domain.Entities.Streetcode;
 
 namespace Streetcode.BLL.MediatR.Media.Video.GetByStreetcodeId
 {

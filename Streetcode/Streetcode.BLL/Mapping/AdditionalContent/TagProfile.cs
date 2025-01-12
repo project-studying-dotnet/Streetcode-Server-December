@@ -1,7 +1,7 @@
 using AutoMapper;
 using Streetcode.BLL.DTO.AdditionalContent;
 using Streetcode.BLL.DTO.AdditionalContent.Tag;
-using Streetcode.DAL.Entities.AdditionalContent;
+using Streetcode.Domain.Entities.AdditionalContent;
 
 namespace Streetcode.BLL.Mapping.AdditionalContent
 {

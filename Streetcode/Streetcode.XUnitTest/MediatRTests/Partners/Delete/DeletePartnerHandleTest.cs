@@ -3,8 +3,8 @@ using FluentAssertions;
 using Moq;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Partners.Delete;
-using Streetcode.DAL.Entities.Partners;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.BLL.Repositories.Interfaces.Base;
+using Streetcode.Domain.Entities.Partners;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +15,7 @@ using Xunit;
 
 namespace Streetcode.XUnitTest.MediatRTests.Partners.Delete
 {
-	public class DeletePartnerHandleTest
+    public class DeletePartnerHandleTest
 	{
 		private readonly Mock<IRepositoryWrapper> _mockRepositoryWrapper;
 		private readonly Mock<IMapper> _mockMapper;

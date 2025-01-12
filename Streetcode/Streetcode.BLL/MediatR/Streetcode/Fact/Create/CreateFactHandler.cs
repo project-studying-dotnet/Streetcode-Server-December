@@ -4,8 +4,8 @@ using MediatR;
 using Streetcode.BLL.DTO.Streetcode.TextContent.Fact;
 using Streetcode.BLL.Interfaces.Image;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Streetcode.Fact.Create
 {
@@ -26,7 +26,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.Fact.Create
 
         public async Task<Result<FactDto>> Handle(CreateFactCommand command, CancellationToken cancellationToken)
         {
-            var fact = _mapper.Map<DAL.Entities.Streetcode.TextContent.Fact>(command.Fact);
+            var fact = _mapper.Map<Streetcode.Domain.Entities.Streetcode.TextContent.Fact>(command.Fact);
 
             if (fact is null)
             {

@@ -9,7 +9,7 @@ namespace Streetcode.BLL.Interfaces.Image
 {
     public interface IImageService
     {
-        public DAL.Entities.Media.Images.Image ConfigureImage(ImageFileBaseCreateDto imageDTO);
+        public Domain.Entities.Media.Images.Image ConfigureImage(ImageFileBaseCreateDto imageDTO);
         public string? ImageBase64(ImageDto imageDTO);
         public void DeleteImage(string blobName);
     }

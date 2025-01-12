@@ -1,7 +1,7 @@
-﻿using Streetcode.DAL.Entities.Partners;
+﻿using Streetcode.BLL.Repositories.Interfaces.Partners;
 using Streetcode.DAL.Persistence;
-using Streetcode.DAL.Repositories.Interfaces.Partners;
 using Streetcode.DAL.Repositories.Realizations.Base;
+using Streetcode.Domain.Entities.Partners;
 
 namespace Streetcode.DAL.Repositories.Realizations.Partners
 {

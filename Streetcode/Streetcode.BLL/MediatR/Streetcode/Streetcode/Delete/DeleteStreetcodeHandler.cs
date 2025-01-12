@@ -2,8 +2,8 @@
 using FluentResults;
 using MediatR;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.Delete
 {
-	public class DeleteStreetcodeHandler : IRequestHandler<DeleteStreetcodeCommand, Result<Unit>>
+    public class DeleteStreetcodeHandler : IRequestHandler<DeleteStreetcodeCommand, Result<Unit>>
 	{
 		private readonly IRepositoryWrapper _repositoryWrapper;
 		private readonly ILoggerService _logger;

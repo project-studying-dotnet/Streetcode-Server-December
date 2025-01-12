@@ -1,7 +1,7 @@
-using Streetcode.DAL.Entities.Streetcode.TextContent;
+using Streetcode.BLL.Repositories.Interfaces.Streetcode.TextContent;
 using Streetcode.DAL.Persistence;
-using Streetcode.DAL.Repositories.Interfaces.Streetcode.TextContent;
 using Streetcode.DAL.Repositories.Realizations.Base;
+using Streetcode.Domain.Entities.Streetcode.TextContent;
 
 namespace Streetcode.DAL.Repositories.Realizations.Streetcode.TextContent
 {

@@ -5,8 +5,8 @@ using Streetcode.BLL.DTO.Media.Images;
 using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Image;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Media.Image.Create
 {
@@ -31,7 +31,7 @@ namespace Streetcode.BLL.MediatR.Media.Image.Create
 
         public async Task<Result<ImageDto>> Handle(CreateImageCommand request, CancellationToken cancellationToken)
         {
-            DAL.Entities.Media.Images.Image image = _imageService.ConfigureImage(request.Image);
+            Streetcode.Domain.Entities.Media.Images.Image image = _imageService.ConfigureImage(request.Image);
 
             await _repositoryWrapper.ImageRepository.CreateAsync(image);
             var resultIsSuccess = await _repositoryWrapper.SaveChangesAsync() > 0;

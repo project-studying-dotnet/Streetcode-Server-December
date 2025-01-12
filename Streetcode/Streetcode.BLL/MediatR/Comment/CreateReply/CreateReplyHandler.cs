@@ -3,10 +3,10 @@ using FluentResults;
 using MediatR;
 using Streetcode.BLL.DTO.Comment;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
 using Streetcode.BLL.Specifications.Comment;
-using Streetcode.DAL.Repositories.Interfaces.Base;
-using CommentEntity = Streetcode.DAL.Entities.Comment.Comment;
+using CommentEntity = Streetcode.Domain.Entities.Comment.Comment;
 
 namespace Streetcode.BLL.MediatR.Comment.CreateReply
 {

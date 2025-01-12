@@ -3,19 +3,19 @@ using MediatR;
 using Moq;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Sources.SourceLinkCategory.Delete;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using SourceLink = Streetcode.DAL.Entities.Sources.SourceLinkCategory;
+using SourceLink = Streetcode.Domain.Entities.Sources.SourceLinkCategory;
 using Xunit;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 
 namespace Streetcode.XUnitTest.MediatRTests.Source.Delete
 {
-	public class DeleteSourceLinkCategoryHandlerTest
+    public class DeleteSourceLinkCategoryHandlerTest
 	{
 		private readonly Mock<IRepositoryWrapper> _mockRepositoryWrapper;
 		private readonly Mock<IMapper> _mockMapper;

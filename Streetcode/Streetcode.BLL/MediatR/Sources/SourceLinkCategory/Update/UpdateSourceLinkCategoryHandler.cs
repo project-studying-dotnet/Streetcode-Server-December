@@ -3,8 +3,8 @@ using FluentResults;
 using MediatR;
 using Streetcode.BLL.DTO.Sources;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.Update
 {
@@ -23,7 +23,7 @@ namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.Update
 
         public async Task<Result<SourceLinkCategoryDto>> Handle(UpdateSourceLinkCategoryCommand request, CancellationToken cancellationToken)
         {
-            var sourceLinkCategory = _mapper.Map<DAL.Entities.Sources.SourceLinkCategory>(request.SourceLinkCategory);
+            var sourceLinkCategory = _mapper.Map<Streetcode.Domain.Entities.Sources.SourceLinkCategory>(request.SourceLinkCategory);
             if (sourceLinkCategory is null)
             {
                 string errorMsg = ErrorManager.GetCustomErrorText("ConvertationError", "null", "source link category");

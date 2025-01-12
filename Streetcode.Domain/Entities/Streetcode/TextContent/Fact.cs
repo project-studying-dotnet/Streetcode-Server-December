@@ -1,0 +1,34 @@
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Streetcode.Domain.Entities.Media.Images;
+using Streetcode.Domain.Entities.Streetcode;
+
+namespace Streetcode.Domain.Entities.Streetcode.TextContent
+{
+    [Table("facts", Schema = "streetcode")]
+    public class Fact
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        public string? Title { get; set; }
+
+        [Required]
+        [MaxLength(600)]
+        public string? FactContent { get; set; }
+
+        public int? ImageId { get; set; }
+
+        public Image? Image { get; set; }
+
+        public int StreetcodeId { get; set; }
+
+        public StreetcodeContent? Streetcode { get; set; }
+
+        [Required]
+        public int Index { get; set; }
+    }
+}

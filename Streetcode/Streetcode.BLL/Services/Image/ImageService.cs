@@ -16,14 +16,14 @@ namespace Streetcode.BLL.Services.Image
             _blobService = blobService;
         }
 
-        public DAL.Entities.Media.Images.Image ConfigureImage(ImageFileBaseCreateDto imageDTO)
+        public Domain.Entities.Media.Images.Image ConfigureImage(ImageFileBaseCreateDto imageDTO)
         {
             string hashBlobStorageName = _blobService.SaveFileInStorage(
                         imageDTO.BaseFormat,
                         imageDTO.Title,
                         imageDTO.Extension).Result;
 
-            var image = _mapper.Map<DAL.Entities.Media.Images.Image>(imageDTO);
+            var image = _mapper.Map<Domain.Entities.Media.Images.Image>(imageDTO);
 
             image.BlobName = $"{hashBlobStorageName}.{imageDTO.Extension}";
             return image;

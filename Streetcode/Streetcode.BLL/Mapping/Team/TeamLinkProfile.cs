@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Streetcode.BLL.DTO.Team;
-using Streetcode.DAL.Entities.Team;
+using Streetcode.Domain.Entities.Team;
 
 namespace Streetcode.BLL.Mapping.Team
 {

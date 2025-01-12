@@ -12,14 +12,14 @@ using Streetcode.BLL.Mapping.Media.Images;
 using Streetcode.BLL.Mapping.Streetcode;
 using Streetcode.BLL.Mapping.Streetcode.Types;
 using Streetcode.BLL.MediatR.Streetcode.Streetcode.CreateMainPage;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
 using Streetcode.BLL.Services.Audio;
 using Streetcode.BLL.Services.Image;
 using Streetcode.DAL.Entities.Media;
-using Streetcode.DAL.Entities.Media.Images;
-using Streetcode.DAL.Entities.Streetcode;
-using Streetcode.DAL.Enums;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.Domain.Entities.Media.Images;
+using Streetcode.Domain.Entities.Streetcode;
+using Streetcode.Domain.Enums;
 using Xunit;
 
 namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Streetcode.CreateMainPage

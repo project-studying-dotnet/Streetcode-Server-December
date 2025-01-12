@@ -4,11 +4,11 @@ using Streetcode.BLL.DTO.Comment;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Comment.AdminDeleteComment;
 using Streetcode.BLL.MediatR.Comment.UserDeleteComment;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 using Streetcode.DAL.Specification;
 using Xunit;
-using CommentEntity = Streetcode.DAL.Entities.Comment.Comment;
+using CommentEntity = Streetcode.Domain.Entities.Comment.Comment;
 
 namespace Streetcode.XUnitTest.MediatRTests.Comment;
 

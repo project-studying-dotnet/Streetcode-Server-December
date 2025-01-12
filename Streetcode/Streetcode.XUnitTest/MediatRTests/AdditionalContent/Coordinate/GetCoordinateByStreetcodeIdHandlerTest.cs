@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Query;
 using Moq;
 using Streetcode.BLL.DTO.AdditionalContent.Coordinates.Types;
 using Streetcode.BLL.MediatR.AdditionalContent.Coordinate.GetByStreetcodeId;
-using Streetcode.DAL.Entities.Streetcode;
+using Streetcode.Domain.Entities.Streetcode;
 using Xunit;
-using StreetcodeCoordinateEntity = Streetcode.DAL.Entities.AdditionalContent.Coordinates.Types.StreetcodeCoordinate;
+using StreetcodeCoordinateEntity = Streetcode.Domain.Entities.AdditionalContent.Coordinates.Types.StreetcodeCoordinate;
 
 namespace Streetcode.XUnitTest.MediatRTests.AdditionalContent.Coordinate;
 

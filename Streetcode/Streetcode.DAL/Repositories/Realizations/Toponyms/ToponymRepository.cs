@@ -1,7 +1,7 @@
-using Streetcode.DAL.Entities.Toponyms;
+using Streetcode.BLL.Repositories.Interfaces.Toponyms;
 using Streetcode.DAL.Persistence;
-using Streetcode.DAL.Repositories.Interfaces.Toponyms;
 using Streetcode.DAL.Repositories.Realizations.Base;
+using Streetcode.Domain.Entities.Toponyms;
 
 namespace Streetcode.DAL.Repositories.Realizations.Toponyms
 {

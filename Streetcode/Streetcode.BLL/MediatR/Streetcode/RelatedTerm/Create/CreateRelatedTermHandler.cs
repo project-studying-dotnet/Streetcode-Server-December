@@ -3,10 +3,9 @@ using FluentResults;
 using MediatR;
 using Streetcode.BLL.DTO.Streetcode.TextContent;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Specifications.Streetcode.RelatedTerm;
-using Streetcode.DAL.Repositories.Interfaces.Base;
-
-using Entity = Streetcode.DAL.Entities.Streetcode.TextContent.RelatedTerm;
+using Entity = Streetcode.Domain.Entities.Streetcode.TextContent.RelatedTerm;
 
 namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Create
 {

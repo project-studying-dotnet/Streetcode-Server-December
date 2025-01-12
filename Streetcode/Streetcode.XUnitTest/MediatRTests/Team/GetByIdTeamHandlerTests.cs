@@ -5,8 +5,8 @@ using Streetcode.BLL.DTO.Team;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Mapping.Team;
 using Streetcode.BLL.MediatR.Team.GetById;
-using Streetcode.DAL.Entities.Team;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.BLL.Repositories.Interfaces.Base;
+using Streetcode.Domain.Entities.Team;
 using System.Linq.Expressions;
 using Xunit;
 

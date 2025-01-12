@@ -3,8 +3,6 @@ using Moq;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Mapping.Streetcode.TextContent;
 using Streetcode.BLL.MediatR.Streetcode.Text.GetByStreetcodeId;
-using Streetcode.DAL.Repositories.Interfaces.Base;
-using Streetcode.DAL.Entities.Streetcode;
 using Streetcode.BLL.DTO.Streetcode.TextContent.Text;
 using Streetcode.BLL.Interfaces.Text;
 using Xunit;
@@ -12,7 +10,9 @@ using Microsoft.EntityFrameworkCore.Query;
 using System.Linq.Expressions;
 using FluentAssertions;
 using System.Linq;
-using TextEntity = Streetcode.DAL.Entities.Streetcode.TextContent.Text;
+using TextEntity = Streetcode.Domain.Entities.Streetcode.TextContent.Text;
+using Streetcode.Domain.Entities.Streetcode;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 
 namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Text.GetByStreetcodeId
 {

@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Streetcode.BLL.Interfaces.Payment;
 using Streetcode.BLL.Services.Payment.Exceptions;
-using Streetcode.DAL.Entities.Payment;
+using Streetcode.Domain.Entities.Payment;
 
 namespace Streetcode.BLL.Services.Payment
 {

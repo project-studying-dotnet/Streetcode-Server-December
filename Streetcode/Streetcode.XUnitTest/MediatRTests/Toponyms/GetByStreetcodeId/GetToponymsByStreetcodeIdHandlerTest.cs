@@ -6,10 +6,10 @@ using Moq;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Mapping.Toponyms;
 using Streetcode.BLL.MediatR.Toponyms.GetByStreetcodeId;
-using Streetcode.DAL.Entities.Streetcode;
-using Streetcode.DAL.Entities.Toponyms;
-using Streetcode.DAL.Enums;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.BLL.Repositories.Interfaces.Base;
+using Streetcode.Domain.Entities.Streetcode;
+using Streetcode.Domain.Entities.Toponyms;
+using Streetcode.Domain.Enums;
 using Xunit;
 namespace Streetcode.XUnitTest.MediatRTests.Toponyms.GetByStreetcodeId
 {

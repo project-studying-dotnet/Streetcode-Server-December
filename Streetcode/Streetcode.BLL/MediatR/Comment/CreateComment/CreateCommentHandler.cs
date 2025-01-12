@@ -3,9 +3,9 @@ using FluentResults;
 using MediatR;
 using Streetcode.BLL.DTO.Comment;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
-using Streetcode.DAL.Enums;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.Domain.Enums;
 
 namespace Streetcode.BLL.MediatR.Comment.CreateComment;
 
@@ -50,7 +50,7 @@ public class CreateCommentHandler : IRequestHandler<CreateCommentCommand, Result
             return Result.Fail(errMsg);
         }
 
-        var newComment = _mapper.Map<DAL.Entities.Comment.Comment>(request.createCommentDto);
+        var newComment = _mapper.Map<Streetcode.Domain.Entities.Comment.Comment>(request.createCommentDto);
 
         if (newComment is null)
         {

@@ -1,5 +1,5 @@
 ﻿using Streetcode.BLL.DTO.AdditionalContent.Coordinates.Types;
-using Streetcode.DAL.Entities.Streetcode;
+using Streetcode.Domain.Entities.Streetcode;
 
 namespace Streetcode.BLL.DTO.Analytics
 {

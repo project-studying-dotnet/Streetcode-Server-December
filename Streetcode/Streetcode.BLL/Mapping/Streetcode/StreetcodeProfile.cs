@@ -1,8 +1,8 @@
 using AutoMapper;
 using Streetcode.BLL.DTO.Streetcode;
-using Streetcode.DAL.Entities.Streetcode;
-using Streetcode.DAL.Entities.Streetcode.Types;
-using Streetcode.DAL.Enums;
+using Streetcode.Domain.Entities.Streetcode;
+using Streetcode.Domain.Entities.Streetcode.Types;
+using Streetcode.Domain.Enums;
 
 namespace Streetcode.BLL.Mapping.Streetcode
 {

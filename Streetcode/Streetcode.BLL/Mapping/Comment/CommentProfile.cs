@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Streetcode.BLL.DTO.Comment;
-using CommentEntity = Streetcode.DAL.Entities.Comment.Comment;
+using CommentEntity = Streetcode.Domain.Entities.Comment.Comment;
 
 namespace Streetcode.BLL.Mapping.Comment
 {

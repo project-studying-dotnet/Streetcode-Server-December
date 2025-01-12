@@ -3,8 +3,8 @@ using FluentResults;
 using MediatR;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.DTO.Media.Art;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Media.Art.GetAll
 {

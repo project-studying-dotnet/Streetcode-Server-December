@@ -1,7 +1,7 @@
-﻿using Streetcode.DAL.Entities.Analytics;
+﻿using Streetcode.BLL.Repositories.Interfaces.Analytics;
 using Streetcode.DAL.Persistence;
-using Streetcode.DAL.Repositories.Interfaces.Analytics;
 using Streetcode.DAL.Repositories.Realizations.Base;
+using Streetcode.Domain.Entities.Analytics;
 
 namespace Streetcode.DAL.Repositories.Realizations.Analytics
 {

@@ -1,10 +1,10 @@
 ﻿using FluentResults;
 using MediatR;
 using Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Delete;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
 using Streetcode.BLL.Specifications.Comment;
 using Streetcode.BLL.Specifications.Streetcode.RelatedTerm;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;

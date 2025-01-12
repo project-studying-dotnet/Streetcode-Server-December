@@ -5,7 +5,6 @@ using Streetcode.BLL.DTO.Sources;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Sources.SourceLinkCategory.Create;
 using Streetcode.BLL.MediatR.Sources.SourceLinkCategory.DeleteCategoryContent;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,14 +12,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using System.Linq.Expressions;
-using Streetcode.DAL.Entities.Media.Images;
 using FluentAssertions;
-using Streetcode.DAL.Entities.Sources;
-using SourceCategory = Streetcode.DAL.Entities.Sources.SourceLinkCategory;
+using SourceCategory = Streetcode.Domain.Entities.Sources.SourceLinkCategory;
+using Streetcode.Domain.Entities.Media.Images;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 
 namespace Streetcode.XUnitTest.MediatRTests.Source.Create
 {
-	public class CreateSourceLinkCategoryHandlerTest
+    public class CreateSourceLinkCategoryHandlerTest
 	{
 		private readonly Mock<IRepositoryWrapper> _mockRepositoryWrapper;
 		private readonly Mock<IMapper> _mockMapper;

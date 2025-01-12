@@ -4,8 +4,6 @@ using Streetcode.BLL.DTO.Media.Images;
 using Streetcode.BLL.DTO.News;
 using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Logging;
-using Streetcode.DAL.Entities.News;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 using Microsoft.EntityFrameworkCore.Query;
 using Streetcode.BLL.MediatR.Newss.GetByUrl;
 using Streetcode.DAL.Entities.Media.Images;
@@ -20,6 +18,8 @@ using System.Security.Policy;
 using Streetcode.BLL.MediatR.Newss.GetNewsAndLinksByUrl;
 using System.Threading;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Streetcode.Domain.Entities.News;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 
 namespace Streetcode.XUnitTest.MediatRTests.NewsTests
 {

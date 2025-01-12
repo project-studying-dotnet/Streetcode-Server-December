@@ -4,8 +4,8 @@ using Moq;
 using Streetcode.BLL.DTO.Comment;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Comment.GetCommentsByStreetcodeId;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Specifications.Comment;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 using Streetcode.DAL.Specification;
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using CommentEntity = Streetcode.DAL.Entities.Comment.Comment;
+using CommentEntity = Streetcode.Domain.Entities.Comment.Comment;
 
 namespace Streetcode.XUnitTest.MediatRTests.Comment
 {

@@ -3,8 +3,8 @@ using Moq;
 using Streetcode.BLL.DTO.Sources;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Sources.SourceLinkCategory.UpdateCategoryContent;
-using Streetcode.DAL.Entities.Sources;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.BLL.Repositories.Interfaces.Base;
+using Streetcode.Domain.Entities.Sources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +15,7 @@ using Xunit;
 
 namespace Streetcode.XUnitTest.MediatRTests.Source.UpdateCategoryContent
 {
-	public class UpdateCategoryContentHandlerTest
+    public class UpdateCategoryContentHandlerTest
 	{
 		private readonly Mock<IMapper> _mockMapper;
 		private readonly Mock<IRepositoryWrapper> _mockRepositoryWrapper;

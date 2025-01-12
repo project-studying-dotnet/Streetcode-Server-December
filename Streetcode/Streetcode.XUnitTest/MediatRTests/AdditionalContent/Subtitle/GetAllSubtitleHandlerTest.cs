@@ -9,7 +9,7 @@ using Streetcode.BLL.MediatR.AdditionalContent.Subtitle.GetAll;
 using Streetcode.DAL.Entities.Streetcode;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using Xunit;
-using SubtitleEntity = Streetcode.DAL.Entities.AdditionalContent.Subtitle;
+using SubtitleEntity = Streetcode.Domain.Entities.AdditionalContent.Subtitle;
 
 namespace Streetcode.XUnitTest.MediatRTests.AdditionalContent.Subtitle;
 

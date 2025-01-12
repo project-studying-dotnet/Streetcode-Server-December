@@ -2,14 +2,14 @@
 using Moq;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Streetcode.Text.GetAll;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Mapping.Streetcode.TextContent;
 using Xunit;
 using Microsoft.EntityFrameworkCore.Query;
 using Streetcode.DAL.Entities.Streetcode;
 using System.Linq.Expressions;
 using FluentAssertions;
-using TextEntity = Streetcode.DAL.Entities.Streetcode.TextContent.Text;
+using TextEntity = Streetcode.Domain.Entities.Streetcode.TextContent.Text;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 
 namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Text.GetAll
 {

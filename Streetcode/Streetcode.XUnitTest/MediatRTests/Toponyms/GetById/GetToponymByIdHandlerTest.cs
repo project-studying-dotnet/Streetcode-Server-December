@@ -7,8 +7,8 @@ using Xunit;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Mapping.Toponyms;
 using Streetcode.BLL.MediatR.Toponyms.GetById;
-using Streetcode.DAL.Entities.Toponyms;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.Domain.Entities.Toponyms;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 namespace Streetcode.XUnitTest.MediatRTests.Toponyms.GetById
 {
     /// <summary>

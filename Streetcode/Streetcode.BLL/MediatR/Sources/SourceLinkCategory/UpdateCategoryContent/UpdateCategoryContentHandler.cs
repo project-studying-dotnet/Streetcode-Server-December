@@ -3,8 +3,8 @@ using FluentResults;
 using MediatR;
 using Streetcode.BLL.DTO.Sources;
 using Streetcode.BLL.Interfaces.Logging;
-using Streetcode.DAL.Entities.Sources;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.BLL.Repositories.Interfaces.Base;
+using Streetcode.Domain.Entities.Sources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.UpdateCategoryContent
 {
-	public class UpdateCategoryContentHandler : IRequestHandler<UpdateCategoryContentCommand, Result<CategoryContentCreateDto>>
+    public class UpdateCategoryContentHandler : IRequestHandler<UpdateCategoryContentCommand, Result<CategoryContentCreateDto>>
 	{
 		private readonly IMapper _mapper;
 		private readonly IRepositoryWrapper _repositoryWrapper;

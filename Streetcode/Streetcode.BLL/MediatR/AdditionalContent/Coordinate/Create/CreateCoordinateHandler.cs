@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using FluentResults;
 using MediatR;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.AdditionalContent.Coordinate.Create
 {
@@ -19,7 +19,7 @@ namespace Streetcode.BLL.MediatR.AdditionalContent.Coordinate.Create
 
         public async Task<Result<Unit>> Handle(CreateCoordinateCommand request, CancellationToken cancellationToken)
         {
-            var streetcodeCoordinate = _mapper.Map<DAL.Entities.AdditionalContent.Coordinates.Types.StreetcodeCoordinate>(request.StreetcodeCoordinate);
+            var streetcodeCoordinate = _mapper.Map<Streetcode.Domain.Entities.AdditionalContent.Coordinates.Types.StreetcodeCoordinate>(request.StreetcodeCoordinate);
 
             if (streetcodeCoordinate is null)
             {

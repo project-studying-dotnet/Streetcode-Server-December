@@ -4,9 +4,9 @@ using Moq;
 using Streetcode.BLL.DTO.Media.Video;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Media.Video.Create;
-using Streetcode.DAL.Entities.Media;
-using Streetcode.DAL.Entities.Streetcode;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.BLL.Repositories.Interfaces.Base;
+using Streetcode.Domain.Entities.Media;
+using Streetcode.Domain.Entities.Streetcode;
 using System.Linq.Expressions;
 using Xunit;
 

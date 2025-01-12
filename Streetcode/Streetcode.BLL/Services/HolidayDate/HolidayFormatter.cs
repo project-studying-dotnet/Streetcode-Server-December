@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Streetcode.BLL.Interfaces.HolidayFormatter;
-using Streetcode.DAL.Entities.AdditionalContent.HolidayDate;
+using Streetcode.Domain.Entities.AdditionalContent.HolidayDate;
 using System.Text.Json;
 
 namespace Streetcode.BLL.Services.HolidayFormatter

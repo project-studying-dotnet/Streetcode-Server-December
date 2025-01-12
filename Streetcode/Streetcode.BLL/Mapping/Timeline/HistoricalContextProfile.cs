@@ -1,6 +1,6 @@
 using AutoMapper;
 using Streetcode.BLL.DTO.Timeline;
-using Streetcode.DAL.Entities.Timeline;
+using Streetcode.Domain.Entities.Timeline;
 
 namespace Streetcode.BLL.Mapping.Timeline
 {

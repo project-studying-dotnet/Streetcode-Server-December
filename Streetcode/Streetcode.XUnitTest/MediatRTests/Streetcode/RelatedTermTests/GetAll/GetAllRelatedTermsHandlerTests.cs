@@ -5,9 +5,7 @@ using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Mapping.Streetcode.TextContent;
 using Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetAll;
 using Streetcode.BLL.MediatR.Toponyms.GetById;
-using Streetcode.DAL.Entities.Streetcode.TextContent;
 using Streetcode.DAL.Entities.Toponyms;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 using Streetcode.DAL.Repositories.Realizations.Streetcode.TextContent;
 using Microsoft.EntityFrameworkCore.Query;
 using Moq;
@@ -16,6 +14,8 @@ using Xunit;
 using Streetcode.DAL.Specification;
 using Microsoft.Extensions.Caching.Distributed;
 using Streetcode.DAL.Caching.RedisCache;
+using Streetcode.Domain.Entities.Streetcode.TextContent;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 
 namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.GetAll;
 

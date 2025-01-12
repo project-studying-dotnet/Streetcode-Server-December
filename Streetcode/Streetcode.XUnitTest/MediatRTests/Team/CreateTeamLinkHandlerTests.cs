@@ -5,8 +5,8 @@ using Streetcode.BLL.DTO.Team;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Mapping.Team;
 using Streetcode.BLL.MediatR.Team.TeamMembersLinks.Create;
-using Streetcode.DAL.Entities.Team;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.BLL.Repositories.Interfaces.Base;
+using Streetcode.Domain.Entities.Team;
 using Xunit;
 
 namespace Streetcode.XUnitTest.MediatRTests.Team
@@ -104,7 +104,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
             var _mockMapper = new Mock<IMapper>();
             var _handler = new CreateTeamLinkHandler(_mockMapper.Object, _mockRepositoryWrapper.Object, _mockLogger.Object);
 
-            var teamMemberLink = _mapper.Map<DAL.Entities.Team.TeamMemberLink>(_teamLinkDTO);
+            var teamMemberLink = _mapper.Map<Streetcode.Domain.Entities.Team.TeamMemberLink>(_teamLinkDTO);
 
             SetupCreateTeamLink(_teamLinkDTO);
             SetupSaveChangesAsync(1);
@@ -125,7 +125,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
 
         private void SetupCreateTeamLink(TeamMemberLinkDto teamLinkDTO)
         {
-            var teamMemberLink = _mapper.Map<DAL.Entities.Team.TeamMemberLink>(teamLinkDTO);
+            var teamMemberLink = _mapper.Map<Streetcode.Domain.Entities.Team.TeamMemberLink>(teamLinkDTO);
 
             _mockRepositoryWrapper.Setup(p => p.TeamLinkRepository.Create(It.IsAny<TeamMemberLink>())).Returns(teamMemberLink);
         }

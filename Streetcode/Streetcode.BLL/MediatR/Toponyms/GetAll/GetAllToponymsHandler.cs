@@ -2,9 +2,9 @@
 using FluentResults;
 using MediatR;
 using Streetcode.BLL.DTO.Toponyms;
-using Streetcode.DAL.Repositories.Interfaces.Base;
-using Streetcode.DAL.Entities.Toponyms;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.Domain.Entities.Toponyms;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Toponyms.GetAll
 {

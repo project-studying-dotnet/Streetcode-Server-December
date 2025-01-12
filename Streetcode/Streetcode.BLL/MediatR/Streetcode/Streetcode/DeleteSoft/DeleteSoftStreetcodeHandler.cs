@@ -1,8 +1,8 @@
 ﻿using FluentResults;
 using MediatR;
 using Streetcode.BLL.Interfaces.Logging;
+using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.DeleteSoft
 {
@@ -29,7 +29,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.DeleteSoft
                 throw new ArgumentNullException(errorMsg);
             }
 
-            streetcode.Status = DAL.Enums.StreetcodeStatus.Deleted;
+            streetcode.Status = Streetcode.Domain.Enums.StreetcodeStatus.Deleted;
             streetcode.UpdatedAt = DateTime.Now;
 
             _repositoryWrapper.StreetcodeRepository.Update(streetcode);

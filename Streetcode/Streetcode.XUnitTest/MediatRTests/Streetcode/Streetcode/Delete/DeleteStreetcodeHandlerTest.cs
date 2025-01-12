@@ -2,8 +2,8 @@
 using Moq;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Streetcode.Streetcode.Delete;
-using Streetcode.DAL.Entities.Streetcode;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.BLL.Repositories.Interfaces.Base;
+using Streetcode.Domain.Entities.Streetcode;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,7 @@ using Xunit;
 
 namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Streetcode.Delete
 {
-	public class DeleteStreetcodeHandlerTest
+    public class DeleteStreetcodeHandlerTest
 	{
 		private readonly Mock<IRepositoryWrapper> _mockRepositoryWrapper;
 		private readonly Mock<ILoggerService> _mockLogger;

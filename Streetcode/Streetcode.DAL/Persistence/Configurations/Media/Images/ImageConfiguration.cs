@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Streetcode.DAL.Entities.Media.Images;
-using Streetcode.DAL.Entities.Partners;
+using Streetcode.Domain.Entities.Media.Images;
+using Streetcode.Domain.Entities.Partners;
 
 namespace Streetcode.DAL.Persistence.Configurations.Media.Images
 {

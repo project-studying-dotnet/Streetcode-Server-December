@@ -1,5 +1,5 @@
 ﻿using Streetcode.DAL.Specification;
-using CommentEntity = Streetcode.DAL.Entities.Comment.Comment;
+using CommentEntity = Streetcode.Domain.Entities.Comment.Comment;
 
 namespace Streetcode.BLL.Specifications.Comment
 {

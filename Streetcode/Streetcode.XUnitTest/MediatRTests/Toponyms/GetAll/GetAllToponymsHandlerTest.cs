@@ -6,8 +6,8 @@ using Streetcode.BLL.DTO.Toponyms;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Mapping.Toponyms;
 using Streetcode.BLL.MediatR.Toponyms.GetAll;
-using Streetcode.DAL.Entities.Toponyms;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.BLL.Repositories.Interfaces.Base;
+using Streetcode.Domain.Entities.Toponyms;
 using Xunit;
 
 namespace Streetcode.XUnitTest.MediatRTests.Toponyms.GetAll

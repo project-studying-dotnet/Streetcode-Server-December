@@ -2,8 +2,8 @@
 using Moq;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Analytics.Delete;
-using Streetcode.DAL.Entities.Analytics;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.BLL.Repositories.Interfaces.Base;
+using Streetcode.Domain.Entities.Analytics;
 using System.Linq.Expressions;
 using Xunit;
 

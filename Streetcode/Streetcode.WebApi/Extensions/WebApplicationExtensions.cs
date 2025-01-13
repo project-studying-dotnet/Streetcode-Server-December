@@ -7,10 +7,11 @@ namespace Streetcode.WebApi.Extensions
     {
         public static async Task ApplyMigrations(this WebApplication app)
         {
+            using var scope = app.Services.CreateScope();
             var logger = app.Services.GetRequiredService<ILogger<Program>>();
             try
             {
-                var streetcodeContext = app.Services.GetRequiredService<StreetcodeDbContext>();
+                var streetcodeContext = scope.ServiceProvider.GetRequiredService<StreetcodeDbContext>();
                 await streetcodeContext.Database.MigrateAsync();
             }
             catch (Exception ex)

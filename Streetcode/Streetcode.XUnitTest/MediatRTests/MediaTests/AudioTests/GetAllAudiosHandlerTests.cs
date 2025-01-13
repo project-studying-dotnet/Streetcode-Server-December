@@ -59,7 +59,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
 
             _mockRepository.Setup(r => r.AudioRepository.GetAllAsync(It.IsAny<Expression<Func<Audio, bool>>>(), It.IsAny<Func<IQueryable<Audio>, IIncludableQueryable<Audio, object>>>())).ReturnsAsync(audios);
             _mockMapper.Setup(m => m.Map<IEnumerable<AudioDto>>(audios)).Returns(audioDTOs);
-            _mockBlob.Setup(b => b.FindFileInStorageAsBase64(It.IsAny<string>())).Returns((string blobName) => Convert.ToBase64String(Encoding.UTF8.GetBytes(blobName)));
+            _mockBlob.Setup(b => b.FindFileInStorageAsBase64(It.IsAny<string>())).Returns((string blobName) => Task.FromResult(Convert.ToBase64String(Encoding.UTF8.GetBytes(blobName))));
 
             // Act
             var result = await _getAllAudiosHandler.Handle(new GetAllAudiosQuery(), CancellationToken.None);

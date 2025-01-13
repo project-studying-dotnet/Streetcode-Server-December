@@ -88,7 +88,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
             _mapperMock.Setup(m => m.Map<NewsDto>(news)).Returns(updatedNews);
             _blobServiceMock
                 .Setup(b => b.FindFileInStorageAsBase64("test_image.jpg"))
-                .Returns("base64string");
+                .Returns(Task.FromResult("base64string"));
 
             _repositoryWrapperMock.Setup(r => r.NewsRepository.Update(news));
             _repositoryWrapperMock.Setup(r => r.SaveChangesAsync()).ReturnsAsync(1);

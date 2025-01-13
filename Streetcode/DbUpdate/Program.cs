@@ -20,7 +20,7 @@ namespace DbUpdate
 
             var connectionString = configuration.GetConnectionString("DefaultConnection");
 
-            string pathToScript = "";
+            string? pathToScript = string.Empty;
 
             Console.WriteLine("Enter '-m' to MIGRATE or '-s' to SEED db:");
             pathToScript = Console.ReadLine();

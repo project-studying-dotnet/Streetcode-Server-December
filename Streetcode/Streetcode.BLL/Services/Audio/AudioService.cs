@@ -21,7 +21,7 @@ namespace Streetcode.BLL.Services.Audio
             string hashBlobStorageName = _blobService.SaveFileInStorage(
                 audioDTO.BaseFormat,
                 audioDTO.Title,
-                audioDTO.Extension);
+                audioDTO.Extension).Result;
 
             var audio = _mapper.Map<DAL.Entities.Media.Audio>(audioDTO);
 

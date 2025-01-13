@@ -35,13 +35,19 @@ public class AzureServiceBus(string conn) : IAzureServiceBus
             {
                 TransportType = ServiceBusTransportType.AmqpWebSockets,
             };
-            
+
             var sbClient = new ServiceBusClient(conn, sbClientOption);
             var sbReceiver = sbClient.CreateReceiver(queueName);
             var msg = await sbReceiver.ReceiveMessageAsync();
-            var msgBody = Encoding.UTF8.GetString(msg.Body);
+            if (msg != null)
+            {
+                await sbReceiver.CompleteMessageAsync(msg);
 
-            return msgBody;
+                var msgBody = Encoding.UTF8.GetString(msg.Body);
+                return msgBody;
+            }
+
+            return string.Empty;
         }
         catch (Exception e)
         {

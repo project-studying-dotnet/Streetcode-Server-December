@@ -15,6 +15,10 @@ using Hangfire;
 using Hangfire.Mongo;
 using Hangfire.Mongo.Migration.Strategies;
 using Hangfire.Mongo.Migration.Strategies.Backup;
+using Microsoft.Extensions.Options;
+using Streetcode.BLL.DTO.Users;
+using UserService.BLL.DTO.User;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -89,6 +93,7 @@ builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<IUserService, RegistrationService>();
 builder.Services.AddScoped<ITokenCleanupService, TokenCleanupService>();
+builder.Services.AddScoped<IUserPasswordService, UserPasswordService>();
 
 var currentAssemblies = AppDomain.CurrentDomain.GetAssemblies();
 builder.Services.AddAutoMapper(currentAssemblies);
@@ -123,6 +128,8 @@ builder.Services.AddHangfireServer();
 var app = builder.Build();
 await app.SeedDataAsync();
 
+
+
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -135,6 +142,63 @@ app.MapControllers();
 
 app.UseHttpsRedirection();
 app.UseHangfireDashboard();
+
+// Мінімальні API Endpoints
+app.MapPost("/register", async (RegistrationDto registrationDto, IUserService userService) =>
+{
+    var result = await userService.Registration(registrationDto);
+    return result.IsSuccess ? Results.Ok(result.Value) : Results.BadRequest(result.Errors);
+});
+
+app.MapPost("/login", async (LoginDto loginDto, ILoginService loginService, HttpContext httpContext, IOptions<JwtConfiguration> jwtConfig) =>
+{
+    var loginResult = await loginService.Login(loginDto);
+    if (loginResult.IsFailed)
+        return Results.BadRequest(loginResult.Errors);
+
+    var token = loginResult.Value;
+    httpContext.AppendTokenToCookie(token.AccessToken, jwtConfig);
+    return Results.Ok(new { token });
+});
+
+app.MapPost("/logout", async (HttpContext httpContext, ILoginService loginService) =>
+{
+    var logoutResult = await loginService.Logout(httpContext.User);
+    if (logoutResult.IsFailed)
+        return Results.BadRequest(logoutResult.Errors);
+
+    httpContext.DeleteAuthTokenCookie();
+    return Results.Ok("User successfully logged out.");
+});
+
+app.MapPost("/refresh-token", async (TokenRequestDTO tokenRequest, ILoginService loginService, HttpContext httpContext, IOptions<JwtConfiguration> jwtConfig) =>
+{
+    var refreshResult = await loginService.RefreshToken(tokenRequest.RefreshToken);
+    if (refreshResult.IsFailed)
+        return Results.BadRequest(refreshResult.Errors);
+
+    var token = refreshResult.Value;
+    httpContext.AppendTokenToCookie(token.AccessToken, jwtConfig);
+    return Results.Ok(refreshResult.Value);
+});
+
+app.MapPost("/forgot-password", async (string email, IUserPasswordService userPasswordService, HttpContext httpContext, IOptions<JwtConfiguration> jwtConfig) =>
+{
+    var result = await userPasswordService.ForgotPassword(email);
+    if (result.IsFailed)
+        return Results.BadRequest(result.Errors);
+
+    return Results.Ok();
+});
+
+app.MapPost("/reset-password", async (PassResetDto passResetDto, IUserPasswordService userPasswordService, HttpContext httpContext, IOptions<JwtConfiguration> jwtConfig) =>
+{
+    var result = await userPasswordService.ResetPassword(passResetDto);
+    if (result.IsFailed)
+        return Results.BadRequest(result.Errors);
+
+    return Results.Ok();
+});
 
 RecurringJob.AddOrUpdate<TokenCleanupService>(
     "RemoveExpiredRefreshTokens",

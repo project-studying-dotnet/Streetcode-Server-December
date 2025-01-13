@@ -116,10 +116,10 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.ArtTests
 
             _repositoryMock.Setup(r => r.ArtRepository.GetAllAsync(It.Is<Expression<Func<Art, bool>>>(predicate => predicate.Compile()(allArtsByStreetcodeId[0])), It.IsAny<Func<IQueryable<Art>, IIncludableQueryable<Art, object>>>())).ReturnsAsync(allArtsByStreetcodeId);
             _mapperMock.Setup(m => m.Map<IEnumerable<ArtDto>>(allArtsByStreetcodeId)).Returns(allDtosByStreetcodeId);
-            _blobMock.Setup(b => b.FindFileInStorageAsBase64("blobNum1")).Returns("base64_blobNum1");
-            _blobMock.Setup(b => b.FindFileInStorageAsBase64("blobNum2")).Returns("base64_blobNum2");
-            _blobMock.Setup(b => b.FindFileInStorageAsBase64("blobNum3")).Returns("base64_blobNum3");
-            _blobMock.Setup(b => b.FindFileInStorageAsBase64("blobNum4")).Returns("base64_blobNum4");
+            _blobMock.Setup(b => b.FindFileInStorageAsBase64("blobNum1")).Returns(Task.FromResult("base64_blobNum1"));
+            _blobMock.Setup(b => b.FindFileInStorageAsBase64("blobNum2")).Returns(Task.FromResult("base64_blobNum2"));
+            _blobMock.Setup(b => b.FindFileInStorageAsBase64("blobNum3")).Returns(Task.FromResult("base64_blobNum3"));
+            _blobMock.Setup(b => b.FindFileInStorageAsBase64("blobNum4")).Returns(Task.FromResult("base64_blobNum4"));
 
             // (Act):
 

@@ -43,7 +43,7 @@ namespace Streetcode.BLL.MediatR.Media.Image.GetByStreetcodeId
 
             foreach (var image in imageDtos)
             {
-                image.Base64 = _blobService.FindFileInStorageAsBase64(image.BlobName);
+                image.Base64 = await _blobService.FindFileInStorageAsBase64(image.BlobName);
             }
 
             return Result.Ok(imageDtos);

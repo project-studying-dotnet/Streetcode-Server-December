@@ -45,7 +45,7 @@ namespace Streetcode.BLL.MediatR.Sources.SourceLink.GetCategoriesByStreetcodeId
 
             foreach (var srcCategory in mappedSrcCategories)
             {
-                srcCategory.Image.Base64 = _blobService.FindFileInStorageAsBase64(srcCategory.Image.BlobName);
+                srcCategory.Image.Base64 = await _blobService.FindFileInStorageAsBase64(srcCategory.Image.BlobName);
             }
 
             return Result.Ok(mappedSrcCategories);

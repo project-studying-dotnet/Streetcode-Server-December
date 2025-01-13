@@ -38,7 +38,7 @@ namespace Streetcode.BLL.MediatR.Newss.Update
 
             if (news.Image is not null)
             {
-                response.Image.Base64 = _blobSevice.FindFileInStorageAsBase64(response.Image.BlobName);
+                response.Image.Base64 = await _blobSevice.FindFileInStorageAsBase64(response.Image.BlobName);
             }
             else
             {

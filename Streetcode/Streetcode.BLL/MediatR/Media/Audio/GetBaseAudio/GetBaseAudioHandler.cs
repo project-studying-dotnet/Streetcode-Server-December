@@ -31,7 +31,7 @@ namespace Streetcode.BLL.MediatR.Media.Audio.GetBaseAudio
                 return Result.Fail(new Error(errorMsg));
             }
 
-            return _blobStorage.FindFileInStorageAsMemoryStream(audio.BlobName);
+            return await _blobStorage.FindFileInStorageAsMemoryStream(audio.BlobName);
         }
     }
 }

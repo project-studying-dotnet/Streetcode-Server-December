@@ -61,6 +61,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Streetcode.UpdateMainPage
                 Id = 1,
                 Title = "Updated Title",
                 StreetcodeType = StreetcodeType.Person,
+                TransliterationUrl = "",
                 Images = new List<ImageFileBaseCreateDto>
             {
                 new ImageFileBaseCreateDto { BaseFormat = "image1" },
@@ -108,7 +109,9 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Streetcode.UpdateMainPage
             var command = new UpdateStreetcodeMainPageCommand(new StreetcodeMainPageUpdateDto
             {
                 Id = 1,
-                Title = "Updated Title"
+                Title = "Updated Title",
+                TransliterationUrl = "",
+                Images = new List<ImageFileBaseCreateDto> { }
             });
 
             _repositoryMock

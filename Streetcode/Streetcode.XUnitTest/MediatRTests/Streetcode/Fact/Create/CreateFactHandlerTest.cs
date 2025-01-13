@@ -185,7 +185,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Fact.Create
 
         private void SetupSaveFileInStorage()
         {
-            _mockBlob.Setup(s => s.SaveFileInStorage(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns("HashBlobStorageName");
+            _mockBlob.Setup(s => s.SaveFileInStorage(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult("HashBlobStorageName"));
         }
     }
 }

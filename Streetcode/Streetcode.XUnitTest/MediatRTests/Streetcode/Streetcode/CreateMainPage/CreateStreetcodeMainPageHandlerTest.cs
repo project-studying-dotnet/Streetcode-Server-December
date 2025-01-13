@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Moq;
+using Streetcode.BLL.DTO.AdditionalContent.Tag;
 using Streetcode.BLL.DTO.Media.Audio;
 using Streetcode.BLL.DTO.Media.Images;
 using Streetcode.BLL.DTO.Streetcode;
@@ -37,6 +38,8 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Streetcode.CreateMainPage
         {
             Title = "New Title",
             StreetcodeType = StreetcodeType.Person,
+            Tags = Array.Empty<StreetcodeTagDto>(),
+            TransliterationUrl = "",
             Images = new List<ImageFileBaseCreateDto>
             {
                 new ImageFileBaseCreateDto

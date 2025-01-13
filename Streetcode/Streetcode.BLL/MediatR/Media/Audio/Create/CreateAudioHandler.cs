@@ -30,7 +30,7 @@ namespace Streetcode.BLL.MediatR.Media.Audio.Create
 
         public async Task<Result<AudioDto>> Handle(CreateAudioCommand request, CancellationToken cancellationToken)
         {
-            string hashBlobStorageName = _blobService.SaveFileInStorage(
+            string hashBlobStorageName = await _blobService.SaveFileInStorage(
                 request.Audio.BaseFormat,
                 request.Audio.Title,
                 request.Audio.Extension);

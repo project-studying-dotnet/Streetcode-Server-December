@@ -3,12 +3,11 @@ using Microsoft.Extensions.Configuration;
 
 namespace DbUpdate
 {
-    public class Program
+    public static class Program
     {
-        static int Main(string[] args)
+        public static int Main(string[] args)
         {
-            string migrationPath = Path.Combine(Directory.GetCurrentDirectory(),
-                "Streetcode.DAL", "Persistence", "ScriptsMigration");
+            string migrationPath = Path.Combine(Directory.GetCurrentDirectory(), "Streetcode.DAL", "Persistence", "ScriptsMigration");
 
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Local";
 
@@ -21,7 +20,7 @@ namespace DbUpdate
 
             var connectionString = configuration.GetConnectionString("DefaultConnection");
 
-            string pathToScript = "";
+            string? pathToScript = string.Empty;
 
             Console.WriteLine("Enter '-m' to MIGRATE or '-s' to SEED db:");
             pathToScript = Console.ReadLine();

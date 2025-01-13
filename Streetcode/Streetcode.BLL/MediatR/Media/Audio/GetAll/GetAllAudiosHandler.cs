@@ -27,7 +27,7 @@ namespace Streetcode.BLL.MediatR.Media.Audio.GetAll
 
         public async Task<Result<IEnumerable<AudioDto>>> Handle(GetAllAudiosQuery request, CancellationToken cancellationToken)
         {
-            var audios = await _repositoryWrapper.AudioRepository.GetAllAsync();
+            var audios = await _repositoryWrapper.AudioRepository.GetAllBySpecAsync();
 
             if (audios is null)
             {
@@ -39,7 +39,7 @@ namespace Streetcode.BLL.MediatR.Media.Audio.GetAll
             var audioDtos = _mapper.Map<IEnumerable<AudioDto>>(audios);
             foreach (var audio in audioDtos)
             {
-                audio.Base64 = _blobService.FindFileInStorageAsBase64(audio.BlobName);
+                audio.Base64 = await _blobService.FindFileInStorageAsBase64(audio.BlobName);
             }
 
             return Result.Ok(audioDtos);

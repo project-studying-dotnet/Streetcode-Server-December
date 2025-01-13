@@ -5,6 +5,7 @@ using Streetcode.BLL.DTO.Media.Audio;
 using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Media.Audio.GetByStreetcodeId;
+using Streetcode.BLL.Specifications.Streetcode.Streetcode;
 using Streetcode.DAL.Entities.Media;
 using Streetcode.DAL.Entities.Streetcode;
 using Streetcode.DAL.Repositories.Interfaces.Base;
@@ -45,13 +46,11 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
             var streetcode = new StreetcodeContent { Id = 1, Index = 1, Audio = audio };
             var audioDto = new AudioDto { BlobName = "audioBlob", Base64 = "base64string" };
 
-            _mockRepository.Setup(r => r.StreetcodeRepository.GetFirstOrDefaultAsync(
-                It.IsAny<Expression<Func<StreetcodeContent, bool>>>(),
-                It.IsAny<Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>>>()))
+            _mockRepository.Setup(r => r.StreetcodeRepository.GetFirstOrDefaultBySpecAsync(It.IsAny<GetStreetcodeWithAudioSpecification>()))
                 .ReturnsAsync(streetcode);
 
             _mockMapper.Setup(m => m.Map<AudioDto>(audio)).Returns(audioDto);
-            _mockBlobService.Setup(b => b.FindFileInStorageAsBase64(audio.BlobName)).Returns("base64string");
+            _mockBlobService.Setup(b => b.FindFileInStorageAsBase64(audio.BlobName)).Returns(Task.FromResult("base64string"));
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
@@ -62,9 +61,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
             Assert.Equal("audioBlob", result.Value.BlobName);
             Assert.Equal("base64string", result.Value.Base64);
 
-            _mockRepository.Verify(r => r.StreetcodeRepository.GetFirstOrDefaultAsync(
-                It.IsAny<Expression<Func<StreetcodeContent, bool>>>(),
-                It.IsAny<Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>>>()), Times.Once);
+            _mockRepository.Verify(r => r.StreetcodeRepository.GetFirstOrDefaultBySpecAsync(It.IsAny<GetStreetcodeWithAudioSpecification>()), Times.Once);
 
             _mockMapper.Verify(m => m.Map<AudioDto>(audio), Times.Once);
             _mockBlobService.Verify(b => b.FindFileInStorageAsBase64(audio.BlobName), Times.Once);
@@ -79,9 +76,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
             var audio = new Audio { Id = 1, BlobName = "audioBlob" };
             var streetcode = new StreetcodeContent { Id = 1, Index = 1 };
 
-            _mockRepository.Setup(r => r.StreetcodeRepository.GetFirstOrDefaultAsync(
-                It.IsAny<Expression<Func<StreetcodeContent, bool>>>(),
-                It.IsAny<Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>>>()))
+            _mockRepository.Setup(r => r.StreetcodeRepository.GetFirstOrDefaultBySpecAsync(It.IsAny<GetStreetcodeWithAudioSpecification>()))
                 .ReturnsAsync(streetcode);
 
             // Act
@@ -102,13 +97,11 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
             var streetcode = new StreetcodeContent { Id = 1, Index = 1, Audio = audio };
             var audioDto = new AudioDto { BlobName = "audioBlob", Base64 = "base64string" };
 
-            _mockRepository.Setup(r => r.StreetcodeRepository.GetFirstOrDefaultAsync(
-                It.IsAny<Expression<Func<StreetcodeContent, bool>>>(),
-                It.IsAny<Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>>>()))
+            _mockRepository.Setup(r => r.StreetcodeRepository.GetFirstOrDefaultBySpecAsync(It.IsAny<GetStreetcodeWithAudioSpecification>()))
                 .ReturnsAsync(streetcode);
 
             _mockMapper.Setup(m => m.Map<AudioDto>(audio)).Returns(audioDto);
-            _mockBlobService.Setup(b => b.FindFileInStorageAsBase64(audio.BlobName)).Returns("base64string");
+            _mockBlobService.Setup(b => b.FindFileInStorageAsBase64(audio.BlobName)).Returns(Task.FromResult("base64string"));
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);

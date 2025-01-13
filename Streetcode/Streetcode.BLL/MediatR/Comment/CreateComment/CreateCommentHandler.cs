@@ -50,7 +50,7 @@ public class CreateCommentHandler : IRequestHandler<CreateCommentCommand, Result
             return Result.Fail(errMsg);
         }
 
-        var newComment = _mapper.Map<Streetcode.Domain.Entities.Comment.Comment>(request.createCommentDto);
+        var newComment = _mapper.Map<Domain.Entities.Comment.Comment>(request.createCommentDto);
 
         if (newComment is null)
         {

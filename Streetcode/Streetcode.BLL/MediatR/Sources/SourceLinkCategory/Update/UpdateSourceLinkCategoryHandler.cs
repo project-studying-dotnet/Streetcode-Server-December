@@ -23,7 +23,7 @@ namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.Update
 
         public async Task<Result<SourceLinkCategoryDto>> Handle(UpdateSourceLinkCategoryCommand request, CancellationToken cancellationToken)
         {
-            var sourceLinkCategory = _mapper.Map<Streetcode.Domain.Entities.Sources.SourceLinkCategory>(request.SourceLinkCategory);
+            var sourceLinkCategory = _mapper.Map<Domain.Entities.Sources.SourceLinkCategory>(request.SourceLinkCategory);
             if (sourceLinkCategory is null)
             {
                 string errorMsg = ErrorManager.GetCustomErrorText("ConvertationError", "null", "source link category");

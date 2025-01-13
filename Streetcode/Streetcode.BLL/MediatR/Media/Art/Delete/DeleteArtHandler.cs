@@ -1,6 +1,5 @@
 ﻿using FluentResults;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
@@ -21,7 +20,8 @@ namespace Streetcode.BLL.MediatR.Media.Art.Delete
         public async Task<Result<Unit>> Handle(DeleteArtCommand request, CancellationToken cancellationToken)
         {
             var art = await _repositoryWrapper.ArtRepository.GetFirstOrDefaultAsync(
-                f => f.Id == request.Id, i => i.Include(a => a.Image));
+                f => f.Id == request.Id,
+                new List<string> { "Image" });
 
             if (art is null)
             {

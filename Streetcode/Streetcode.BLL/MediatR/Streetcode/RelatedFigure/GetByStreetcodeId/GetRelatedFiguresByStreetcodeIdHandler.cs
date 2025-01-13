@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using FluentResults;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.DTO.Streetcode.RelatedFigure;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.Domain.Entities.Streetcode;
+using Streetcode.Domain.Enums;
 
 namespace Streetcode.BLL.MediatR.Streetcode.RelatedFigure.GetByStreetcodeId
 {
@@ -34,9 +34,8 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedFigure.GetByStreetcodeId
             }
 
             var relatedFigures = await _repositoryWrapper.StreetcodeRepository.GetAllAsync(
-              predicate: sc => relatedFigureIds.Any(id => id == sc.Id) && sc.Status == Streetcode.Domain.Enums.StreetcodeStatus.Published,
-              include: scl => scl.Include(sc => sc.Images).ThenInclude(img => img.ImageDetails)
-                                 .Include(sc => sc.Tags));
+              predicate: sc => relatedFigureIds.Any(id => id == sc.Id) && sc.Status == Domain.Enums.StreetcodeStatus.Published,
+              include: new List<string> { "Images.ImageDetails", "Tags" });
 
             if (relatedFigures is null)
             {

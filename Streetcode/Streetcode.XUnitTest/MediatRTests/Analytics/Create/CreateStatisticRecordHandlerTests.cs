@@ -1,21 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using FluentAssertions;
 using Moq;
 using Streetcode.BLL.DTO.Analytics;
-using Streetcode.BLL.DTO.Timeline;
-using Streetcode.BLL.DTO.Timeline.Create;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Mapping.Analytics;
-using Streetcode.BLL.Mapping.Timeline;
 using Streetcode.BLL.MediatR.Analytics;
-using Streetcode.BLL.MediatR.Timeline.TimelineItem.Create;
 using Streetcode.BLL.Repositories.Interfaces.Base;
-using Streetcode.DAL.Entities.Timeline;
 using Streetcode.Domain.Entities.Analytics;
 using Xunit;
 

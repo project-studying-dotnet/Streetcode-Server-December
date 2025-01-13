@@ -13,10 +13,10 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using Streetcode.DAL.Specification;
 using Streetcode.BLL.Specifications.Streetcode.RelatedTerm;
 using Streetcode.Domain.Entities.Streetcode.TextContent;
 using Streetcode.BLL.Repositories.Interfaces.Base;
+using Streetcode.BLL.Specifications;
 
 namespace Streetcode.XUnitTest.MediatRTests.Streetcode.RelatedTermTests.GetById
 {

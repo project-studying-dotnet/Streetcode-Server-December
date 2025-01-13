@@ -4,7 +4,6 @@ using MediatR;
 using Streetcode.BLL.DTO.Partners;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Repositories.Interfaces.Base;
-using Streetcode.DAL.Entities.Partners;
 using Streetcode.Domain.Entities.Partners;
 
 namespace Streetcode.BLL.MediatR.Partners.Update

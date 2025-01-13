@@ -18,8 +18,7 @@ namespace Streetcode.WebApi.Utils
             var streetcodes = await _repositoryWrapper.StreetcodeRepository
                 .GetAllAsync(
                 predicate: s => s.Status == StreetcodeStatus.Deleted && s.UpdatedAt.AddDays(daysLife) <= DateTime.Now,
-                include: s => s.Include(x => x.Observers)
-                               .Include(x => x.Targets));
+                include: new List<string> { "Observers", "Targets" });
 
             if (streetcodes is null || streetcodes.Count() == 0)
             {

@@ -1,24 +1,16 @@
 ﻿using AutoMapper;
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore.Query;
 using Moq;
 using Streetcode.BLL.DTO.Media.Images;
 using Streetcode.BLL.DTO.Sources;
 using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Sources.SourceLink.GetCategoryById;
-using Streetcode.BLL.MediatR.Sources.SourceLinkCategory.GetAll;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
-using Streetcode.DAL.Entities.Streetcode;
-using Streetcode.DAL.Entities.Media.Images;
 using Streetcode.Domain.Entities.Sources;
 using Streetcode.BLL.Repositories.Interfaces.Base;
+using Streetcode.Domain.Entities.Media.Images;
 
 namespace Streetcode.XUnitTest.MediatRTests.Source.GetCategoryById
 {
@@ -76,7 +68,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.GetCategoryById
 			_mockRepositoryWrapper
 				.Setup(repo => repo.SourceCategoryRepository.GetFirstOrDefaultAsync(
 					It.IsAny<Expression<Func<SourceLinkCategory, bool>>>(),
-					It.IsAny<Func<IQueryable<SourceLinkCategory>, IIncludableQueryable<SourceLinkCategory, object>>>()))
+					It.IsAny<List<string>>()))
 				.ReturnsAsync(sourceCategory);
 
 			_mockMapper.Setup(m => m.Map<SourceLinkCategoryDto>(sourceCategory)).Returns(categoryDto);
@@ -92,7 +84,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.GetCategoryById
 
 			_mockRepositoryWrapper.Verify(repo => repo.SourceCategoryRepository.GetFirstOrDefaultAsync(
 				It.IsAny<Expression<Func<SourceLinkCategory, bool>>>(),
-				It.IsAny<Func<IQueryable<SourceLinkCategory>, IIncludableQueryable<SourceLinkCategory, object>>>()), Times.Once);
+				It.IsAny<List<string>>()), Times.Once);
 
 			_mockBlob.Verify(b => b.FindFileInStorageAsBase64("image1.png"), Times.Once);
 		}

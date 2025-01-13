@@ -1,21 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
+﻿using Xunit;
 using Moq;
 using AutoMapper;
 using Streetcode.BLL.DTO.News;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Newss.GetAll;
 using Streetcode.BLL.Interfaces.BlobStorage;
-using Streetcode.DAL.Entities.Media.Images;
 using Streetcode.BLL.DTO.Media.Images;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore.Query;
 using Streetcode.Domain.Entities.News;
 using Streetcode.BLL.Repositories.Interfaces.Base;
+using Streetcode.Domain.Entities.Media.Images;
 
 namespace Streetcode.XUnitTest.MediatRTests.NewsTests
 {
@@ -50,8 +45,8 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
             _repositoryWrapperMock
                 .Setup(r => r.NewsRepository.GetAllAsync(
                     It.IsAny<Expression<Func<News, bool>>>(),
-                    It.IsAny<Func<IQueryable<News>, IIncludableQueryable<News, object>>>()))
-                .ReturnsAsync((IEnumerable<News>)null);
+                    It.IsAny<List<string>>()))
+                .ReturnsAsync((IEnumerable<News>)null!);
 
             // Act
             var result = await _handler.Handle(query, default);
@@ -80,7 +75,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
             _repositoryWrapperMock
                 .Setup(r => r.NewsRepository.GetAllAsync(
                     It.IsAny<Expression<Func<News, bool>>>(),
-                    It.IsAny<Func<IQueryable<News>, IIncludableQueryable<News, object>>>()))
+                    It.IsAny<List<string>>()))
                 .ReturnsAsync(news);
 
             _mapperMock
@@ -122,7 +117,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
             _repositoryWrapperMock
                 .Setup(r => r.NewsRepository.GetAllAsync(
                     It.IsAny<Expression<Func<News, bool>>>(),
-                    It.IsAny<Func<IQueryable<News>, IIncludableQueryable<News, object>>>()))
+                    It.IsAny<List<string>>()))
                 .ReturnsAsync(news);
 
             _mapperMock

@@ -22,7 +22,7 @@ namespace Streetcode.BLL.MediatR.AdditionalContent.Tag.Create
 
         public async Task<Result<TagDto>> Handle(CreateTagCommand request, CancellationToken cancellationToken)
         {
-            var newTag = await _repositoryWrapper.TagRepository.CreateAsync(new DAL.Entities.AdditionalContent.Tag()
+            var newTag = await _repositoryWrapper.TagRepository.CreateAsync(new Domain.Entities.AdditionalContent.Tag()
             {
                 Title = request.tag.Title
             });

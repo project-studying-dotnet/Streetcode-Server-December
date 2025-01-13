@@ -2,7 +2,6 @@
 using FluentResults;
 using MediatR;
 using Streetcode.BLL.Interfaces.BlobStorage;
-using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.DTO.Media.Art;
 using Streetcode.BLL.Resources;
@@ -34,8 +33,7 @@ namespace Streetcode.BLL.MediatR.Media.Art.GetByStreetcodeId
             var arts = await _repositoryWrapper.ArtRepository
                 .GetAllAsync(
                 predicate: sc => sc.StreetcodeArts.Any(s => s.StreetcodeId == request.StreetcodeId),
-                include: scl => scl
-                    .Include(sc => sc.Image) !);
+                include: new List<string> { "Image" });
 
             if (arts is null)
             {

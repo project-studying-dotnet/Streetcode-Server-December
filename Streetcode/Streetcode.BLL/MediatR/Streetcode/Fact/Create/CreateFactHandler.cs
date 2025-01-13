@@ -26,7 +26,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.Fact.Create
 
         public async Task<Result<FactDto>> Handle(CreateFactCommand command, CancellationToken cancellationToken)
         {
-            var fact = _mapper.Map<Streetcode.Domain.Entities.Streetcode.TextContent.Fact>(command.Fact);
+            var fact = _mapper.Map<Domain.Entities.Streetcode.TextContent.Fact>(command.Fact);
 
             if (fact is null)
             {

@@ -1,11 +1,8 @@
 using System.Linq.Expressions;
-using AutoMapper;
 using Microsoft.EntityFrameworkCore.Query;
 using Moq;
 using Streetcode.BLL.DTO.AdditionalContent;
-using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.AdditionalContent.Tag.GetAll;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 using Xunit;
 using TagEntity = Streetcode.Domain.Entities.AdditionalContent.Tag;
 
@@ -38,7 +35,7 @@ public class GetAllTagsHandlerTest : AdditionalContentTestWrapper
 
         _repositoryWrapperMock.Setup(rep => rep.TagRepository.GetAllAsync(
             It.IsAny<Expression<Func<TagEntity, bool>>>(),
-            It.IsAny<Func<IQueryable<TagEntity>, IIncludableQueryable<TagEntity, object>>>()))
+            It.IsAny<List<string>>()))
             .ReturnsAsync(tags);
 
         _mapperMock.Setup(map => map.Map<IEnumerable<TagDto>>(tags))
@@ -60,7 +57,7 @@ public class GetAllTagsHandlerTest : AdditionalContentTestWrapper
 
         _repositoryWrapperMock.Setup(rep => rep.TagRepository.GetAllAsync(
                 It.IsAny<Expression<Func<TagEntity, bool>>>(),
-                It.IsAny<Func<IQueryable<TagEntity>, IIncludableQueryable<TagEntity, object>>>()))
+                It.IsAny<List<string>>()))
             .ReturnsAsync((IEnumerable<TagEntity>)null!);
 
         // Act

@@ -5,11 +5,8 @@ using Moq;
 using Streetcode.BLL.DTO.Comment;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Comment.CreateComment;
-using Streetcode.BLL.MediatR.Comment.GetCommentsByStreetcodeId;
 using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
-using Streetcode.BLL.Specifications.Comment;
-using Streetcode.DAL.Entities.AdditionalContent.Coordinates.Types;
 using Streetcode.Domain.Entities.Streetcode;
 using Xunit;
 using CommentEntity = Streetcode.Domain.Entities.Comment.Comment;
@@ -80,7 +77,7 @@ public class CreateCommentHandlerTest
         _repositoryMock.Setup(rep => rep.StreetcodeRepository
                 .GetFirstOrDefaultAsync(
                     It.Is<Expression<Func<StreetcodeContent, bool>>>(exp => exp.Compile().Invoke(streetcode)),
-                    It.IsAny<Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>>>()))
+                    It.IsAny<List<string>>()))
             .ReturnsAsync(streetcode);
         
         // Act
@@ -138,7 +135,7 @@ public class CreateCommentHandlerTest
         _repositoryMock.Setup(rep => rep.StreetcodeRepository
                 .GetFirstOrDefaultAsync(
                     It.Is<Expression<Func<StreetcodeContent, bool>>>(exp => exp.Compile().Invoke(streetcode)),
-                    It.IsAny<Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>>>()))
+                    It.IsAny<List<string>>()))
             .ReturnsAsync(streetcode);
 
         // Act
@@ -186,7 +183,7 @@ public class CreateCommentHandlerTest
         _repositoryMock.Setup(rep => rep.StreetcodeRepository
                 .GetFirstOrDefaultAsync(
                     It.Is<Expression<Func<StreetcodeContent, bool>>>(exp => exp.Compile().Invoke(streetcode)),
-                    It.IsAny<Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>>>()))
+                    It.IsAny<List<string>>()))
             .ReturnsAsync(streetcode);
         
         // Act

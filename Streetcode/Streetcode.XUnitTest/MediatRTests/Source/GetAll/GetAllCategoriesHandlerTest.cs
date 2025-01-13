@@ -1,21 +1,12 @@
 ﻿using AutoMapper;
 using FluentAssertions;
-using FluentResults;
 using Microsoft.EntityFrameworkCore.Query;
 using Moq;
 using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Sources.SourceLinkCategory.GetAll;
 using Streetcode.BLL.Repositories.Interfaces.Base;
-using Streetcode.DAL.Entities.Partners;
 using Streetcode.Domain.Entities.Sources;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Streetcode.XUnitTest.MediatRTests.Source.GetAll
@@ -46,8 +37,8 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.GetAll
 
 			_mockRepositoryWrapper.Setup(r => r.SourceCategoryRepository.GetAllAsync(
 				null,
-				It.IsAny<Func<IQueryable<SourceLinkCategory>, IIncludableQueryable<SourceLinkCategory, object>>>()
-			)).ReturnsAsync((IEnumerable<SourceLinkCategory>)null);
+				It.IsAny<List<string>>()
+			)).ReturnsAsync((IEnumerable<SourceLinkCategory>)null!);
 
 			// Act
 			var result = await _handler.Handle(query, CancellationToken.None);
@@ -64,7 +55,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.GetAll
 			_mockRepositoryWrapper.Verify(
 				r => r.SourceCategoryRepository.GetAllAsync(
 					null,
-					It.IsAny<Func<IQueryable<SourceLinkCategory>, IIncludableQueryable<SourceLinkCategory, object>>>()
+					It.IsAny<List<string>>()
 				),
 				Times.Once
 			);
@@ -79,7 +70,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.GetAll
 
 			_mockRepositoryWrapper.Setup(r => r.SourceCategoryRepository.GetAllAsync(
 				null,
-				It.IsAny<Func<IQueryable<SourceLinkCategory>, IIncludableQueryable<SourceLinkCategory, object>>>()
+				It.IsAny<List<string>>()
 			)).ReturnsAsync(categories);
 
 			// Act

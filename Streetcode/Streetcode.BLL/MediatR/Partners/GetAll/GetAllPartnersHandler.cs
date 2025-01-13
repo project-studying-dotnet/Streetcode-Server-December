@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
 using FluentResults;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.DTO.Partners;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
-using Streetcode.DAL.Entities.AdditionalContent.Coordinates;
 
 namespace Streetcode.BLL.MediatR.Partners.GetAll
 {
@@ -28,9 +26,7 @@ namespace Streetcode.BLL.MediatR.Partners.GetAll
             var partners = await _repositoryWrapper
                 .PartnersRepository
                 .GetAllAsync(
-                    include: p => p
-                        .Include(pl => pl.PartnerSourceLinks)
-                        .Include(p => p.Streetcodes));
+                    include: new List<string> { "PartnerSourceLinks", "Streetcodes" });
 
             if (partners is null)
             {

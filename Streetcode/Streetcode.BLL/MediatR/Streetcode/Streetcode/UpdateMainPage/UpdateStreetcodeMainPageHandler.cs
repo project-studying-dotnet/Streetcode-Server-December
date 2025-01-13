@@ -5,14 +5,7 @@ using Streetcode.BLL.DTO.Streetcode;
 using Streetcode.BLL.Interfaces.Audio;
 using Streetcode.BLL.Interfaces.Image;
 using Streetcode.BLL.Interfaces.Logging;
-using Streetcode.BLL.MediatR.Streetcode.Streetcode.CreateMainPage;
 using Streetcode.BLL.Resources;
-using Streetcode.DAL.Entities.Streetcode;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Streetcode.BLL.Specifications.Streetcode;
 using Streetcode.Domain.Entities.Streetcode.Types;
 using Streetcode.BLL.Repositories.Interfaces.Base;
@@ -49,7 +42,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.UpdateMainPage
             var images = mainPage.Images.Select(x => x.BlobName);
             var audio = mainPage.Audio.BlobName;
 
-            if (request.StreetcodeMainPage.StreetcodeType == Streetcode.Domain.Enums.StreetcodeType.Person)
+            if (request.StreetcodeMainPage.StreetcodeType == Domain.Enums.StreetcodeType.Person)
             {
                 mainPage = _mapper.Map<PersonStreetcode>(request.StreetcodeMainPage);
             }

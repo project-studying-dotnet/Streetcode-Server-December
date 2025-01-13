@@ -24,7 +24,7 @@ namespace Streetcode.BLL.MediatR.Team.TeamMembersLinks.Create
 
         public async Task<Result<TeamMemberLinkDto>> Handle(CreateTeamLinkCommand request, CancellationToken cancellationToken)
         {
-            var teamMemberLink = _mapper.Map<Streetcode.Domain.Entities.Team.TeamMemberLink>(request.teamMember);
+            var teamMemberLink = _mapper.Map<Domain.Entities.Team.TeamMemberLink>(request.teamMember);
 
             if (teamMemberLink is null)
             {

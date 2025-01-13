@@ -1,5 +1,4 @@
-﻿using Streetcode.DAL.Specification;
-using RelatedTermEntity = Streetcode.Domain.Entities.Streetcode.TextContent.RelatedTerm;
+﻿using RelatedTermEntity = Streetcode.Domain.Entities.Streetcode.TextContent.RelatedTerm;
 
 namespace Streetcode.BLL.Specifications.Streetcode.RelatedTerm
 {

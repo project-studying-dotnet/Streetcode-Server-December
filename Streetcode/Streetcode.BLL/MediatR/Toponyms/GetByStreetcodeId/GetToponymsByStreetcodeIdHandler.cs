@@ -1,8 +1,6 @@
 using AutoMapper;
 using FluentResults;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Streetcode.BLL.DTO.AdditionalContent.Subtitles;
 using Streetcode.BLL.DTO.Toponyms;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Repositories.Interfaces.Base;
@@ -30,8 +28,7 @@ namespace Streetcode.BLL.MediatR.Toponyms.GetByStreetcodeId
                 .ToponymRepository
                 .GetAllAsync(
                     predicate: sc => sc.Streetcodes.Any(s => s.Id == request.StreetcodeId),
-                    include: scl => scl
-                        .Include(sc => sc.Coordinate));
+                    include: new List<string> { "Coordinate" });
 
             if (toponyms is null || !toponyms.Any())
             {

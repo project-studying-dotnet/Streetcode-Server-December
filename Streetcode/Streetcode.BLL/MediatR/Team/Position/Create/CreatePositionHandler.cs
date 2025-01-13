@@ -4,7 +4,7 @@ using MediatR;
 using Streetcode.BLL.DTO.Team;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Repositories.Interfaces.Base;
-using Streetcode.DAL.Entities.Team;
+using Streetcode.Domain.Entities.Team;
 
 namespace Streetcode.BLL.MediatR.Team.Create
 {

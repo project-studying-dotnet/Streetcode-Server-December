@@ -2,15 +2,8 @@
 using MediatR;
 using Moq;
 using Streetcode.BLL.MediatR.Comment.AdminDeleteComment;
-using Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Delete;
 using Streetcode.BLL.Repositories.Interfaces.Base;
-using Streetcode.DAL.Entities.Streetcode.TextContent;
-using Streetcode.DAL.Specification;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Streetcode.BLL.Specifications;
 using Xunit;
 using CommentEntity = Streetcode.Domain.Entities.Comment.Comment;
 

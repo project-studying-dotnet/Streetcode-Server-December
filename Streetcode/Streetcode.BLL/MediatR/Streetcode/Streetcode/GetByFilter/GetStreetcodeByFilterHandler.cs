@@ -1,8 +1,6 @@
 using FluentResults;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.DTO.Streetcode;
-using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.Domain.Entities.Streetcode;
 
@@ -25,7 +23,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.GetByFilter
 
             var streetcodes = await _repositoryWrapper.StreetcodeRepository.GetAllAsync(
                  predicate: x =>
-        (x.Status == Streetcode.Domain.Enums.StreetcodeStatus.Published) &&
+        (x.Status == Domain.Enums.StreetcodeStatus.Published) &&
         (x.Title.Contains(searchQuery) ||
         (x.Alias != null && x.Alias.Contains(searchQuery)) ||
         x.Teaser.Contains(searchQuery)));
@@ -57,8 +55,8 @@ namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.GetByFilter
             }
 
             foreach (var text in await _repositoryWrapper.TextRepository.GetAllAsync(
-    include: i => i.Include(x => x.Streetcode),
-    predicate: x => x.Streetcode.Status == Streetcode.Domain.Enums.StreetcodeStatus.Published))
+                include: new List<string> { "Streetcode" },
+                predicate: x => x.Streetcode.Status == Domain.Enums.StreetcodeStatus.Published))
             {
                 if (text.Title.Contains(searchQuery, StringComparison.OrdinalIgnoreCase))
                 {
@@ -73,8 +71,8 @@ namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.GetByFilter
             }
 
             foreach (var fact in await _repositoryWrapper.FactRepository.GetAllAsync(
-    include: i => i.Include(x => x.Streetcode),
-    predicate: x => x.Streetcode.Status == Streetcode.Domain.Enums.StreetcodeStatus.Published))
+                include: new List<string> { "Streetcode" },
+                predicate: x => x.Streetcode.Status == Domain.Enums.StreetcodeStatus.Published))
             {
                 if (fact.Title.Contains(searchQuery, StringComparison.OrdinalIgnoreCase) || fact.FactContent.Contains(searchQuery, StringComparison.OrdinalIgnoreCase))
                 {
@@ -83,8 +81,8 @@ namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.GetByFilter
             }
 
             foreach (var timelineItem in await _repositoryWrapper.TimelineRepository.GetAllAsync(
-                include: i => i.Include(x => x.Streetcode),
-                predicate: x => x.Streetcode.Status == Streetcode.Domain.Enums.StreetcodeStatus.Published))
+                include: new List<string> { "Streetcode" },
+                predicate: x => x.Streetcode.Status == Domain.Enums.StreetcodeStatus.Published))
             {
                 if (timelineItem.Title.Contains(searchQuery, StringComparison.OrdinalIgnoreCase)
                     || (!string.IsNullOrEmpty(timelineItem.Description) && timelineItem.Description.Contains(searchQuery, StringComparison.OrdinalIgnoreCase)))
@@ -94,8 +92,8 @@ namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.GetByFilter
             }
 
             foreach (var streetcodeArt in await _repositoryWrapper.ArtRepository.GetAllAsync(
-            include: i => i.Include(x => x.StreetcodeArts),
-            predicate: x => x.StreetcodeArts.Any(art => art.Streetcode != null && art.Streetcode.Status == Streetcode.Domain.Enums.StreetcodeStatus.Published)))
+                include: new List<string> { "StreetcodeArts" },
+                predicate: x => x.StreetcodeArts.Any(art => art.Streetcode != null && art.Streetcode.Status == Domain.Enums.StreetcodeStatus.Published)))
             {
                 if (!string.IsNullOrEmpty(streetcodeArt.Description) && streetcodeArt.Description.Contains(searchQuery, StringComparison.OrdinalIgnoreCase))
                 {

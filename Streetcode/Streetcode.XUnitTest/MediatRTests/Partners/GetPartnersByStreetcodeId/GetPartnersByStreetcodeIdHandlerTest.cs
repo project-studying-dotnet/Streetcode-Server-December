@@ -1,20 +1,13 @@
 ﻿using AutoMapper;
-using Castle.Core.Logging;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore.Query;
 using Moq;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Partners.GetByStreetcodeId;
 using Streetcode.BLL.Repositories.Interfaces.Base;
-using Streetcode.DAL.Entities.Streetcode.TextContent;
 using Streetcode.Domain.Entities.Partners;
 using Streetcode.Domain.Entities.Streetcode;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Streetcode.XUnitTest.MediatRTests.Partners.GetPartnersByStreetcodeId
@@ -62,8 +55,8 @@ namespace Streetcode.XUnitTest.MediatRTests.Partners.GetPartnersByStreetcodeId
 				.ReturnsAsync(streetcode);
 
 			_mockRepositoryWapper.Setup(repo => repo.PartnersRepository
-				.GetAllAsync(It.IsAny<Expression<Func<Partner, bool>>>(), It.IsAny<Func<IQueryable<Partner>, IIncludableQueryable<Partner, object>>>()))
-				.ReturnsAsync((IEnumerable<Partner>)null);
+				.GetAllAsync(It.IsAny<Expression<Func<Partner, bool>>>(), It.IsAny<List<string>>()))
+				.ReturnsAsync((IEnumerable<Partner>)null!);
 
 			// Act
 			var result = await _handler.Handle(new GetPartnersByStreetcodeIdQuery(1), CancellationToken.None);
@@ -85,7 +78,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Partners.GetPartnersByStreetcodeId
 				.ReturnsAsync(streetcode);
 
 			_mockRepositoryWapper.Setup(repo => repo.PartnersRepository
-				.GetAllAsync(It.IsAny<Expression<Func<Partner, bool>>>(), It.IsAny<Func<IQueryable<Partner>, IIncludableQueryable<Partner, object>>>()))
+				.GetAllAsync(It.IsAny<Expression<Func<Partner, bool>>>(), It.IsAny<List<string>>()))
 				.ReturnsAsync(partners);
 
 			// Act

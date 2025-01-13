@@ -1,10 +1,8 @@
-﻿using AutoMapper;
-using FluentResults;
+﻿using FluentResults;
 using MediatR;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
-using Streetcode.DAL.Entities.Streetcode;
 
 namespace Streetcode.BLL.MediatR.Streetcode.RelatedFigure.Create
 {
@@ -38,7 +36,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.RelatedFigure.Create
                 return Result.Fail(new Error(errorMsg));
             }
 
-            var relation = new DAL.Entities.Streetcode.RelatedFigure
+            var relation = new Domain.Entities.Streetcode.RelatedFigure
             {
                 ObserverId = observerEntity.Id,
                 TargetId = targetEntity.Id,

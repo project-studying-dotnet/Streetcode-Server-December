@@ -113,6 +113,14 @@ namespace Streetcode.DAL.Persistence.Configurations.Streetcode
                 .WithOne(t => t.Streetcode)
                 .HasForeignKey(t => t.StreetcodeId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            builder
+                .HasIndex(x => x.TransliterationUrl)
+                .IsUnique();
+
+            builder
+                .HasIndex(x => x.Index)
+                .IsUnique();
         }
     }
 }

@@ -29,7 +29,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.DeleteSoft
                 throw new ArgumentNullException(errorMsg);
             }
 
-            streetcode.Status = Streetcode.Domain.Enums.StreetcodeStatus.Deleted;
+            streetcode.Status = Domain.Enums.StreetcodeStatus.Deleted;
             streetcode.UpdatedAt = DateTime.Now;
 
             _repositoryWrapper.StreetcodeRepository.Update(streetcode);

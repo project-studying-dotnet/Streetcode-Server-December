@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using FluentResults;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.DTO.Media.Audio;
 using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.MediatR.ResultVariations;
@@ -31,7 +30,7 @@ namespace Streetcode.BLL.MediatR.Media.Audio.GetByStreetcodeId
         {
             var streetcode = await _repositoryWrapper.StreetcodeRepository.GetFirstOrDefaultAsync(
                 s => s.Id == request.StreetcodeId,
-                include: q => q.Include(s => s.Audio)!);
+                include: new List<string> { "Audio" });
 
             if (streetcode == null)
             {

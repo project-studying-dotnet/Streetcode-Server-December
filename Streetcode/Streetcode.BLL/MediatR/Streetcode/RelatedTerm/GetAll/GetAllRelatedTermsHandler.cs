@@ -6,8 +6,6 @@ using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
 using Streetcode.BLL.Specifications.Streetcode.RelatedTerm;
-using Streetcode.DAL.Caching.RedisCache;
-using RelatedTermEntity = Streetcode.Domain.Entities.Streetcode.TextContent.RelatedTerm;
 
 namespace Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetAll
 {

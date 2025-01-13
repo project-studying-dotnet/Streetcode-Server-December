@@ -16,7 +16,7 @@ using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
 using Streetcode.BLL.Services.Audio;
 using Streetcode.BLL.Services.Image;
-using Streetcode.DAL.Entities.Media;
+using Streetcode.Domain.Entities.Media;
 using Streetcode.Domain.Entities.Media.Images;
 using Streetcode.Domain.Entities.Streetcode;
 using Streetcode.Domain.Enums;

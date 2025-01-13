@@ -1,5 +1,3 @@
-using Streetcode.DAL.Entities.Streetcode;
-
 namespace Streetcode.BLL.DTO.Comment;
 
 public class CreateCommentDto

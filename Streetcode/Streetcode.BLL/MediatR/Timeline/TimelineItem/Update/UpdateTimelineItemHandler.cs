@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
 using FluentResults;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.DTO.Timeline;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
-using Streetcode.DAL.Entities.Timeline;
+using Streetcode.Domain.Entities.Timeline;
 
 namespace Streetcode.BLL.MediatR.Timeline.TimelineItem.Update
 {
@@ -29,7 +28,7 @@ namespace Streetcode.BLL.MediatR.Timeline.TimelineItem.Update
             // Проверка существования элемента
             var updatingTimelineItem = await _repository.TimelineRepository.GetFirstOrDefaultAsync(
                 predicate: t => t.Id == timelineItemDto.Id,
-                include: i => i.Include(t => t.HistoricalContextTimelines));
+                include: new List<string> { "HistoricalContextTimelines" });
 
             if (updatingTimelineItem == null)
             {

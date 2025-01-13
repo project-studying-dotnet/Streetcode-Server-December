@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
 using FluentResults;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.DTO.Sources;
 using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
-using Streetcode.BLL.Services.BlobStorageService;
 
 namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.GetAll
 {
@@ -28,7 +26,8 @@ namespace Streetcode.BLL.MediatR.Sources.SourceLinkCategory.GetAll
         public async Task<Result<IEnumerable<SourceLinkCategoryDto>>> Handle(GetAllCategoriesQuery request, CancellationToken cancellationToken)
         {
             var allCategories = await _repositoryWrapper.SourceCategoryRepository.GetAllAsync(
-                include: cat => cat.Include(img => img.Image) !);
+                include: new List<string> { "Image" });
+
             if (allCategories == null)
             {
                 string errorMsg = ErrorManager.GetCustomErrorText("CantFindError", "categories");

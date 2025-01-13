@@ -1,6 +1,5 @@
 ﻿using Moq;
 using Streetcode.DAL.Specification.Evaluator;
-using Streetcode.DAL.Specification;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +10,7 @@ using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using FluentAssertions;
 using Streetcode.Domain.Entities.Streetcode.TextContent;
+using Streetcode.BLL.Specifications;
 
 namespace Streetcode.XUnitTest.SpecificationTests
 {

@@ -40,7 +40,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.CreateMainPage
 
             StreetcodeContent mainPage;
 
-            if (request.StreetcodeMainPage.StreetcodeType == Streetcode.Domain.Enums.StreetcodeType.Person)
+            if (request.StreetcodeMainPage.StreetcodeType == Domain.Enums.StreetcodeType.Person)
             {
                 mainPage = _mapper.Map<PersonStreetcode>(request.StreetcodeMainPage);
             }

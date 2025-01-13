@@ -1,13 +1,10 @@
 using AutoMapper;
 using FluentResults;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Streetcode.BLL.DTO.AdditionalContent.Subtitles;
 using Streetcode.BLL.DTO.AdditionalContent.Tag;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
-using Streetcode.DAL.Entities.Streetcode;
 
 namespace Streetcode.BLL.MediatR.AdditionalContent.Tag.GetByStreetcodeId
 {
@@ -37,7 +34,7 @@ namespace Streetcode.BLL.MediatR.AdditionalContent.Tag.GetByStreetcodeId
             var tagIndexed = await _repositoryWrapper.StreetcodeTagIndexRepository
                 .GetAllAsync(
                     t => t.StreetcodeId == request.StreetcodeId,
-                    include: q => q.Include(t => t.Tag));
+                    new List<string> { "Tag" });
 
             if (tagIndexed is null)
             {

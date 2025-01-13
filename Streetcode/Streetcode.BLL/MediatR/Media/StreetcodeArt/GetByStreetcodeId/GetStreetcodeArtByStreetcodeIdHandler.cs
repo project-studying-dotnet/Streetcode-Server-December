@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using FluentResults;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Streetcode.BLL.DTO.AdditionalContent.Subtitles;
 using Streetcode.BLL.DTO.Media.Art;
 using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Logging;
@@ -44,9 +42,7 @@ namespace Streetcode.BLL.MediatR.Media.StreetcodeArt.GetByStreetcodeId
             .StreetcodeArtRepository
             .GetAllAsync(
                 predicate: s => s.StreetcodeId == request.StreetcodeId,
-                include: art => art
-                    .Include(a => a.Art)
-                    .Include(i => i.Art.Image) !);
+                include: new List<string> { "Art", "Art.Image" });
 
             if (art is null)
             {

@@ -5,7 +5,6 @@ using Streetcode.BLL.MediatR.Streetcode.Text.GetAll;
 using Streetcode.BLL.Mapping.Streetcode.TextContent;
 using Xunit;
 using Microsoft.EntityFrameworkCore.Query;
-using Streetcode.DAL.Entities.Streetcode;
 using System.Linq.Expressions;
 using FluentAssertions;
 using TextEntity = Streetcode.Domain.Entities.Streetcode.TextContent.Text;
@@ -58,7 +57,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Text.GetAll
             _mockRepositoryWrapper
                 .Setup(repo => repo.TextRepository.GetAllAsync(
                     It.IsAny<Expression<Func<TextEntity, bool>>>(),
-                    It.IsAny<Func<IQueryable<TextEntity>, IIncludableQueryable<TextEntity, object>>>()))
+                    It.IsAny<List<string>>()))
                 .ReturnsAsync(texts);
 
             var query = new GetAllTextsQuery();
@@ -72,11 +71,11 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Text.GetAll
         [Fact]
         public async Task Handle_ReturnsError_WhenNoTextFound()
         {
-            List<TextEntity> text = null;
+            List<TextEntity> text = null!;
             _mockRepositoryWrapper
                 .Setup(repo => repo.TextRepository.GetAllAsync(
                     It.IsAny<Expression<Func<TextEntity, bool>>>(),
-                    It.IsAny<Func<IQueryable<TextEntity>, IIncludableQueryable<TextEntity, object>>>()))
+                    It.IsAny<List<string>>()))
                 .ReturnsAsync(text);
             var query = new GetAllTextsQuery();
             var result = await _handler.Handle(query, CancellationToken.None);

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Streetcode.BLL.Specifications;
 
 namespace Streetcode.DAL.Specification.Evaluator
 {

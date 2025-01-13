@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using FluentResults;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.DTO.Sources;
 using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Logging;
@@ -32,7 +31,7 @@ namespace Streetcode.BLL.MediatR.Sources.SourceLink.GetCategoriesByStreetcodeId
                 .SourceCategoryRepository
                 .GetAllAsync(
                     predicate: sc => sc.Streetcodes.Any(s => s.Id == request.StreetcodeId),
-                    include: scl => scl.Include(sc => sc.Image)!);
+                    include: new List<string> { "Image" });
 
             if (srcCategories is null)
             {

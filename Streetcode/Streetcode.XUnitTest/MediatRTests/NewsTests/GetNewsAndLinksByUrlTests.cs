@@ -4,22 +4,12 @@ using Streetcode.BLL.DTO.Media.Images;
 using Streetcode.BLL.DTO.News;
 using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Logging;
-using Microsoft.EntityFrameworkCore.Query;
-using Streetcode.BLL.MediatR.Newss.GetByUrl;
-using Streetcode.DAL.Entities.Media.Images;
 using System.Linq.Expressions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
-using System.Security.Policy;
 using Streetcode.BLL.MediatR.Newss.GetNewsAndLinksByUrl;
-using System.Threading;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Streetcode.Domain.Entities.News;
 using Streetcode.BLL.Repositories.Interfaces.Base;
+using Streetcode.Domain.Entities.Media.Images;
 
 namespace Streetcode.XUnitTest.MediatRTests.NewsTests
 {
@@ -53,7 +43,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
 
             _repositoryWrapperMock
                  .Setup(r => r.NewsRepository.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<News, bool>>>(), null))
-                 .ReturnsAsync((News)null);
+                 .ReturnsAsync((News)null!);
 
             // Act
             var result = await _handler.Handle(query, default);
@@ -79,13 +69,13 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
             _repositoryWrapperMock
                 .Setup(r => r.NewsRepository.GetFirstOrDefaultAsync(
                     It.IsAny<Expression<Func<News, bool>>>(),
-                    It.IsAny<Func<IQueryable<News>, IIncludableQueryable<News, object>>>()))
+                    It.IsAny<List<string>>()))
                 .ReturnsAsync(currentNews);
 
             _repositoryWrapperMock
                 .Setup(r => r.NewsRepository.GetAllAsync(
                     It.IsAny<Expression<Func<News, bool>>>(),
-                    It.IsAny<Func<IQueryable<News>, IIncludableQueryable<News, object>>>()))
+                    It.IsAny<List<string>>()))
                 .ReturnsAsync(newsList);
 
             _mapperMock.Setup(m => m.Map<NewsDto>(currentNews)).Returns(newsDTO);
@@ -124,13 +114,13 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
             _repositoryWrapperMock
                 .Setup(r => r.NewsRepository.GetFirstOrDefaultAsync(
                     It.IsAny<Expression<Func<News, bool>>>(),
-                    It.IsAny<Func<IQueryable<News>, IIncludableQueryable<News, object>>>()))
+                    It.IsAny<List<string>>()))
                 .ReturnsAsync(news);
 
             _repositoryWrapperMock
                 .Setup(r => r.NewsRepository.GetAllAsync(
                     It.IsAny<Expression<Func<News, bool>>>(),
-                    It.IsAny<Func<IQueryable<News>, IIncludableQueryable<News, object>>>()))
+                    It.IsAny<List<string>>()))
                 .ReturnsAsync(new List<News> { news });
 
             _mapperMock
@@ -176,13 +166,13 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
             _repositoryWrapperMock
                 .Setup(r => r.NewsRepository.GetFirstOrDefaultAsync(
                     It.IsAny<Expression<Func<News, bool>>>(),
-                    It.IsAny<Func<IQueryable<News>, IIncludableQueryable<News, object>>>()))
+                    It.IsAny<List<string>>()))
                 .ReturnsAsync(news);
 
             _repositoryWrapperMock
                 .Setup(r => r.NewsRepository.GetAllAsync(
                     It.IsAny<Expression<Func<News, bool>>>(),
-                    It.IsAny<Func<IQueryable<News>, IIncludableQueryable<News, object>>>()))
+                    It.IsAny<List<string>>()))
                 .ReturnsAsync(new List<News> { news });
 
             _mapperMock.Setup(m => m.Map<NewsDto>(news)).Returns(newsDTO);

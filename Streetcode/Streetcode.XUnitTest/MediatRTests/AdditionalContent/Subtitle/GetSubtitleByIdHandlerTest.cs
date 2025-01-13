@@ -1,14 +1,9 @@
 using System.Linq.Expressions;
-using AutoMapper;
 using Microsoft.EntityFrameworkCore.Query;
 using Moq;
 using Streetcode.BLL.DTO.AdditionalContent.Subtitles;
-using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.AdditionalContent.GetById;
-using Streetcode.BLL.MediatR.AdditionalContent.Subtitle.GetAll;
 using Streetcode.BLL.MediatR.AdditionalContent.Subtitle.GetById;
-using Streetcode.DAL.Entities.Streetcode;
-using Streetcode.DAL.Repositories.Interfaces.Base;
 using Xunit;
 using SubtitleEntity = Streetcode.Domain.Entities.AdditionalContent.Subtitle;
 
@@ -43,7 +38,7 @@ public class GetSubtitleByIdHandlerTest : AdditionalContentTestWrapper
         _repositoryWrapperMock.Setup(rep => rep.SubtitleRepository
                 .GetFirstOrDefaultAsync(
                     It.Is<Expression<Func<SubtitleEntity, bool>>>(exp => exp.Compile().Invoke(subtitle)),
-                    It.IsAny<Func<IQueryable<SubtitleEntity>, IIncludableQueryable<SubtitleEntity, object>>>()))
+                    It.IsAny<List<string>>()))
             .ReturnsAsync(subtitle);
 
         _mapperMock.Setup(m => m.Map<SubtitleDto>(subtitle))
@@ -60,7 +55,7 @@ public class GetSubtitleByIdHandlerTest : AdditionalContentTestWrapper
             rep => rep.SubtitleRepository.GetFirstOrDefaultAsync(
             It.Is<Expression<Func<SubtitleEntity, bool>>>(
                 exp => exp.Compile().Invoke(new SubtitleEntity { Id = request.Id })),
-            It.IsAny<Func<IQueryable<SubtitleEntity>, IIncludableQueryable<SubtitleEntity, object>>>()), Times.Once);
+            It.IsAny<List<string>>()), Times.Once);
 
         _mapperMock.Verify(m => m.Map<SubtitleDto>(subtitle), Times.Once);
     }
@@ -76,7 +71,7 @@ public class GetSubtitleByIdHandlerTest : AdditionalContentTestWrapper
         _repositoryWrapperMock.Setup(rep => rep.SubtitleRepository
                 .GetFirstOrDefaultAsync(
                     It.IsAny<Expression<Func<SubtitleEntity, bool>>>(),
-                    It.IsAny<Func<IQueryable<SubtitleEntity>, IIncludableQueryable<SubtitleEntity, object>>>()))
+                    It.IsAny<List<string>>()))
             .ReturnsAsync((SubtitleEntity)null!);
 
         // Act

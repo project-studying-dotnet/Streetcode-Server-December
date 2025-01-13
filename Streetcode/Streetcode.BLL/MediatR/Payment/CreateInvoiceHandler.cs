@@ -1,8 +1,6 @@
 ﻿using FluentResults;
 using MediatR;
-using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Interfaces.Payment;
-using Streetcode.DAL.Entities.Payment;
 using Streetcode.Domain.Entities.Payment;
 
 namespace Streetcode.BLL.MediatR.Payment

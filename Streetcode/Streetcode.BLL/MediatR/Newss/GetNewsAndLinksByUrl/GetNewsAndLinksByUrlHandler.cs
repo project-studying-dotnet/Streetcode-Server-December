@@ -3,7 +3,6 @@ using FluentResults;
 using MediatR;
 using Streetcode.BLL.DTO.News;
 using Streetcode.BLL.Interfaces.BlobStorage;
-using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Resources;
 using Streetcode.BLL.Repositories.Interfaces.Base;
@@ -29,8 +28,7 @@ namespace Streetcode.BLL.MediatR.Newss.GetNewsAndLinksByUrl
             string url = request.url;
             var newsDTO = _mapper.Map<NewsDto>(await _repositoryWrapper.NewsRepository.GetFirstOrDefaultAsync(
                 predicate: sc => sc.URL == url,
-                include: scl => scl
-                    .Include(sc => sc.Image)));
+                include: new List<string> { "Image" }));
 
             if (newsDTO is null)
             {
@@ -49,12 +47,12 @@ namespace Streetcode.BLL.MediatR.Newss.GetNewsAndLinksByUrl
             string prevNewsLink = null;
             string nextNewsLink = null;
 
-            if(newsIndex != 0)
+            if (newsIndex != 0)
             {
                 prevNewsLink = news[newsIndex - 1].URL;
             }
 
-            if(newsIndex != news.Count - 1)
+            if (newsIndex != news.Count - 1)
             {
                 nextNewsLink = news[newsIndex + 1].URL;
             }

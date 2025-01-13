@@ -3,9 +3,7 @@ using FluentResults;
 using MediatR;
 using Streetcode.BLL.DTO.News;
 using Streetcode.BLL.Interfaces.BlobStorage;
-using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.Interfaces.Logging;
-using Streetcode.BLL.DTO.AdditionalContent.Subtitles;
 using Streetcode.BLL.Resources;
 using Streetcode.BLL.Repositories.Interfaces.Base;
 
@@ -29,7 +27,8 @@ namespace Streetcode.BLL.MediatR.Newss.SortedByDateTime
         public async Task<Result<List<NewsDto>>> Handle(SortedByDateTimeQuery request, CancellationToken cancellationToken)
         {
             var news = await _repositoryWrapper.NewsRepository.GetAllAsync(
-                include: cat => cat.Include(img => img.Image));
+                include: new List<string> { "Image" });
+
             if (news == null)
             {
                 string errorMsg = ErrorManager.GetCustomErrorText("CantFindError", "news");

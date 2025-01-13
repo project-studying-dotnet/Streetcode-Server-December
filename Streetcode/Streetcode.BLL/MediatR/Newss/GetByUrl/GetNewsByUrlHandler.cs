@@ -3,7 +3,6 @@ using FluentResults;
 using MediatR;
 using Streetcode.BLL.DTO.News;
 using Streetcode.BLL.Interfaces.BlobStorage;
-using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Resources;
 using Streetcode.BLL.Repositories.Interfaces.Base;
@@ -29,9 +28,9 @@ namespace Streetcode.BLL.MediatR.Newss.GetByUrl
             string url = request.url;
             var newsDTO = _mapper.Map<NewsDto>(await _repositoryWrapper.NewsRepository.GetFirstOrDefaultAsync(
                 predicate: sc => sc.URL == url,
-                include: scl => scl
-                    .Include(sc => sc.Image)));
-            if(newsDTO is null)
+                include: new List<string> { "Image" }));
+
+            if (newsDTO is null)
             {
                 string errorMsg = ErrorManager.GetCustomErrorText("CantFindByURLError", "news", request.url);
                 _logger.LogError(request, errorMsg);

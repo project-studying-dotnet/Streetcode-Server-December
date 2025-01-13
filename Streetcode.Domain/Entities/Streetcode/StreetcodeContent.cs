@@ -17,8 +17,6 @@ using Streetcode.Domain.Enums;
 namespace Streetcode.Domain.Entities.Streetcode
 {
     [Table("streetcodes", Schema = "streetcode")]
-    [Index(nameof(TransliterationUrl), IsUnique = true)]
-    [Index(nameof(Index), IsUnique = true)]
     public class StreetcodeContent
     {
         [Key]

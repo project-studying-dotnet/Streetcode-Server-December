@@ -6,9 +6,9 @@ using Newtonsoft.Json;
 using Polly;
 using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.DAL.Caching.RedisCache;
-using Streetcode.DAL.Entities.AdditionalContent.Coordinates.Types;
 using Streetcode.DAL.Persistence;
 using Streetcode.DAL.Repositories.Realizations.Base;
+using Streetcode.Domain.Entities.AdditionalContent.Coordinates.Types;
 using Streetcode.Domain.Entities.Toponyms;
 
 namespace Streetcode.WebApi.Utils

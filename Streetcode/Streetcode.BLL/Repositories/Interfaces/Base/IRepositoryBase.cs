@@ -1,3 +1,4 @@
+using Streetcode.BLL.Specifications;
 using System.Linq.Expressions;
 
 namespace Streetcode.BLL.Repositories.Interfaces.Base
@@ -13,7 +14,7 @@ namespace Streetcode.BLL.Repositories.Interfaces.Base
 
         Task CreateRangeAsync(IEnumerable<T> items);
 
-        EntityEntry<T> Update(T entity);
+        T Update(T entity);
 
         public void UpdateRange(IEnumerable<T> items);
 
@@ -25,7 +26,7 @@ namespace Streetcode.BLL.Repositories.Interfaces.Base
 
         void Detach(T entity);
 
-        EntityEntry<T> Entry(T entity);
+        T Entry(T entity);
 
         public Task ExecuteSqlRaw(string query);
 
@@ -33,25 +34,25 @@ namespace Streetcode.BLL.Repositories.Interfaces.Base
 
         Task<IEnumerable<T>> GetAllAsync(
             Expression<Func<T, bool>>? predicate = default,
-            Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = default);
+            List<string>? include = default);
 
         Task<IEnumerable<T>?> GetAllAsync(
             Expression<Func<T, T>> selector,
             Expression<Func<T, bool>>? predicate = default,
-            Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = default);
+            List<string>? include = default);
 
         Task<T?> GetSingleOrDefaultAsync(
             Expression<Func<T, bool>>? predicate = default,
-            Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = default);
+            List<string>? include = default);
 
         Task<T?> GetFirstOrDefaultAsync(
             Expression<Func<T, bool>>? predicate = default,
-            Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = default);
+            List<string>? include = default);
 
         Task<T?> GetFirstOrDefaultAsync(
             Expression<Func<T, T>> selector,
             Expression<Func<T, bool>>? predicate = default,
-            Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = default);
+            List<string>? include = default);
 
         Task<IEnumerable<T>> GetAllBySpecAsync(IBaseSpecification<T>? specification = null);
 

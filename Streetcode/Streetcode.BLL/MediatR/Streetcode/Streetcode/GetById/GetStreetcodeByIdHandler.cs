@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using FluentResults;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.DTO.AdditionalContent.Tag;
 using Streetcode.BLL.DTO.Streetcode;
 using Streetcode.BLL.Interfaces.Logging;
@@ -38,7 +37,8 @@ public class GetStreetcodeByIdHandler : IRequestHandler<GetStreetcodeByIdQuery, 
         var tagIndexed = await _repositoryWrapper.StreetcodeTagIndexRepository
                                         .GetAllAsync(
                                             t => t.StreetcodeId == request.Id,
-                                            include: q => q.Include(ti => ti.Tag));
+                                            include: new List<string> { "Tag" });
+
         var streetcodeDto = _mapper.Map<StreetcodeDto>(streetcode);
         streetcodeDto.Tags = _mapper.Map<List<StreetcodeTagDto>>(tagIndexed);
 

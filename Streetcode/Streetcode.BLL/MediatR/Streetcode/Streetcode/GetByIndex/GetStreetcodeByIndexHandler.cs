@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using FluentResults;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.DTO.Streetcode;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Repositories.Interfaces.Base;
@@ -26,7 +25,7 @@ namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.GetByIndex
         {
             var streetcode = await _repositoryWrapper.StreetcodeRepository.GetFirstOrDefaultAsync(
                 predicate: st => st.Index == request.Index,
-                include: source => source.Include(l => l.Tags));
+                include: new List<string> { "Tags" });
 
             if (streetcode is null)
             {

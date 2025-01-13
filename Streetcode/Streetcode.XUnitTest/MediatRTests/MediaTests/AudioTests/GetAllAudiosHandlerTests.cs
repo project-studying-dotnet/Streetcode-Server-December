@@ -6,14 +6,9 @@ using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Media.Audio.GetAll;
 using Streetcode.BLL.Repositories.Interfaces.Base;
-using Streetcode.DAL.Entities.Media.Images;
 using Streetcode.Domain.Entities.Media;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
@@ -57,7 +52,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
                 new AudioDto { Id = 3, Description = "Audio3", BlobName = "blob3" }
             };
 
-            _mockRepository.Setup(r => r.AudioRepository.GetAllAsync(It.IsAny<Expression<Func<Audio, bool>>>(), It.IsAny<Func<IQueryable<Audio>, IIncludableQueryable<Audio, object>>>())).ReturnsAsync(audios);
+            _mockRepository.Setup(r => r.AudioRepository.GetAllAsync(It.IsAny<Expression<Func<Audio, bool>>>(), It.IsAny<List<string>>())).ReturnsAsync(audios);
             _mockMapper.Setup(m => m.Map<IEnumerable<AudioDto>>(audios)).Returns(audioDTOs);
             _mockBlob.Setup(b => b.FindFileInStorageAsBase64(It.IsAny<string>())).Returns((string blobName) => Task.FromResult(Convert.ToBase64String(Encoding.UTF8.GetBytes(blobName))));
 
@@ -76,7 +71,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
                 })).ToArray()
             );
 
-            _mockRepository.Verify(r => r.AudioRepository.GetAllAsync(It.IsAny<Expression<Func<Audio, bool>>>(), It.IsAny<Func<IQueryable<Audio>, IIncludableQueryable<Audio, object>>>()), Times.Once);
+            _mockRepository.Verify(r => r.AudioRepository.GetAllAsync(It.IsAny<Expression<Func<Audio, bool>>>(), It.IsAny<List<string>>()), Times.Once);
             _mockMapper.Verify(m => m.Map<IEnumerable<AudioDto>>(audios), Times.Once);
             _mockBlob.Verify(b => b.FindFileInStorageAsBase64(It.IsAny<string>()), Times.Exactly(audioDTOs.Count));
         }
@@ -86,7 +81,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
         {
             // Arrange
 
-            _mockRepository.Setup(r => r.AudioRepository.GetAllAsync(It.IsAny<Expression<Func<Audio, bool>>>(), It.IsAny<Func<IQueryable<Audio>, IIncludableQueryable<Audio, object>>>())).ReturnsAsync((IEnumerable<Audio>)null);
+            _mockRepository.Setup(r => r.AudioRepository.GetAllAsync(It.IsAny<Expression<Func<Audio, bool>>>(), It.IsAny<List<string>>())).ReturnsAsync((IEnumerable<Audio>)null!);
 
             // Act
 
@@ -98,7 +93,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
             Assert.Equal("Cannot find any audio", result.Errors[0].Message);
 
             _mockLogger.Verify(l => l.LogError(new GetAllAudiosQuery(), "Cannot find any audio"), Times.Once);
-            _mockRepository.Verify(r => r.AudioRepository.GetAllAsync(It.IsAny<Expression<Func<Audio, bool>>>(), It.IsAny<Func<IQueryable<Audio>, IIncludableQueryable<Audio, object>>>()), Times.Once);
+            _mockRepository.Verify(r => r.AudioRepository.GetAllAsync(It.IsAny<Expression<Func<Audio, bool>>>(), It.IsAny<List<string>>()), Times.Once);
         }
     }
 }

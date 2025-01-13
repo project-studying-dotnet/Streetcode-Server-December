@@ -7,16 +7,10 @@ using Streetcode.BLL.DTO.Sources;
 using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Sources.SourceLink.GetCategoriesByStreetcodeId;
-using Streetcode.BLL.MediatR.Sources.SourceLinkCategory.GetAll;
 using Streetcode.BLL.Repositories.Interfaces.Base;
-using Streetcode.DAL.Entities.Media.Images;
+using Streetcode.Domain.Entities.Media.Images;
 using Streetcode.Domain.Entities.Sources;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Streetcode.XUnitTest.MediatRTests.Source.GetCategoriesByStreetcodeId
@@ -46,8 +40,8 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.GetCategoriesByStreetcodeId
 			_mockRepositoryWrapper
 				.Setup(repo => repo.SourceCategoryRepository.GetAllAsync(
 					It.IsAny<Expression<Func<SourceLinkCategory, bool>>>(),
-					It.IsAny<Func<IQueryable<SourceLinkCategory>, IIncludableQueryable<SourceLinkCategory, object>>>()))
-				.ReturnsAsync((IEnumerable<SourceLinkCategory>)null);
+					It.IsAny<List<string>>()))
+				.ReturnsAsync((IEnumerable<SourceLinkCategory>)null!);
 
 			// Act
 			var result = await _handler.Handle(request, CancellationToken.None);
@@ -75,7 +69,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.GetCategoriesByStreetcodeId
 			};
 
 			_mockRepositoryWrapper
-				.Setup(r => r.SourceCategoryRepository.GetAllAsync(It.IsAny<Expression<Func<SourceLinkCategory, bool>>>(), It.IsAny<Func<IQueryable<SourceLinkCategory>, IIncludableQueryable<SourceLinkCategory, object>>>()))
+				.Setup(r => r.SourceCategoryRepository.GetAllAsync(It.IsAny<Expression<Func<SourceLinkCategory, bool>>>(), It.IsAny<List<string>>()))
 				.ReturnsAsync(sourceCategories);
 
 			_mockMapper.Setup(m => m.Map<IEnumerable<SourceLinkCategoryDto>>(sourceCategories)).Returns(sourceCategoryDTOs);
@@ -97,7 +91,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Source.GetCategoriesByStreetcodeId
 
 			_mockRepositoryWrapper.Verify(r => r.SourceCategoryRepository.GetAllAsync(
 				It.IsAny<Expression<Func<SourceLinkCategory, bool>>>(),
-				It.IsAny<Func<IQueryable<SourceLinkCategory>, IIncludableQueryable<SourceLinkCategory, object>>>()), Times.Once);
+				It.IsAny<List<string>>()), Times.Once);
 			_mockBlob.Verify(b => b.FindFileInStorageAsBase64("image1.png"), Times.Once);
 			_mockBlob.Verify(b => b.FindFileInStorageAsBase64("image2.png"), Times.Once);
 		}

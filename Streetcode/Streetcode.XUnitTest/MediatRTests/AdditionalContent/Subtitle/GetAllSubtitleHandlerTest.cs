@@ -1,13 +1,9 @@
 using System.Linq.Expressions;
-using AutoMapper;
-using FluentResults;
 using Microsoft.EntityFrameworkCore.Query;
 using Moq;
 using Streetcode.BLL.DTO.AdditionalContent.Subtitles;
-using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.AdditionalContent.Subtitle.GetAll;
-using Streetcode.DAL.Entities.Streetcode;
-using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.Domain.Entities.Streetcode;
 using Xunit;
 using SubtitleEntity = Streetcode.Domain.Entities.AdditionalContent.Subtitle;
 
@@ -55,8 +51,7 @@ public class GetAllSubtitleHandlerTest : AdditionalContentTestWrapper
         _repositoryWrapperMock.Setup(rock => rock.SubtitleRepository
                 .GetAllAsync(
                     It.IsAny<Expression<Func<SubtitleEntity, bool>>>(),
-                    It.IsAny<Func<IQueryable<SubtitleEntity>,
-                        IIncludableQueryable<SubtitleEntity, object>>>()))
+                    It.IsAny<List<string>>()))
             .ReturnsAsync(subtitle);
 
         _mapperMock.Setup(m => m.Map<IEnumerable<SubtitleDto>>(subtitle))
@@ -79,9 +74,8 @@ public class GetAllSubtitleHandlerTest : AdditionalContentTestWrapper
         _repositoryWrapperMock.Setup(rock => rock.SubtitleRepository
                 .GetAllAsync(
                     It.IsAny<Expression<Func<SubtitleEntity, bool>>>(),
-                    It.IsAny<Func<IQueryable<SubtitleEntity>,
-                        IIncludableQueryable<SubtitleEntity, object>>>())) !
-            .ReturnsAsync((IEnumerable<SubtitleEntity>)null);
+                    It.IsAny<List<string>>()))!
+            .ReturnsAsync((IEnumerable<SubtitleEntity>)null!);
 
         // Act
         var result = await _handler.Handle(new GetAllSubtitlesQuery(), CancellationToken.None);

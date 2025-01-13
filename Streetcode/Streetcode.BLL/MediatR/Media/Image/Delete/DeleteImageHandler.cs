@@ -1,9 +1,7 @@
 ﻿using FluentResults;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Logging;
-using Streetcode.BLL.MediatR.Media.Audio.Delete;
 using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
 
@@ -27,7 +25,7 @@ namespace Streetcode.BLL.MediatR.Media.Image.Delete
             var image = await _repositoryWrapper.ImageRepository
                 .GetFirstOrDefaultAsync(
                 predicate: i => i.Id == request.Id,
-                include: s => s.Include(i => i.Streetcodes));
+                include: new List<string> { "Streetcodes" });
 
             if (image is null)
             {

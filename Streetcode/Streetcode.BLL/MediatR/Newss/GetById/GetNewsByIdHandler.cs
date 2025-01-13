@@ -3,7 +3,6 @@ using FluentResults;
 using MediatR;
 using Streetcode.BLL.DTO.News;
 using Streetcode.BLL.Interfaces.BlobStorage;
-using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Resources;
 using Streetcode.BLL.Repositories.Interfaces.Base;
@@ -29,8 +28,8 @@ namespace Streetcode.BLL.MediatR.Newss.GetById
             int id = request.id;
             var newsDTO = _mapper.Map<NewsDto>(await _repositoryWrapper.NewsRepository.GetFirstOrDefaultAsync(
                 predicate: sc => sc.Id == id,
-                include: scl => scl
-                    .Include(sc => sc.Image)));
+                include: new List<string> { "Image" }));
+
             if(newsDTO is null)
             {
                 string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "news", request.id);

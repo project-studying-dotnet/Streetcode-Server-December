@@ -6,14 +6,9 @@ using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Media.Audio.GetByStreetcodeId;
 using Streetcode.BLL.Repositories.Interfaces.Base;
-using Streetcode.DAL.Entities.Media;
+using Streetcode.Domain.Entities.Media;
 using Streetcode.Domain.Entities.Streetcode;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
@@ -47,7 +42,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
 
             _mockRepository.Setup(r => r.StreetcodeRepository.GetFirstOrDefaultAsync(
                 It.IsAny<Expression<Func<StreetcodeContent, bool>>>(),
-                It.IsAny<Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>>>()))
+                It.IsAny<List<string>>()))
                 .ReturnsAsync(streetcode);
 
             _mockMapper.Setup(m => m.Map<AudioDto>(audio)).Returns(audioDto);
@@ -64,7 +59,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
 
             _mockRepository.Verify(r => r.StreetcodeRepository.GetFirstOrDefaultAsync(
                 It.IsAny<Expression<Func<StreetcodeContent, bool>>>(),
-                It.IsAny<Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>>>()), Times.Once);
+                It.IsAny<List<string>>()), Times.Once);
 
             _mockMapper.Verify(m => m.Map<AudioDto>(audio), Times.Once);
             _mockBlobService.Verify(b => b.FindFileInStorageAsBase64(audio.BlobName), Times.Once);
@@ -81,7 +76,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
 
             _mockRepository.Setup(r => r.StreetcodeRepository.GetFirstOrDefaultAsync(
                 It.IsAny<Expression<Func<StreetcodeContent, bool>>>(),
-                It.IsAny<Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>>>()))
+                It.IsAny<List<string>>()))
                 .ReturnsAsync(streetcode);
 
             // Act
@@ -104,7 +99,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
 
             _mockRepository.Setup(r => r.StreetcodeRepository.GetFirstOrDefaultAsync(
                 It.IsAny<Expression<Func<StreetcodeContent, bool>>>(),
-                It.IsAny<Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>>>()))
+                It.IsAny<List<string>>()))
                 .ReturnsAsync(streetcode);
 
             _mockMapper.Setup(m => m.Map<AudioDto>(audio)).Returns(audioDto);

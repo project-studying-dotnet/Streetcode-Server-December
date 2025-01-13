@@ -35,7 +35,7 @@ namespace Streetcode.BLL.MediatR.Media.Audio.Create
                 request.Audio.Title,
                 request.Audio.Extension);
 
-            var audio = _mapper.Map<Streetcode.Domain.Entities.Media.Audio>(request.Audio);
+            var audio = _mapper.Map<Domain.Entities.Media.Audio>(request.Audio);
 
             audio.BlobName = $"{hashBlobStorageName}.{request.Audio.Extension}";
 

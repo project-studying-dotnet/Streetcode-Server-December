@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Query;
 using Streetcode.BLL.Repositories.Interfaces.Base;
+using Streetcode.BLL.Specifications;
 using Streetcode.DAL.Caching.RedisCache;
 using Streetcode.DAL.Persistence;
 using Streetcode.DAL.Specification;
@@ -45,9 +46,9 @@ namespace Streetcode.DAL.Repositories.Realizations.Base
             return _dbContext.Set<T>().AddRangeAsync(items);
         }
 
-        public EntityEntry<T> Update(T entity)
+        public T Update(T entity)
         {
-            return _dbContext.Set<T>().Update(entity);
+            return _dbContext.Set<T>().Update(entity).Entity;
         }
 
         public void UpdateRange(IEnumerable<T> items)
@@ -70,9 +71,9 @@ namespace Streetcode.DAL.Repositories.Realizations.Base
             _dbContext.Set<T>().Attach(entity);
         }
 
-        public EntityEntry<T> Entry(T entity)
+        public T Entry(T entity)
         {
-            return _dbContext.Entry(entity);
+            return _dbContext.Entry(entity).Entity;
         }
 
         public void Detach(T entity)
@@ -104,7 +105,7 @@ namespace Streetcode.DAL.Repositories.Realizations.Base
 
         public async Task<IEnumerable<T>> GetAllAsync(
             Expression<Func<T, bool>>? predicate = default,
-            Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = default)
+            List<string>? include = default)
         {
             return await GetQueryable(predicate, include).ToListAsync();
         }
@@ -112,21 +113,21 @@ namespace Streetcode.DAL.Repositories.Realizations.Base
         public async Task<IEnumerable<T>?> GetAllAsync(
             Expression<Func<T, T>> selector,
             Expression<Func<T, bool>>? predicate = default,
-            Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = default)
+            List<string>? include = default)
         {
             return await GetQueryable(predicate, include, selector).ToListAsync() ?? new List<T>();
         }
 
         public async Task<T?> GetSingleOrDefaultAsync(
             Expression<Func<T, bool>>? predicate = default,
-            Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = default)
+            List<string>? include = default)
         {
             return await GetQueryable(predicate, include).SingleOrDefaultAsync();
         }
 
         public async Task<T?> GetFirstOrDefaultAsync(
             Expression<Func<T, bool>>? predicate = default,
-            Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = default)
+            List<string>? include = default)
         {
             return await GetQueryable(predicate, include).FirstOrDefaultAsync();
         }
@@ -134,7 +135,7 @@ namespace Streetcode.DAL.Repositories.Realizations.Base
         public async Task<T?> GetFirstOrDefaultAsync(
             Expression<Func<T, T>> selector,
             Expression<Func<T, bool>>? predicate = default,
-            Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = default)
+            List<string>? include = default)
         {
             return await GetQueryable(predicate, include, selector).FirstOrDefaultAsync();
         }
@@ -203,14 +204,17 @@ namespace Streetcode.DAL.Repositories.Realizations.Base
 
         private IQueryable<T> GetQueryable(
             Expression<Func<T, bool>>? predicate = default,
-            Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = default,
+            List<string>? include = default,
             Expression<Func<T, T>>? selector = default)
         {
             var query = _dbContext.Set<T>().AsNoTracking();
 
             if (include is not null)
             {
-                query = include(query);
+                foreach (var item in include)
+                {
+                    query.Include(item);
+                }
             }
 
             if (predicate is not null)

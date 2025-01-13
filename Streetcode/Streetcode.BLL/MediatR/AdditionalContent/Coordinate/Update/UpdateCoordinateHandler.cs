@@ -18,7 +18,7 @@ namespace Streetcode.BLL.MediatR.AdditionalContent.Coordinate.Update
 
         public async Task<Result<Unit>> Handle(UpdateCoordinateCommand request, CancellationToken cancellationToken)
         {
-            var streetcodeCoordinate = _mapper.Map<Streetcode.Domain.Entities.AdditionalContent.Coordinates.Types.StreetcodeCoordinate>(request.StreetcodeCoordinate);
+            var streetcodeCoordinate = _mapper.Map<Domain.Entities.AdditionalContent.Coordinates.Types.StreetcodeCoordinate>(request.StreetcodeCoordinate);
 
             if (streetcodeCoordinate is null)
             {

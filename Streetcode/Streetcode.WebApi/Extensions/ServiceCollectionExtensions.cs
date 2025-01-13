@@ -3,7 +3,6 @@ using FluentValidation;
 using Hangfire;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.FeatureManagement;
 using Microsoft.OpenApi.Models;
 using Streetcode.BLL.Interfaces.Audio;
@@ -32,7 +31,6 @@ using Streetcode.BLL.Validators;
 using Streetcode.DAL.Caching.RedisCache;
 using Streetcode.DAL.Persistence;
 using Streetcode.DAL.Repositories.Realizations.Base;
-using Streetcode.WebApi.Controllers.HolidayDate.Parsers;
 using Streetcode.WebApi.Controllers.HolidayDate.Parsers;
 using IAzureServiceBus = Streetcode.BLL.Interfaces.Azure.IAzureServiceBus;
 
@@ -103,7 +101,7 @@ namespace Streetcode.WebApi.Extensions
                 config.UseSqlServerStorage(connectionString);
             });
 
-            //OpenAI
+            // OpenAI
             services.AddScoped<OpenAIService>(sp =>
             {
                 var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();

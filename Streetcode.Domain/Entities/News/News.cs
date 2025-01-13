@@ -5,7 +5,6 @@ using Streetcode.Domain.Entities.Media.Images;
 namespace Streetcode.Domain.Entities.News
 {
     [Table("news", Schema = "news")]
-    [Index(nameof(URL), IsUnique = true)]
     public class News
     {
         [Key]

@@ -3,10 +3,8 @@ using Moq;
 using Streetcode.BLL.Interfaces.Logging;
 using System.Linq.Expressions;
 using Xunit;
-using Streetcode.BLL.DTO.Team;
 using Streetcode.BLL.MediatR.Team.GetAll;
 using AutoMapper;
-using Streetcode.DAL.Entities.Streetcode.TextContent;
 using Streetcode.BLL.Mapping.Team;
 using Streetcode.Domain.Entities.Team;
 using Streetcode.BLL.Repositories.Interfaces.Base;
@@ -77,8 +75,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
         private void ArrangeTeams(List<TeamMember> teamMembers)
         {
             _mockRepositoryWrapper.Setup(p => p.TeamRepository.GetAllAsync(
-                It.IsAny<Expression<Func<TeamMember, bool>>>(), It.IsAny<Func<IQueryable<TeamMember>,
-                IIncludableQueryable<TeamMember, object>>>()).Result).Returns(teamMembers);
+                It.IsAny<Expression<Func<TeamMember, bool>>>(), It.IsAny<List<string>>()).Result).Returns(teamMembers);
         }
     }
 }

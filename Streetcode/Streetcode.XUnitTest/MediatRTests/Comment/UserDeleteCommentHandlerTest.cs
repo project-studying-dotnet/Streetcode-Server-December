@@ -6,7 +6,7 @@ using Streetcode.BLL.MediatR.Comment.AdminDeleteComment;
 using Streetcode.BLL.MediatR.Comment.UserDeleteComment;
 using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
-using Streetcode.DAL.Specification;
+using Streetcode.BLL.Specifications;
 using Xunit;
 using CommentEntity = Streetcode.Domain.Entities.Comment.Comment;
 

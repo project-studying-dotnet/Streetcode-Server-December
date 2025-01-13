@@ -5,7 +5,6 @@ using Streetcode.BLL.DTO.Media.Video;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
-using Streetcode.DAL.Entities.AdditionalContent.Coordinates;
 
 namespace Streetcode.BLL.MediatR.Media.Video.GetAll
 {

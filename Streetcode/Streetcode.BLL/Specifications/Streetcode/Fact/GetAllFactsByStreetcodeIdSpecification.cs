@@ -1,5 +1,4 @@
-﻿using Streetcode.DAL.Specification;
-using FactEntity = Streetcode.Domain.Entities.Streetcode.TextContent.Fact;
+﻿using FactEntity = Streetcode.Domain.Entities.Streetcode.TextContent.Fact;
 
 namespace Streetcode.BLL.Specifications.Streetcode.Fact
 {

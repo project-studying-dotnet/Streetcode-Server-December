@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using FluentResults;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.DTO.Streetcode;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Streetcode.Streetcode.GetAllStreetcodesMainPage;
@@ -27,8 +26,8 @@ namespace Streetcode.BLL.MediatR.Streetcode.Streetcode.GetAllMainPage
         public async Task<Result<IEnumerable<StreetcodeMainPageDto>>> Handle(GetAllStreetcodesMainPageQuery request, CancellationToken cancellationToken)
         {
             var streetcodes = await _repositoryWrapper.StreetcodeRepository.GetAllAsync(
-                predicate: sc => sc.Status == Streetcode.Domain.Enums.StreetcodeStatus.Published,
-                include: src => src.Include(item => item.Text).Include(item => item.Images));
+                predicate: sc => sc.Status == Domain.Enums.StreetcodeStatus.Published,
+                include: new List<string> { "Text", "Images" });
 
             if (streetcodes != null)
             {

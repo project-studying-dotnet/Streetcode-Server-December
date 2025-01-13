@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using FluentResults;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.DTO.Media.Images;
 using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Logging;
@@ -30,7 +29,7 @@ namespace Streetcode.BLL.MediatR.Media.Image.GetByStreetcodeId
             var images = (await _repositoryWrapper.ImageRepository
                 .GetAllAsync(
                 f => f.Streetcodes.Any(s => s.Id == request.StreetcodeId),
-                include: q => q.Include(img => img.ImageDetails))).OrderBy(img => img.ImageDetails?.Alt);
+                include: new List<string> { "ImageDetails" })).OrderBy(img => img.ImageDetails?.Alt);
 
             if (images is null || images.Count() == 0)
             {

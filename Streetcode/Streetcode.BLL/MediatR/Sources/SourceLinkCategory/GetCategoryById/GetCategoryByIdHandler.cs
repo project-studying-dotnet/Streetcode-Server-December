@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
 using FluentResults;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.DTO.Sources;
 using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
-using Streetcode.DAL.Entities.AdditionalContent.Coordinates;
 
 namespace Streetcode.BLL.MediatR.Sources.SourceLink.GetCategoryById
 {
@@ -36,9 +34,7 @@ namespace Streetcode.BLL.MediatR.Sources.SourceLink.GetCategoryById
                 .SourceCategoryRepository
                 .GetFirstOrDefaultAsync(
                     predicate: sc => sc.Id == request.Id,
-                    include: scl => scl
-                        .Include(sc => sc.StreetcodeCategoryContents)
-                        .Include(sc => sc.Image)!);
+                    include: new List<string> { "StreetcodeCategoryContents", "Image" });
 
             if (srcCategories is null)
             {

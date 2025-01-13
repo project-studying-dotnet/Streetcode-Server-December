@@ -1,28 +1,15 @@
 ﻿using AutoMapper;
 using FluentAssertions;
-using Streetcode.BLL.DTO.Streetcode.TextContent;
+using Moq;
+using Streetcode.BLL.DTO.Streetcode.TextContent.Fact;
+using Streetcode.BLL.Exceptions;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Mapping.Streetcode.TextContent;
-using Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Create;
-using Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetById;
-using Streetcode.BLL.MediatR.Streetcode.RelatedTerm.Update;
-using Microsoft.EntityFrameworkCore.Query;
-using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
 using Streetcode.BLL.MediatR.Streetcode.Fact.FactReorder;
-using Streetcode.DAL.Entities.Media.Images;
-using Streetcode.DAL.Entities.AdditionalContent;
-using Streetcode.BLL.DTO.Streetcode.TextContent.Fact;
-using FactEntity = Streetcode.Domain.Entities.Streetcode.TextContent.Fact;
-using Streetcode.DAL.Specification;
-using Streetcode.BLL.Exceptions;
 using Streetcode.BLL.Repositories.Interfaces.Base;
+using Streetcode.BLL.Specifications;
+using Xunit;
+using FactEntity = Streetcode.Domain.Entities.Streetcode.TextContent.Fact;
 
 namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Fact.FactReorder
 {

@@ -1,12 +1,7 @@
-using System.Collections;
 using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore.Query;
 using Moq;
-using Streetcode.BLL.DTO.AdditionalContent;
 using Streetcode.BLL.DTO.AdditionalContent.Tag;
-using Streetcode.BLL.DTO.Streetcode;
 using Streetcode.BLL.MediatR.AdditionalContent.Tag.GetByStreetcodeId;
-using Streetcode.DAL.Entities.Streetcode;
 using Xunit;
 using StreetcodeTagIndexEntity = Streetcode.Domain.Entities.AdditionalContent.StreetcodeTagIndex;
 
@@ -38,7 +33,7 @@ public class GetTagByStreetcodeIdHandlerTest : AdditionalContentTestWrapper
 
         _repositoryWrapperMock.Setup(rep => rep.StreetcodeTagIndexRepository.GetAllAsync(
                 It.Is<Expression<Func<StreetcodeTagIndexEntity, bool>>>(exp => exp.Compile().Invoke(streetcodeTagIndexList.First())),
-                It.IsAny<Func<IQueryable<StreetcodeTagIndexEntity>, IIncludableQueryable<StreetcodeTagIndexEntity, object>>>()))
+                It.IsAny<List<string>>()))
             .ReturnsAsync(streetcodeTagIndexList);
 
         _mapperMock.Setup(m => m.Map<IEnumerable<StreetcodeTagDto>>(streetcodeTagIndexList))
@@ -54,7 +49,7 @@ public class GetTagByStreetcodeIdHandlerTest : AdditionalContentTestWrapper
         _repositoryWrapperMock.Verify(
             rep => rep.StreetcodeTagIndexRepository.GetAllAsync(
             It.Is<Expression<Func<StreetcodeTagIndexEntity, bool>>>(exp => exp.Compile().Invoke(new StreetcodeTagIndexEntity { StreetcodeId = request.StreetcodeId })),
-            It.IsAny<Func<IQueryable<StreetcodeTagIndexEntity>, IIncludableQueryable<StreetcodeTagIndexEntity, object>>>()), Times.Once);
+            It.IsAny<List<string>>()), Times.Once);
         _mapperMock.Verify(m => m.Map<IEnumerable<StreetcodeTagDto>>(streetcodeTagIndexList), Times.Once);
     }
     
@@ -68,7 +63,7 @@ public class GetTagByStreetcodeIdHandlerTest : AdditionalContentTestWrapper
 
         _repositoryWrapperMock.Setup(rep => rep.StreetcodeTagIndexRepository.GetAllAsync(
                 It.IsAny<Expression<Func<StreetcodeTagIndexEntity, bool>>>(),
-                It.IsAny<Func<IQueryable<StreetcodeTagIndexEntity>, IIncludableQueryable<StreetcodeTagIndexEntity, object>>>()))
+                It.IsAny<List<string>>()))
             .ReturnsAsync((IEnumerable<StreetcodeTagIndexEntity>)null!);
 
         // Act

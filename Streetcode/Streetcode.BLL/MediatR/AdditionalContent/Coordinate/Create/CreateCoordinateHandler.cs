@@ -19,7 +19,7 @@ namespace Streetcode.BLL.MediatR.AdditionalContent.Coordinate.Create
 
         public async Task<Result<Unit>> Handle(CreateCoordinateCommand request, CancellationToken cancellationToken)
         {
-            var streetcodeCoordinate = _mapper.Map<Streetcode.Domain.Entities.AdditionalContent.Coordinates.Types.StreetcodeCoordinate>(request.StreetcodeCoordinate);
+            var streetcodeCoordinate = _mapper.Map<Domain.Entities.AdditionalContent.Coordinates.Types.StreetcodeCoordinate>(request.StreetcodeCoordinate);
 
             if (streetcodeCoordinate is null)
             {

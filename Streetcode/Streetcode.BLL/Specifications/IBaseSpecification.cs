@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace Streetcode.DAL.Specification
+namespace Streetcode.BLL.Specifications
 {
     public interface IBaseSpecification<T>
     {

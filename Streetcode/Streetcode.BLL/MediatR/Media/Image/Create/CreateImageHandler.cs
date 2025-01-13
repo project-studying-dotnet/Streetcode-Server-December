@@ -31,7 +31,7 @@ namespace Streetcode.BLL.MediatR.Media.Image.Create
 
         public async Task<Result<ImageDto>> Handle(CreateImageCommand request, CancellationToken cancellationToken)
         {
-            Streetcode.Domain.Entities.Media.Images.Image image = _imageService.ConfigureImage(request.Image);
+            var image = _imageService.ConfigureImage(request.Image);
 
             await _repositoryWrapper.ImageRepository.CreateAsync(image);
             var resultIsSuccess = await _repositoryWrapper.SaveChangesAsync() > 0;

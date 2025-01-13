@@ -7,9 +7,9 @@ using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Media.Art.GetByStreetcodeId;
 using Streetcode.BLL.Repositories.Interfaces.Base;
-using Streetcode.DAL.Entities.Media.Images;
 using Streetcode.Domain.Entities.Media.Images;
 using Streetcode.Domain.Entities.Streetcode;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using Xunit;
 
@@ -115,7 +115,8 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.ArtTests
                 }
             };
 
-            _repositoryMock.Setup(r => r.ArtRepository.GetAllAsync(It.Is<Expression<Func<Art, bool>>>(predicate => predicate.Compile()(allArtsByStreetcodeId[0])), It.IsAny<Func<IQueryable<Art>, IIncludableQueryable<Art, object>>>())).ReturnsAsync(allArtsByStreetcodeId);
+            _repositoryMock.Setup(r => r.ArtRepository.GetAllAsync(It.Is<Expression<Func<Art, bool>>>(predicate => predicate.Compile()(allArtsByStreetcodeId[0])),
+                It.IsAny<List<string>>())).ReturnsAsync(allArtsByStreetcodeId);
             _mapperMock.Setup(m => m.Map<IEnumerable<ArtDto>>(allArtsByStreetcodeId)).Returns(allDtosByStreetcodeId);
             _blobMock.Setup(b => b.FindFileInStorageAsBase64("blobNum1")).Returns(Task.FromResult("base64_blobNum1"));
             _blobMock.Setup(b => b.FindFileInStorageAsBase64("blobNum2")).Returns(Task.FromResult("base64_blobNum2"));
@@ -136,7 +137,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.ArtTests
                artDto => Assert.Equal("base64_blobNum3", artDto.Image.Base64),
                artDto => Assert.Equal("base64_blobNum4", artDto.Image.Base64));
 
-            _repositoryMock.Verify(r => r.ArtRepository.GetAllAsync(It.IsAny<Expression<Func<Art, bool>>>(), It.IsAny<Func<IQueryable<Art>, IIncludableQueryable<Art, object>>>()), Times.Once);
+            _repositoryMock.Verify(r => r.ArtRepository.GetAllAsync(It.IsAny<Expression<Func<Art, bool>>>(), It.IsAny<List<string>>()), Times.Once);
             _mapperMock.Verify(m => m.Map<IEnumerable<ArtDto>>(allArtsByStreetcodeId), Times.Once);
             _blobMock.Verify(b => b.FindFileInStorageAsBase64(It.IsAny<string>()), Times.Exactly(allArtsByStreetcodeId.Count));
         }
@@ -148,7 +149,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.ArtTests
 
             int incorrectStreetcodeId = 1000;
 
-            _repositoryMock.Setup(r => r.ArtRepository.GetAllAsync(It.IsAny<Expression<Func<Art, bool>>>(), It.IsAny<Func<IQueryable<Art>, IIncludableQueryable<Art, object>>>())).ReturnsAsync(null as IEnumerable<Art>);
+            _repositoryMock.Setup(r => r.ArtRepository.GetAllAsync(It.IsAny<Expression<Func<Art, bool>>>(), It.IsAny<List<string>>())).ReturnsAsync((IEnumerable<Art>)null!);
 
             // (Act):
 
@@ -161,7 +162,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.ArtTests
             Assert.Single(res.Errors);
 
 
-            _repositoryMock.Verify(r => r.ArtRepository.GetAllAsync(It.IsAny<Expression<Func<Art, bool>>>(), It.IsAny<Func<IQueryable<Art>, IIncludableQueryable<Art, object>>>()), Times.Once);
+            _repositoryMock.Verify(r => r.ArtRepository.GetAllAsync(It.IsAny<Expression<Func<Art, bool>>>(), It.IsAny<List<string>>()), Times.Once);
             
             // _loggerMock.Verify(l => l.LogError(new GetArtsByStreetcodeIdQuery(incorrectStreetcodeId), $"Cannot find a art by streetcode id: {incorrectStreetcodeId}"), Times.Once);
         }

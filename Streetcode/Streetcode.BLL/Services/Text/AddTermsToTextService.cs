@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using System.Text.RegularExpressions;
-using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.Interfaces.Text;
 using Streetcode.BLL.Repositories.Interfaces.Base;
 
@@ -86,7 +85,8 @@ namespace Streetcode.BLL.Services.Text
             var relatedTerm = await _repositoryWrapper.RelatedTermRepository
                 .GetFirstOrDefaultAsync(
                 rt => rt.Word.ToLower().Equals(clearedWord.ToLower()),
-                rt => rt.Include(rt => rt.Term));
+                new List<string> { "Term" });
+
 
             if (relatedTerm == null || relatedTerm.Term == null || CheckInBuffer(relatedTerm.TermId))
             {

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using FluentResults;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Streetcode.BLL.DTO.Partners;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Repositories.Interfaces.Base;
@@ -28,8 +27,7 @@ namespace Streetcode.BLL.MediatR.Partners.GetById
                 .PartnersRepository
                 .GetSingleOrDefaultAsync(
                     predicate: p => p.Id == request.Id,
-                    include: p => p
-                        .Include(pl => pl.PartnerSourceLinks));
+                    include: new List<string> { "Image" });
 
             if (partner is null)
             {

@@ -1,18 +1,12 @@
-﻿using AutoMapper;
+﻿using System.Linq.Expressions;
+using AutoMapper;
+using FluentAssertions;
 using Moq;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Streetcode.Fact.Delete;
-using Streetcode.DAL.Entities.Partners;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
-using FluentAssertions;
-using FactEntity = Streetcode.Domain.Entities.Streetcode.TextContent.Fact;
 using Streetcode.BLL.Repositories.Interfaces.Base;
+using Xunit;
+using FactEntity = Streetcode.Domain.Entities.Streetcode.TextContent.Fact;
 
 namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Fact.Delete
 {

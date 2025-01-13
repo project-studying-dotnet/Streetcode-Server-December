@@ -1,14 +1,10 @@
 ﻿using AutoMapper;
 using FluentResults;
 using MediatR;
-using Streetcode.BLL.DTO.Media.Images;
 using Streetcode.BLL.DTO.Media.Video;
-using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Repositories.Interfaces.Base;
 using Streetcode.BLL.Resources;
-using Streetcode.BLL.Services.BlobStorageService;
-using Streetcode.DAL.Repositories.Realizations.Base;
 
 namespace Streetcode.BLL.MediatR.Media.Video.Create
 {
@@ -37,7 +33,7 @@ namespace Streetcode.BLL.MediatR.Media.Video.Create
                 return Result.Fail(new Error(error));
             }
 
-            var videoEntity = _mapper.Map<Streetcode.Domain.Entities.Media.Video>(request.Video);
+            var videoEntity = _mapper.Map<Domain.Entities.Media.Video>(request.Video);
             videoEntity.Title = $"NewVideo";
             videoEntity.Description = $"{DateTime.Now} was added";
 

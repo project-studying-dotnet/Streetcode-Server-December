@@ -167,7 +167,7 @@ namespace Streetcode.BLL.Services.BlobStorageService
 
             using (var stream = new MemoryStream(encryptedData))
             {
-                await blobClient.UploadAsync(stream);
+                await blobClient.UploadAsync(stream, overwrite: true);
             }
         }
 

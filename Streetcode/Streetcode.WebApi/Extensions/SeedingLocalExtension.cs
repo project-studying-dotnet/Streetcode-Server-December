@@ -112,7 +112,7 @@ namespace Streetcode.WebApi.Extensions
                     var containerClient = blobAzureClient.GetBlobContainerClient("streetcode");
                     var blobClient = containerClient.GetBlobClient(filePath);
 
-                    if (!blobClient.Exists())
+                    if (!await blobClient.ExistsAsync())
                     {
                         await blobService.SaveFileInStorageBase64(img.Base64, img.BlobName.Split('.')[0], img.BlobName.Split('.')[1]);
                     }
@@ -138,7 +138,7 @@ namespace Streetcode.WebApi.Extensions
                     var containerClient = blobAzureClient.GetBlobContainerClient("streetcode");
                     var blobClient = containerClient.GetBlobClient(filePath);
 
-                    if (!blobClient.Exists())
+                    if (!await blobClient.ExistsAsync())
                     {
                         await blobService.SaveFileInStorageBase64(audio.Base64, audio.BlobName.Split('.')[0], audio.BlobName.Split('.')[1]);
                     }

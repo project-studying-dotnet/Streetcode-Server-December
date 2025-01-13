@@ -39,39 +39,42 @@ namespace Streetcode.WebApi.Extensions
                 var repo = new RepositoryWrapper(dbContext, redisCacheService);
                 var blobService = new BlobService(blobOptions, blobAzureClient, repo);
 
-                await SeedImagesAsync(dbContext, blobService, blobPath, app);
-                await SeedAudiosAsync(dbContext, blobService, blobPath, app);
-                await SeedResponsesAsync(dbContext);
-                await SeedTermsAsync(dbContext);
-                await SeedRelatedTermsAsync(dbContext);
-                await SeedTeamMembesrAsync(dbContext);
-                await SeedPositionsAsync(dbContext);
-                await SeedTeamMemberPositionAsync(dbContext);
-                await SeedTeamMemberLinksAsync(dbContext);
-                await SeedNewsAsync(dbContext);
-                await SeedStreetcodesAsync(dbContext);
-                await SeedSubtitlesAsync(dbContext);
-                await SeedStreetcodeCoordinatesAsync(dbContext);
-                await SeedVideosAsync(dbContext);
-                await SeedPartnersAsync(dbContext);
-                await SeedPartnersSourceLinkAsync(dbContext);
-                await SeedStreetcodePartnersAsync(dbContext);
-                await SeedArtsAsync(dbContext);
-                await SeedStreetcodeArtsAsync(dbContext);
-                await SeedTextsAsync(dbContext);
-                await SeedTimelineItemsAsync(dbContext);
-                await SeedHistoricalContextsAsync(dbContext);
-                await SeedHistoricalContextsTimelinesAsync(dbContext);
-                await SeedTransactionLinksAsync(dbContext);
-                await SeedFactsAsync(dbContext);
-                await SeedImageDetailsAsync(dbContext);
-                await SeedSourceLinksAsync(dbContext);
-                await SeedStreetcodeCategoryContentAsync(dbContext);
-                await SeedRelatedFiguresAsync(dbContext);
-                await SeedStreetcodeImagesAsync(dbContext);
-                await SeedTagsAsync(dbContext);
-                await SeedStreetcodeTagIndicesAsync(dbContext);
-                await SeedCommentsAsync(dbContext);
+                if (!dbContext.Images.Any())
+                {
+                    await SeedImagesAsync(dbContext, blobService, blobPath, app);
+                    await SeedAudiosAsync(dbContext, blobService, blobPath, app);
+                    await SeedResponsesAsync(dbContext);
+                    await SeedTermsAsync(dbContext);
+                    await SeedRelatedTermsAsync(dbContext);
+                    await SeedTeamMembesrAsync(dbContext);
+                    await SeedPositionsAsync(dbContext);
+                    await SeedTeamMemberPositionAsync(dbContext);
+                    await SeedTeamMemberLinksAsync(dbContext);
+                    await SeedNewsAsync(dbContext);
+                    await SeedStreetcodesAsync(dbContext);
+                    await SeedSubtitlesAsync(dbContext);
+                    await SeedStreetcodeCoordinatesAsync(dbContext);
+                    await SeedVideosAsync(dbContext);
+                    await SeedPartnersAsync(dbContext);
+                    await SeedPartnersSourceLinkAsync(dbContext);
+                    await SeedStreetcodePartnersAsync(dbContext);
+                    await SeedArtsAsync(dbContext);
+                    await SeedStreetcodeArtsAsync(dbContext);
+                    await SeedTextsAsync(dbContext);
+                    await SeedTimelineItemsAsync(dbContext);
+                    await SeedHistoricalContextsAsync(dbContext);
+                    await SeedHistoricalContextsTimelinesAsync(dbContext);
+                    await SeedTransactionLinksAsync(dbContext);
+                    await SeedFactsAsync(dbContext);
+                    await SeedImageDetailsAsync(dbContext);
+                    await SeedSourceLinksAsync(dbContext);
+                    await SeedStreetcodeCategoryContentAsync(dbContext);
+                    await SeedRelatedFiguresAsync(dbContext);
+                    await SeedStreetcodeImagesAsync(dbContext);
+                    await SeedTagsAsync(dbContext);
+                    await SeedStreetcodeTagIndicesAsync(dbContext);
+                    await SeedCommentsAsync(dbContext);
+                }
             }
         }
 

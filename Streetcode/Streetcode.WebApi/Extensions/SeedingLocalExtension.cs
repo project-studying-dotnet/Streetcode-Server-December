@@ -36,8 +36,8 @@ namespace Streetcode.WebApi.Extensions
                 var blobAzureClient = app.Services.GetRequiredService<BlobServiceClient>();
                 string blobPath = app.Configuration.GetValue<string>("Blob:BlobStorePath")!;
                 var repo = new RepositoryWrapper(dbContext, redisCacheService);
-                var blobService = new BlobService(blobOptions, blobAzureClient , repo);
 
+                var blobService = new BlobService(blobOptions, blobAzureClient , repo);
                 string blobInitialDataPath = app.Configuration.GetValue<string>("AzureBlobStorage:InitialDataPath")!;
                 string initialDataImagePath = $"{blobInitialDataPath}images.json";
                 string initialDataAudioPath = $"{blobInitialDataPath}audios.json";

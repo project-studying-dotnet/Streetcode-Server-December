@@ -157,7 +157,7 @@ namespace Streetcode.WebApi.Extensions
             }
         }
 
-        //Seed terms
+        // Seed terms
         private static async Task SeedTermsAsync(StreetcodeDbContext dbContext)
         {
             if (!dbContext.Terms.Any())
@@ -191,7 +191,7 @@ namespace Streetcode.WebApi.Extensions
             }
         }
 
-        //Seed RelatedTerms
+        // Seed RelatedTerms
         private static async Task SeedRelatedTermsAsync(StreetcodeDbContext dbContext)
         {
                 if (!dbContext.RelatedTerms.Any())
@@ -207,7 +207,7 @@ namespace Streetcode.WebApi.Extensions
                 }
         }
 
-        //Seed TeamMembers
+        // Seed TeamMembers
         private static async Task SeedTeamMembesrAsync(StreetcodeDbContext dbContext)
         {
             if (!dbContext.TeamMembers.Any())
@@ -242,7 +242,7 @@ namespace Streetcode.WebApi.Extensions
             }
         }
 
-        //Seed Positions
+        // Seed Positions
         private static async Task SeedPositionsAsync(StreetcodeDbContext dbContext)
         {
                 if (!dbContext.Positions.Any())
@@ -257,7 +257,7 @@ namespace Streetcode.WebApi.Extensions
                 }
         }
 
-        //Seed TeamMemberPosition
+        // Seed TeamMemberPosition
         private static async Task SeedTeamMemberPositionAsync(StreetcodeDbContext dbContext)
         {
                     if (!dbContext.TeamMemberPosition.Any())
@@ -283,7 +283,7 @@ namespace Streetcode.WebApi.Extensions
                     }
         }
 
-        //Seed TeamMemeberLink
+        // Seed TeamMemeberLink
         private static async Task SeedTeamMemberLinksAsync(StreetcodeDbContext dbContext)
         {
                     if (!dbContext.TeamMemberLinks.Any())
@@ -365,7 +365,7 @@ namespace Streetcode.WebApi.Extensions
                     }
         }
 
-        //Seed news
+        // Seed news
         private static async Task SeedNewsAsync(StreetcodeDbContext dbContext)
         {
             if (!dbContext.News.Any())
@@ -400,7 +400,7 @@ namespace Streetcode.WebApi.Extensions
             }
         }
 
-        //Seed streetcodes
+        // Seed streetcodes
         private static async Task SeedStreetcodesAsync(StreetcodeDbContext dbContext)
         {
             if (!dbContext.Streetcodes.Any())
@@ -1350,30 +1350,33 @@ namespace Streetcode.WebApi.Extensions
         // Seed TransactionLinks
         private static async Task SeedImageDetailsAsync(StreetcodeDbContext dbContext)
         {
-            dbContext.ImageDetailses.AddRange(new[]
+            if (!dbContext.ImageDetailses.Any())
             {
-                                     new ImageDetails()
-                                     {
-                                         ImageId = 6,
-                                         Alt = "Additional inforamtaion for  wow-fact photo 1"
-                                     },
-                                     new ImageDetails()
-                                     {
-                                         ImageId = 16,
-                                         Alt = "Additional inforamtaion for  wow-fact photo 2"
-                                     },
-                                     new ImageDetails()
-                                     {
-                                         ImageId = 17,
-                                         Alt = "Additional inforamtaion for  wow-fact photo 3"
-                                     },
-                                     new ImageDetails()
-                                     {
-                                         ImageId = 19,
-                                         Alt = "Additional inforamtaion for  wow-fact photo 3"
-                                     },
-            });
-            await dbContext.SaveChangesAsync();
+                dbContext.ImageDetailses.AddRange(new[]
+                {
+                                         new ImageDetails()
+                                         {
+                                             ImageId = 6,
+                                             Alt = "Additional inforamtaion for  wow-fact photo 1"
+                                         },
+                                         new ImageDetails()
+                                         {
+                                             ImageId = 16,
+                                             Alt = "Additional inforamtaion for  wow-fact photo 2"
+                                         },
+                                         new ImageDetails()
+                                         {
+                                             ImageId = 17,
+                                             Alt = "Additional inforamtaion for  wow-fact photo 3"
+                                         },
+                                         new ImageDetails()
+                                         {
+                                             ImageId = 19,
+                                             Alt = "Additional inforamtaion for  wow-fact photo 3"
+                                         },
+                });
+                await dbContext.SaveChangesAsync();
+            }
         }
 
         // Seed SourceLinks

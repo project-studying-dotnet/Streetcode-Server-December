@@ -143,4 +143,8 @@
   <data name="CantFindByURLError" xml:space="preserve">
     <value>Cannot find any {0} by Url: {1}</value>
   </data>
+  <data name="DontEqual" xml:space="preserve">
+    <value>User name do not equal to owner {0}</value>
+  </data>
+  
 </root>

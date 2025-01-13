@@ -29,7 +29,8 @@ namespace Streetcode.XUnitTest.ValidatorTests
         {
             var command = new UpdateStreetcodeMainPageCommand(new StreetcodeMainPageUpdateDto
             {
-                Images = imageListEmpty
+                Images = imageListEmpty,
+                TransliterationUrl = ""
             });
 
             var result = _validator.TestValidate(command);
@@ -43,7 +44,8 @@ namespace Streetcode.XUnitTest.ValidatorTests
             var command = new UpdateStreetcodeMainPageCommand(new StreetcodeMainPageUpdateDto
             {
                 Id = 1,
-                Images = imageListEmpty
+                Images = imageListEmpty,
+                TransliterationUrl = ""
             });
 
             var result = _validator.TestValidate(command);
@@ -57,7 +59,8 @@ namespace Streetcode.XUnitTest.ValidatorTests
             var command = new UpdateStreetcodeMainPageCommand(new StreetcodeMainPageUpdateDto
             {
                 DateString = "",
-                Images = imageListEmpty
+                Images = imageListEmpty,
+                TransliterationUrl = ""
             });
 
             var result = _validator.TestValidate(command);
@@ -71,7 +74,8 @@ namespace Streetcode.XUnitTest.ValidatorTests
             var command = new UpdateStreetcodeMainPageCommand(new StreetcodeMainPageUpdateDto
             {
                 DateString = "hcgyux4r,gfehmdgtw9gkuefhldgtiu589t;gietfuldioeufkhlkyuhfe89t8hkul9ed8thuk9658hkul9ehtld",
-                Images = imageListEmpty
+                Images = imageListEmpty,
+                TransliterationUrl = ""
             });
 
             var result = _validator.TestValidate(command);
@@ -85,7 +89,8 @@ namespace Streetcode.XUnitTest.ValidatorTests
             var command = new UpdateStreetcodeMainPageCommand(new StreetcodeMainPageUpdateDto
             {
                 DateString = "hcgyux4r,gfehmdgtw9gkuefhld",
-                Images = imageListEmpty
+                Images = imageListEmpty,
+                TransliterationUrl = ""
             });
 
             var result = _validator.TestValidate(command);
@@ -99,7 +104,8 @@ namespace Streetcode.XUnitTest.ValidatorTests
             var command = new UpdateStreetcodeMainPageCommand(new StreetcodeMainPageUpdateDto
             {
                 Index = 1,
-                Images = imageListEmpty
+                Images = imageListEmpty,
+                TransliterationUrl = ""
             });
 
             var result = _validator.TestValidate(command);
@@ -113,7 +119,8 @@ namespace Streetcode.XUnitTest.ValidatorTests
             var command = new UpdateStreetcodeMainPageCommand(new StreetcodeMainPageUpdateDto
             {
                 Index = -1,
-                Images = imageListEmpty
+                Images = imageListEmpty,
+                TransliterationUrl = ""
             });
 
             var result = _validator.TestValidate(command);
@@ -128,7 +135,8 @@ namespace Streetcode.XUnitTest.ValidatorTests
             var command = new UpdateStreetcodeMainPageCommand(new StreetcodeMainPageUpdateDto
             {
                 Title = new string('a', 101),
-                Images = imageListEmpty
+                Images = imageListEmpty,
+                TransliterationUrl = ""
             });
 
             var result = _validator.TestValidate(command);
@@ -143,7 +151,8 @@ namespace Streetcode.XUnitTest.ValidatorTests
             var command = new UpdateStreetcodeMainPageCommand(new StreetcodeMainPageUpdateDto
             {
                 FirstName = new string('a', 51),
-                Images = imageListEmpty
+                Images = imageListEmpty,
+                TransliterationUrl = ""
             });
 
             var result = _validator.TestValidate(command);
@@ -158,7 +167,8 @@ namespace Streetcode.XUnitTest.ValidatorTests
             var command = new UpdateStreetcodeMainPageCommand(new StreetcodeMainPageUpdateDto
             {
                 LastName = new string('a', 51),
-                Images = imageListEmpty
+                Images = imageListEmpty,
+                TransliterationUrl = ""
             });
 
             var result = _validator.TestValidate(command);
@@ -173,7 +183,8 @@ namespace Streetcode.XUnitTest.ValidatorTests
             var command = new UpdateStreetcodeMainPageCommand(new StreetcodeMainPageUpdateDto
             {
                 Teaser = new string('a', 451),
-                Images = imageListEmpty
+                Images = imageListEmpty,
+                TransliterationUrl = ""
             });
 
             var result = _validator.TestValidate(command);
@@ -185,7 +196,11 @@ namespace Streetcode.XUnitTest.ValidatorTests
         [Fact]
         public void EventStartOrPersonBirthDate_ShouldHaveValidationError_WhenEmpty()
         {
-            var command = new UpdateStreetcodeMainPageCommand(new StreetcodeMainPageUpdateDto { Images = imageListEmpty });
+            var command = new UpdateStreetcodeMainPageCommand(new StreetcodeMainPageUpdateDto 
+            { 
+                Images = imageListEmpty,
+                TransliterationUrl = ""
+            });
 
             var result = _validator.TestValidate(command);
 
@@ -228,7 +243,8 @@ namespace Streetcode.XUnitTest.ValidatorTests
             var command = new UpdateStreetcodeMainPageCommand(new StreetcodeMainPageUpdateDto
             {
                 BriefDescription = new string('a', 34),
-                Images = imageListEmpty
+                Images = imageListEmpty,
+                TransliterationUrl = ""
             });
 
             var result = _validator.TestValidate(command);
@@ -247,7 +263,8 @@ namespace Streetcode.XUnitTest.ValidatorTests
                     {
                         new ImageFileBaseCreateDto { MimeType = "gif" },
                         new ImageFileBaseCreateDto { MimeType = "gif" }
-                    }
+                    },
+                    TransliterationUrl = ""
                 }
             );
 
@@ -268,7 +285,8 @@ namespace Streetcode.XUnitTest.ValidatorTests
                         new ImageFileBaseCreateDto { MimeType = "jpg" },
                         new ImageFileBaseCreateDto { MimeType = "png" },
                         new ImageFileBaseCreateDto { MimeType = "gif" }
-                    }
+                    },
+                    TransliterationUrl = ""
                 }
             );
 
@@ -288,7 +306,8 @@ namespace Streetcode.XUnitTest.ValidatorTests
                     {
                         new ImageFileBaseCreateDto { MimeType = "gif" },
                         new ImageFileBaseCreateDto { MimeType = "jpg" }
-                    }
+                    },
+                    TransliterationUrl = ""
                 }
             );
 
@@ -303,7 +322,8 @@ namespace Streetcode.XUnitTest.ValidatorTests
             var command = new UpdateStreetcodeMainPageCommand(new StreetcodeMainPageUpdateDto
             {
                 Title = "Valid Title",
-                Images = imageListEmpty
+                Images = imageListEmpty,
+                TransliterationUrl = ""
             });
 
             var result = _validator.TestValidate(command);
@@ -316,9 +336,9 @@ namespace Streetcode.XUnitTest.ValidatorTests
         {
             var command = new UpdateStreetcodeMainPageCommand(new StreetcodeMainPageUpdateDto
             {
-                FirstName = "ValidFirstName"
-            ,
-                Images = imageListEmpty
+                FirstName = "ValidFirstName",
+                Images = imageListEmpty,
+                TransliterationUrl = ""
             });
 
             var result = _validator.TestValidate(command);
@@ -332,7 +352,8 @@ namespace Streetcode.XUnitTest.ValidatorTests
             var command = new UpdateStreetcodeMainPageCommand(new StreetcodeMainPageUpdateDto
             {
                 LastName = "ValidLastName",
-                Images = imageListEmpty
+                Images = imageListEmpty,
+                TransliterationUrl = ""
             });
 
             var result = _validator.TestValidate(command);
@@ -346,7 +367,8 @@ namespace Streetcode.XUnitTest.ValidatorTests
             var command = new UpdateStreetcodeMainPageCommand(new StreetcodeMainPageUpdateDto
             {
                 Teaser = "Valid teaser within 450 characters.",
-                Images = imageListEmpty
+                Images = imageListEmpty,
+                TransliterationUrl = ""
             });
 
             var result = _validator.TestValidate(command);
@@ -360,7 +382,8 @@ namespace Streetcode.XUnitTest.ValidatorTests
             var command = new UpdateStreetcodeMainPageCommand(new StreetcodeMainPageUpdateDto
             {
                 EventStartOrPersonBirthDate = DateTime.Now,
-                Images = imageListEmpty
+                Images = imageListEmpty,
+                TransliterationUrl = ""
             });
 
             var result = _validator.TestValidate(command);
@@ -374,7 +397,8 @@ namespace Streetcode.XUnitTest.ValidatorTests
             var command = new UpdateStreetcodeMainPageCommand(new StreetcodeMainPageUpdateDto
             {
                 BriefDescription = "Brief description",
-                Images = imageListEmpty
+                Images = imageListEmpty,
+                TransliterationUrl = ""
             });
 
             var result = _validator.TestValidate(command);
@@ -388,7 +412,8 @@ namespace Streetcode.XUnitTest.ValidatorTests
             var command = new UpdateStreetcodeMainPageCommand(new StreetcodeMainPageUpdateDto
             {
                 Audio = new AudioFileBaseCreateDto { Title = "audio", MimeType = "mp3" },
-                Images = imageListEmpty
+                Images = imageListEmpty,
+                TransliterationUrl = ""
             });
 
             var result = _validator.TestValidate(command);

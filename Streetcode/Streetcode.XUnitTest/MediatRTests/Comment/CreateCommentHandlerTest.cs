@@ -9,6 +9,7 @@ using Streetcode.BLL.MediatR.Comment.GetCommentsByStreetcodeId;
 using Streetcode.BLL.Resources;
 using Streetcode.BLL.Specifications.Comment;
 using Streetcode.DAL.Entities.AdditionalContent.Coordinates.Types;
+using Streetcode.DAL.Entities.Comment;
 using Streetcode.DAL.Entities.Streetcode;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using Xunit;
@@ -63,7 +64,9 @@ public class CreateCommentHandlerTest
             Id = 1
         };
 
-        var request = new CreateCommentCommand(createCommentDto);
+        var userName = "John Doe";
+
+        var request = new CreateCommentCommand(createCommentDto, userName);
 
         _mapperMock.Setup(m => m.Map<CommentEntity>(createCommentDto))
             .Returns(comment);
@@ -100,8 +103,10 @@ public class CreateCommentHandlerTest
             Content = "Test",
             StreetcodeId = 1
         };
-        
-        var request = new CreateCommentCommand(createCommentDto);
+
+        var userName = "John Doe";
+
+        var request = new CreateCommentCommand(createCommentDto, userName);
 
         var errMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "streetcode", createCommentDto.StreetcodeId);
 
@@ -122,13 +127,18 @@ public class CreateCommentHandlerTest
             Content = "Test",
             StreetcodeId = 1
         };
-        
+
         var streetcode = new StreetcodeContent
         {
             Id = 1
         };
-        
-        var request = new CreateCommentCommand(createCommentDto);
+
+        _mapperMock.Setup(m => m.Map<CommentEntity>(createCommentDto))
+            .Returns((CommentEntity)null);
+
+        var userName = "John Doe";
+
+        var request = new CreateCommentCommand(createCommentDto, userName);
 
         var errMsg = ErrorManager.GetCustomErrorText("ConvertationError", "create comment dto", "CommentEntity");
 
@@ -137,10 +147,10 @@ public class CreateCommentHandlerTest
                     It.Is<Expression<Func<StreetcodeContent, bool>>>(exp => exp.Compile().Invoke(streetcode)),
                     It.IsAny<Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>>>()))
             .ReturnsAsync(streetcode);
-        
+
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);
-        
+
         // Assert
         Assert.True(result.IsFailed);
         Assert.Equal(errMsg, result.Errors[0].Message);
@@ -167,9 +177,10 @@ public class CreateCommentHandlerTest
             Id = 1
         };
 
-        var request = new CreateCommentCommand(createCommentDto);
-        var errMsg = ErrorManager.GetCustomErrorText("FailCreateError", "comment", request);
+        var userName = "John Doe";
 
+        var request = new CreateCommentCommand(createCommentDto, userName);
+        var errMsg = ErrorManager.GetCustomErrorText("FailCreateError", "comment", request);
 
         _mapperMock.Setup(m => m.Map<CommentEntity>(createCommentDto))
             .Returns(comment);

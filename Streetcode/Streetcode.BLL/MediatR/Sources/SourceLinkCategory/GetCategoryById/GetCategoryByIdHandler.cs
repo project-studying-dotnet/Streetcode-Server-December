@@ -49,7 +49,7 @@ namespace Streetcode.BLL.MediatR.Sources.SourceLink.GetCategoryById
 
             var mappedSrcCategories = _mapper.Map<SourceLinkCategoryDto>(srcCategories);
 
-            mappedSrcCategories.Image.Base64 = _blobService.FindFileInStorageAsBase64(mappedSrcCategories.Image.BlobName);
+            mappedSrcCategories.Image.Base64 = await _blobService.FindFileInStorageAsBase64(mappedSrcCategories.Image.BlobName);
 
             return Result.Ok(mappedSrcCategories);
         }

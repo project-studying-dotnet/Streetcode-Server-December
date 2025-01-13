@@ -31,6 +31,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService.XUnitTest", "Us
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService.XIntegrationTest", "UserService.XIntegrationTest\UserService.XIntegrationTest.csproj", "{1DA9EB27-8987-4154-A831-61F2EEDE3385}"
 EndProject
+
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gateway", "Gateway\Gateway.csproj", "{28EB7530-7F28-4633-9A4D-0075FE40F4BF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailService.WebApi", "EmailService.WebApi\EmailService.WebApi.csproj", "{B40F3B75-4518-404A-8835-ACB95ACA66FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailService.BLL", "EmailService.BLL\EmailService.BLL.csproj", "{4D28E9E0-8A8F-442D-8900-3D127ECFE8F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailService.DAL", "EmailService.DAL\EmailService.DAL.csproj", "{3E75E757-68E4-4FB3-B75A-4E6226D10620}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailService.XUnitTest", "EmailService.XUnitTest\EmailService.XUnitTest.csproj", "{C525FF91-65AC-407F-974E-BA7ED1FBE5B6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +97,28 @@ Global
 		{1DA9EB27-8987-4154-A831-61F2EEDE3385}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1DA9EB27-8987-4154-A831-61F2EEDE3385}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1DA9EB27-8987-4154-A831-61F2EEDE3385}.Release|Any CPU.Build.0 = Release|Any CPU
+
+		{28EB7530-7F28-4633-9A4D-0075FE40F4BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28EB7530-7F28-4633-9A4D-0075FE40F4BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28EB7530-7F28-4633-9A4D-0075FE40F4BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28EB7530-7F28-4633-9A4D-0075FE40F4BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B40F3B75-4518-404A-8835-ACB95ACA66FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B40F3B75-4518-404A-8835-ACB95ACA66FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B40F3B75-4518-404A-8835-ACB95ACA66FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B40F3B75-4518-404A-8835-ACB95ACA66FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D28E9E0-8A8F-442D-8900-3D127ECFE8F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D28E9E0-8A8F-442D-8900-3D127ECFE8F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D28E9E0-8A8F-442D-8900-3D127ECFE8F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D28E9E0-8A8F-442D-8900-3D127ECFE8F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E75E757-68E4-4FB3-B75A-4E6226D10620}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E75E757-68E4-4FB3-B75A-4E6226D10620}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E75E757-68E4-4FB3-B75A-4E6226D10620}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E75E757-68E4-4FB3-B75A-4E6226D10620}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C525FF91-65AC-407F-974E-BA7ED1FBE5B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C525FF91-65AC-407F-974E-BA7ED1FBE5B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C525FF91-65AC-407F-974E-BA7ED1FBE5B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C525FF91-65AC-407F-974E-BA7ED1FBE5B6}.Release|Any CPU.Build.0 = Release|Any CPU
+
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

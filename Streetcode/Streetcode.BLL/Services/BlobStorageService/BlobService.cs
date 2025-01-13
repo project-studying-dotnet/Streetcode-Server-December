@@ -1,5 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using Microsoft.Extensions.Options;
 using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.DAL.Repositories.Interfaces.Base;
@@ -12,38 +14,40 @@ namespace Streetcode.BLL.Services.BlobStorageService
         private readonly string _keyCrypt;
         private readonly string _blobPath;
         private readonly IRepositoryWrapper _repositoryWrapper;
+        private readonly BlobServiceClient blobStorageClient;
 
-        public BlobService(IOptions<BlobEnvironmentVariables> environment, IRepositoryWrapper? repositoryWrapper = null)
+        public BlobService(IOptions<BlobEnvironmentVariables> environment, BlobServiceClient blobStorageClient, IRepositoryWrapper? repositoryWrapper = null)
         {
             _envirovment = environment.Value;
             _keyCrypt = _envirovment.BlobStoreKey;
             _blobPath = _envirovment.BlobStorePath;
-            _repositoryWrapper = repositoryWrapper;
+            _repositoryWrapper = repositoryWrapper!;
+            this.blobStorageClient = blobStorageClient;
         }
 
-        public MemoryStream FindFileInStorageAsMemoryStream(string name)
+        public async Task<MemoryStream> FindFileInStorageAsMemoryStream(string name)
         {
             string[] splitedName = name.Split('.');
 
-            byte[] decodedBytes = DecryptFile(splitedName[0], splitedName[1]);
+            byte[] decodedBytes = await DecryptFile(splitedName[0], splitedName[1]);
 
             var image = new MemoryStream(decodedBytes);
 
             return image;
         }
 
-        public string FindFileInStorageAsBase64(string name)
+        public async Task<string> FindFileInStorageAsBase64(string name)
         {
             string[] splitedName = name.Split('.');
 
-            byte[] decodedBytes = DecryptFile(splitedName[0], splitedName[1]);
+            byte[] decodedBytes = await DecryptFile(splitedName[0], splitedName[1]);
 
             string base64 = Convert.ToBase64String(decodedBytes);
 
             return base64;
         }
 
-        public string SaveFileInStorage(string base64, string name, string mimeType)
+        public async Task<string> SaveFileInStorage(string base64, string name, string mimeType)
         {
             byte[] imageBytes = Convert.FromBase64String(base64);
             string createdFileName = $"{DateTime.Now}{name}"
@@ -53,33 +57,34 @@ namespace Streetcode.BLL.Services.BlobStorageService
 
             string hashBlobStorageName = HashFunction(createdFileName);
 
-            Directory.CreateDirectory(_blobPath);
-            EncryptFile(imageBytes, mimeType, hashBlobStorageName);
+            await EncryptFile(imageBytes, mimeType, hashBlobStorageName);
 
             return hashBlobStorageName;
         }
 
-        public void SaveFileInStorageBase64(string base64, string name, string extension)
+        public async Task SaveFileInStorageBase64(string base64, string name, string extension)
         {
             byte[] imageBytes = Convert.FromBase64String(base64);
-            Directory.CreateDirectory(_blobPath);
-            EncryptFile(imageBytes, extension, name);
+            await EncryptFile(imageBytes, extension, name);
         }
 
-        public void DeleteFileInStorage(string name)
+        public async Task DeleteFileInStorage(string name)
         {
-            File.Delete($"{_blobPath}{name}");
+            var containerClient = blobStorageClient.GetBlobContainerClient("streetcode");
+            var blobClient = containerClient.GetBlobClient($"{_blobPath}{name}");
+
+            await blobClient.DeleteIfExistsAsync();
         }
 
-        public string UpdateFileInStorage(
+        public async Task<string> UpdateFileInStorage(
             string previousBlobName,
             string base64Format,
             string newBlobName,
             string extension)
         {
-            DeleteFileInStorage(previousBlobName);
+            await DeleteFileInStorage(previousBlobName);
 
-            string hashBlobStorageName = SaveFileInStorage(
+            string hashBlobStorageName = await SaveFileInStorage(
             base64Format,
             newBlobName,
             extension);
@@ -89,29 +94,36 @@ namespace Streetcode.BLL.Services.BlobStorageService
 
         public async Task CleanBlobStorage()
         {
-            var base64Files = GetAllBlobNames();
+            var base64Files = await GetAllBlobNames();
 
             var existingImagesInDatabase = await _repositoryWrapper.ImageRepository.GetAllAsync();
             var existingAudiosInDatabase = await _repositoryWrapper.AudioRepository.GetAllAsync();
 
             List<string> existingMedia = new();
-            existingMedia.AddRange(existingImagesInDatabase.Select(img => img.BlobName));
-            existingMedia.AddRange(existingAudiosInDatabase.Select(img => img.BlobName));
+            existingMedia.AddRange(existingImagesInDatabase.Select(img => img.BlobName)!);
+            existingMedia.AddRange(existingAudiosInDatabase.Select(img => img.BlobName)!);
 
             var filesToRemove = base64Files.Except(existingMedia).ToList();
 
             foreach (var file in filesToRemove)
             {
                 Console.WriteLine($"Deleting {file}...");
-                DeleteFileInStorage(file);
+                await DeleteFileInStorage(file);
             }
         }
 
-        private IEnumerable<string> GetAllBlobNames()
+        private async Task<IEnumerable<string>> GetAllBlobNames()
         {
-            var paths = Directory.EnumerateFiles(_blobPath);
+            var containerClient = blobStorageClient.GetBlobContainerClient("streetcode");
 
-            return paths.Select(p => Path.GetFileName(p));
+            var blobNames = new List<string>();
+
+            await foreach (var blobItem in containerClient.GetBlobsAsync())
+            {
+                blobNames.Add(blobItem.Name);
+            }
+
+            return blobNames;
         }
 
         private string HashFunction(string createdFileName)
@@ -124,12 +136,12 @@ namespace Streetcode.BLL.Services.BlobStorageService
             }
         }
 
-        private void EncryptFile(byte[] imageBytes, string type, string name)
+        private async Task EncryptFile(byte[] imageBytes, string type, string name)
         {
             byte[] keyBytes = Encoding.UTF8.GetBytes(_keyCrypt);
 
             byte[] iv = new byte[16];
-            using (var rng = new RNGCryptoServiceProvider())
+            using (var rng = RandomNumberGenerator.Create())
             {
                 rng.GetBytes(iv);
             }
@@ -147,12 +159,26 @@ namespace Streetcode.BLL.Services.BlobStorageService
             byte[] encryptedData = new byte[encryptedBytes.Length + iv.Length];
             Buffer.BlockCopy(iv, 0, encryptedData, 0, iv.Length);
             Buffer.BlockCopy(encryptedBytes, 0, encryptedData, iv.Length, encryptedBytes.Length);
-            File.WriteAllBytes($"{_blobPath}{name}.{type}", encryptedData);
+
+            var fileName = $"{_blobPath}{name}.{type}";
+
+            var containerClient = blobStorageClient.GetBlobContainerClient("streetcode");
+            var blobClient = containerClient.GetBlobClient(fileName);
+
+            using (var stream = new MemoryStream(encryptedData))
+            {
+                await blobClient.UploadAsync(stream);
+            }
         }
 
-        private byte[] DecryptFile(string fileName, string type)
+        private async Task<byte[]> DecryptFile(string fileName, string type)
         {
-            byte[] encryptedData = File.ReadAllBytes($"{_blobPath}{fileName}.{type}");
+            var containerClient = blobStorageClient.GetBlobContainerClient("streetcode");
+            var blobClient = containerClient.GetBlobClient($"{_blobPath}{fileName}.{type}");
+
+            var downloadResult = await blobClient.DownloadContentAsync();
+            byte[] encryptedData = downloadResult.Value.Content.ToArray();
+
             byte[] keyBytes = Encoding.UTF8.GetBytes(_keyCrypt);
 
             byte[] iv = new byte[16];

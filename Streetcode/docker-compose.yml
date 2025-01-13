@@ -19,18 +19,8 @@ services:
       - 18005:27017
     networks:
       - streetcode
-
-  streetcode.webapi:
-    image: ${DOCKER_REGISTRY-}streetcodewebapi
-    build:
-      context: .
-      dockerfile: Streetcode.WebApi/Dockerfile
-    ports:
-      - 8001:80
-    hostname: street-code-api
-    networks:
-      - streetcode
-
+  
+  
   cache:
     image: redis:6.2-alpine
     container_name: redis-cache
@@ -42,15 +32,70 @@ services:
       - cache.env
     networks:
       - streetcode
+  
+  streetcode.webapi:
+    image: streetcode.api:latest
+    build:
+      context: .
+      dockerfile: Streetcode.WebApi/Dockerfile
+    ports:
+      - 8001:8080
+    hostname: street-code-api
+    depends_on:
+      - mssql
+      - cache
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+    networks:
+      - streetcode
+
 
   userservice.webapi:
-    image: ${DOCKER_REGISTRY-}userservicewebapi
+    image: userservice.api:latest
     build:
       context: .
       dockerfile: UserService.WebApi/Dockerfile
     ports:
-      - 8002:80
+      - 8002:8080
     hostname: streetcode-user-api
+    depends_on:
+      - mongodb
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+    networks:
+      - streetcode
+
+  emailservice.webapi:
+    image: emailservice.api:latest
+    build:
+      context: .
+      dockerfile: EmailService.WebApi/Dockerfile
+    ports:
+      - 8003:8080
+    hostname: streetcode-email-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+    networks:
+      - streetcode
+  
+  gateway.webapi:
+    image: gateway.api:latest
+    build:
+      context: .
+      dockerfile: Gateway/Dockerfile
+    ports:
+      - 8000:8080
+    hostname: streetcode-user-api
+    depends_on:
+      - streetcode.webapi
+      - userservice.webapi
+      - emailservice.webapi
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
     networks:
       - streetcode
 

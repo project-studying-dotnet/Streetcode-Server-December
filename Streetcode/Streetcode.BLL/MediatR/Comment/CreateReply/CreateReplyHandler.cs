@@ -44,6 +44,8 @@ namespace Streetcode.BLL.MediatR.Comment.CreateReply
                 return Result.Fail(errMsg);
             }
 
+            newReply.UserName = request.UserName;
+
             var result = await _repositoryWrapper.CommentRepository.CreateAsync(newReply);
 
             var resultIsSucceed = await _repositoryWrapper.SaveChangesAsync() > 0;

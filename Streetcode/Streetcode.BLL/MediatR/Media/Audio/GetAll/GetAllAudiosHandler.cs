@@ -27,7 +27,7 @@ namespace Streetcode.BLL.MediatR.Media.Audio.GetAll
 
         public async Task<Result<IEnumerable<AudioDto>>> Handle(GetAllAudiosQuery request, CancellationToken cancellationToken)
         {
-            var audios = await _repositoryWrapper.AudioRepository.GetAllAsync();
+            var audios = await _repositoryWrapper.AudioRepository.GetAllBySpecAsync();
 
             if (audios is null)
             {

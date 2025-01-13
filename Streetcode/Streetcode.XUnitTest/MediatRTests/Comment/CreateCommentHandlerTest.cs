@@ -64,7 +64,9 @@ public class CreateCommentHandlerTest
             Id = 1
         };
 
-        var request = new CreateCommentCommand(createCommentDto);
+        var userName = "John Doe";
+
+        var request = new CreateCommentCommand(createCommentDto, userName);
 
         _mapperMock.Setup(m => m.Map<CommentEntity>(createCommentDto))
             .Returns(comment);
@@ -101,8 +103,10 @@ public class CreateCommentHandlerTest
             Content = "Test",
             StreetcodeId = 1
         };
-        
-        var request = new CreateCommentCommand(createCommentDto);
+
+        var userName = "John Doe";
+
+        var request = new CreateCommentCommand(createCommentDto, userName);
 
         var errMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "streetcode", createCommentDto.StreetcodeId);
 
@@ -132,7 +136,9 @@ public class CreateCommentHandlerTest
         _mapperMock.Setup(m => m.Map<CommentEntity>(createCommentDto))
             .Returns((CommentEntity)null);
 
-        var request = new CreateCommentCommand(createCommentDto);
+        var userName = "John Doe";
+
+        var request = new CreateCommentCommand(createCommentDto, userName);
 
         var errMsg = ErrorManager.GetCustomErrorText("ConvertationError", "create comment dto", "CommentEntity");
 
@@ -171,9 +177,10 @@ public class CreateCommentHandlerTest
             Id = 1
         };
 
-        var request = new CreateCommentCommand(createCommentDto);
-        var errMsg = ErrorManager.GetCustomErrorText("FailCreateError", "comment", request);
+        var userName = "John Doe";
 
+        var request = new CreateCommentCommand(createCommentDto, userName);
+        var errMsg = ErrorManager.GetCustomErrorText("FailCreateError", "comment", request);
 
         _mapperMock.Setup(m => m.Map<CommentEntity>(createCommentDto))
             .Returns(comment);

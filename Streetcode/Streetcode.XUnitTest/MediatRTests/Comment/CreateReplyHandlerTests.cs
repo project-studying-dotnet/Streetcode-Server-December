@@ -29,7 +29,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Comment
         public async Task Handle_ShouldReturnError_WhenParentCommentNotFound()
         {
             // Arrange
-            var command = new CreateReplyCommand(new CreateReplyDto { ParentId = 1 });
+            var command = new CreateReplyCommand(new CreateReplyDto { ParentId = 1 }, "John Doe");
             _repositoryWrapperMock
                 .Setup(r => r.CommentRepository.GetFirstOrDefaultBySpecAsync(It.IsAny<CommentByParentIdSpecification>()))
                 .ReturnsAsync((CommentEntity)null!);
@@ -51,7 +51,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Comment
         public async Task Handle_ShouldReturnError_WhenMappingFails()
         {
             // Arrange
-            var command = new CreateReplyCommand(new CreateReplyDto { ParentId = 1 });
+            var command = new CreateReplyCommand(new CreateReplyDto { ParentId = 1 }, "John Doe");
             _repositoryWrapperMock
                 .Setup(r => r.CommentRepository.GetFirstOrDefaultBySpecAsync(It.IsAny<CommentByParentIdSpecification>()))
                 .ReturnsAsync(new CommentEntity());
@@ -71,7 +71,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Comment
         public async Task Handle_ShouldReturnError_WhenSaveChangesFails()
         {
             // Arrange
-            var command = new CreateReplyCommand(new CreateReplyDto { ParentId = 1 });
+            var command = new CreateReplyCommand(new CreateReplyDto { ParentId = 1 }, "John Doe");
             var replyEntity = new CommentEntity();
 
             _repositoryWrapperMock
@@ -99,7 +99,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Comment
         public async Task Handle_ShouldReturnSuccess_WhenReplyIsCreatedSuccessfully()
         {
             // Arrange
-            var command = new CreateReplyCommand(new CreateReplyDto { ParentId = 1 });
+            var command = new CreateReplyCommand(new CreateReplyDto { ParentId = 1 }, "John Doe");
             var replyEntity = new CommentEntity();
             var replyDto = new CreateReplyDto();
 

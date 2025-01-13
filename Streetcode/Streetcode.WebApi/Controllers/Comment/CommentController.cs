@@ -4,7 +4,6 @@ using Streetcode.BLL.DTO.Comment;
 using Streetcode.BLL.MediatR.Analytics.Delete;
 using Streetcode.BLL.MediatR.Analytics;
 using UserService.BLL.Attributes;
-using UserService.DAL.Enums;
 using Streetcode.BLL.MediatR.Streetcode.RelatedTerm.GetAllByTermId;
 using Streetcode.BLL.MediatR.Comment.GetCommentsByStreetcodeId;
 using Streetcode.BLL.MediatR.Comment.GetCommentsToReview;
@@ -13,15 +12,18 @@ using Streetcode.BLL.MediatR.Comment.UpdateComment;
 using Streetcode.BLL.MediatR.Comment.GetCommentByIdWithReplies;
 using Streetcode.BLL.MediatR.Comment.CreateComment;
 using Streetcode.BLL.MediatR.Comment.UserDeleteComment;
-using Streetcode.DAL.Enums;
 using Streetcode.BLL.MediatR.Comment.GetCommentByStatus;
 using Streetcode.BLL.MediatR.Comment.AdminForbidComment;
 using Microsoft.AspNetCore.Authorization;
 using Streetcode.BLL.MediatR.Comment.CreateReply;
+using Streetcode.WebApi.Attributes;
+using Streetcode.DAL.Enums;
+using UserRole = Streetcode.DAL.Enums.UserRole;
+using AuthorizeRoles = Streetcode.WebApi.Attributes.AuthorizeRoles;
+using System.Security.Claims;
 
 namespace Streetcode.WebApi.Controllers.Comment
 {
-    [Route("[action]")]
     public class CommentController : BaseApiController
     {
         [HttpGet("{Id:int}")]
@@ -45,16 +47,18 @@ namespace Streetcode.WebApi.Controllers.Comment
         [HttpPost]
         public async Task<ActionResult<GetCommentDto>> Create([FromBody] CreateCommentDto createCommentDto)
         {
-            return HandleResult(await Mediator.Send(new CreateCommentCommand(createCommentDto)));
+            var userName = GetUserName();
+            return HandleResult(await Mediator.Send(new CreateCommentCommand(createCommentDto, userName)));
         }
 
         [HttpPut]
+        [AuthorizeRoleOrOwner(UserRole.Admin)]
         public async Task<ActionResult<GetCommentDto>> Update([FromBody] UpdateCommentDto updateCommentDto)
         {
             return HandleResult(await Mediator.Send(new UpdateCommentCommand(updateCommentDto)));
         }
         
-        [AuthorizeRoles(UserService.DAL.Enums.UserRole.Admin)]
+        [AuthorizeRoles(UserRole.Admin)]
         [HttpDelete("{Id:int}")]
         public async Task<IActionResult> AdminDeleteComment([FromRoute] int Id)
         {
@@ -62,6 +66,7 @@ namespace Streetcode.WebApi.Controllers.Comment
         }
         
         [HttpDelete]
+        [AuthorizeRoleOrOwner(UserRole.Admin)]
         public async Task<IActionResult> UserDeleteComment([FromBody] UserDeleteCommentDto userDeleteCommentDto)
         {
             return HandleResult(await Mediator.Send(new UserDeleteCommentCommand(userDeleteCommentDto)));
@@ -85,7 +90,13 @@ namespace Streetcode.WebApi.Controllers.Comment
         [HttpPost]
         public async Task<ActionResult<CreateReplyDto>> CreateReply([FromBody] CreateReplyDto createReplyDto)
         {
-            return HandleResult(await Mediator.Send(new CreateReplyCommand(createReplyDto)));
+            var userName = GetUserName();
+            return HandleResult(await Mediator.Send(new CreateReplyCommand(createReplyDto, userName)));
+        }
+
+        private string GetUserName()
+        {
+            return User?.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
         }
     }
 }

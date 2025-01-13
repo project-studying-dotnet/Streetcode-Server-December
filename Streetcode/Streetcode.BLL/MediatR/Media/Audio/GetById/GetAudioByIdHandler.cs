@@ -5,6 +5,7 @@ using Streetcode.BLL.DTO.Media.Audio;
 using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.Resources;
+using Streetcode.BLL.Specifications.Media.Audio;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 
 namespace Streetcode.BLL.MediatR.Media.Audio.GetById
@@ -26,20 +27,28 @@ namespace Streetcode.BLL.MediatR.Media.Audio.GetById
 
         public async Task<Result<AudioDto>> Handle(GetAudioByIdQuery request, CancellationToken cancellationToken)
         {
-            var audio = await _repositoryWrapper.AudioRepository.GetFirstOrDefaultAsync(f => f.Id == request.Id);
-
-            if (audio is null)
+            try
             {
-                string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "audio", request.Id);
-                _logger.LogError(request, errorMsg);
-                return Result.Fail(new Error(errorMsg));
+                var audio = await _repositoryWrapper.AudioRepository.GetFirstOrDefaultBySpecAsync(new GetAudioByIdSpecification(request.Id));
+
+                if (audio is null)
+                {
+                    string errorMsg = ErrorManager.GetCustomErrorText("CantFindByIdError", "audio", request.Id);
+                    _logger.LogError(request, errorMsg);
+                    return Result.Fail(new Error(errorMsg));
+                }
+
+                var audioDto = _mapper.Map<AudioDto>(audio);
+
+                audioDto.Base64 = await _blobService.FindFileInStorageAsBase64(audioDto.BlobName);
+
+                return Result.Ok(audioDto);
             }
-
-            var audioDto = _mapper.Map<AudioDto>(audio);
-
-            audioDto.Base64 = await _blobService.FindFileInStorageAsBase64(audioDto.BlobName);
-
-            return Result.Ok(audioDto);
+            catch (Exception ex)
+            {
+                _logger.LogError(request, ex.Message);
+                return Result.Fail(new Error(ex.Message));
+            }
         }
     }
 }

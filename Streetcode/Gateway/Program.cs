@@ -20,11 +20,12 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(policy =>
     {
         policy
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowAnyOrigin();
+            .AllowAnyOrigin() // need to change in future to the frontend URL ?
+            .WithMethods("GET", "POST", "PUT", "DELETE") // Restrict methods
+            .WithHeaders("Authorization", "Content-Type"); // Restrict headers
     });
 });
+
 
 var app = builder.Build();
 

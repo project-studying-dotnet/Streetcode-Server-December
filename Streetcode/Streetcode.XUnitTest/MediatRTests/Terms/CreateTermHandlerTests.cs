@@ -12,6 +12,9 @@ using Xunit;
 using AutoMapper;
 using Streetcode.BLL.DTO.Terms;
 using Streetcode.DAL.Repositories.Interfaces.Base;
+using Streetcode.BLL.Resources;
+using System.Resources;
+using Streetcode.BLL.Interfaces.Logging;
 
 namespace Streetcode.BLL.Tests.MediatR.Terms
 {
@@ -21,14 +24,18 @@ namespace Streetcode.BLL.Tests.MediatR.Terms
         private readonly Mock<IMapper> _mockMapper;
         private readonly Mock<IRepositoryWrapper> _mockRepositoryWrapper;
         private readonly CreateTermHandler _handler;
+        private readonly Mock<ILoggerService> _mockLogger;
+
 
         public CreateTermHandlerTests()
         {
             _mockTermRepository = new Mock<ITermRepository>();
             _mockMapper = new Mock<IMapper>();
             _mockRepositoryWrapper = new Mock<IRepositoryWrapper>();
-            _handler = new CreateTermHandler(_mockTermRepository.Object, _mockMapper.Object, _mockRepositoryWrapper.Object);
+            _mockLogger = new Mock<ILoggerService>();
+            _handler = new CreateTermHandler(_mockTermRepository.Object, _mockMapper.Object, _mockRepositoryWrapper.Object, _mockLogger.Object);
         }
+
 
         [Fact]
         public async Task Handle_ShouldReturnTermDto_WhenTermIsCreated()
@@ -70,7 +77,7 @@ namespace Streetcode.BLL.Tests.MediatR.Terms
         [Fact]
         public async Task Handle_ShouldReturnError_WhenSaveFails()
         {
-
+            // Arrange
             var termCreateDTO = new TermCreateDTO
             {
 
@@ -101,6 +108,8 @@ namespace Streetcode.BLL.Tests.MediatR.Terms
 
             result.IsSuccess.Should().BeFalse();
             result.Errors.Should().NotBeEmpty();
+            _mockLogger.Verify(l => l.LogError(It.IsAny<CreateTermCommand>(), It.IsAny<string>()), Times.Once);
         }
+
     }
 }

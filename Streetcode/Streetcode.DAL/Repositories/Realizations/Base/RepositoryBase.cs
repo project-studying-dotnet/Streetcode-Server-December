@@ -145,7 +145,7 @@ namespace Streetcode.DAL.Repositories.Realizations.Base
         // Specification Pattern Methods
         public async Task<IEnumerable<T>> GetAllBySpecAsync(IBaseSpecification<T>? specification = null)
         {
-            if (specification.CacheKey != string.Empty)
+            if (specification != null && specification.CacheKey != string.Empty)
             {
                 var dataFromCache = await _redisCacheService.GetCachedDataAsync<IEnumerable<T>>(specification.CacheKey);
                 if (dataFromCache != null)
@@ -172,7 +172,7 @@ namespace Streetcode.DAL.Repositories.Realizations.Base
 
         public async Task<T?> GetFirstOrDefaultBySpecAsync(IBaseSpecification<T>? specification = null)
         {
-            if (specification.CacheKey != string.Empty)
+            if (specification != null && specification.CacheKey != string.Empty)
             {
                 var dataFromCache = await _redisCacheService.GetCachedDataAsync<T>(specification.CacheKey);
                 if (dataFromCache != null)

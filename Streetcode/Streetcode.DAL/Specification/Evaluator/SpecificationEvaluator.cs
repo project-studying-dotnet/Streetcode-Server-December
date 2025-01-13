@@ -11,6 +11,11 @@ namespace Streetcode.DAL.Specification.Evaluator
         {
             var query = inputQuery;
 
+            if (specification == null) 
+            {
+                return query; 
+            }
+
             if (specification.Predicate != null)
             {
                 query = query.Where(specification.Predicate);

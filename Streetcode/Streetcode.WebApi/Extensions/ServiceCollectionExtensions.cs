@@ -8,7 +8,6 @@ using Microsoft.FeatureManagement;
 using Microsoft.OpenApi.Models;
 using Streetcode.BLL.Interfaces.Audio;
 using Streetcode.BLL.Interfaces.BlobStorage;
-using Streetcode.BLL.Interfaces.FavoriteStreetcode;
 using Streetcode.BLL.Interfaces.HolidayFormatter;
 using Streetcode.BLL.Interfaces.Image;
 using Streetcode.BLL.Interfaces.Instagram;
@@ -18,7 +17,6 @@ using Streetcode.BLL.Interfaces.Text;
 using Streetcode.BLL.Services.Audio;
 using Streetcode.BLL.Services.Azure;
 using Streetcode.BLL.Services.BlobStorageService;
-using Streetcode.BLL.Services.FavoriteStreetcode;
 using Streetcode.BLL.Services.HolidayDate;
 using Streetcode.BLL.Services.HolidayFormatter;
 using Streetcode.BLL.Services.Image;
@@ -69,9 +67,6 @@ namespace Streetcode.WebApi.Extensions
             services.AddScoped<HolidayDateService>();
             services.AddScoped<HolidaySource1Parser>();
 
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<ISessionService, SessionService>();
-
             services.AddValidatorsFromAssembly(typeof(ValidationError).Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         }
@@ -109,6 +104,7 @@ namespace Streetcode.WebApi.Extensions
                 return new OpenAIService(httpClientFactory, apiKey);
             });
 
+
 			// Session Favorite-Streetcode
             services.AddSession(options =>
 			{
@@ -117,7 +113,9 @@ namespace Streetcode.WebApi.Extensions
 				options.Cookie.IsEssential = true;
 			});
 
-			// Redis-Caching
+
+
+            // Redis-Caching
             services.AddStackExchangeRedisCache(options =>
             {
                 options.Configuration = configuration["RedisCache:Configuration"];

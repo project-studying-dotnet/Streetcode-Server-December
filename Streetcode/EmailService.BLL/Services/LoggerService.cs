@@ -1,5 +1,6 @@
 ﻿using EmailService.BLL.Interfaces;
 using Serilog;
+using Serilog.Events;
 
 namespace EmailService.BLL.Services
 {
@@ -12,31 +13,36 @@ namespace EmailService.BLL.Services
             _logger = logger;
         }
 
+        private void Log(LogEventLevel level, string message, params object[] values)
+        {
+            _logger.Write(level, message, values);
+        }
+
         public void LogInformation(string msg)
         {
-            _logger.Information($"{msg}");
+           Log(LogEventLevel.Information, "{Message}", msg);
         }
 
         public void LogWarning(string msg)
         {
-            _logger.Warning($"{msg}");
-        }
+			Log(LogEventLevel.Warning, "{Message}", msg);
+		}
 
         public void LogTrace(string msg)
         {
-            _logger.Information($"{msg}");
+            Log(LogEventLevel.Information, "{Message}", msg);
         }
 
         public void LogDebug(string msg)
         {
-            _logger.Debug($"{msg}");
+            Log(LogEventLevel.Debug, "{Message}", msg);
         }
 
         public void LogError(object request, string errorMsg)
         {
             string requestType = request.GetType().ToString();
             string requestClass = requestType.Substring(requestType.LastIndexOf('.') + 1);
-            _logger.Error($"{requestClass} handled with the error: {errorMsg}");
-        }
+			Log(LogEventLevel.Error, "{RequestClass} handled with the error: {ErrorMessage}", requestClass, errorMsg);
+		}
     }
 }

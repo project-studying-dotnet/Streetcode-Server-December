@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using Azure.Storage.Blobs;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;

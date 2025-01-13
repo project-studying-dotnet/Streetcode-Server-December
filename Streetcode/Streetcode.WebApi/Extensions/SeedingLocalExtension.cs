@@ -38,53 +38,70 @@ namespace Streetcode.WebApi.Extensions
                 string blobPath = app.Configuration.GetValue<string>("Blob:BlobStorePath")!;
                 var repo = new RepositoryWrapper(dbContext, redisCacheService);
                 var blobService = new BlobService(blobOptions, blobAzureClient, repo);
+                string blobInitialDataPath = app.Configuration.GetValue<string>("AzureBlobStorage:InitialDataPath")!;
+                string initialDataImagePath = $"{blobInitialDataPath}images.json";
+                string initialDataAudioPath = $"{blobInitialDataPath}audios.json";
 
                 if (!dbContext.Images.Any())
                 {
-                    await SeedImagesAsync(dbContext, blobService, blobPath, app);
-                    await SeedAudiosAsync(dbContext, blobService, blobPath, app);
-                    await SeedResponsesAsync(dbContext);
-                    await SeedTermsAsync(dbContext);
-                    await SeedRelatedTermsAsync(dbContext);
-                    await SeedTeamMembesrAsync(dbContext);
-                    await SeedPositionsAsync(dbContext);
-                    await SeedTeamMemberPositionAsync(dbContext);
-                    await SeedTeamMemberLinksAsync(dbContext);
-                    await SeedNewsAsync(dbContext);
-                    await SeedStreetcodesAsync(dbContext);
-                    await SeedSubtitlesAsync(dbContext);
-                    await SeedStreetcodeCoordinatesAsync(dbContext);
-                    await SeedVideosAsync(dbContext);
-                    await SeedPartnersAsync(dbContext);
-                    await SeedPartnersSourceLinkAsync(dbContext);
-                    await SeedStreetcodePartnersAsync(dbContext);
-                    await SeedArtsAsync(dbContext);
-                    await SeedStreetcodeArtsAsync(dbContext);
-                    await SeedTextsAsync(dbContext);
-                    await SeedTimelineItemsAsync(dbContext);
-                    await SeedHistoricalContextsAsync(dbContext);
-                    await SeedHistoricalContextsTimelinesAsync(dbContext);
-                    await SeedTransactionLinksAsync(dbContext);
-                    await SeedFactsAsync(dbContext);
-                    await SeedImageDetailsAsync(dbContext);
-                    await SeedSourceLinksAsync(dbContext);
-                    await SeedStreetcodeCategoryContentAsync(dbContext);
-                    await SeedRelatedFiguresAsync(dbContext);
-                    await SeedStreetcodeImagesAsync(dbContext);
-                    await SeedTagsAsync(dbContext);
-                    await SeedStreetcodeTagIndicesAsync(dbContext);
-                    await SeedCommentsAsync(dbContext);
+                        // Get Images.json from AzureBlobClient
+                        var containerClient = blobAzureClient.GetBlobContainerClient("streetcode");
+                        var blobClient = containerClient.GetBlobClient(initialDataImagePath);
+
+                        var downloadResult = await blobClient.DownloadContentAsync();
+                        byte[] encryptedData = downloadResult.Value.Content.ToArray();
+                        string imageJson = Encoding.UTF8.GetString(encryptedData);
+
+                        // Get Audios.json from AzureBlobClient
+                        containerClient = blobAzureClient.GetBlobContainerClient("streetcode");
+                        blobClient = containerClient.GetBlobClient(initialDataAudioPath);
+
+                        downloadResult = await blobClient.DownloadContentAsync();
+                        encryptedData = downloadResult.Value.Content.ToArray();
+                        string audiosJson = Encoding.UTF8.GetString(encryptedData);
+
+                        await SeedImagesAsync(dbContext, blobService, blobPath, app, imageJson);
+                        await SeedAudiosAsync(dbContext, blobService, blobPath, app, audiosJson);
+                        await SeedResponsesAsync(dbContext);
+                        await SeedTermsAsync(dbContext);
+                        await SeedRelatedTermsAsync(dbContext);
+                        await SeedTeamMembesrAsync(dbContext);
+                        await SeedPositionsAsync(dbContext);
+                        await SeedTeamMemberPositionAsync(dbContext);
+                        await SeedTeamMemberLinksAsync(dbContext);
+                        await SeedNewsAsync(dbContext);
+                        await SeedStreetcodesAsync(dbContext);
+                        await SeedSubtitlesAsync(dbContext);
+                        await SeedStreetcodeCoordinatesAsync(dbContext);
+                        await SeedVideosAsync(dbContext);
+                        await SeedPartnersAsync(dbContext);
+                        await SeedPartnersSourceLinkAsync(dbContext);
+                        await SeedStreetcodePartnersAsync(dbContext);
+                        await SeedArtsAsync(dbContext);
+                        await SeedStreetcodeArtsAsync(dbContext);
+                        await SeedTextsAsync(dbContext);
+                        await SeedTimelineItemsAsync(dbContext);
+                        await SeedHistoricalContextsAsync(dbContext);
+                        await SeedHistoricalContextsTimelinesAsync(dbContext);
+                        await SeedTransactionLinksAsync(dbContext);
+                        await SeedFactsAsync(dbContext);
+                        await SeedImageDetailsAsync(dbContext);
+                        await SeedSourceLinksAsync(dbContext);
+                        await SeedStreetcodeCategoryContentAsync(dbContext);
+                        await SeedRelatedFiguresAsync(dbContext);
+                        await SeedStreetcodeImagesAsync(dbContext);
+                        await SeedTagsAsync(dbContext);
+                        await SeedStreetcodeTagIndicesAsync(dbContext);
+                        await SeedCommentsAsync(dbContext);
                 }
             }
         }
 
         // Seed images
-        private static async Task SeedImagesAsync(StreetcodeDbContext dbContext, BlobService blobService, string blobPath, WebApplication app)
+        private static async Task SeedImagesAsync(StreetcodeDbContext dbContext, BlobService blobService, string blobPath, WebApplication app , string imageJson)
         {
             if (!dbContext.Images.Any())
             {
-                string initialDataImagePath = "/src/Streetcode.DAL/InitialData/images.json";
-                string imageJson = File.ReadAllText(initialDataImagePath, Encoding.UTF8);
                 var imgfromJson = JsonConvert.DeserializeObject<List<Image>>(imageJson);
                 var blobAzureClient = app.Services.GetRequiredService<BlobServiceClient>();
 
@@ -107,12 +124,10 @@ namespace Streetcode.WebApi.Extensions
         }
 
         // Seed audio
-        private static async Task SeedAudiosAsync(StreetcodeDbContext dbContext, BlobService blobService, string blobPath, WebApplication app)
+        private static async Task SeedAudiosAsync(StreetcodeDbContext dbContext, BlobService blobService, string blobPath, WebApplication app, string audiosJson)
         {
             if (!dbContext.Audios.Any())
             {
-                string initialDataAudioPath = "/src/Streetcode.DAL/InitialData/audios.json";
-                string audiosJson = File.ReadAllText(initialDataAudioPath, Encoding.UTF8);
                 var audiosfromJson = JsonConvert.DeserializeObject<List<Audio>>(audiosJson);
                 var blobAzureClient = app.Services.GetRequiredService<BlobServiceClient>();
 

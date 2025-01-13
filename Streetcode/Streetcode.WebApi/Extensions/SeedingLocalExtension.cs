@@ -37,12 +37,28 @@ namespace Streetcode.WebApi.Extensions
                 string blobPath = app.Configuration.GetValue<string>("Blob:BlobStorePath")!;
                 var repo = new RepositoryWrapper(dbContext, redisCacheService);
                 var blobService = new BlobService(blobOptions, blobAzureClient , repo);
-                string initialDataImagePath = "/src/Streetcode.DAL/InitialData/images.json";
-                string initialDataAudioPath = "/src/Streetcode.DAL/InitialData/audios.json";
+
+                string blobInitialDataPath = app.Configuration.GetValue<string>("AzureBlobStorage:InitialDataPath")!;
+                string initialDataImagePath = $"{blobInitialDataPath}images.json";
+                string initialDataAudioPath = $"{blobInitialDataPath}audios.json";
                 if (!dbContext.Images.Any())
                 {
-                    string imageJson = File.ReadAllText(initialDataImagePath, Encoding.UTF8);
-                    string audiosJson = File.ReadAllText(initialDataAudioPath, Encoding.UTF8);
+                    // Get Images.json from AzureBlobClient
+                    var containerClient = blobAzureClient.GetBlobContainerClient("streetcode");
+                    var blobClient = containerClient.GetBlobClient(initialDataImagePath);
+
+                    var downloadResult = await blobClient.DownloadContentAsync();
+                    byte[] encryptedData = downloadResult.Value.Content.ToArray();
+                    string imageJson = Encoding.UTF8.GetString(encryptedData);
+
+                    // Get Audios.json from AzureBlobClient
+                    containerClient = blobAzureClient.GetBlobContainerClient("streetcode");
+                    blobClient = containerClient.GetBlobClient(initialDataAudioPath);
+
+                    downloadResult = await blobClient.DownloadContentAsync();
+                    encryptedData = downloadResult.Value.Content.ToArray();
+                    string audiosJson = Encoding.UTF8.GetString(encryptedData);
+
                     var imgfromJson = JsonConvert.DeserializeObject<List<Image>>(imageJson);
                     var audiosfromJson = JsonConvert.DeserializeObject<List<Audio>>(audiosJson);
 
@@ -50,8 +66,8 @@ namespace Streetcode.WebApi.Extensions
                     {
                         string filePath = Path.Combine(blobPath, img.BlobName);
 
-                        var containerClient = blobAzureClient.GetBlobContainerClient("streetcode");
-                        var blobClient = containerClient.GetBlobClient(filePath);
+                        var containerClientImg = blobAzureClient.GetBlobContainerClient("streetcode");
+                        var blobClientImg = containerClient.GetBlobClient(filePath);
 
                         if (!blobClient.Exists())
                         {
@@ -63,8 +79,8 @@ namespace Streetcode.WebApi.Extensions
                     {
                         string filePath = Path.Combine(blobPath, audio.BlobName);
 
-                        var containerClient = blobAzureClient.GetBlobContainerClient("streetcode");
-                        var blobClient = containerClient.GetBlobClient(filePath);
+                        var containerClientAudio = blobAzureClient.GetBlobContainerClient("streetcode");
+                        var blobClientAudio = containerClient.GetBlobClient(filePath);
 
                         if (!blobClient.Exists())
                         {

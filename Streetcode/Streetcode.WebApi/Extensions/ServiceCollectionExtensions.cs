@@ -31,9 +31,7 @@ using Streetcode.DAL.Persistence;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using Streetcode.DAL.Repositories.Realizations.Base;
 using Streetcode.WebApi.Controllers.HolidayDate.Parsers;
-using Streetcode.WebApi.Controllers.HolidayDate.Parsers;
 using IAzureServiceBus = Streetcode.BLL.Interfaces.Azure.IAzureServiceBus;
-
 
 namespace Streetcode.WebApi.Extensions
 {
@@ -98,13 +96,23 @@ namespace Streetcode.WebApi.Extensions
                 config.UseSqlServerStorage(connectionString);
             });
 
-            //OpenAI
+            // OpenAI
             services.AddScoped<OpenAIService>(sp =>
             {
                 var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
                 var apiKey = configuration["OpenAiApiKey"];
                 return new OpenAIService(httpClientFactory, apiKey);
             });
+
+
+			// Session Favorite-Streetcode
+            services.AddSession(options =>
+			{
+				options.IdleTimeout = TimeSpan.FromDays(356);
+				options.Cookie.HttpOnly = true;
+				options.Cookie.IsEssential = true;
+			});
+
 
 
             // Redis-Caching

@@ -20,14 +20,12 @@ namespace Streetcode.BLL.MediatR.Terms
 {
     public class CreateTermHandler : IRequestHandler<CreateTermCommand, Result<TermDto>>
     {
-        private readonly ITermRepository _termRepository;
         private readonly IMapper _mapper;
         private readonly IRepositoryWrapper _repositoryWrapper; 
         private readonly ILoggerService _logger;
 
-        public CreateTermHandler(ITermRepository termRepository, IMapper mapper, IRepositoryWrapper repositoryWrapper, ILoggerService logger)
+        public CreateTermHandler(IMapper mapper, IRepositoryWrapper repositoryWrapper, ILoggerService logger)
         {
-            _termRepository = termRepository;
             _mapper = mapper;
             _repositoryWrapper = repositoryWrapper;
             _logger = logger;
@@ -38,7 +36,7 @@ namespace Streetcode.BLL.MediatR.Terms
 
             var term = _mapper.Map<Term>(request.TermCreateDTO);
 
-            _termRepository.Create(term);
+            _repositoryWrapper.TermRepository.Create(term);
 
             var saveResult = await _repositoryWrapper.SaveChangesAsync();
 

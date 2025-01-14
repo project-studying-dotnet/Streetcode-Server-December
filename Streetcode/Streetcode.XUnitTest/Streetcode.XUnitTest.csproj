@@ -46,4 +46,7 @@
     <ProjectReference Include="..\Streetcode.BLL\Streetcode.BLL.csproj" />
     <ProjectReference Include="..\Streetcode.WebApi\Streetcode.WebApi.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="MediatRTests\Terms\" />
+  </ItemGroup>
 </Project>

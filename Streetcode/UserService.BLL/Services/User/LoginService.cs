@@ -41,7 +41,7 @@ namespace UserService.BLL.Services.User
                 return Result.Fail("Invalid login request.");
             }
             var user = await _userManager.FindByNameAsync(loginDto.UserName);
-            if (user == null || !await _userManager.CheckPasswordAsync(user, loginDto.Password))
+            if (user == null || !await _userManager.CheckPasswordAsync(user, loginDto.Password) && _userManager.GetLoginsAsync(user).IsCompleted)
             {
                 _logger.LogWarning("Invalid login attempt for username: {UserName}", loginDto.UserName);
                 return Result.Fail("Invalid login credentials.");

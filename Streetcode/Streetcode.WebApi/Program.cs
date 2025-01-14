@@ -60,7 +60,10 @@ app.UseCors();
 
 app.UseHttpsRedirection();
 
-app.UseGlobalExceptionHandler();
+if (app.Environment.IsProduction())
+{
+    app.UseGlobalExceptionHandler();
+}
 
 app.UseSession();
 

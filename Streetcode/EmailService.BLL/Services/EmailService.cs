@@ -56,12 +56,11 @@ namespace EmailService.BLL.Services
                 }
                 catch(Exception ex)
                 {
-                    throw new Exception(ex.Message);
+                    throw new SmtpProtocolException(ex.Message);
                 }
                 finally
                 {
                     await client.DisconnectAsync(true);
-                    client.Dispose();
                 }
             }
         }

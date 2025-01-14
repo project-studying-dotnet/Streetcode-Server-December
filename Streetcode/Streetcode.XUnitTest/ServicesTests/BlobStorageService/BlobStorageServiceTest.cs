@@ -60,19 +60,22 @@ namespace Streetcode.XUnitTest.ServicesTests.BlobStorageService
             string name = "image";
             string extension = "png";
 
-            _mockBlobClient
-                .Setup(x => x.UploadAsync(It.IsAny<Stream>()))
-                .Returns(Task.FromResult((Response<BlobContentInfo>)null!));
-
             _mockContainerClient
                 .Setup(x => x.GetBlobClient(It.IsAny<string>()))
                 .Returns(_mockBlobClient.Object);
+
+            _mockBlobClient
+                .Setup(x => x.UploadAsync(It.IsAny<Stream>(), true, It.IsAny<CancellationToken>()))
+                .ReturnsAsync((Response<BlobContentInfo>)null!);
 
             // Act
             await _blobService.SaveFileInStorageBase64(base64, name, extension);
 
             // Assert
-            _mockBlobClient.Verify(x => x.UploadAsync(It.IsAny<Stream>()), Times.Once);
+            _mockBlobClient.Verify(
+                x => x.UploadAsync(It.IsAny<Stream>(), true, It.IsAny<CancellationToken>()),
+                Times.Once
+            );
         }
 
         [Fact]

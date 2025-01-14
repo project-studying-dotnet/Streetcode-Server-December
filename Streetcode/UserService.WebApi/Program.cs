@@ -15,6 +15,10 @@ using Hangfire;
 using Hangfire.Mongo;
 using Hangfire.Mongo.Migration.Strategies;
 using Hangfire.Mongo.Migration.Strategies.Backup;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Streetcode.BLL.DTO.Users;
 using UserService.BLL.DTO.User;
@@ -22,6 +26,9 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System.IdentityModel.Tokens.Jwt;
+
+using UserService.BLL.Interfaces.Authentication;
+using UserService.BLL.Services.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +39,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
 builder.Services.AddHttpClient();
+builder.Services.AddHttpContextAccessor();
 
 // MongoDB Configuration
 var mongoConnectionString = builder.Configuration.GetConnectionString("MongoDb")!;
@@ -99,7 +107,15 @@ builder.Services.AddAuthentication(options =>
             return Task.CompletedTask;
         }
     };
+})
+.AddGoogle(options =>
+{
+    options.ClientId = builder.Configuration["Authentication:Google:Client"]!;
+    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"]!;
+    options.Scope.Add("email");
+    options.SaveTokens = true;
 });
+builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<IClaimsService, ClaimsService>();
 builder.Services.AddScoped<IEmailConfirmationService, EmailConfirmationService>();
@@ -108,6 +124,7 @@ builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<IUserService, RegistrationService>();
 builder.Services.AddScoped<ITokenCleanupService, TokenCleanupService>();
 builder.Services.AddScoped<IUserPasswordService, UserPasswordService>();
+builder.Services.AddScoped<IGoogleAuthentication, GoogleAuthentication>();
 
 var currentAssemblies = AppDomain.CurrentDomain.GetAssemblies();
 builder.Services.AddAutoMapper(currentAssemblies);
@@ -140,6 +157,8 @@ builder.Services.AddHangfireServer();
 var app = builder.Build();
 await app.SeedDataAsync();
 
+app.UseRouting();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -151,9 +170,29 @@ if (app.Environment.IsDevelopment())
 app.MapControllers();
 
 app.UseHttpsRedirection();
+
 app.UseHangfireDashboard();
+app.MapControllers();
 
 // Мінімальні API Endpoints
+
+app.MapGet("/googleLogin", (IGoogleAuthentication googleAuthentication, HttpContext httpContext) =>
+{
+    var properties = googleAuthentication.GoogleLogin();
+
+    return httpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme, properties);
+});
+
+app.MapGet("/googleResponse", async (IGoogleAuthentication googleAuthentication, HttpContext httpContext) =>
+{
+    var authenticateResult = await httpContext.AuthenticateAsync(IdentityConstants.ExternalScheme);
+
+    var result = await googleAuthentication.GoogleResponse(authenticateResult);
+    httpContext.AppendTokenToCookie(result.Token.AccessToken, result.JwtConfig);
+
+    return result.Token;
+});
+
 app.MapPost("/register", async (RegistrationDto registrationDto, IUserService userService) =>
 {
     var result = await userService.Registration(registrationDto);
@@ -210,6 +249,7 @@ app.MapPost("/reset-password", async (PassResetDto passResetDto, IUserPasswordSe
     return Results.Ok();
 });
 
+
 app.MapGet("/confirm-email", async (HttpContext httpContext, string userId, string token, IEmailConfirmationService emailConfirmationService, IOptions<JwtConfiguration> jwtConfig) =>
 {
     var result = await emailConfirmationService.ConfirmEmailAsync(userId, token);
@@ -238,6 +278,7 @@ app.MapPost("/change-password", async (PassChangeDto passChangeDto, IUserPasswor
     
     return Results.Ok();
 }).RequireAuthorization();
+
 
 RecurringJob.AddOrUpdate<TokenCleanupService>(
     "RemoveExpiredRefreshTokens",

@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using Microsoft.AspNetCore.Identity;
 using Moq;
 using System;
@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UserService.BLL.DTO.User;
 using UserService.BLL.Interfaces.Azure;
+
 using UserService.BLL.Interfaces.User;
 using UserService.BLL.Services.User;
 using UserEntity = UserService.DAL.Entities.Users.User;
@@ -28,6 +29,7 @@ namespace UserService.XUnitTest.ServicesTests.User
         }
 
         [Fact]
+
         public async Task ChangePassword_UserDoesNotExist_ShouldReturnFail()
         {
             // Arrange

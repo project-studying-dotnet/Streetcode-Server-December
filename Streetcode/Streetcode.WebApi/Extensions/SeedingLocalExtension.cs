@@ -37,10 +37,12 @@ namespace Streetcode.WebApi.Extensions
                 var blobAzureClient = app.Services.GetRequiredService<BlobServiceClient>();
                 string blobPath = app.Configuration.GetValue<string>("Blob:BlobStorePath")!;
                 var repo = new RepositoryWrapper(dbContext, redisCacheService);
+
                 var blobService = new BlobService(blobOptions, blobAzureClient, repo);
                 string blobInitialDataPath = app.Configuration.GetValue<string>("AzureBlobStorage:InitialDataPath")!;
                 string initialDataImagePath = $"{blobInitialDataPath}images.json";
                 string initialDataAudioPath = $"{blobInitialDataPath}audios.json";
+
 
                 if (!dbContext.Images.Any())
                 {
@@ -114,7 +116,9 @@ namespace Streetcode.WebApi.Extensions
 
                     if (!await blobClient.ExistsAsync())
                     {
+
                         await blobService.SaveFileInStorageBase64(img.Base64, img.BlobName.Split('.')[0], img.BlobName.Split('.')[1]);
+
                     }
                 }
 
@@ -140,7 +144,9 @@ namespace Streetcode.WebApi.Extensions
 
                     if (!await blobClient.ExistsAsync())
                     {
+
                         await blobService.SaveFileInStorageBase64(audio.Base64, audio.BlobName.Split('.')[0], audio.BlobName.Split('.')[1]);
+
                     }
                 }
 

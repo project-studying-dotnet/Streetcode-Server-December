@@ -39,7 +39,9 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
             var audio = new Audio { Id = 1, BlobName = "audioBlob" };
             var expectedStream = new MemoryStream();
 
+
             _mockRepository.Setup(r => r.AudioRepository.GetFirstOrDefaultBySpecAsync(It.IsAny<GetAudioByIdSpecification>())).ReturnsAsync(audio);
+
             _mockBlob.Setup(b => b.FindFileInStorageAsMemoryStream(audio.BlobName)).Returns(Task.FromResult(expectedStream));
 
             // Act

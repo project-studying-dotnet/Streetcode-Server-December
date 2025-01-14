@@ -23,6 +23,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System.IdentityModel.Tokens.Jwt;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -140,6 +141,8 @@ builder.Services.AddHangfireServer();
 var app = builder.Build();
 await app.SeedDataAsync();
 
+
+
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -210,6 +213,7 @@ app.MapPost("/reset-password", async (PassResetDto passResetDto, IUserPasswordSe
     return Results.Ok();
 });
 
+
 app.MapGet("/confirm-email", async (HttpContext httpContext, string userId, string token, IEmailConfirmationService emailConfirmationService, IOptions<JwtConfiguration> jwtConfig) =>
 {
     var result = await emailConfirmationService.ConfirmEmailAsync(userId, token);
@@ -238,6 +242,7 @@ app.MapPost("/change-password", async (PassChangeDto passChangeDto, IUserPasswor
     
     return Results.Ok();
 }).RequireAuthorization();
+
 
 RecurringJob.AddOrUpdate<TokenCleanupService>(
     "RemoveExpiredRefreshTokens",

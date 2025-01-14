@@ -28,6 +28,7 @@ namespace UserService.BLL.Services.User
             _bus = bus;
         }
 
+
         public async Task<Result> ChangePassword(PassChangeDto passChangeDto, string username)
         {
             var user = await _userManager.FindByNameAsync(username);
@@ -65,6 +66,7 @@ namespace UserService.BLL.Services.User
 
             return Result.Ok();
         }
+
 
         public async Task<Result> ForgotPassword(string email)
         {

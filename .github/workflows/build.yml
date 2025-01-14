@@ -50,5 +50,7 @@ jobs:
         run: |
           dotnet sonarscanner begin /k:"project-studying-dotnet_Streetcode-Server-December" /o:"project-studying-dotnet" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths="**/coverage.xml"
           dotnet build ./Streetcode/Streetcode.sln --configuration Release
-          dotnet test ./Streetcode/Streetcode.XUnitTest/Streetcode.XUnitTest.csproj ./Streetcode/UserService.XUnitTest/UserService.XUnitTest.csproj ./Streetcode/EmailService.XUnitTest/EmailService.XUnitTest.csproj --configuration Release --no-build --verbosity normal
+          dotnet test ./Streetcode/Streetcode.XUnitTest/Streetcode.XUnitTest.csproj --configuration Release --no-build --verbosity normal
+          dotnet test ./Streetcode/UserService.XUnitTest/UserService.XUnitTest.csproj --configuration Release --no-build --verbosity normal
+          dotnet test ./Streetcode/EmailService.XUnitTest/EmailService.XUnitTest.csproj --configuration Release --no-build --verbosity normal
           dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"

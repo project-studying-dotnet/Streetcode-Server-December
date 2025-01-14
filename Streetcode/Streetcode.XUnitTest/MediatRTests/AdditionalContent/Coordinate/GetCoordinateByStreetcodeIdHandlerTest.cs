@@ -37,14 +37,13 @@ public class GetCoordinateByStreetcodeIdHandlerTest : AdditionalContentTestWrapp
 
         _repositoryWrapperMock.Setup(rep => rep.StreetcodeRepository.GetFirstOrDefaultAsync(
                 It.Is<Expression<Func<StreetcodeContent, bool>>>(exp => exp.Compile().Invoke(streetcodeContent)),
-                It.IsAny<Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>>>()))
+                It.IsAny<List<string>>()))
             .ReturnsAsync(streetcodeContent);
 
         _repositoryWrapperMock.Setup(rep => rep.StreetcodeCoordinateRepository.GetAllAsync(
                 It.Is<Expression<Func<StreetcodeCoordinateEntity, bool>>>(exp =>
                     exp.Compile().Invoke(streetcodeCoordinateList.First())),
-                It.IsAny<Func<IQueryable<StreetcodeCoordinateEntity>,
-                    IIncludableQueryable<StreetcodeCoordinateEntity, object>>>()))
+                It.IsAny<List<string>>()))
             .ReturnsAsync(streetcodeCoordinateList);
 
         _mapperMock.Setup(rep => rep.Map<IEnumerable<StreetcodeCoordinateDto>>(streetcodeCoordinateList))
@@ -61,13 +60,13 @@ public class GetCoordinateByStreetcodeIdHandlerTest : AdditionalContentTestWrapp
             rep => rep.StreetcodeRepository.GetFirstOrDefaultAsync(
                 It.Is<Expression<Func<StreetcodeContent, bool>>>(
                     exp => exp.Compile().Invoke(new StreetcodeContent { Id = streetcodeContent.Id })),
-                It.IsAny<Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>>>()), Times.Once);
+                It.IsAny<List<string>>()), Times.Once);
 
         _repositoryWrapperMock.Verify(
             rep => rep.StreetcodeCoordinateRepository.GetAllAsync(
                 It.Is<Expression<Func<StreetcodeCoordinateEntity, bool>>>(
                     exp => exp.Compile().Invoke(new StreetcodeCoordinateEntity { StreetcodeId = request.StreetcodeId })),
-                It.IsAny<Func<IQueryable<StreetcodeCoordinateEntity>, IIncludableQueryable<StreetcodeCoordinateEntity, object>>>()), Times.Once);
+                It.IsAny<List<string>>()), Times.Once);
 
         _mapperMock.Verify(m => m.Map<IEnumerable<StreetcodeCoordinateDto>>(streetcodeCoordinateList), Times.Once);
     }
@@ -83,13 +82,12 @@ public class GetCoordinateByStreetcodeIdHandlerTest : AdditionalContentTestWrapp
 
         _repositoryWrapperMock.Setup(rep => rep.StreetcodeRepository.GetFirstOrDefaultAsync(
                 It.Is<Expression<Func<StreetcodeContent, bool>>>(exp => exp.Compile().Invoke(streetcodeContent)),
-                It.IsAny<Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>>>()))
+                It.IsAny<List<string>>()))
             .ReturnsAsync(streetcodeContent);
 
         _repositoryWrapperMock.Setup(rep => rep.StreetcodeCoordinateRepository.GetAllAsync(
                 It.IsAny<Expression<Func<StreetcodeCoordinateEntity, bool>>>(),
-                It.IsAny<Func<IQueryable<StreetcodeCoordinateEntity>,
-                    IIncludableQueryable<StreetcodeCoordinateEntity, object>>>()))
+                It.IsAny<List<string>>()))
             .ReturnsAsync((IEnumerable<StreetcodeCoordinateEntity>)null!);
 
         // Act
@@ -102,11 +100,11 @@ public class GetCoordinateByStreetcodeIdHandlerTest : AdditionalContentTestWrapp
             rep => rep.StreetcodeRepository.GetFirstOrDefaultAsync(
                 It.Is<Expression<Func<StreetcodeContent, bool>>>(
                     exp => exp.Compile().Invoke(new StreetcodeContent { Id = streetcodeContent.Id })),
-                It.IsAny<Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>>>()), Times.Once);
+                It.IsAny<List<string>>()), Times.Once);
 
         _repositoryWrapperMock.Verify(
             rep => rep.StreetcodeCoordinateRepository.GetAllAsync(
                 It.IsAny<Expression<Func<StreetcodeCoordinateEntity, bool>>>(),
-                It.IsAny<Func<IQueryable<StreetcodeCoordinateEntity>, IIncludableQueryable<StreetcodeCoordinateEntity, object>>>()), Times.Once);
+                It.IsAny<List<string>>()), Times.Once);
     }
 }

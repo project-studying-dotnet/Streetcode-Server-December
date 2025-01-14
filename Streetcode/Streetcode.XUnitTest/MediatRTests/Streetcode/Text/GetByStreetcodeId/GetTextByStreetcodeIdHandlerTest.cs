@@ -84,8 +84,8 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Text.GetByStreetcodeId
             _mockRepositoryWrapper
                 .Setup(repo => repo.StreetcodeRepository.GetFirstOrDefaultAsync(
                     It.IsAny<Expression<Func<StreetcodeContent, bool>>>(),
-                    It.IsAny<Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>>>()))
-                .ReturnsAsync((Expression<Func<StreetcodeContent, bool>> predicate, Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>> include) =>
+                    It.IsAny<List<string>>()))
+                .ReturnsAsync((Expression<Func<StreetcodeContent, bool>> predicate, List<string> include) =>
                   null);
 
             var query = new GetTextByStreetcodeIdQuery(streetcodeId);
@@ -134,8 +134,8 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Text.GetByStreetcodeId
                 _mockRepositoryWrapper
                 .Setup(repo => repo.TextRepository.GetFirstOrDefaultAsync(
                     It.IsAny<Expression<Func<TextEntity, bool>>>(),
-                    It.IsAny<Func<IQueryable<TextEntity>, IIncludableQueryable<TextEntity, object>>>()))
-                .ReturnsAsync((Expression<Func<TextEntity, bool>> predicate, Func<IQueryable<TextEntity>, IIncludableQueryable<TextEntity, object>> include) =>
+                    It.IsAny<List<string>>()))
+                .ReturnsAsync((Expression<Func<TextEntity, bool>> predicate, List<string> include) =>
                     texts.AsQueryable().FirstOrDefault(predicate.Compile()));
             }
             else
@@ -143,8 +143,8 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Text.GetByStreetcodeId
                 _mockRepositoryWrapper
                 .Setup(repo => repo.TextRepository.GetFirstOrDefaultAsync(
                     It.IsAny<Expression<Func<TextEntity, bool>>>(),
-                    It.IsAny<Func<IQueryable<TextEntity>, IIncludableQueryable<TextEntity, object>>>()))
-                .ReturnsAsync((Expression<Func<TextEntity, bool>> predicate, Func<IQueryable<TextEntity>, IIncludableQueryable<TextEntity, object>> include) =>
+                    It.IsAny<List<string>>()))
+                .ReturnsAsync((Expression<Func<TextEntity, bool>> predicate, List<string> include) =>
                     null);
             }
         }

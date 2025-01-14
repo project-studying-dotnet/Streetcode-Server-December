@@ -81,8 +81,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
         private void ArrangeTeamLinks(List<TeamMemberLink> teamLinks)
         {
             _mockRepositoryWrapper.Setup(p => p.TeamLinkRepository.GetAllAsync(
-                It.IsAny<Expression<Func<TeamMemberLink, bool>>>(), It.IsAny<Func<IQueryable<TeamMemberLink>,
-                IIncludableQueryable<TeamMemberLink, object>>>()).Result).Returns(teamLinks);
+                It.IsAny<Expression<Func<TeamMemberLink, bool>>>(), It.IsAny<List<string>>()).Result).Returns(teamLinks);
         }
     }
 }

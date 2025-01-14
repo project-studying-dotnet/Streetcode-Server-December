@@ -74,7 +74,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Timeline.TimelineItems.Update
             _repositoryWrapperMock.Setup(r => r.TimelineRepository
                .GetFirstOrDefaultAsync(
                    It.IsAny<Expression<Func<TimelineItem, bool>>>(),
-                   It.IsAny<Func<IQueryable<TimelineItem>, IIncludableQueryable<TimelineItem, object>>>()))
+                   It.IsAny<List<string>>()))
                .ReturnsAsync((TimelineItem)null!);
 
             var updatedTimelineItemDto = CreateUpdatedTimelineItemDto();
@@ -167,7 +167,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Timeline.TimelineItems.Update
         {
             _repositoryWrapperMock.Setup(r => r.TimelineRepository
                .GetFirstOrDefaultAsync(It.IsAny<Expression<Func<TimelineItem, bool>>>(),
-               It.IsAny<Func<IQueryable<TimelineItem>, IIncludableQueryable<TimelineItem, object>>>()))
+               It.IsAny<List<string>>()))
                .ReturnsAsync(existingTimelineItem);
         }
 

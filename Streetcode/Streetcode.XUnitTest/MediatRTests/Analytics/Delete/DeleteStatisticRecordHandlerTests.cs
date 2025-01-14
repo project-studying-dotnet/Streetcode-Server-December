@@ -62,7 +62,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Analytics.Delete
         {
             _mockRepositoryWrapper.Setup(s => s.StatisticRecordRepository.GetFirstOrDefaultAsync(
                             It.IsAny<Expression<Func<StatisticRecord, bool>>>(),
-                            It.IsAny<Func<IQueryable<StatisticRecord>, IIncludableQueryable<StatisticRecord, object>>>()
+                            It.IsAny<List<string>>()
             )).ReturnsAsync(statisticRecord);
         }
 

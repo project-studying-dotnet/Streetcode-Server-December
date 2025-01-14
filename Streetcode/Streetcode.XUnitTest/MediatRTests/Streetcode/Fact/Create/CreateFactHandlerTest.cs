@@ -169,8 +169,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Fact.Create
                 new FactEntity { Id = 3, ImageId = 2, Index = 3 },
             };
 
-            _mockRepositoryWrapper.Setup(p => p.FactRepository.GetAllAsync(It.IsAny<Expression<Func<FactEntity, bool>>>(), It.IsAny<Func<IQueryable<FactEntity>,
-                IIncludableQueryable<FactEntity, object>>>()).Result).Returns(facts);
+            _mockRepositoryWrapper.Setup(p => p.FactRepository.GetAllAsync(It.IsAny<Expression<Func<FactEntity, bool>>>(), It.IsAny<List<string>>()).Result).Returns(facts);
         }
 
         private void SetupCreate(FactEntity fact)

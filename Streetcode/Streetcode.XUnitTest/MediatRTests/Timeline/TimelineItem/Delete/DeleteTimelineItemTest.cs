@@ -83,7 +83,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Timeline.TimelineItems.Delete
         {
             _mockRepositoryWrapper.Setup(s => s.TimelineRepository.GetFirstOrDefaultAsync(
                             It.IsAny<Expression<Func<TimelineItem, bool>>>(),
-                            It.IsAny<Func<IQueryable<TimelineItem>, IIncludableQueryable<TimelineItem, object>>>()).Result).Returns(TimelineItem);
+                            It.IsAny<List<string>>()).Result).Returns(TimelineItem);
         }
 
         private void SetupSaveChanges(int returnVal)

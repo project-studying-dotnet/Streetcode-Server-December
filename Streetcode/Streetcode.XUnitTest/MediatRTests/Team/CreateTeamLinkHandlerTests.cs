@@ -104,7 +104,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
             var _mockMapper = new Mock<IMapper>();
             var _handler = new CreateTeamLinkHandler(_mockMapper.Object, _mockRepositoryWrapper.Object, _mockLogger.Object);
 
-            var teamMemberLink = _mapper.Map<Streetcode.Domain.Entities.Team.TeamMemberLink>(_teamLinkDTO);
+            var teamMemberLink = _mapper.Map<Domain.Entities.Team.TeamMemberLink>(_teamLinkDTO);
 
             SetupCreateTeamLink(_teamLinkDTO);
             SetupSaveChangesAsync(1);
@@ -125,7 +125,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
 
         private void SetupCreateTeamLink(TeamMemberLinkDto teamLinkDTO)
         {
-            var teamMemberLink = _mapper.Map<Streetcode.Domain.Entities.Team.TeamMemberLink>(teamLinkDTO);
+            var teamMemberLink = _mapper.Map<Domain.Entities.Team.TeamMemberLink>(teamLinkDTO);
 
             _mockRepositoryWrapper.Setup(p => p.TeamLinkRepository.Create(It.IsAny<TeamMemberLink>())).Returns(teamMemberLink);
         }

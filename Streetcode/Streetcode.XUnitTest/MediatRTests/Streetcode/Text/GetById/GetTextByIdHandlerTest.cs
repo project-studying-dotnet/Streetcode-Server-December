@@ -66,8 +66,8 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Text.GetById
             _mockRepositoryWrapper
                 .Setup(repo => repo.TextRepository.GetFirstOrDefaultAsync(
                     It.IsAny<Expression<Func<TextEntity, bool>>>(),
-                    It.IsAny<Func<IQueryable<TextEntity>, IIncludableQueryable<TextEntity, object>>>()))
-                .ReturnsAsync((Expression<Func<TextEntity, bool>> predicate, Func<IQueryable<TextEntity>, IIncludableQueryable<TextEntity, object>> include) =>
+                    It.IsAny<List<string>>()))
+                .ReturnsAsync((Expression<Func<TextEntity, bool>> predicate, List<string> include) =>
                     texts.AsQueryable().FirstOrDefault(predicate.Compile()));
 
             int id = 2;
@@ -88,8 +88,8 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Text.GetById
             _mockRepositoryWrapper
                 .Setup(repo => repo.TextRepository.GetFirstOrDefaultAsync(
                     It.IsAny<Expression<Func<TextEntity, bool>>>(),
-                    It.IsAny<Func<IQueryable<TextEntity>, IIncludableQueryable<TextEntity, object>>>()))
-                .ReturnsAsync((Expression<Func<TextEntity, bool>> predicate, Func<IQueryable<TextEntity>, IIncludableQueryable<TextEntity, object>> include) =>
+                    It.IsAny<List<string>>()))
+                .ReturnsAsync((Expression<Func<TextEntity, bool>> predicate, List<string> include) =>
                     null);
 
             var id = 999;

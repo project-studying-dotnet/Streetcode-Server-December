@@ -73,9 +73,9 @@ namespace Streetcode.XUnitTest.MediatRTests.Transactions.TransactionLink.GetTran
             this._mockRepositoryWrapper
             .Setup(x => x.TransactLinksRepository.GetFirstOrDefaultAsync(
                 It.IsAny<Expression<Func<TransactLinkEntity, bool>>>(),
-                It.IsAny<Func<IQueryable<TransactLinkEntity>, IIncludableQueryable<TransactLinkEntity, object>>>()))
+                It.IsAny<List<string>>()))
             .ReturnsAsync((Expression<Func<TransactLinkEntity, bool>> predicate,
-                           Func<IQueryable<TransactLinkEntity>, IIncludableQueryable<TransactLinkEntity, object>> include) =>
+                           List<string> include) =>
             {
                 return transactLinks.AsQueryable().FirstOrDefault(predicate.Compile());
             });
@@ -86,7 +86,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Transactions.TransactionLink.GetTran
             _mockRepositoryWrapper
                 .Setup(repo => repo.TransactLinksRepository.GetFirstOrDefaultAsync(
                     It.IsAny<Expression<Func<TransactLinkEntity, bool>>>(),
-                    It.IsAny<Func<IQueryable<TransactLinkEntity>, IIncludableQueryable<TransactLinkEntity, object>>>()))
+                    It.IsAny<List<string>>()))
                 .ReturnsAsync((TransactLinkEntity?)null);
         }
 

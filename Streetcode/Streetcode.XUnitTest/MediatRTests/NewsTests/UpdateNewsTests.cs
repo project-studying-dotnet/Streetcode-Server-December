@@ -116,7 +116,7 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
             _repositoryWrapperMock
                 .Setup(r => r.ImageRepository.GetFirstOrDefaultAsync(
                     It.IsAny<Expression<Func<Image, bool>>>(),
-                    It.IsAny<Func<IQueryable<Image>, IIncludableQueryable<Image, object>>>()))
+                    It.IsAny<List<string>>()))
                 .ReturnsAsync(new Image());
 
             _repositoryWrapperMock.Setup(r => r.NewsRepository.Update(news));
@@ -143,8 +143,8 @@ namespace Streetcode.XUnitTest.MediatRTests.NewsTests
             _repositoryWrapperMock
                 .Setup(r => r.ImageRepository.GetFirstOrDefaultAsync(
                     It.IsAny<Expression<Func<Image, bool>>>(),
-                    It.IsAny<Func<IQueryable<Image>, IIncludableQueryable<Image, object>>>()))
-                .ReturnsAsync((Image)null);
+                    It.IsAny<List<string>>()))
+                .ReturnsAsync((Image)null!);
 
             _repositoryWrapperMock.Setup(r => r.NewsRepository.Update(news));
             _repositoryWrapperMock.Setup(r => r.SaveChangesAsync()).ReturnsAsync(0);

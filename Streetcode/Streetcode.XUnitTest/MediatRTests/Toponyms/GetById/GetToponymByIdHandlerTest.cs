@@ -61,7 +61,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Toponyms.GetById
         {
             int toponimId = 1;
             string errorMsg = "Database connection error";
-            _mockRepositoryWrapper.Setup(x => x.ToponymRepository.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<Toponym, bool>>>(), It.IsAny<Func<IQueryable<Toponym>, IIncludableQueryable<Toponym, object>>>()))
+            _mockRepositoryWrapper.Setup(x => x.ToponymRepository.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<Toponym, bool>>>(), It.IsAny<List<string>>()))
                 .ThrowsAsync(new Exception(errorMsg));
             var result = await _handler.Handle(new GetToponymByIdQuery(toponimId), CancellationToken.None);
 
@@ -119,8 +119,8 @@ namespace Streetcode.XUnitTest.MediatRTests.Toponyms.GetById
                     StreetName = "Lakeview Drive",
                 },
             };
-            this._mockRepositoryWrapper.Setup(x => x.ToponymRepository.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<Toponym, bool>>>(), It.IsAny<Func<IQueryable<Toponym>, IIncludableQueryable<Toponym, object>>>()))
-                .ReturnsAsync((Expression<Func<Toponym, bool>> predicate, Func<IQueryable<Toponym>, IIncludableQueryable<Toponym, object>> include) =>
+            this._mockRepositoryWrapper.Setup(x => x.ToponymRepository.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<Toponym, bool>>>(), It.IsAny<List<string>>()))
+                .ReturnsAsync((Expression<Func<Toponym, bool>> predicate, List<string> include) =>
                 {
                     return toponyms.FirstOrDefault(predicate.Compile());
                 });

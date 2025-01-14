@@ -40,8 +40,8 @@ namespace Streetcode.XUnitTest.MediatRTests.Partners.GetById
 		{
 			// Arrange
 			_mockRepositoryWapper.Setup(x => x.PartnersRepository
-				.GetSingleOrDefaultAsync(null, It.IsAny<Func<IQueryable<Partner>, IIncludableQueryable<Partner, object>>>()))
-				.ReturnsAsync((Partner)null);
+				.GetSingleOrDefaultAsync(null, It.IsAny<List<string>>()))
+				.ReturnsAsync((Partner)null!);
 			var query = new GetPartnerByIdQuery(1);
 
 			// Act
@@ -61,7 +61,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Partners.GetById
 
 			_mockRepositoryWapper.Setup(x => x.PartnersRepository
 				.GetSingleOrDefaultAsync(It.IsAny<Expression<Func<Partner, bool>>>(), 
-					It.IsAny<Func<IQueryable<Partner>, IIncludableQueryable<Partner, object>>>()))
+					It.IsAny<List<string>>()))
 				.ReturnsAsync(partner);
 
 			_mockMapper.Setup(x => x.Map<PartnerDto>(partner)).Returns(partnerDto);

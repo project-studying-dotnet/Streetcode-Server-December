@@ -33,8 +33,8 @@ public class GetAllPartnersHandlerTest
 		_mockRepositoryWrapper
 			.Setup(repo => repo.PartnersRepository.GetAllAsync(
 				null, // predicate
-				It.IsAny<Func<IQueryable<Partner>, IIncludableQueryable<Partner, object>>>()))
-				.ReturnsAsync((List<Partner>)null);
+				It.IsAny<List<string>>()))
+				.ReturnsAsync((List<Partner>)null!);
 
 		// Act
 		var result = await _handler.Handle(new GetAllPartnersQuery(), CancellationToken.None);
@@ -53,7 +53,7 @@ public class GetAllPartnersHandlerTest
 		_mockRepositoryWrapper.Setup(x => x.PartnersRepository
 			.GetAllAsync(
 			null,
-			It.IsAny<Func<IQueryable<Partner>, IIncludableQueryable<Partner, object>>>()))
+			It.IsAny<List<string>>()))
 			.ReturnsAsync(partners);
 
 		// Act

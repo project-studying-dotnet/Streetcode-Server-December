@@ -81,11 +81,11 @@ namespace Streetcode.XUnitTest.MediatRTests.Toponyms.GetByStreetcodeId
             int streetcodeId = 1;
             _mockedRepositoryWrapper.Setup(r => r.ToponymRepository.GetAllAsync(
                It.IsAny<Expression<Func<Toponym, bool>>>(),
-               It.IsAny<Func<IQueryable<Toponym>, IIncludableQueryable<Toponym, object>>>()
-               )).ReturnsAsync((Expression<Func<Toponym, bool>> predicate,
-                                Func<IQueryable<Toponym>, IIncludableQueryable<Toponym, object>> _) =>
+               It.IsAny<List<string>>()))
+                .ReturnsAsync((Expression<Func<Toponym, bool>> predicate,
+                List<string> _) =>
                {
-                   return null;
+                   return null!;
                });
             var query = new GetToponymsByStreetcodeIdQuery(streetcodeId);
             var result = await _handler.Handle(query, CancellationToken.None);
@@ -186,9 +186,9 @@ namespace Streetcode.XUnitTest.MediatRTests.Toponyms.GetByStreetcodeId
             };
             _mockedRepositoryWrapper.Setup(r => r.ToponymRepository.GetAllAsync(
                 It.IsAny<Expression<Func<Toponym, bool>>>(),
-                It.IsAny<Func<IQueryable<Toponym>, IIncludableQueryable<Toponym, object>>>()
+                It.IsAny<List<string>>()
                 )).ReturnsAsync((Expression<Func<Toponym, bool>> predicate,
-                                 Func<IQueryable<Toponym>, IIncludableQueryable<Toponym, object>> _) =>
+                                 List<string> _) =>
                 {
                     return toponyms.AsQueryable().Where(predicate).ToList();
                 });

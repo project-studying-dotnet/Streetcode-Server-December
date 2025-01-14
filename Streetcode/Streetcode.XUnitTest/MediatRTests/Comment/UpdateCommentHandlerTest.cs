@@ -74,14 +74,14 @@ namespace Streetcode.XUnitTest.MediatRTests.Comment
             _repositoryMock.Setup(rep => rep.StreetcodeRepository
                     .GetFirstOrDefaultAsync(
                         It.Is<Expression<Func<StreetcodeContent, bool>>>(exp => exp.Compile().Invoke(streetcode)),
-                        It.IsAny<Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>>>()))
+                        It.IsAny<List<string>>()))
                 .ReturnsAsync(streetcode);
 
             _mapperMock.Setup(m => m.Map<CommentEntity>(updateCommentDto)).Returns(updatedComment);
 
             _repositoryMock.Setup(rep => rep.CommentRepository.GetFirstOrDefaultAsync(
                 It.IsAny<Expression<Func<CommentEntity, bool>>>(),
-                It.IsAny<Func<IQueryable<CommentEntity>, IIncludableQueryable<CommentEntity, object>>>()))
+                It.IsAny<List<string>>()))
             .ReturnsAsync(commentEntity);
 
 
@@ -140,7 +140,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Comment
             _repositoryMock.Setup(rep => rep.StreetcodeRepository
                     .GetFirstOrDefaultAsync(
                         It.Is<Expression<Func<StreetcodeContent, bool>>>(exp => exp.Compile().Invoke(streetcode)),
-                        It.IsAny<Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>>>()))
+                        It.IsAny<List<string>>()))
                 .ReturnsAsync(streetcode);
 
             _mapperMock.Setup(m => m.Map<CommentEntity>(updateCommentDto)).Returns((CommentEntity)null);

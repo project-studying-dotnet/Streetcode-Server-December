@@ -83,7 +83,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.ArtTests
         {
             _mockRepositoryWrapper.Setup(s => s.ArtRepository.GetFirstOrDefaultAsync(
                             It.IsAny<Expression<Func<Art, bool>>>(),
-                            It.IsAny<Func<IQueryable<Art>, IIncludableQueryable<Art, object>>>()).Result).Returns(art);
+                            It.IsAny<List<string>>()).Result).Returns(art);
         }
 
         private void SetupSaveChanges(int returnVal)

@@ -94,9 +94,9 @@ namespace Streetcode.XUnitTest.MediatRTests.Transactions.TransactionLink.GetTran
             this._repositoryWrapperMock
                 .Setup(x => x.TransactLinksRepository.GetFirstOrDefaultAsync(
                     It.IsAny<Expression<Func<TransactLinkEntity, bool>>>(),
-                    It.IsAny<Func<IQueryable<TransactLinkEntity>, IIncludableQueryable<TransactLinkEntity, object>>>()))
+                    It.IsAny<List<string>>()))
                 .ReturnsAsync((Expression<Func<TransactLinkEntity, bool>> predicate,
-                               Func<IQueryable<TransactLinkEntity>, IIncludableQueryable<TransactLinkEntity, object>> include) =>
+                               List<string> include) =>
                 {
                     return transactLinks?.AsQueryable().FirstOrDefault(predicate.Compile());
                 });
@@ -107,9 +107,9 @@ namespace Streetcode.XUnitTest.MediatRTests.Transactions.TransactionLink.GetTran
             this._repositoryWrapperMock
             .Setup(x => x.StreetcodeRepository.GetFirstOrDefaultAsync(
                 It.IsAny<Expression<Func<StreetcodeContent, bool>>>(),
-                It.IsAny<Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>>>()))
+                It.IsAny<List<string>>()))
             .ReturnsAsync((Expression<Func<StreetcodeContent, bool>> predicate,
-                Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>> include) =>
+                List<string> include) =>
             {
                 return streetcodes.AsQueryable().FirstOrDefault(predicate.Compile());
             });

@@ -57,7 +57,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.ArtTests
                 new ArtDto { Id = 4, Description = "None4", Title = "Art_3", ImageId = 14 }
             };
 
-            _repositoryMock.Setup(r => r.ArtRepository.GetAllAsync(It.IsAny<Expression<Func<Art, bool>>>(), It.IsAny<Func<IQueryable<Art>, IIncludableQueryable<Art, object>>>())).ReturnsAsync(allArts);
+            _repositoryMock.Setup(r => r.ArtRepository.GetAllAsync(It.IsAny<Expression<Func<Art, bool>>>(), It.IsAny<List<string>>())).ReturnsAsync(allArts);
             _mapperMock.Setup(m => m.Map<IEnumerable<ArtDto>>(allArts)).Returns(allDtos);
 
             // A(Act):
@@ -76,7 +76,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.ArtTests
                     Assert.Equal(exp.ImageId, actual.ImageId);
                 })).ToArray());
 
-            _repositoryMock.Verify(r => r.ArtRepository.GetAllAsync(It.IsAny<Expression<Func<Art, bool>>?>(), It.IsAny<Func<IQueryable<Art>, IIncludableQueryable<Art, object>>?>()), Times.Once);
+            _repositoryMock.Verify(r => r.ArtRepository.GetAllAsync(It.IsAny<Expression<Func<Art, bool>>?>(), It.IsAny<List<string>?>()), Times.Once);
             _mapperMock.Verify(m => m.Map<IEnumerable<ArtDto>>(allArts), Times.Once);
             _loggerMock.VerifyNoOtherCalls();
         }
@@ -86,7 +86,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.ArtTests
         {
             // A(Arrange):
 
-            _repositoryMock.Setup(r => r.ArtRepository.GetAllAsync(It.IsAny<Expression<Func<Art, bool>>>(), It.IsAny<Func<IQueryable<Art>, IIncludableQueryable<Art, object>>>())).ReturnsAsync(null as IEnumerable<Art>);
+            _repositoryMock.Setup(r => r.ArtRepository.GetAllAsync(It.IsAny<Expression<Func<Art, bool>>>(), It.IsAny<List<string>>())).ReturnsAsync((IEnumerable<Art>)null!);
 
             // A(Act):
 

@@ -28,7 +28,7 @@ public class GetTagsByIdHandlerTest : AdditionalContentTestWrapper
 
         _repositoryWrapperMock.Setup(rep => rep.TagRepository.GetFirstOrDefaultAsync(
                 It.Is<Expression<Func<TagEntity, bool>>>(exp => exp.Compile().Invoke(tag)),
-                It.IsAny<Func<IQueryable<TagEntity>, IIncludableQueryable<TagEntity, object>>>()))
+                It.IsAny<List<string>>()))
             .ReturnsAsync(tag);
 
         _mapperMock.Setup(m => m.Map<TagDto>(tag))
@@ -44,7 +44,7 @@ public class GetTagsByIdHandlerTest : AdditionalContentTestWrapper
         _repositoryWrapperMock.Verify(
             rep => rep.TagRepository.GetFirstOrDefaultAsync(
             It.Is<Expression<Func<TagEntity, bool>>>(exp => exp.Compile().Invoke(new TagEntity { Id = request.Id })),
-            It.IsAny<Func<IQueryable<TagEntity>, IIncludableQueryable<TagEntity, object>>>()), Times.Once);
+            It.IsAny<List<string>>()), Times.Once);
 
         _mapperMock.Verify(m => m.Map<TagDto>(tag), Times.Once);
     }
@@ -59,7 +59,7 @@ public class GetTagsByIdHandlerTest : AdditionalContentTestWrapper
 
         _repositoryWrapperMock.Setup(rep => rep.TagRepository.GetFirstOrDefaultAsync(
                 It.IsAny<Expression<Func<TagEntity, bool>>>(),
-                It.IsAny<Func<IQueryable<TagEntity>, IIncludableQueryable<TagEntity, object>>>()))
+                It.IsAny<List<string>>()))
             .ReturnsAsync((TagEntity)null!);
 
         // Act

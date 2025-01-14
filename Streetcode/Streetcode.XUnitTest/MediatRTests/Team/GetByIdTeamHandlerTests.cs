@@ -73,8 +73,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
         private void ArrangeTeams(TeamMember teamMember)
         {
             _mockRepositoryWrapper.Setup(p => p.TeamRepository.GetSingleOrDefaultAsync(
-                It.IsAny<Expression<Func<TeamMember, bool>>>(), It.IsAny<Func<IQueryable<TeamMember>,
-                IIncludableQueryable<TeamMember, object>>>()).Result).Returns(teamMember);
+                It.IsAny<Expression<Func<TeamMember, bool>>>(), It.IsAny<List<string>>()).Result).Returns(teamMember);
         }
     }
 }

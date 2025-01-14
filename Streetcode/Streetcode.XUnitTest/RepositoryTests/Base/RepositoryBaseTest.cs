@@ -38,8 +38,8 @@ namespace Streetcode.XUnitTest.RepositoryTests.Base
             _dbContext = new StreetcodeDbContext(options);
 
             _dbContext.Set<TestEntity>().AddRange(
-                new TestEntity { Id = 1, Word = "Entity1", TermId = 1, Term = new DAL.Entities.Streetcode.TextContent.Term { Id = 1, Title = "aa", Description = "a" } },
-                new TestEntity { Id = 2, Word = "Entity2", TermId = 2, Term = new DAL.Entities.Streetcode.TextContent.Term { Id = 2, Title = "aaa", Description = "a" } }
+                new TestEntity { Id = 1, Word = "Entity1", TermId = 1, Term = new Term { Id = 1, Title = "aa", Description = "a" } },
+                new TestEntity { Id = 2, Word = "Entity2", TermId = 2, Term = new Term { Id = 2, Title = "aaa", Description = "a" } }
             );
             _dbContext.SaveChanges();
 
@@ -78,8 +78,8 @@ namespace Streetcode.XUnitTest.RepositoryTests.Base
             _dbContext = new StreetcodeDbContext(options);
 
             _dbContext.Set<TestEntity>().AddRange(
-                new TestEntity { Id = 1, Word = "Entity1", TermId = 1, Term = new DAL.Entities.Streetcode.TextContent.Term { Id = 1, Title = "aa", Description = "a" } },
-                new TestEntity { Id = 2, Word = "Entity2", TermId = 2, Term = new DAL.Entities.Streetcode.TextContent.Term { Id = 2, Title = "aaa", Description = "a" } }
+                new TestEntity { Id = 1, Word = "Entity1", TermId = 1, Term = new Term { Id = 1, Title = "aa", Description = "a" } },
+                new TestEntity { Id = 2, Word = "Entity2", TermId = 2, Term = new Term { Id = 2, Title = "aaa", Description = "a" } }
             );
             _dbContext.SaveChanges();
 
@@ -109,8 +109,8 @@ namespace Streetcode.XUnitTest.RepositoryTests.Base
             _dbContext = new StreetcodeDbContext(options);
 
             _dbContext.Set<TestEntity>().AddRange(
-                new TestEntity { Id = 1, Word = "Entity1", TermId = 1, Term = new DAL.Entities.Streetcode.TextContent.Term { Id = 1, Title = "aa", Description = "a" } },
-                new TestEntity { Id = 2, Word = "Entity2", TermId = 2, Term = new DAL.Entities.Streetcode.TextContent.Term { Id = 2, Title = "aaa", Description = "a" } }
+                new TestEntity { Id = 1, Word = "Entity1", TermId = 1, Term = new Term { Id = 1, Title = "aa", Description = "a" } },
+                new TestEntity { Id = 2, Word = "Entity2", TermId = 2, Term = new Term { Id = 2, Title = "aaa", Description = "a" } }
             );
             _dbContext.SaveChanges();
 
@@ -140,8 +140,8 @@ namespace Streetcode.XUnitTest.RepositoryTests.Base
             _dbContext = new StreetcodeDbContext(options);
 
             _dbContext.Set<TestEntity>().AddRange(
-                new TestEntity { Id = 1, Word = "Entity1", TermId = 1, Term = new DAL.Entities.Streetcode.TextContent.Term { Id = 1, Title = "aa", Description = "a" } },
-                new TestEntity { Id = 2, Word = "Entity2", TermId = 2, Term = new DAL.Entities.Streetcode.TextContent.Term { Id = 2, Title = "aaa", Description = "a" } }
+                new TestEntity { Id = 1, Word = "Entity1", TermId = 1, Term = new Term { Id = 1, Title = "aa", Description = "a" } },
+                new TestEntity { Id = 2, Word = "Entity2", TermId = 2, Term = new Term { Id = 2, Title = "aaa", Description = "a" } }
             );
             _dbContext.SaveChanges();
 

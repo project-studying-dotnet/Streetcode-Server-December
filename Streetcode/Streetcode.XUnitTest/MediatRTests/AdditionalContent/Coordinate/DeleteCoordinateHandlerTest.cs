@@ -27,7 +27,7 @@ public class DeleteCoordinateHandlerTest : AdditionalContentTestWrapper
         _repositoryWrapperMock.Setup(rep => rep.StreetcodeCoordinateRepository
                 .GetFirstOrDefaultAsync(
                     It.Is<Expression<Func<StreetcodeCoordinateEntity, bool>>>(exp => exp.Compile().Invoke(streetcodeCoordinate)),
-                    It.IsAny<Func<IQueryable<StreetcodeCoordinateEntity>, IIncludableQueryable<StreetcodeCoordinateEntity, object>>>()))
+                    It.IsAny<List<string>>()))
             .ReturnsAsync(streetcodeCoordinate);
 
         _repositoryWrapperMock.Setup(rep => rep.StreetcodeCoordinateRepository.Delete(streetcodeCoordinate));
@@ -52,7 +52,7 @@ public class DeleteCoordinateHandlerTest : AdditionalContentTestWrapper
         _repositoryWrapperMock.Setup(rep => rep.StreetcodeCoordinateRepository
                 .GetFirstOrDefaultAsync(
                     It.Is<Expression<Func<StreetcodeCoordinateEntity, bool>>>(exp => exp.Compile().Invoke(streetcodeCoordinate)),
-                    It.IsAny<Func<IQueryable<StreetcodeCoordinateEntity>, IIncludableQueryable<StreetcodeCoordinateEntity, object>>>()))
+                    It.IsAny<List<string>>()))
             .ReturnsAsync(streetcodeCoordinate);
 
         _repositoryWrapperMock.Setup(rep => rep.StreetcodeCoordinateRepository.Delete(streetcodeCoordinate));

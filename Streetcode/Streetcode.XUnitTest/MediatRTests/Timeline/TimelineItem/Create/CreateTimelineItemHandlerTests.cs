@@ -121,7 +121,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Timeline.TimelineItems.Create
         {
             _repositoryWrapperMock.Setup(r => r.StreetcodeRepository.GetSingleOrDefaultAsync(
                     It.IsAny<Expression<Func<StreetcodeContent, bool>>>(),
-                    It.IsAny<Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>>>()))
+                    It.IsAny<List<string>>()))
                 .ReturnsAsync((StreetcodeContent?)null);
         }
 
@@ -132,7 +132,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Timeline.TimelineItems.Create
         {
             _repositoryWrapperMock.Setup(r => r.StreetcodeRepository.GetFirstOrDefaultAsync(
                     It.IsAny<Expression<Func<StreetcodeContent, bool>>>(),
-                    It.IsAny<Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>>>()))
+                    It.IsAny<List<string>>()))
                 .ReturnsAsync(new StreetcodeContent { Id = 1 });
         }
 
@@ -150,7 +150,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Timeline.TimelineItems.Create
 
             _repositoryWrapperMock.Setup(r => r.HistoricalContextRepository.GetAllAsync(
                     It.IsAny<Expression<Func<HistoricalContext, bool>>>(),
-                    It.IsAny<Func<IQueryable<HistoricalContext>, IIncludableQueryable<HistoricalContext, object>>>()))
+                    It.IsAny<List<string>>()))
                 .ReturnsAsync((Expression<Func<HistoricalContext, bool>> predicate, Func<IQueryable<HistoricalContext>, IIncludableQueryable<HistoricalContext, object>> include) =>
                     historicalContextEntities.AsQueryable().Where(predicate));
         }

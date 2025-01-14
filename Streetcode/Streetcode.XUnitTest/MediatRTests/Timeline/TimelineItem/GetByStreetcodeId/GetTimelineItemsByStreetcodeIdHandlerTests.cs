@@ -154,9 +154,7 @@ public class GetTimelineItemsByStreetcodeIdHandlerTests
         this.repositoryWrapperMock.Setup(repo =>
                 repo.TimelineRepository.GetAllAsync(
                     It.IsAny<Expression<Func<TimelineItem, bool>>>(),
-                    It.IsAny<
-                        Func<IQueryable<TimelineItem>, IIncludableQueryable<TimelineItem, object>>
-                    >()))
+                    It.IsAny<List<string>>()))
             .ReturnsAsync(timelineItems);
     }
 }

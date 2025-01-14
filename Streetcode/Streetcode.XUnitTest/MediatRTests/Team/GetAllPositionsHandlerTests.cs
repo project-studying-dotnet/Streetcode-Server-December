@@ -74,8 +74,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Team
         private void ArrangePositions(List<Positions> positions)
         {
             _mockRepositoryWrapper.Setup(p => p.PositionRepository.GetAllAsync(
-                It.IsAny<Expression<Func<Positions, bool>>>(), It.IsAny<Func<IQueryable<Positions>,
-                IIncludableQueryable<Positions, object>>>()).Result).Returns(positions);
+                It.IsAny<Expression<Func<Positions, bool>>>(), It.IsAny<List<string>>()).Result).Returns(positions);
         }
     }
 }

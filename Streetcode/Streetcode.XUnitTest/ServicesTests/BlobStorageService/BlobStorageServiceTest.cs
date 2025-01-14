@@ -114,11 +114,11 @@ namespace Streetcode.XUnitTest.ServicesTests.BlobStorageService
             };
 
             _mockRepositoryWrapper
-                .Setup(r => r.ImageRepository.GetAllAsync(It.IsAny<Expression<Func<Image, bool>>>(), It.IsAny<Func<IQueryable<Image>, IIncludableQueryable<Image, object>>>()))
+                .Setup(r => r.ImageRepository.GetAllAsync(It.IsAny<Expression<Func<Image, bool>>>(), It.IsAny<List<string>>()))
                 .ReturnsAsync(images);
 
             _mockRepositoryWrapper
-                .Setup(r => r.AudioRepository.GetAllAsync(It.IsAny<Expression<Func<Audio, bool>>>(), It.IsAny<Func<IQueryable<Audio>, IIncludableQueryable<Audio, object>>>()))
+                .Setup(r => r.AudioRepository.GetAllAsync(It.IsAny<Expression<Func<Audio, bool>>>(), It.IsAny<List<string>>()))
                 .ReturnsAsync(audios);
 
             var emptyAsyncPageable = AsyncPageable<BlobItem>.FromPages(new List<Page<BlobItem>>());

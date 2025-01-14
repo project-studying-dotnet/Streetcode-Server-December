@@ -65,7 +65,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.VideoTests
 
             _mockRepositoryWrapper.Setup(r => r.StreetcodeRepository.GetFirstOrDefaultAsync(
                 It.IsAny<Expression<Func<StreetcodeContent, bool>>>(), 
-                It.IsAny<Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>>?>() 
+                It.IsAny<List<string>?>() 
             ))
             .ReturnsAsync(streetcode); 
 
@@ -116,7 +116,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.VideoTests
 
             _mockRepositoryWrapper.Setup(r => r.StreetcodeRepository.GetFirstOrDefaultAsync(
               It.IsAny<Expression<Func<StreetcodeContent, bool>>>(),
-              It.IsAny<Func<IQueryable<StreetcodeContent>, IIncludableQueryable<StreetcodeContent, object>>?>()
+              It.IsAny<List<string>?>()
             ))
             .ReturnsAsync(streetcode);
 

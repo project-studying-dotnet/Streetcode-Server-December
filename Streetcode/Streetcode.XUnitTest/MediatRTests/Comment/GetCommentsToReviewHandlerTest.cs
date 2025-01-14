@@ -82,7 +82,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Comment
             _repositoryMock
                 .Setup(repo => repo.CommentRepository.GetAllAsync(
                 It.IsAny<Expression<Func<CommentEntity, bool>>>(),
-                It.IsAny<Func<IQueryable<CommentEntity>, IIncludableQueryable<CommentEntity, object>>>()))
+                It.IsAny<List<string>>()))
                 .ReturnsAsync(comments);
         }
     }

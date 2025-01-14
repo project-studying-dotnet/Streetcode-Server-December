@@ -46,9 +46,8 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Fact.Update
             var facts = CreateFakeData();
 
             _repositoryWrapperMock.Setup(x => x.FactRepository.GetFirstOrDefaultAsync(
-                It.IsAny<Expression<Func<FactEntity, bool>>>(),
-                It.IsAny<Func<IQueryable<FactEntity>, IIncludableQueryable<FactEntity, object>>>()))
-                .ReturnsAsync((Expression<Func<FactEntity, bool>> predicate, Func<IQueryable<FactEntity>, IIncludableQueryable<FactEntity, object>> include) =>
+                It.IsAny<Expression<Func<FactEntity, bool>>>(), It.IsAny<List<string>>()))
+                .ReturnsAsync((Expression<Func<FactEntity, bool>> predicate, List<string> include) =>
                 {
                     return facts.AsQueryable().FirstOrDefault(predicate.Compile());
                 });
@@ -75,8 +74,8 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Fact.Update
 
             _repositoryWrapperMock.Setup(x => x.FactRepository.GetFirstOrDefaultAsync(
                 It.IsAny<Expression<Func<FactEntity, bool>>>(),
-                It.IsAny<Func<IQueryable<FactEntity>, IIncludableQueryable<FactEntity, object>>>()))
-                .ReturnsAsync((Expression<Func<FactEntity, bool>> predicate, Func<IQueryable<FactEntity>, IIncludableQueryable<FactEntity, object>> include) => null);
+                It.IsAny<List<string>>()))
+                .ReturnsAsync((Expression<Func<FactEntity, bool>> predicate, List<string> include) => null);
 
             // Act
             var command = new UpdateFactCommand(factDto);
@@ -101,8 +100,8 @@ namespace Streetcode.XUnitTest.MediatRTests.Streetcode.Fact.Update
 
             _repositoryWrapperMock.Setup(x => x.FactRepository.GetFirstOrDefaultAsync(
                 It.IsAny<Expression<Func<FactEntity, bool>>>(),
-                It.IsAny<Func<IQueryable<FactEntity>, IIncludableQueryable<FactEntity, object>>>()))
-                .ReturnsAsync((Expression<Func<FactEntity, bool>> predicate, Func<IQueryable<FactEntity>, IIncludableQueryable<FactEntity, object>> include) =>
+                It.IsAny<List<string>>()))
+                .ReturnsAsync((Expression<Func<FactEntity, bool>> predicate, List<string> include) =>
                 {
                     return facts.AsQueryable().FirstOrDefault(predicate.Compile());
                 });

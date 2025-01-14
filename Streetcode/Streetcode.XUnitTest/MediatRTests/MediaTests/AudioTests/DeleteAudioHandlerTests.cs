@@ -39,7 +39,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
             var audioId = 1;
             var audio = new Audio { Id = audioId, BlobName = "blob1" };
 
-            _mockRepository.Setup(r => r.AudioRepository.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<Audio, bool>>>(), It.IsAny<Func<IQueryable<Audio>, IIncludableQueryable<Audio, object>>>())).ReturnsAsync(audio);
+            _mockRepository.Setup(r => r.AudioRepository.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<Audio, bool>>>(), It.IsAny<List<string>>())).ReturnsAsync(audio);
             _mockRepository.Setup(r => r.SaveChangesAsync()).ReturnsAsync(1);
 
             // Act
@@ -64,7 +64,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
 
             var audioId = 123;
 
-            _mockRepository.Setup(r => r.AudioRepository.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<Audio, bool>>>(), It.IsAny<Func<IQueryable<Audio>, IIncludableQueryable<Audio, object>>>())).ReturnsAsync(null as Audio);
+            _mockRepository.Setup(r => r.AudioRepository.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<Audio, bool>>>(), It.IsAny<List<string>>())).ReturnsAsync(null as Audio);
 
             // Act
 

@@ -1,4 +1,4 @@
-﻿using AspNetCore.Identity.Mongo;
+using AspNetCore.Identity.Mongo;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using UserService.DAL.Entities.Roles;
@@ -15,9 +15,20 @@ using Hangfire;
 using Hangfire.Mongo;
 using Hangfire.Mongo.Migration.Strategies;
 using Hangfire.Mongo.Migration.Strategies.Backup;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Streetcode.BLL.DTO.Users;
 using UserService.BLL.DTO.User;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using System.IdentityModel.Tokens.Jwt;
+
+using UserService.BLL.Interfaces.Authentication;
+using UserService.BLL.Services.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +39,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
 builder.Services.AddHttpClient();
+builder.Services.AddHttpContextAccessor();
 
 // MongoDB Configuration
 var mongoConnectionString = builder.Configuration.GetConnectionString("MongoDb")!;
@@ -38,11 +50,21 @@ builder.Services.AddIdentityMongoDbProvider<User, Role>(identityOptions =>
     identityOptions.Password.RequireDigit = false;
     identityOptions.Password.RequiredLength = 6;
     identityOptions.Password.RequireUppercase = false;
+
+    // Configure token lifespan for email confirmation
+    identityOptions.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultProvider;
 }, mongoIdentityOptions =>
 {
     mongoIdentityOptions.ConnectionString = mongoConnectionString;
 });
 
+// Configure the token lifespan for the default token provider
+var emailConfirmationTokenLifeSpan = 2;
+
+builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
+{
+    options.TokenLifespan = TimeSpan.FromMinutes(emailConfirmationTokenLifeSpan); // Set token lifespan to 2 minutes
+});
 
 // JWT Configuration for DI
 builder.Services.Configure<JwtConfiguration>(builder.Configuration.GetSection("Jwt"));
@@ -85,13 +107,24 @@ builder.Services.AddAuthentication(options =>
             return Task.CompletedTask;
         }
     };
+})
+.AddGoogle(options =>
+{
+    options.ClientId = builder.Configuration["Authentication:Google:Client"]!;
+    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"]!;
+    options.Scope.Add("email");
+    options.SaveTokens = true;
 });
+builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<IClaimsService, ClaimsService>();
+builder.Services.AddScoped<IEmailConfirmationService, EmailConfirmationService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<IUserService, RegistrationService>();
 builder.Services.AddScoped<ITokenCleanupService, TokenCleanupService>();
+builder.Services.AddScoped<IUserPasswordService, UserPasswordService>();
+builder.Services.AddScoped<IGoogleAuthentication, GoogleAuthentication>();
 
 var currentAssemblies = AppDomain.CurrentDomain.GetAssemblies();
 builder.Services.AddAutoMapper(currentAssemblies);
@@ -99,7 +132,6 @@ builder.Services.AddAutoMapper(currentAssemblies);
 builder.Services.AddSingleton<IAzureServiceBus, AzureServiceBus>(sb =>
     new AzureServiceBus(azureServiceBusConn));
 builder.Services.AddHttpClient();
-
 
 // Configure Hangfire MongoStorage with Migration
 var migrationOptions = new MongoMigrationOptions
@@ -114,7 +146,6 @@ var storageOptions = new MongoStorageOptions
     CheckQueuedJobsStrategy = CheckQueuedJobsStrategy.TailNotificationsCollection
 };
 
-
 builder.Services.AddHangfire(configuration => configuration
     .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
     .UseSimpleAssemblyNameTypeSerializer()
@@ -126,7 +157,7 @@ builder.Services.AddHangfireServer();
 var app = builder.Build();
 await app.SeedDataAsync();
 
-
+app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -139,9 +170,29 @@ if (app.Environment.IsDevelopment())
 app.MapControllers();
 
 app.UseHttpsRedirection();
+
 app.UseHangfireDashboard();
+app.MapControllers();
 
 // Мінімальні API Endpoints
+
+app.MapGet("/googleLogin", (IGoogleAuthentication googleAuthentication, HttpContext httpContext) =>
+{
+    var properties = googleAuthentication.GoogleLogin();
+
+    return httpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme, properties);
+});
+
+app.MapGet("/googleResponse", async (IGoogleAuthentication googleAuthentication, HttpContext httpContext) =>
+{
+    var authenticateResult = await httpContext.AuthenticateAsync(IdentityConstants.ExternalScheme);
+
+    var result = await googleAuthentication.GoogleResponse(authenticateResult);
+    httpContext.AppendTokenToCookie(result.Token.AccessToken, result.JwtConfig);
+
+    return result.Token;
+});
+
 app.MapPost("/register", async (RegistrationDto registrationDto, IUserService userService) =>
 {
     var result = await userService.Registration(registrationDto);
@@ -179,6 +230,55 @@ app.MapPost("/refresh-token", async (TokenRequestDTO tokenRequest, ILoginService
     httpContext.AppendTokenToCookie(token.AccessToken, jwtConfig);
     return Results.Ok(refreshResult.Value);
 });
+
+app.MapPost("/forgot-password", async (string email, IUserPasswordService userPasswordService, HttpContext httpContext, IOptions<JwtConfiguration> jwtConfig) =>
+{
+    var result = await userPasswordService.ForgotPassword(email);
+    if (result.IsFailed)
+        return Results.BadRequest(result.Errors);
+
+    return Results.Ok();
+});
+
+app.MapPost("/reset-password", async (PassResetDto passResetDto, IUserPasswordService userPasswordService, HttpContext httpContext, IOptions<JwtConfiguration> jwtConfig) =>
+{
+    var result = await userPasswordService.ResetPassword(passResetDto);
+    if (result.IsFailed)
+        return Results.BadRequest(result.Errors);
+
+    return Results.Ok();
+});
+
+
+app.MapGet("/confirm-email", async (HttpContext httpContext, string userId, string token, IEmailConfirmationService emailConfirmationService, IOptions<JwtConfiguration> jwtConfig) =>
+{
+    var result = await emailConfirmationService.ConfirmEmailAsync(userId, token);
+    if (result.IsSuccess)
+    {
+        httpContext.AppendTokenToCookie(result.Value, jwtConfig);
+        return Results.Ok(new { Token = result.Value });
+    }
+    else
+    {
+        return Results.BadRequest(result.Errors);
+    }
+});
+
+app.MapPost("/change-password", async (PassChangeDto passChangeDto, IUserPasswordService userPasswordService, HttpContext httpContext, IOptions<JwtConfiguration> jwtConfig) =>
+{
+    if (!httpContext.User.Identity?.IsAuthenticated ?? false)
+    {
+        return Results.Unauthorized();
+    }
+    var userName = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+    var result = await userPasswordService.ChangePassword(passChangeDto, userName);
+    if (result.IsFailed)
+        return Results.BadRequest(result.Errors);
+    
+    return Results.Ok();
+}).RequireAuthorization();
+
 
 RecurringJob.AddOrUpdate<TokenCleanupService>(
     "RemoveExpiredRefreshTokens",

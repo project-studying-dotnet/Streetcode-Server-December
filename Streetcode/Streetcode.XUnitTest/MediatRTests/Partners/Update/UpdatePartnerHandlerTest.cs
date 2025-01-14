@@ -56,7 +56,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Partners.Update
 		public async Task Handle_WhenPartnerUpdated_ShouldReturnSuccess()
 		{
 			// Arrange
-			var updatePartnerDTO = new CreatePartnerDto { Id = 1, Streetcodes = new List<StreetcodeShortDto> { new StreetcodeShortDto { Id = 1 } } }; // Використовуємо CreatePartnerDto з правильними типами
+			var updatePartnerDTO = new CreatePartnerDto { Id = 1, Streetcodes = new List<StreetcodeShortDto> { new StreetcodeShortDto { Id = 1, Title = "" } } }; // Використовуємо CreatePartnerDto з правильними типами
 			var partnerDTO = new PartnerDto { Id = 1 };
 			var partner = new Partner { Id = 1, Streetcodes = new List<StreetcodeContent> { new StreetcodeContent { Id = 1 } } };
 
@@ -85,7 +85,7 @@ namespace Streetcode.XUnitTest.MediatRTests.Partners.Update
 		public async Task Handle_WhenExceptionThrown_ShouldReturnFail()
 		{
 			var errorMsg = "Saving updates";
-			var updatePartnerDTO = new CreatePartnerDto { Id = 1, Streetcodes = new List<StreetcodeShortDto> { new StreetcodeShortDto { Id = 1 } } };
+			var updatePartnerDTO = new CreatePartnerDto { Id = 1, Streetcodes = new List<StreetcodeShortDto> { new StreetcodeShortDto { Id = 1, Title = "" } } };
 			var partner = new Partner { Id = 1, Streetcodes = new List<StreetcodeContent> { new StreetcodeContent { Id = 1 } } };
 
 			// Arrange

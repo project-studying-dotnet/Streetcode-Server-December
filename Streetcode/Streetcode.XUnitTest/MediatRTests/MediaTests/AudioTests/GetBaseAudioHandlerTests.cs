@@ -3,6 +3,7 @@ using Moq;
 using Streetcode.BLL.Interfaces.BlobStorage;
 using Streetcode.BLL.Interfaces.Logging;
 using Streetcode.BLL.MediatR.Media.Audio.GetBaseAudio;
+using Streetcode.BLL.Specifications.Media.Audio;
 using Streetcode.DAL.Entities.Media;
 using Streetcode.DAL.Repositories.Interfaces.Base;
 using System;
@@ -38,7 +39,9 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
             var audio = new Audio { Id = 1, BlobName = "audioBlob" };
             var expectedStream = new MemoryStream();
 
-            _mockRepository.Setup(r => r.AudioRepository.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<Audio, bool>>>(), null)).ReturnsAsync(audio);
+
+            _mockRepository.Setup(r => r.AudioRepository.GetFirstOrDefaultBySpecAsync(It.IsAny<GetAudioByIdSpecification>())).ReturnsAsync(audio);
+
             _mockBlob.Setup(b => b.FindFileInStorageAsMemoryStream(audio.BlobName)).Returns(Task.FromResult(expectedStream));
 
             // Act
@@ -50,7 +53,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
             Assert.True(result.IsSuccess);
             Assert.Equal(expectedStream, result.Value);
 
-            _mockRepository.Verify(r => r.AudioRepository.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<Audio, bool>>>(), null), Times.Once);
+            _mockRepository.Verify(r => r.AudioRepository.GetFirstOrDefaultBySpecAsync(It.IsAny<GetAudioByIdSpecification>()), Times.Once);
             _mockBlob.Verify(b => b.FindFileInStorageAsMemoryStream(audio.BlobName), Times.Once);
         }
 
@@ -60,7 +63,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
             // Arrange
 
             int nonExistentAudioId = 99;
-            _mockRepository.Setup(r => r.AudioRepository.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<Audio, bool>>>(), null)).ReturnsAsync(null as Audio);
+            _mockRepository.Setup(r => r.AudioRepository.GetFirstOrDefaultBySpecAsync(It.IsAny<GetAudioByIdSpecification>())).ReturnsAsync(null as Audio);
 
             // Act
 
@@ -73,7 +76,7 @@ namespace Streetcode.XUnitTest.MediatRTests.MediaTests.AudioTests
             Assert.Equal($"Cannot find a audio with corresponding id: {nonExistentAudioId}", result.Errors[0].Message);
 
             _mockLogger.Verify(l => l.LogError(It.IsAny<GetBaseAudioQuery>(), It.Is<string>(msg => msg.Contains($"id: {nonExistentAudioId}"))), Times.Once);
-            _mockRepository.Verify(r => r.AudioRepository.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<Audio, bool>>>(), null), Times.Once);
+            _mockRepository.Verify(r => r.AudioRepository.GetFirstOrDefaultBySpecAsync(It.IsAny<GetAudioByIdSpecification>()), Times.Once);
             _mockBlob.Verify(b => b.FindFileInStorageAsMemoryStream(It.IsAny<string>()), Times.Never);
         }
     }

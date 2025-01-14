@@ -7,11 +7,7 @@ namespace Streetcode.BLL.Validators.Validators.DTOValidators.Comment;
 public class CreateCommentCommandValidator : AbstractValidator<CreateCommentCommand>
 {
     public CreateCommentCommandValidator()
-    {
-        RuleFor(c => c.createCommentDto.UserName)
-            .NotEmpty()
-            .WithMessage("User must have a name");
-        
+    {        
         RuleFor(c => c.createCommentDto.UserFullName)
             .NotEmpty()
             .WithMessage("User must have a full name");

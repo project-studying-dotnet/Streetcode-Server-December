@@ -9,6 +9,7 @@ using FluentValidation.AspNetCore;
 using Serilog;
 using StackExchange.Redis;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using EmailService.BLL.Consumers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +46,14 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(currentAss
 // Setup Azure service bus
 var azureServiceBusConn = builder.Configuration.GetConnectionString("ServiceBusConn")!;
 builder.Services.AddSingleton<IAzureServiceBus, AzureServiceBus>(sb => new AzureServiceBus(azureServiceBusConn));
+builder.Services.AddScoped<IEmailService, EmailService.BLL.Services.EmailService>();
+builder.Services.AddScoped<ILoggerService, LoggerService>();
+
+builder.Services.AddSingleton<IAzureServiceBus, AzureServiceBus>(sb =>
+    new AzureServiceBus(azureServiceBusConn));
+
+builder.Services.AddHostedService<EmailMessageConsumer>();
+
 builder.Services.AddHttpClient();
 
 // Setup Redis

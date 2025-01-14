@@ -19,7 +19,7 @@ namespace Streetcode.XUnitTest.ValidatorTests
         public void Should_HaveError_When_CreateReplyDto_IsNull()
         {
             // Arrange
-            var command = new CreateReplyCommand(null!);
+            var command = new CreateReplyCommand(null!, null!);
 
             // Act
             var result = _validator.TestValidate(command);
@@ -35,7 +35,9 @@ namespace Streetcode.XUnitTest.ValidatorTests
             // Arrange
             var createReplyDto = new CreateReplyDto();
 
-            var command = new CreateReplyCommand(createReplyDto);
+            var userName = "John Doe";
+
+            var command = new CreateReplyCommand(createReplyDto, userName);
 
             // Act
             var result = _validator.TestValidate(command);

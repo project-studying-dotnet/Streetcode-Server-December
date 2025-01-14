@@ -166,13 +166,20 @@ namespace UserService.XUnitTest.ServicesTests.User
                 PasswordConfirm = "qwertyA*"
             };
 
+            var createUserFail = IdentityResult.Failed(
+                    new IdentityError
+                    {
+                        Code = "MysticalError",
+                        Description = errMsg
+                    });
+
             _mapperMock.Setup(m => m
                     .Map<RegistrationDto, DAL.Entities.Users.User>(registrationDto))
                 .Returns(user);
 
             _userManagerMock.Setup(um => um
                     .CreateAsync(user, registrationDto.Password))
-                .ReturnsAsync(IdentityResult.Failed());
+                .ReturnsAsync(createUserFail);
 
 
             // Act
@@ -245,6 +252,12 @@ namespace UserService.XUnitTest.ServicesTests.User
             };
 
 
+            var addRoleToUserFail = IdentityResult.Failed(
+                new IdentityError
+                {
+                    Code = "MysticalError",
+                    Description = errMsg
+                });
 
             _mapperMock.Setup(m => m
                     .Map<RegistrationDto, DAL.Entities.Users.User>(registrationDto))
@@ -263,7 +276,7 @@ namespace UserService.XUnitTest.ServicesTests.User
                     user.Roles ??= [];
                     user.Roles.Add(role);
                 })
-                .ReturnsAsync(IdentityResult.Failed());
+                .ReturnsAsync(addRoleToUserFail);
 
 
             // Act

@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using FluentResults;
@@ -56,11 +58,13 @@ public class RegistrationService : IUserService
             return Result.Fail(errMsg);
         }
 
-        var create = await _userManager.CreateAsync(user, registrationDto.Password);
-
+        var create = string.IsNullOrEmpty(registrationDto.Password)
+            ? await _userManager.CreateAsync(user)
+            : await _userManager.CreateAsync(user, registrationDto.Password);
+        
         if (!create.Succeeded)
         {
-            const string errMsg = "Cannot create user";
+            var errMsg = create.Errors.First().Description;
             _logger.LogWarning(errMsg);
             return Result.Fail(errMsg);
         }
@@ -76,7 +80,7 @@ public class RegistrationService : IUserService
         var assignRole = await _userManager.AddToRoleAsync(newUser, "User");
         if (!assignRole.Succeeded)
         {
-            const string errMsg = "Cannot assign role to user";
+            var errMsg = assignRole.Errors.First().Description;
             _logger.LogWarning(errMsg);
             return Result.Fail(errMsg);
         }

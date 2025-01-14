@@ -28,6 +28,7 @@ jobs:
         run: dotnet tool install --global dotnet-coverage
       - name: Install dotnet-sonarscanner
         run: dotnet tool install --global dotnet-sonarscanner
+
       - name: Restore Dependencies
         run: dotnet restore ./Streetcode/Streetcode.sln
       - name: Build
@@ -35,6 +36,7 @@ jobs:
 
       - name: Test and Code Coverage
         run: dotnet-coverage collect "dotnet test ./Streetcode/Streetcode.XUnitTest/Streetcode.XUnitTest.csproj --configuration Release --results-directory ./coverage --logger trx" -f xml -o coverage.xml
+
     
       - name: SonarScanner Analysis
         id: sonar

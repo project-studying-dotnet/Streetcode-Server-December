@@ -4,9 +4,11 @@ using Serilog.Events;
 
 namespace EmailService.BLL.Services
 {
-    public class LoggerService : ILoggerService
-    {
+   public class LoggerService : ILoggerService
+   {
         private readonly ILogger _logger;
+        private const string MessageTemplate = "{Message}";
+        private const string ErrorMessageTemplate = "{RequestClass} handled with the error: {ErrorMessage}";
 
         public LoggerService(ILogger logger)
         {
@@ -20,29 +22,29 @@ namespace EmailService.BLL.Services
 
         public void LogInformation(string msg)
         {
-           Log(LogEventLevel.Information, "{Message}", msg);
+            Log(LogEventLevel.Information, MessageTemplate, msg);
         }
 
         public void LogWarning(string msg)
         {
-			Log(LogEventLevel.Warning, "{Message}", msg);
-		}
+            Log(LogEventLevel.Warning, MessageTemplate, msg);
+        }
 
         public void LogTrace(string msg)
         {
-            Log(LogEventLevel.Information, "{Message}", msg);
+            Log(LogEventLevel.Information, MessageTemplate, msg);
         }
 
         public void LogDebug(string msg)
         {
-            Log(LogEventLevel.Debug, "{Message}", msg);
+            Log(LogEventLevel.Debug, MessageTemplate, msg);
         }
 
         public void LogError(object request, string errorMsg)
         {
             string requestType = request.GetType().ToString();
             string requestClass = requestType.Substring(requestType.LastIndexOf('.') + 1);
-			Log(LogEventLevel.Error, "{RequestClass} handled with the error: {ErrorMessage}", requestClass, errorMsg);
-		}
-    }
+            Log(LogEventLevel.Error, ErrorMessageTemplate, requestClass, errorMsg);
+        }
+   }
 }

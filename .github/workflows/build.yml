@@ -11,7 +11,6 @@ jobs:
     name: Build and analyze
     runs-on: windows-latest
     steps:
-      
       - name: Checkout
         uses: actions/checkout@v2
 
@@ -33,24 +32,37 @@ jobs:
       - name: Install dotnet-sonarscanner
         run: dotnet tool install --global dotnet-sonarscanner
 
+      - name: Install ReportGenerator
+        run: dotnet tool install --global dotnet-reportgenerator-globaltool
+
       - name: Restore Dependencies
         run: dotnet restore ./Streetcode/Streetcode.sln
 
       - name: Build
         run: dotnet build ./Streetcode/Streetcode.sln --configuration Release --no-restore
 
-      - name: Test and Code Coverage
+      - name: Test and Generate Coverage
         run: |
-          dotnet-coverage collect "dotnet test ./Streetcode/Streetcode.XUnitTest/Streetcode.XUnitTest.csproj --configuration Release --results-directory ./coverage/Streetcode --logger trx" -f xml -o coverage-Streetcode.xml
-          dotnet-coverage collect "dotnet test ./Streetcode/UserService.XUnitTest/UserService.XUnitTest.csproj --configuration Release --results-directory ./coverage/UserService --logger trx" -f xml -o coverage-UserService.xml
-          dotnet-coverage collect "dotnet test ./Streetcode/EmailService.XUnitTest/EmailService.XUnitTest.csproj --configuration Release --results-directory ./coverage/EmailService --logger trx" -f xml -o coverage-EmailService.xml
-    
+          dotnet-coverage collect "dotnet test ./Streetcode/Streetcode.XUnitTest/Streetcode.XUnitTest.csproj --configuration Release --results-directory ./coverage/Streetcode --logger trx" -f xml -o ./coverage/Streetcode/coverage.xml
+          dotnet-coverage collect "dotnet test ./Streetcode/UserService.XUnitTest/UserService.XUnitTest.csproj --configuration Release --results-directory ./coverage/UserService --logger trx" -f xml -o ./coverage/UserService/coverage.xml
+          dotnet-coverage collect "dotnet test ./Streetcode/EmailService.XUnitTest/EmailService.XUnitTest.csproj --configuration Release --results-directory ./coverage/EmailService --logger trx" -f xml -o ./coverage/EmailService/coverage.xml
+
+      - name: Merge Coverage Reports
+        run: |
+          reportgenerator \
+            -reports:./coverage/Streetcode/coverage.xml;./coverage/UserService/coverage.xml;./coverage/EmailService/coverage.xml \
+            -targetdir:./coverage/merged \
+            -reporttypes:Xml
+
       - name: SonarScanner Analysis
         id: sonar
         run: |
-          dotnet sonarscanner begin /k:"project-studying-dotnet_Streetcode-Server-December" /o:"project-studying-dotnet" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths="**/coverage.xml"
+          dotnet sonarscanner begin \
+            /k:"project-studying-dotnet_Streetcode-Server-December" \
+            /o:"project-studying-dotnet" \
+            /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
+            /d:sonar.host.url="https://sonarcloud.io" \
+            /d:sonar.cs.vscoveragexml.reportsPaths="./coverage/merged/coverage.xml" \
+            /d:sonar.verbose=true
           dotnet build ./Streetcode/Streetcode.sln --configuration Release
-          dotnet test ./Streetcode/Streetcode.XUnitTest/Streetcode.XUnitTest.csproj --configuration Release --no-build --verbosity normal
-          dotnet test ./Streetcode/UserService.XUnitTest/UserService.XUnitTest.csproj --configuration Release --no-build --verbosity normal
-          dotnet test ./Streetcode/EmailService.XUnitTest/EmailService.XUnitTest.csproj --configuration Release --no-build --verbosity normal
           dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
